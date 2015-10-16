@@ -9,6 +9,7 @@ var argv       = require('minimist')(process.argv.slice(2));
 
 var fopen  = RSVP.denodeify(fs.open);
 var fread  = RSVP.denodeify(fs.readFile);
+var globp  = RSVP.denodeify(glob);
 
 var MODE     = argv.mode || 'dev';
 var buildAll = argv.all || false;
@@ -19,44 +20,44 @@ build();
 function build() {
 
   if( buildAll ) {
-    var builders = [ 
-        bundleVendorJSFiles(), 
-        bundleVendorCSSFiles(), 
-        publishPublicFiles() 
-      ];
 
-    RSVP.all(builders).then( function() {
-        publishFontFiles();
-        publishSourceMaps();
-        bundleAppJSFiles();
-      });
+    del( 'dist/**/*' )
+      .then( function (paths) {
+          log('Deleted files/folders:', paths );
+          var builders = [ 
+              bundleVendorJSFiles(), 
+              bundleVendorCSSFiles(), 
+              bundleAppCSSFiles(),
+              publishPublicFiles(),
+              publishFontFiles()
+            ];
+          return RSVP.all(builders);
+        })
+      .then( () => {
+          publishSourceMaps();
+        });        
 
-  } else {
-    bundleAppJSFiles();
   }
+
+  bundleAppJSFiles();
+
 }
 
 function publishPublicFiles() {
 
-  copy( 'public/index.html', 'dist/index.html' );  
   mkdir('dist/images');
-  glob('public/images/*.*', function(errrrrrr,fnames) {
-    fnames.forEach( fname => copy( fname, fname.replace('public/','dist/') ) );
-  });
-  
-  return bundleAppCSSFiles();
+
+  return globp('public/{*.html,images/*.*}')
+    .then( fnames => fnames.forEach( f => copy( f, f.replace('public/','dist/') ) ) );
 }
 
 function bundleAppCSSFiles() {
-  var files = [
-    'public/main.css',
-    'public/audio-player.css'
-  ];
-  return bundleAppFiles(files,'css')
+  return globp( 'public/css/*.css' )
+    .then( files => bundleAppFiles(files,'css') );
 }
 
 function bundleAppJSFiles() {
-  console.log('writing bundle js files');
+  log('creating bundle.js');
 
   var opts = { 
     debug: MODE === 'dev',
@@ -70,8 +71,7 @@ function bundleAppJSFiles() {
 }
 
 function bundleVendorJSFiles() {  
-  console.log('writing vendor js files');
-
+  
   var vendorJSSources = {
     dev: [
         'node_modules/jquery/dist/jquery.js',
@@ -87,35 +87,30 @@ function bundleVendorJSFiles() {
 
 function publishFontFiles() {
 
-  console.log('writing vendor font files');
-
   mkdir('dist/fonts');
 
   var rootd = 'node_modules/font-awesome/';
 
-  glob( rootd + 'fonts/*.*', function(errrrrrr,fnames) {
-    fnames.forEach( fname => copy( fname, fname.replace(rootd,'dist/') ) );
-  });
+  return globp( rootd + 'fonts/*.*' )
+    .then( fnames => fnames.forEach( f => copy( f, f.replace(rootd,'dist/') ) ) );
 }
 
 function publishSourceMaps() {
 
   if( MODE === 'dev' ) {
 
-    console.log('writing vendor font files');
-
     var fromTos = [
       {
-        from: 'node_modules/bootstrap/dist/css/bootstrap-theme.css',
-        to: 'dist/css/bootstrap-theme.css'
+        from: 'node_modules/bootstrap/dist/css/bootstrap-theme.css.map',
+        to: 'dist/css/bootstrap-theme.css.map'
       }
     ];
+
     fromTos.forEach( ft => copy(ft.from, ft.to) );
   }
 }
 
 function bundleVendorCSSFiles() {
-  console.log('writing vendor css files');
 
   var vendorCSSSources = {
     dev: [
@@ -148,6 +143,8 @@ function bundleAppFiles(arr,outext) {
 function bundleFiles(arr,destination) {
   var fd = null;
 
+  log( 'creating bundle ', destination, arr );
+
   return fopen(destination, 'w')
     .then( function(fileDescriptor) {
         fd = fileDescriptor;
@@ -163,7 +160,7 @@ function bundleFiles(arr,destination) {
 
 function copy(src,dest) {
   if( verbose ) {
-    console.log('copying ', dest);
+    log('copying ', dest);
   }
   fs.createReadStream(src)
     .on('error', err )
@@ -171,9 +168,18 @@ function copy(src,dest) {
 }
 
 function err(err) {
-   console.log("Error : " + err.message);
+  console.log("Error : " + err.message);
 }
 
 function mkdir( dir ) {
-  try { fs.mkdirSync(dir); } catch(e) { }
+  try { 
+    fs.mkdirSync(dir); 
+    log('created directory', dir);
+  } catch(e) { }
+}
+
+function log() {
+  if( verbose ) {
+    console.log.apply(console.log,arguments);
+  }
 }
