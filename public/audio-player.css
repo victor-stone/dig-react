@@ -1,0 +1,144 @@
+
+/* ember-cli-ccm-core */
+/* audio player */
+
+.playback-scrubber {
+  margin: 0.5em;
+  height: 1.5em;
+  width: 20%;
+  position: relative;
+  border: 2px solid white;
+  background-color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.player-placeholder {
+  display: inline-block;
+  width: 20%;
+  height: 20px;
+}
+
+.track-header .playback-scrubber {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  border-color: #3399CC;
+}
+
+.playback-scrubber .bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.playback-scrubber .loaded {
+  background-color: #EEEEEE;
+}
+
+.playback-scrubber .position {
+  background-color: #3399CC;
+}
+
+.audio-player .media-heading,
+.audio-player .attribution {
+  display: inline
+}
+
+.audio-player .license {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+ul.audio-players {
+  margin-top: 1em;
+}
+
+.audio-players .audio-player .media-heading {
+  color: #3399CC;
+  font-size: 100%;
+}
+
+.audio-players > .audio-player {
+  height: auto;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  cursor: pointer;
+}
+
+.audio-players .is-playing,
+.audio-players .is-playing a,
+.audio-players .is-playing .media-heading {
+  background-color: #3399CC;
+  color: white;
+}
+
+.audio-players .audio-player .play-next,
+.audio-players .audio-player .play-previous {
+  display: none;
+}
+
+.audio-player .btn {
+  padding: 6px 10px;
+}
+
+article.audio-player {
+  line-height: 34px;
+  height: 34px;
+}
+
+.now-playing .thumbnail,
+.audio-player .thumbnail {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+@media screen and (max-width: 670px) {
+
+  .audio-player div.loaded.bar {
+    display: none;
+  }
+
+  .audio-player .playback-scrubber.pull-left {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 650px) {
+
+  .audio-player h4.media-heading {
+    font-size: 14px;
+  }
+  
+  .audio-player h4.media-heading + a {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+
+  .audio-player h4.media-heading {
+    display: none;
+  }
+
+  .audio-player h4.media-heading + a {
+    display: none;
+  }
+
+  .audio-player > .btn-group {
+    float: none !important;
+    width: 200px;
+    margin: 0 30%;
+  }
+
+  .audio-player .pull-right {
+    float: none !important; 
+    position: absolute;
+    top: 5px;
+    right: 10px;
+  }
+
+}

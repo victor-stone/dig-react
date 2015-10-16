@@ -1,0 +1,32 @@
+{
+  "name": "myreact",
+  "version": "1.0.0",
+  "description": "testing react-reflux etc.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "test",
+    "victor",
+    "withoutparachute"
+  ],
+  "author": "victor",
+  "license": "MIT",
+  "devDependencies": {
+    "babelify": "^6.3.0",
+    "bootstrap": "^3.3.5",
+    "browserify": "^11.2.0",
+    "del": "^2.0.2",
+    "font-awesome": "^4.4.0",
+    "glob": "^5.0.15",
+    "jquery": "^2.1.4",
+    "minimist": "^1.2.0",
+    "react": "^0.14.0",
+    "react-bootstrap": "^0.27.1",
+    "react-dom": "^0.14.0",
+    "reflux": "^0.3.0",
+    "rsvp": "^3.1.0"
+  },
+  "dependencies": {}
+}

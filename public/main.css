@@ -1,0 +1,726 @@
+
+body {
+  font-family: Avenir Next, Verdana;
+}
+
+ul {
+  list-style: none;
+}
+
+.text {
+  line-height: 1.3;
+  margin: 0 0 3px;
+}
+
+h1 small {
+  font-weight: 300;
+  text-shadow: 0px 0px;
+}
+
+.light-color, 
+h5 span,
+span.light-color a {
+  color: #999;
+  font-weight: 300;
+}
+
+.light-on-hover:hover {
+  color:white;
+}
+
+.inlined,
+.navbar .ember-view {
+  display: inline-block;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.outlet-wrap {
+  margin-bottom: 60px;
+}
+
+.dropdown-menu > li > a {
+  width: 100%;
+}
+
+.page-banner {
+  text-align: center;
+  background-color: antiquewhite;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.page-banner a {
+  display: inline-block;
+  margin: 0px 8px;
+  font-weight: bold;
+  border-radius: 3px;
+  border: 1px solid;
+  padding: 0px 4px;
+
+}
+.required::after {
+  content: '*';
+  color: #F88;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+.navbar-collapse {
+    padding-left: 2%;
+
+}
+
+.collapse .navbar-nav .btn-group {
+  margin-right: 7px;
+}
+.collapse .navbar-nav .dropdown-toggle {
+  color: #9d9d9d;
+}
+.collapse .navbar-nav > li > a {
+  margin-top: 10px; 
+}
+.collapse .navbar-nav > li > input,
+.collapse .navbar-nav > li > div {
+  margin-top: 17px;
+}
+.collapse .form-group {
+  margin-top: 8px;
+  margin-bottom: 0px
+  padding: 0px;
+}
+
+nav > article {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  display: none;
+}
+
+nav article .form-group {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+nav article .dropdown-menu {
+    min-width: 70px;
+    left: 33px;
+}
+
+nav article i.fa-question-circle {
+  margin-left: 4px;
+  color: #ccc;
+}
+
+.page-header h1 i {
+  color: #777;
+  text-shadow: 5px 5px 4px #ddd;
+}
+.page-header h1 {
+  text-shadow: 1px 2px #ddd;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+.loading-screen {
+  opacity: 0.5;
+}
+
+/* upload page */
+
+.upload-page .extras li {
+  padding-bottom: 20px;
+}
+
+div.tags {
+  padding: 10px 0;
+}
+
+.upload-page .fa-youtube-play {
+  font-size: 120%;
+}
+.upload-page a[href*="/people"] {
+  font-size: 22px;
+  color: black;
+}
+
+.trackbacks h3 + a {
+  margin-left: 12px;
+  vertical-align: text-bottom;
+}
+.upload-page .list-group-item {
+  border-color: transparent;
+}
+
+li.license-badge i { /* help icon */
+  font-size: 125%;
+  margin-left: 8px;
+}
+
+/* licenses popup */
+.license-images img {
+  display: block;
+  margin: 20px auto 3px auto;
+}
+
+.license-images a {
+  margin: 4px auto;
+}
+
+.license-description {
+  padding: 12px 0px 12px 0px;
+}
+
+/* download popup */
+a > small {
+  font-size: 60%;
+}
+a > small::before {
+  content: '('
+}
+
+a > small:after {
+  content: ')'
+}
+
+.col-panel {
+  background-color: #EEE;
+  border-radius: 4px;
+  padding: 12px;
+  margin: 4px;
+}
+
+.col-panel textarea {
+  max-width: 88%;
+  opacity: 0.5;
+}
+
+.col-panel p {
+  margin-top: 7px;
+  margin-bottom: 15px;
+}
+
+.download-popup a.btn img {
+  margin-right: 8px;
+  margin-left: -8px;
+}
+
+
+
+/* expanding buttons */
+.btn-exp {
+  position: relative;
+  background-repeat: repeat-x;
+  background-color: transparent;
+  border: 0;
+  background-image: url('../dig-images/buttons.png');
+
+  /* override these: */  
+  background-position: 0px 0px;
+  height: 31px;  
+  /* margin-right >= ::after width
+     margin-left  >= ::before width */
+  margin: 0 15px;
+}
+
+.btn-exp::before,
+.btn-exp::after {
+  content: ' ';
+  position: absolute;
+  background-color: transparent;
+  top: 0;
+  background-image: url('../dig-images/button-heads.png');
+
+  /* height matches above */  
+  height: 31px;
+}
+.btn-exp::before {
+  width: 15px;
+  left: -15px;
+}
+.btn-exp::after {
+  width: 15px;
+  right: -15px;
+}
+
+a.btn-exp:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.btn-tag {
+  height: 31px;
+  background-position: 0px 0px;
+  margin-right: 36px;
+  margin-bottom: 12px;
+  display: inline-block;
+  font-weight: 500;
+  color: #444;
+  padding-top: 5px;
+  padding-right: 8px;
+  font-family: Verdana;
+  font-size: 11px;
+}
+
+.editable .btn-tag {
+  padding-top: 3px;
+}
+.editable .btn-tag i {
+   color: goldenrod;
+}
+
+.editable .btn-tag span {
+  float: right;
+  padding-top: 3px;
+  margin-left: 4px;
+}
+
+.btn-tag::before {
+  height: 31px;
+  background-position: 0px 0px;
+  left: -25px;
+  width: 25px;
+}
+
+.btn-tag::after {
+  height: 31px;
+  background-position: -90px 0px;
+  right: -10px;
+  width: 10px;
+}
+
+/* playlist */
+
+.actions {
+  padding-left: 0px;
+}
+.actions li {
+  margin-bottom: 15px;  
+}
+.actions-centered li {
+  text-align: center;
+}
+
+.play-list .artist-name a:hover {
+  border-bottom: 1px dashed;
+}
+
+.play-list li {
+  margin-bottom: 2px;
+  font-size: 22px;
+}
+
+.song-title  a{
+  color: black;  
+}
+.song-title  a:hover{
+  color: #999;
+  text-decoration: none;
+}
+
+.artist-name a:hover{
+  text-decoration: none;
+}
+
+.paging {
+  position: fixed;
+  top: 400px;
+  border-radius: 4px;
+  border: 1px solid #DDD;
+  background-color: #9d9d9d;
+  opacity: 0.85;
+  width: 180px;
+  padding: 0px 0px 4px 10px;
+  margin-left: 7px;
+  color: white;
+  z-index: 100;
+}
+
+.pagination a {
+  font-size: 70%
+}
+
+/* query page */
+
+.tags-list {
+  height: 120px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px #ddd;
+  border-radius: 8px;
+}
+
+.tags-list i {
+  vertical-align: middle;
+}
+
+.tags-list li {
+  cursor: pointer;
+  margin-left: -25px;
+  padding-left: 10px;
+  border: 1px solid transparent;;
+  margin-right: 10px;
+}
+
+.tags-list li:hover {
+  border: 1px solid #999;
+  border-radius: 4px;
+}
+
+.empty-query li {
+  margin-bottom: 15px;
+}
+
+.empty-query  li {
+  margin-top: 35px;
+  line-height: 2.0;
+}
+
+.empty-query  li > i {
+  vertical-align: middle;
+  color: orange;
+  font-size: 20px;
+}
+
+/* user page */
+.img-circle {
+  box-shadow: 4px 4px 8px #999;
+  margin-right: 15px;
+  margin-bottom: 20px;
+}
+
+/* dig page */
+
+.did-you-mean  {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2px;
+  margin-bottom: 30px;
+  width: 50%;
+
+}
+.did-you-mean > div {
+  margin-bottom: 12px
+}
+.did-you-mean > div:last-child {
+  margin-bottom: 0px;
+}
+
+.did-you-mean div a {
+  margin-left: 18px;
+  margin-bottom: 7px;
+  color: #777;
+  display: inline-block;
+  border: 1px solid #BBB;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.did-you-mean div a:hover {
+  color: green;
+  background-color: #FFF;
+  text-decoration: none;
+  box-shadow: 1px 1px black;
+  padding-right: 7px;
+  margin-left: 17px;
+}
+
+.did-you-mean > a {
+  margin-left: 20px;
+}
+/* home page */
+.dig-img {
+  background-image: url('../dig-images/home-bg.jpg');
+  width: 100%;
+  height: 611px;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+
+
+.dig-img h1 {
+  color: whitesmoke;
+  text-shadow: 2px 2px black;
+  font-size: 400%;
+  font-weight: 300;
+}
+
+
+.dig-img h3 {
+  font-weight: 300;
+  text-shadow: 1px 2px black;
+  color: #F8FCFF;
+  line-height: 1.3;
+}
+
+.home-glyph {
+  background-image: url('../dig-images/index-glyphs.png');
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.musicians-glyph {
+  width: 200px;
+  height: 225px;
+}
+
+.findMusic-glyph {
+  background-position: -200px 0px;
+  width: 185px;
+  height: 225px;
+}
+
+.urHere {
+  position: relative;
+  top: 42px;
+  left: 28px;
+  transform: rotate(25deg) scale(1) skew(1deg) translate(0px);
+  font-weight: bold;
+  color: white;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.project-icons {
+  /*color: #62c3d0; */
+  font-size: 30px;
+  text-align: center;
+  margin-top: -5px;
+}
+
+.project-glyph {
+  background-position: -400px -0px;
+  width: 155px;
+  height: 114px;
+  margin-top: 104px;
+}
+
+.partners {
+  background-color: black;
+  padding-top: 20px;
+  margin-bottom: 0px;
+  padding-bottom: 20px;
+}
+
+.partners .panel-body {
+  text-align: center;
+  box-shadow: 6px 6px #868F94;
+  background-color: #555;
+}
+
+.footer {
+  background-color: black;
+  color: white;
+  padding-bottom: 40px;
+}
+
+/* This is gets added for the audio-player */
+
+.footer-pad {
+  padding-bottom: 90px; 
+}
+
+.footer ul li a {
+  color: white;
+}
+
+.footer h1 {
+  margin-left: 40px;
+}
+
+.fa-heart {
+  color: red;
+}
+
+.brand-glyph {
+  background-image: url('../dig-images/brands.png');
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 100px;
+  height: 50px;
+}
+
+.artistech {
+  background-position: 0px -50px;
+}
+
+.artistech:hover {
+  background-position: 0px 0px;
+}
+
+.cc {
+  background-position: -100px -50px;
+}
+
+.cc:hover {
+  background-position: -100px 0px;
+}
+
+.ccmixter {
+  background-position: -200px -50px;
+}
+
+.ccmixter:hover {
+  background-position: -200px 0px;
+}
+
+.tunetrack {
+  background-position: -300px -50px;
+}
+
+.tunetrack:hover {
+  background-position: -300px 0px;
+}
+
+
+.how .panel-body {
+  text-align: center;
+}
+
+.how .panel-footer {
+  font-size: 22px;
+  text-transform: uppercase;
+  background-color: transparent;
+}
+
+.gso-links .panel {
+  background-color: white;
+  border-radius: 18px;
+  margin-top: 8px;
+  color: #2B3E66;
+}
+
+.gso-links .panel-title {
+  font-size: 30px;
+  height: 135px;
+  padding-top: 14px;
+  font-weight: normal;
+  width: 38%;
+  padding-left: 20px;
+}
+
+.gso-links .panel-body {
+  padding-bottom: 30px;
+  font-size: 18px;
+  min-height: 150px;
+  padding-left: 40%;
+  padding-top: 44px;
+  font-weight: normal;
+}
+
+.gso-links .panel-footer {
+  background-color: transparent;
+  border-top: 1px solid #aaa;
+}
+
+.gso-links {
+  background-color: #EEE;
+  margin-bottom: 0px;
+}
+
+.gso-links.panel-group {
+  padding-top: 84px;
+  padding-bottom: 50px;
+
+}
+
+/* mobile hacks here... */
+@media screen and (min-width: 640px){
+  .dig-img h1 {
+    padding-top: 120px;
+  }
+}
+
+@media screen and (max-width: 770px) {
+
+  .paging {
+    position: initial;
+    width: 100%;
+    padding: 0px;
+    text-align: center;
+    background-color: transparent;
+    border: 0px;
+  }
+
+  .paging ul {
+    margin: 0px;
+  }
+
+  .paging > div {
+    display: none;
+  }
+
+  .btn-warning {
+    display: none;
+  }
+
+  #qop form.form-inline {
+    display: none;
+  }
+
+  .navbar-brand {
+    margin-top: -8px;
+  }
+
+  #qop {
+    margin: 0px
+  }
+}
+
+@media screen and (max-width: 670px) {
+
+  .page-header h1 small {
+    display: block;
+  }
+
+  .page-header h1 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .upload-page .actions {
+    text-align: center;
+  }
+
+  .upload-page .tags {
+    padding-left: 35px;
+  }
+
+  .upload-page .remixes ul,
+  .upload-page .trackbacks ul {
+    max-height: 150px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px #ddd;
+    border-radius: 8px;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 0px;
+  }
+
+  .trackbacks h3 + a {
+    display: none;
+  }
+
+  .play-list li {
+    margin-bottom: 15px;
+  }
+
+  .play-list li .artist-name {
+    display: block;
+    margin-left: 60px;
+  }
+
+  .play-list ul {
+    margin-top: 18px;
+  }
+
+  .no-hit-suggestion {
+    display: none;
+  }
+
+  
+}
+
