@@ -77,7 +77,7 @@ var File = Model.extend({
 
   getIsMP3: function() {
     var ffi = this.file_format_info;
-    if( ffi && 'format-name' in ffi ) {
+    if( (ffi) && ('format-name' in ffi) ) {
       return ffi['format-name'] === 'audio-mp3-mp3'
     }
     return false;
@@ -178,6 +178,7 @@ var Upload = UploadBasic.extend({
       if( cb(this.files[i]) ) {
         return files[i];
       }
+    }
   },
 
   getFileInfo: function() {

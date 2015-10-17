@@ -43,6 +43,7 @@ function _serialize(jsonData,model,bindParent) {
           propName = s[0].toLowerCase() + s.substr(1);
 
           target[propName] = model[k]();
+      }
     }
   }
     

@@ -4,11 +4,12 @@
  */
 // Inspired by base2 and Prototype
 
-(function(){
-  var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+module.exports = (function(){
+  var initializing = false;
+  var fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
  
   // The base Class implementation (does nothing)
-  this.Class = function(){};
+  var Class = function(){};
  
   // Create a new Class that inherits from this class
   Class.extend = function(prop) {
@@ -58,10 +59,11 @@
     Class.prototype.constructor = Class;
  
     // And make this class extendable
-    Class.extend = arguments.callee;
+    //Class.extend = arguments.callee;
    
     return Class;
   };
+
+  return Class;
 })();
 
-module.exports = Class;
