@@ -35,11 +35,14 @@ function build() {
         })
       .then( () => {
           publishSourceMaps();
+          bundleAppJSFiles();
         });        
 
-  }
+  } else {
 
-  bundleAppJSFiles();
+    bundleAppJSFiles();
+
+  }
 
 }
 
@@ -59,11 +62,14 @@ function bundleAppCSSFiles() {
 function bundleAppJSFiles() {
   log('creating bundle.js');
 
+  mkdir('dist/js');
+
   var opts = { 
     debug: MODE === 'dev',
   };
 
   return browserify("app/app.jsx", opts)
+    .ignore('http')
     .transform(babelify)
     .bundle()
     .on("error", err)

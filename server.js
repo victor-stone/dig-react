@@ -5,6 +5,8 @@ if( typeof Array.prototype.includes === 'undefined' ) {
   Array.prototype.includes = function(v) { return this.indexOf(v) !== -1; }
 }
 
+global.IS_SERVER_REQUEST = true;
+
 var DIST_DIR = './dist';
 var port     = 3000;
 
@@ -23,14 +25,15 @@ var matches = [
   [ new RegExp('\.ttf$'),   'font/truetype ttf' ],
   [ new RegExp('\.woff2?$'),'font/woff2' ],
   [ new RegExp('\.svg$'),   'image/svg+xml' ],
+  [ new RegExp('\.map$'),   'application/octet-stream' ],
 ];
 
 var staticIncludes = [];
 
 glob('dist/**/*.*',function(e,f) { 
   staticIncludes = f;
-  console.log('listening on port ' + port);
   http.createServer(handleRequest).listen(port);
+  console.log('listening on port ' + port);
 });
 
 function sendFile(res,fileName) {
@@ -42,8 +45,8 @@ function sendFile(res,fileName) {
       res.end('Not Found');
     } else {
       var mime = sniffMime(fileName);
-      res.setHeader( 'Content-Type', mime );
       console.log( 'sending file: ' + fname + ' (' + mime + ')' );
+      res.setHeader( 'Content-Type', mime );
       res.end(data);
     }
   });

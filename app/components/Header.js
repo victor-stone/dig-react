@@ -1,6 +1,7 @@
 var React          = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Glyph          = require('./Glyph');
+var Link           = require('react-router').Link;
 
 var Nav            = ReactBootstrap.Nav;
 var NavItem        = ReactBootstrap.NavItem;
@@ -12,13 +13,26 @@ var CollapsibleNav = ReactBootstrap.CollapsibleNav;
 var Button         = ReactBootstrap.Button;
 var Input          = ReactBootstrap.Input;
 
+const MenuLink = React.createClass({
+
+  render: function() {
+    var to = this.props.to;
+    return (
+      <li role="presentation">
+        <Link role="menuitem" href to={to}>{this.props.children}</Link>
+      </li>
+      );
+  },
+
+});
+
 const LoadingGlyph = React.createClass({
 
   render: function() {
     if( this.props.loading ) {
-      return <NavItem><Glyph icon="spinner" pulse/></NavItem>
+      return <ul><Glyph icon="spinner" pulse /></ul>
     } else {
-      return <NavItem></NavItem>
+      return <ul></ul>
     }
   }  
 });
@@ -27,7 +41,7 @@ const SearchButton = React.createClass({
 
   render: function() {
     return (
-      <Button bsStyle="link">Go <Glyph icon="search" /></Button>
+      <Button bsStyle="primary">Go <Glyph icon="search" /></Button>
       );
   },
 
@@ -42,7 +56,6 @@ const SearchBox = React.createClass({
   },
 
   render: function() {
-    //         groupClassName="form-group input-group input-group-small"
 
     return (
      <Input
@@ -71,7 +84,7 @@ const Header = React.createClass({
 
     return  (
       <Navbar inverse fluid toggleNavKey={0}>
-        <NavBrand><a href="/"><img src="images/logo.png" title="dig.ccMixter" /></a></NavBrand>
+        <NavBrand><Link to="/"><img src="images/logo.png" title="dig.ccMixter" /></Link></NavBrand>
         <CollapsibleNav eventKey={0}>
           <Nav navbar>
             <LoadingGlyph loading={loading} />
@@ -80,17 +93,17 @@ const Header = React.createClass({
             <SearchBox />
           </div>
           <Nav navbar right>
-            <NavItem eventKey={2} href="#">how it works</NavItem>
-            <NavItem eventKey={3} href="#">licenses</NavItem>
-            <NavItem eventKey={4} href="#">dig deep <Glyph icon="tags" /></NavItem>
+            <MenuLink to="/#howitworks">how it works</MenuLink>
+            <MenuLink to="/licenses">licenses</MenuLink>
+            <MenuLink to="/dig">dig deep <Glyph icon="tags" /></MenuLink>
             <NavDropdown eventKey={5} title="featured" id="basic-nav-dropdown">
-              <MenuItem eventKey="1"><Glyph fixed icon="film" /> music for film </MenuItem>
-              <MenuItem eventKey="2"><Glyph fixed icon="gamepad" /> music for games </MenuItem>
+              <MenuLink to="/film"><Glyph fixed icon="film" /> music for film </MenuLink>
+              <MenuLink to="/games"><Glyph fixed icon="gamepad" /> music for games </MenuLink>
               <MenuItem divider />
-              <MenuItem eventKey="3"><Glyph fixed icon="beer" /> free for commercial use</MenuItem>
-              <MenuItem eventKey="4"><Glyph fixed icon="usd" /> royalty free licensed</MenuItem>
+              <MenuLink to="/free"><Glyph fixed icon="beer" /> free for commercial use</MenuLink>
+              <MenuLink to="/ccplus"><Glyph fixed icon="usd" /> royalty free licensed</MenuLink>
               <MenuItem divider />
-              <MenuItem eventKey="5"><Glyph fixed icon="thumbs-o-up" /> editors picks</MenuItem>
+              <MenuLink to="/edpicks"><Glyph fixed icon="thumbs-o-up" /> editors picks</MenuLink>
             </NavDropdown>            
           </Nav>          
         </CollapsibleNav>
@@ -101,3 +114,4 @@ const Header = React.createClass({
 });
 
 module.exports = Header;
+
