@@ -167,9 +167,11 @@ var Upload = UploadBasic.extend({
   idBinding: 'upload_id',
   
   getBpm: function() {
-    var bpm = this.upload_extra.bpm;
-    if(  (bpm + "").match(/[^0-9]/) === null ) {
-      return bpm;
+    if( this.upload_extra ) {
+      var bpm = this.upload_extra.bpm;
+      if(  (bpm + "").match(/[^0-9]/) === null ) {
+        return bpm;
+      }
     }
   },
 
@@ -340,6 +342,7 @@ module.exports = {
   Trackback,
   Detail,
   Upload,
+  UploadBasic,
   User,
   Tag,
   UserBasic,

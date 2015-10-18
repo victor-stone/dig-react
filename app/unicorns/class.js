@@ -1,18 +1,23 @@
+'use strict';
+
 /* Simple JavaScript Inheritance
  * By John Resig http://ejohn.org/
  * MIT Licensed.
  */
 // Inspired by base2 and Prototype
 
-module.exports = (function(){
+// http://stackoverflow.com/questions/3911690/strange-javascript-idiom-what-does-xyz-testfunctionxyz-do
+var fnContainsSuperCall = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+
+module.exports = (function (){
+
   var initializing = false;
-  var fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
- 
+  
   // The base Class implementation (does nothing)
   var Class = function(){};
  
   // Create a new Class that inherits from this class
-  Class.extend = function(prop) {
+  Class.extend = function ClassExtender(prop) {
     var _super = this.prototype;
    
     // Instantiate a base class (but only create the instance,
@@ -25,7 +30,7 @@ module.exports = (function(){
     for (var name in prop) {
       // Check if we're overwriting an existing function
       prototype[name] = typeof prop[name] == "function" &&
-        typeof _super[name] == "function" && fnTest.test(prop[name]) ?
+        typeof _super[name] == "function" && fnContainsSuperCall.test(prop[name]) ?
         (function(name, fn){
           return function() {
             var tmp = this._super;
@@ -59,7 +64,7 @@ module.exports = (function(){
     Class.prototype.constructor = Class;
  
     // And make this class extendable
-    //Class.extend = arguments.callee;
+    Class.extend = ClassExtender;
    
     return Class;
   };

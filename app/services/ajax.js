@@ -2,16 +2,24 @@
 
 var http = require('http');
 
-function serverAjax(url) {
+function serverAjax(opts) {
   return new Promise( function(reject, resolve) {
-    http.get(url, function(res) {
-      resolve(res.headers['x-json']);
-    }).on('error', reject );
+    if( opts.method == 'GET') {
+      http.get(opts.url, function(res) {
+        if( opts.dataType == 'json') {
+          resolve(res.headers['x-json']);
+        } else {
+          reject('only JSON supported for now');
+        }
+      }).on('error', reject );
+    } else {
+      reject('only GET supported for now');
+    }
   });
 }
 
-function clientAjax(url) {
-  return $.ajax({url: url});
+function clientAjax(opts) {
+  return $.ajax(opts);
 }
 
 module.exports = (global.IS_SERVER_REQUEST ? serverAjax : clientAjax);

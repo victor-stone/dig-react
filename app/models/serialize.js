@@ -12,7 +12,7 @@ function pathValue(obj, propName) {
 function _serialize(jsonData,model,bindParent) {
 
   if( Array.isArray(jsonData) ) {
-    return jsonData.map( j => _serialize(j,model) );
+    return jsonData.map( j => _serialize(j,model,bindParent) );
   }
   model = new model(jsonData,bindParent);
   var target = {};
@@ -53,7 +53,7 @@ function _serialize(jsonData,model,bindParent) {
 /**
   serialize omnibus function can be called in two ways:
   
-  serialize( 'modelname' )
+  serialize( modelClass)
   
     - this returns a function that takes a single argument 
       (perfect for .then() !) that will serialize the incoming
@@ -61,7 +61,7 @@ function _serialize(jsonData,model,bindParent) {
       result is an array, each result will be serialized 
       in place.
       
-  serialize( objectToSerialize, 'modelname' ) 
+  serialize( objectToSerialize, modelClass ) 
   
     - This will perform the serialization immediately
       on the first parameter. If that object is an

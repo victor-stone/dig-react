@@ -1,5 +1,21 @@
 'use strict';
 
+// TODO: put these somewhere
+
+if (!Array.isArray) {
+  Array.isArray = function(arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+}
+
+if( typeof Array.prototype.includes === 'undefined' ) {
+  Array.prototype.includes = function(v) { return this.indexOf(v) !== -1; }
+}
+
+if( typeof Array.prototype.contains === 'undefined' ) {
+  Array.prototype.contains = Array.prototype.includes;
+}
+
 var React       = require('react');
 var ReactDOM    = require('react-dom');
 var ReactRouter = require('react-router');
@@ -7,8 +23,6 @@ var ReactRouter = require('react-router');
 var Router     = ReactRouter.Router;
 var Route      = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
-
-const createBrowserHistory = require('history/lib/createBrowserHistory');
 
 var Header = require('./components/Header');
 
@@ -25,8 +39,12 @@ const App = React.createClass({
   },
 });
 
+var historyType = global.IS_SERVER_REQUEST 
+  ? require('history/lib/createMemoryHistory') 
+  : require('history/lib/createBrowserHistory');
+
 const RouterMap = (
-  <Router history={createBrowserHistory()}>
+  <Router history={historyType()}>
     <Route path="/" component={App}>
       <IndexRoute            component={require('./routes/index')} />
       <Route path="licenses" component={require('./routes/licenses')} />
