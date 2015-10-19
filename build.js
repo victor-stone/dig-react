@@ -34,8 +34,8 @@ function build() {
           return RSVP.all(builders);
         })
       .then( () => {
-          publishSourceMaps();
           bundleAppJSFiles();
+          publishSourceMaps();
         });        
 
   } else {
@@ -66,14 +66,16 @@ function bundleAppJSFiles() {
 
   var opts = { 
     debug: MODE === 'dev',
+    loose: 'all'
   };
 
-  return browserify("app/app.jsx", opts)
-    .ignore('http')
-    .transform(babelify)
-    .bundle()
-    .on("error", err)
-    .pipe(fs.createWriteStream("dist/js/bundle.js"));
+  browserify( opts )
+      .ignore('http')
+      .transform(babelify)
+      .require( 'app/routes.js', { entry: true } )
+      .bundle()
+      .on( "error", err )
+      .pipe( fs.createWriteStream("dist/js/bundle.js") );
 }
 
 function bundleVendorJSFiles() {  
@@ -102,6 +104,8 @@ function publishFontFiles() {
 }
 
 function publishSourceMaps() {
+
+  mkdir('dist/fonts');
 
   if( MODE === 'dev' ) {
 

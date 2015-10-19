@@ -1,6 +1,6 @@
 'use strict';
 
-const Class = require('../unicorns/class');
+import Class from '../unicorns/class';
 
 var Model = Class.extend({
 

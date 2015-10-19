@@ -67,9 +67,8 @@ function handleRequest( req, res ) {
   if( staticIncludes.includes( 'dist' + parts.pathname ) ) {
     sendFile( res, parts.pathname );
   } else {
-    console.log('404: ', req.url);
-    res.statusCode = 404;
-    return res.end('Not Found');
+    handleReactRoute(req.url);
+    res.end();
   } 
 }
 
@@ -90,5 +89,23 @@ function handleError(err) {
   console.log(err);
 }
 
+/* react routing */
+var renderToString  = require('react-dom/server').renderToString;
+var ReactRouter     = require('react-router');
+var RoutingContext  = ReactRouter.RoutingContext;
+var AppRoutes       = './app/routes';
 
+function handleReactRoute(url) {
+  ReactRouter.match({ routes, location: url }, (error, redirectLocation, renderProps) => {
+    if (error) {
+      res.send(500, error.message);
+    } else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+      res.send(200, renderToString( React.createElement(RoutingContext,renderProps) ));
+    } else {
+      res.send(404, 'Not found');
+    }
+  });  
+}
 

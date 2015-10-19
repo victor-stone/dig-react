@@ -1,6 +1,6 @@
 'use strict';
 
-var http = require('http');
+import http from 'http';
 
 function serverAjax(opts) {
   return new Promise( function(reject, resolve) {

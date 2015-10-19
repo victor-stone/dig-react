@@ -5,6 +5,7 @@
 /tmp
 /fastboot-dist
 /vendor/bower_components_*
+/built
 
 # dependencies
 /node_modules

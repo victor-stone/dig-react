@@ -38,9 +38,9 @@
   
 */
 
-const Model        = require('./model');
-const LicenseUtils = require('./licenses');
-const TagString    = require('../unicorns/tagString');
+import Model from './model';
+import LicenseUtils from './licenses';
+import TagString from '../unicorns/tagString';
 
 var File = Model.extend({
 

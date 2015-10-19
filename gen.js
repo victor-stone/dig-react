@@ -36,10 +36,10 @@ if( argv.r === true ) {
   fs.writeFileSync( dest, text );
   console.log('created file: ', dest);
 
-  // update the <Router> section in app.jsx if it's not
+  // update the <Router> section in routes.jsx if it's not
   // already got this route
   
-  var appFile   = 'app/app.jsx';
+  var appFile   = 'app/routes.jsx';
   var appjsx    = fs.readFileSync( appFile, 'utf-8');
   var routePath = "('./routes/" + name + "')";
 

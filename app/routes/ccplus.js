@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 
 const ccplus = React.createClass({
 

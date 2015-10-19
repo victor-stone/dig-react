@@ -1,5 +1,5 @@
 
-var React = require('react');
+import React from 'react';
 
 const Licenses = React.createClass({
 

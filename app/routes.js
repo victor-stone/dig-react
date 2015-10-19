@@ -1,43 +1,10 @@
 'use strict';
 
-// TODO: put these somewhere
+import App from './app';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Router, Route, IndexRoute } from 'react-router';
 
-if (!Array.isArray) {
-  Array.isArray = function(arg) {
-    return Object.prototype.toString.call(arg) === '[object Array]';
-  };
-}
-
-if( typeof Array.prototype.includes === 'undefined' ) {
-  Array.prototype.includes = function(v) { return this.indexOf(v) !== -1; }
-}
-
-if( typeof Array.prototype.contains === 'undefined' ) {
-  Array.prototype.contains = Array.prototype.includes;
-}
-
-var React       = require('react');
-var ReactDOM    = require('react-dom');
-var ReactRouter = require('react-router');
-
-var Router     = ReactRouter.Router;
-var Route      = ReactRouter.Route;
-var IndexRoute = ReactRouter.IndexRoute;
-
-var Header = require('./components/Header');
-
-const App = React.createClass({
-  render: function() {
-    return (
-      <div id="App">
-        <Header />
-        <div id="outlet">
-          {this.props.children}
-        </div>
-      </div>
-    );
-  },
-});
 
 var historyType = global.IS_SERVER_REQUEST 
   ? require('history/lib/createMemoryHistory') 
@@ -62,5 +29,9 @@ const RouterMap = (
   </Router>
 );
 
-ReactDOM.render( RouterMap,  document.getElementById('content') );
+module.exports = RouterMap;
+
+if( !global.IS_SERVER_REQUEST ) {
+  ReactDOM.render( RouterMap,  document.getElementById('content') );
+}
 

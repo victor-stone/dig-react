@@ -1,17 +1,18 @@
-var React          = require('react');
-var ReactBootstrap = require('react-bootstrap');
-var Glyph          = require('./Glyph');
-var Link           = require('react-router').Link;
+import React from 'react';
+import Glyph from './Glyph';
+import { Link } from 'react-router';
 
-var Nav            = ReactBootstrap.Nav;
-var NavItem        = ReactBootstrap.NavItem;
-var Navbar         = ReactBootstrap.Navbar;
-var MenuItem       = ReactBootstrap.MenuItem;
-var NavDropdown    = ReactBootstrap.NavDropdown;
-var NavBrand       = ReactBootstrap.NavBrand;
-var CollapsibleNav = ReactBootstrap.CollapsibleNav;
-var Button         = ReactBootstrap.Button;
-var Input          = ReactBootstrap.Input;
+import {
+  Nav,
+  NavItem,
+  Navbar,
+  MenuItem,
+  NavDropdown,
+  NavBrand,
+  CollapsibleNav,
+  Button,
+  Input
+} from 'react-bootstrap';
 
 const MenuLink = React.createClass({
 
