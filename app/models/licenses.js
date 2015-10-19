@@ -41,7 +41,7 @@ module.exports = {
     
     logoURLFromAbbr: function( abbr, size ) {
         if( abbr === 'ccplus' ) {
-            return '/dig-images/cc-plus-tunetrack.png';
+            return '/images/cc-plus-tunetrack.png';
         }
         var version = abbr.match(/-3/) ? '3.0' : '1.0';
         size = logoSize[ size || 'big' ];        

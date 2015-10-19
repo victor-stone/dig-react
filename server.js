@@ -67,7 +67,9 @@ function handleRequest( req, res ) {
   if( staticIncludes.includes( 'dist' + parts.pathname ) ) {
     sendFile( res, parts.pathname );
   } else {
-    handleReactRoute(req.url);
+    res.send(404, 'Not found');
+
+//    handleReactRoute(req.url);
     res.end();
   } 
 }
@@ -89,7 +91,7 @@ function handleError(err) {
   console.log(err);
 }
 
-/* react routing */
+/* react routing 
 var renderToString  = require('react-dom/server').renderToString;
 var ReactRouter     = require('react-router');
 var RoutingContext  = ReactRouter.RoutingContext;
@@ -108,4 +110,4 @@ function handleReactRoute(url) {
     }
   });  
 }
-
+*/

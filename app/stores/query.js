@@ -6,13 +6,15 @@
 import Class from '../unicorns/class';
 import ccmixter from '../models/ccmixter';
 import serialize from '../models/serialize';
+import rsvp from 'rsvp';
 
+// this is a singleton
 import QueryAjaxAdapter from '../services/queryAjaxAdapter';
 
 var Query = Class.extend({
 
   init: function(adapter) {
-    this.adapter = adapter || new QueryAjaxAdapter();
+    this.adapter = adapter || QueryAjaxAdapter;
   },
 
   query: function(params) {
@@ -54,6 +56,20 @@ var Query = Class.extend({
     params.f = 'json';
     return this.query(params).then( serialize(ccmixter.Upload) );
   },
+
+  playlistWithCount: function(params) {
+    var modelRequest = {
+      playlist: this.playlist( params ),
+      total: this.count( params ),
+    };
+    return rsvp.hash( modelRequest );
+  },
+
 });
 
-module.exports = Query;
+// singleton
+if( !global._queryStore ) {
+  global._queryStore = new Query();
+}
+
+module.exports = global._queryStore;

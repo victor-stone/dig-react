@@ -1,13 +1,14 @@
 'use strict';
 
 import http from 'http';
+import rsvp from 'rsvp';
 
 function serverAjax(opts) {
-  return new Promise( function(reject, resolve) {
+  return new rsvp.Promise( function(reject, resolve) {
     if( opts.method == 'GET') {
       http.get(opts.url, function(res) {
         if( opts.dataType == 'json') {
-          resolve(res.headers['x-json']);
+          resolve(eval(res.headers['x-json']));
         } else {
           reject('only JSON supported for now');
         }

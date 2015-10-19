@@ -14,6 +14,7 @@
   "author": "victor",
   "license": "MIT",
   "devDependencies": {
+    "babel": "^5.8.23",
     "babelify": "^6.3.0",
     "bootstrap": "^3.3.5",
     "browserify": "^11.2.0",
@@ -31,7 +32,6 @@
     "uglifyify": "^3.0.1"
   },
   "dependencies": {
-    "history": "^1.12.5",
-    "react-router": "^1.0.0-rc3"
+    "route-recognizer": "^0.1.9"
   }
 }

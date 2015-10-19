@@ -1,6 +1,6 @@
 import React from 'react';
 import Glyph from './Glyph';
-import { Link } from 'react-router';
+import Link  from './Link';
 
 import {
   Nav,
@@ -20,7 +20,7 @@ const MenuLink = React.createClass({
     var to = this.props.to;
     return (
       <li role="presentation">
-        <Link role="menuitem" href to={to}>{this.props.children}</Link>
+        <Link role="menuitem" href={to}>{this.props.children}</Link>
       </li>
       );
   },
