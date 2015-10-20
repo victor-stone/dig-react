@@ -1,9 +1,8 @@
 'use strict';
 
-import http from 'http';
-import rsvp from 'rsvp';
-
 function serverAjax(opts) {
+  var http = require('http');
+  var rsvp = require('rsvp');
   return new rsvp.Promise( function(resolve, reject) {
     if( opts.method == 'GET') {
       http.get(opts.url, function(res) {

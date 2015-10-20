@@ -73,9 +73,5 @@ Router.prototype.updateUrl = function() {
     });
 }
     
-if( !global._router ) {
-  global._router = new Router();
-}
-
-module.exports = global._router;
+module.exports = new Router();
 

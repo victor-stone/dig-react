@@ -3,8 +3,7 @@
 require('./unicorns/goodies');
 
 import React  from 'react';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import { Header, Footer } from './components';
 import router from './services/router';
 
 const App = React.createClass({
