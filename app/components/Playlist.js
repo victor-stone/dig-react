@@ -62,11 +62,11 @@ var PlaylistItem = React.createClass({
     var u = this.props.upload;
     if( this.props.skipUserListing ) {
       return ( <li className="clearfix text-nowrap">
-          <PlayButton upload={u} /><DownloadPopupButton upload={u} /><SongLink upload={u} />
+          <PlayButton upload={u} /> <DownloadPopupButton upload={u} /> <SongLink upload={u} />
         </li> );
     } else {
       return ( <li className="clearfix text-nowrap">
-        <PlayButton upload={u} /><DownloadPopupButton upload={u} /><SongLink upload={u} />
+        <PlayButton upload={u} /> <DownloadPopupButton upload={u} /> <SongLink upload={u} />
         <ArtistLink artist={u.artist} />
       </li>);
     }

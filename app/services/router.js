@@ -53,7 +53,8 @@ Router.prototype.navigateTo = function(url) {
 }
 
 Router.prototype.updateUrl = function() {
-  var handlers = this.resolve(document.location.pathname)
+  var q = document.location.search || '';
+  var handlers = this.resolve(document.location.pathname + q)
   if (!handlers ) {
     // ummmmm
     return window.alert('Not Found')

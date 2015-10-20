@@ -13,5 +13,7 @@ const people = React.createClass({
 
 });
 
+people.path = '/people/:userid';
+
 module.exports = people;
 

@@ -66,7 +66,7 @@ function generateIndexJS(dir,formatter) {
         var rname = formatter(name);
         str += "  " + rname + ": require('./" + name + "'),\n";
       });
-      str += "\n}\n\n";
+      str += "\n};\n\n";
       log('writing '+dir+'/index.js');
       fs.writeFileSync( './app/'+dir+'/index.js', str, 'utf8' );
     });
@@ -107,10 +107,13 @@ function bundleBrowserJS() {
   mkdir('dist/js');
 //var cmd = 'browserify app/**/*.js -e app/browser.js  -t babelify -i http --full-paths -o dist/js/bundle.js --list';
   var cmd = 'browserify app/**/*.js -e app/browser.js  -t babelify --noparse=http -u http -u stream-http  --full-paths -o dist/js/bundle.js';
-  exec(cmd,function(err, stdout, stderr) {
+  exec(cmd,function(_err, stdout, stderr) {
       log('browserify results: ')
-      log( 'Error: ', err );
-      log( 'Output: ', stdout);
+      if( _err ) {
+        err(_err)
+      } else {
+        log( "Success. Done. Boom.")
+      }
   });
 /*
   var opts = { 

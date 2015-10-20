@@ -5,7 +5,9 @@ module.exports = {
   Glyph: require('./Glyph'),
   Header: require('./Header'),
   Link: require('./Link'),
+  PageHeader: require('./PageHeader'),
+  Paging: require('./Paging'),
   Playlist: require('./Playlist'),
 
-}
+};
 

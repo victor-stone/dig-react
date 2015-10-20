@@ -14,5 +14,5 @@ module.exports = {
   search: require('./search'),
   upload: require('./upload'),
 
-}
+};
 

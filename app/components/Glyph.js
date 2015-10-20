@@ -10,6 +10,9 @@ const Glyph = React.createClass({
     if( this.props.fixed ) {
       cls += " fa-fw";
     }
+    if( this.props.x2 ) {
+      cls += " fa-2x";
+    }
     return  (
       <i className={cls}></i>
     );

@@ -70,8 +70,9 @@ var File = Model.extend({
 
   _hasTag: function(tag) {
     var tags = this.getTags();
-    if( tags )
+    if( tags ) {
       return tags.contains(tag);
+    }
     return false;
   },
 

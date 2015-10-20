@@ -36,13 +36,13 @@ function _serialize(jsonData,model,bindParent) {
 
     } else {
 
-        var propName = k.match(/^get(.*)$/);
+        var propName2 = k.match(/^get(.*)$/);
 
-        if( propName !== null ) {
-          var s = propName[1];
-          propName = s[0].toLowerCase() + s.substr(1);
+        if( propName2 !== null ) {
+          var s = propName2[1];
+          propName2 = s[0].toLowerCase() + s.substr(1);
 
-          target[propName] = model[k]();
+          target[propName2] = model[k]();
       }
     }
   }

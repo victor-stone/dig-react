@@ -325,7 +325,7 @@ a.btn-exp:hover {
 
 .paging {
   position: fixed;
-  top: 400px;
+  top: 200px;
   border-radius: 4px;
   border: 1px solid #DDD;
   background-color: #9d9d9d;

@@ -32,20 +32,21 @@ var  licNameMap = {
     'sampling-plus': 'sampling+',
 };
 
+function logoURLFromAbbr( abbr, size ) {
+  if( abbr === 'ccplus' ) {
+      return '/images/cc-plus-tunetrack.png';
+  }
+  var version = abbr.match(/-3/) ? '3.0' : '1.0';
+  size = logoSize[ size || 'big' ];        
+  return logoURLBase + abbr.replace(/-3/,'') + '/' + version + '/' + size + '.png';
+}
+
+function logoURLFromName(name, size) {
+    return logoURLFromAbbr( licNameMap[ name.dasherize() ], size );
+}
 
 module.exports = {
-
-    logoURLFromName: function(name, size) {
-        return LicenseUtils.logoURLFromAbbr( licNameMap[ name.dasherize() ], size );
-    },
-    
-    logoURLFromAbbr: function( abbr, size ) {
-        if( abbr === 'ccplus' ) {
-            return '/images/cc-plus-tunetrack.png';
-        }
-        var version = abbr.match(/-3/) ? '3.0' : '1.0';
-        size = logoSize[ size || 'big' ];        
-        return logoURLBase + abbr.replace(/-3/,'') + '/' + version + '/' + size + '.png';
-    }
+  logoURLFromAbbr,
+  logoURLFromName
 };
 

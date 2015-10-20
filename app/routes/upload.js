@@ -13,5 +13,7 @@ const upload = React.createClass({
 
 });
 
+upload.path = '/files/:userid/:uploadid';
+
 module.exports = upload;
 

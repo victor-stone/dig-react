@@ -33,5 +33,9 @@
   },
   "dependencies": {
     "route-recognizer": "^0.1.9"
+  },
+  "jshintConfig": {
+    "node": true,
+    "esnext": true
   }
 }
