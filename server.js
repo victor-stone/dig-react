@@ -67,10 +67,7 @@ function handleRequest( req, res ) {
   if( staticIncludes.includes( 'dist' + parts.pathname ) ) {
     sendFile( res, parts.pathname );
   } else {
-    res.send(404, 'Not found');
-
-//    handleReactRoute(req.url);
-    res.end();
+    handleReactRoute(req.url,res);
   } 
 }
 
@@ -91,23 +88,55 @@ function handleError(err) {
   console.log(err);
 }
 
-/* react routing 
-var renderToString  = require('react-dom/server').renderToString;
-var ReactRouter     = require('react-router');
-var RoutingContext  = ReactRouter.RoutingContext;
-var AppRoutes       = './app/routes';
+/* react routing */
 
-function handleReactRoute(url) {
-  ReactRouter.match({ routes, location: url }, (error, redirectLocation, renderProps) => {
-    if (error) {
-      res.send(500, error.message);
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-      res.send(200, renderToString( React.createElement(RoutingContext,renderProps) ));
-    } else {
-      res.send(404, 'Not found');
-    }
-  });  
+var renderToString  = require('react-dom/server').renderToStaticMarkup;
+var React           = require('react');
+var router          = require('./built/services/router');
+
+var App        = require('./built/app.js');
+var AppFactory = React.createFactory(App);
+
+var log = console.log;
+
+function handleReactRoute(url,res) {
+  
+  log( 'trying to route: ', url );
+
+  var handlers = router.resolve(url);
+
+  if( !handlers ) {
+    res.statusCode = 404;
+    res.end('Not Found');
+  } else {
+
+    var handler = handlers[0];
+
+    handler.component.model(handler.params, handler.queryParams).then(function (model) {
+    
+        var props = {
+          name:        handler.component.displayName,
+          component:   handler.component,
+          model:       model,
+          params:      handler.params,
+          queryParams: handler.queryParams 
+        };
+
+        var bodyHTML = '<div id="content">' + renderToString( AppFactory(props) ) + '</div>';
+
+        var fname = DIST_DIR + '/index.html';
+        fs.readFile(fname, 'utf8', function (err, data) {
+          if (err) {
+            console.log( 'Error ******', err );
+            res.statusCode = 500;
+            res.end('Not Good');
+          } else {
+            console.log( 'sending routed url: ' + url );
+            res.setHeader( 'Content-Type', 'text/html' );
+            res.end(data.replace(/<div\s+id="content">.*<\/div>/,bodyHTML));
+          }
+        });
+
+    }).catch( handleError );
+  }
 }
-*/

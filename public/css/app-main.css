@@ -214,7 +214,7 @@ a > small:after {
   background-repeat: repeat-x;
   background-color: transparent;
   border: 0;
-  background-image: url('../dig-images/buttons.png');
+  background-image: url('../images/buttons.png');
 
   /* override these: */  
   background-position: 0px 0px;
@@ -230,7 +230,7 @@ a > small:after {
   position: absolute;
   background-color: transparent;
   top: 0;
-  background-image: url('../dig-images/button-heads.png');
+  background-image: url('../images/button-heads.png');
 
   /* height matches above */  
   height: 31px;
@@ -431,7 +431,7 @@ a.btn-exp:hover {
 }
 /* home page */
 .dig-img {
-  background-image: url('../dig-images/home-bg.jpg');
+  background-image: url('../images/home-bg.jpg');
   width: 100%;
   height: 611px;
   -webkit-background-size: cover;
@@ -455,7 +455,7 @@ a.btn-exp:hover {
 }
 
 .home-glyph {
-  background-image: url('../dig-images/index-glyphs.png');
+  background-image: url('../images/index-glyphs.png');
   background-repeat: no-repeat;
   display: inline-block;
 }
@@ -535,7 +535,7 @@ a.btn-exp:hover {
 }
 
 .brand-glyph {
-  background-image: url('../dig-images/brands.png');
+  background-image: url('../images/brands.png');
   background-repeat: no-repeat;
   display: inline-block;
   width: 100px;

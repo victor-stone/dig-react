@@ -1,23 +1,10 @@
 'use strict';
 
-// TODO: put these somewhere
+require('./unicorns/goodies');
 
-if (!Array.isArray) {
-  Array.isArray = function(arg) {
-    return Object.prototype.toString.call(arg) === '[object Array]';
-  };
-}
-
-if( typeof Array.prototype.includes === 'undefined' ) {
-  Array.prototype.includes = function(v) { return this.indexOf(v) !== -1; }
-}
-
-if( typeof Array.prototype.contains === 'undefined' ) {
-  Array.prototype.contains = Array.prototype.includes;
-}
-
+import React  from 'react';
 import Header from './components/Header';
-import React from 'react';
+import Footer from './components/Footer';
 import router from './services/router';
 
 const App = React.createClass({
@@ -27,12 +14,16 @@ const App = React.createClass({
   },
 
   componentWillMount: function() {
-    router.on( 'navigateTo', specs => {
-      this.setState(specs);
-    });
-    // 'component' here is actually the outlet component'
-    if( !this.state.component ) {
-      router.navigateTo('/');
+    if( global.IS_SERVER_REQUEST ) {
+      this.setState(this.props);
+    } else {
+      router.on( 'navigateTo', specs => {
+        this.setState(specs);
+      });
+      // 'component' here is actually the outlet component'
+      if( !this.state.component ) {
+        router.navigateTo(document.location.pathname);
+      }
     }
   },
 
@@ -40,12 +31,16 @@ const App = React.createClass({
     if( !this.state.component ) {
       return false;
     }
+    //  {{if loading 'loading-screen fade'}}
     return (
-      <div id="App">
-        <Header />
-        <div id="outlet">
-          { React.createElement(this.state.component,{model: this.state.model}) }
+      <div>
+        <div id="wrap">
+          <Header />
+          <div className="outlet-wrap">
+            { React.createElement(this.state.component,{model: this.state.model}) }
+          </div>
         </div>
+        <Footer />
       </div>
     );
   },

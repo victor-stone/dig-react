@@ -8,6 +8,7 @@ var Link = React.createClass({
   handleClick: function(e) {
     e.preventDefault()
     router.navigateTo( this.props.href );
+    return true;
   },
 
   render: function() {

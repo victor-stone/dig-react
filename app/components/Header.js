@@ -85,7 +85,7 @@ const Header = React.createClass({
 
     return  (
       <Navbar inverse fluid toggleNavKey={0}>
-        <NavBrand><Link to="/"><img src="images/logo.png" title="dig.ccMixter" /></Link></NavBrand>
+        <NavBrand><Link href="/"><img src="images/logo.png" title="dig.ccMixter" /></Link></NavBrand>
         <CollapsibleNav eventKey={0}>
           <Nav navbar>
             <LoadingGlyph loading={loading} />

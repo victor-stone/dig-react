@@ -4,11 +4,21 @@ import http from 'http';
 import rsvp from 'rsvp';
 
 function serverAjax(opts) {
-  return new rsvp.Promise( function(reject, resolve) {
+  return new rsvp.Promise( function(resolve, reject) {
     if( opts.method == 'GET') {
       http.get(opts.url, function(res) {
         if( opts.dataType == 'json') {
-          resolve(eval(res.headers['x-json']));
+          if( res.headers['x-json'] ) {
+            resolve(JSON.parse(res.headers['x-json']));
+          } else {
+            var data = "";
+            res.on("data", function (chunk) {
+              data += chunk.toString();
+            });
+            res.on("end", function () {
+              resolve(JSON.parse(data));
+            });            
+          }
         } else {
           reject('only JSON supported for now');
         }

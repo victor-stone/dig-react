@@ -12,7 +12,7 @@ var Router = function()
 {
   this.recognizer = new RouteRecognizer();
 
-  if( window ) {
+  if( typeof window !== 'undefined' ) {
     window.onpopstate = this.updateUrl.bind(this);
   }
 
