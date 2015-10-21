@@ -13,6 +13,18 @@ if( typeof Array.prototype.contains === 'undefined' ) {
   Array.prototype.contains = Array.prototype.includes;
 }
 
+function decamlize(str) {
+return str.replace(/::/g, '/')
+          .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
+          .replace(/([a-z\d])([A-Z])/g, '$1_$2')
+          .replace(/(-|\s+)/g, '_')
+          .toLowerCase();
+}
+
+function dasherize(str) {
+  return decamlize(str).replace(/_/g,'-');
+}
+
 function commaize(value) {
   if( value === 0 || value === '0' ) {
       return '0';
@@ -30,6 +42,22 @@ function commaize(value) {
   }
 }
 
+var oassign = Object.assign || function (target,...sources) 
+{ 
+  sources.forEach( function(source) {
+    for (var key in source) { 
+      if (Object.prototype.hasOwnProperty.call(source, key)) { 
+        target[key] = source[key]; 
+      } 
+    }
+  });
+  
+  return target; 
+};
+
 module.exports = {
   commaize,
+  oassign,
+  dasherize,
+  decamlize,
 }

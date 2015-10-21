@@ -10,6 +10,8 @@ import rsvp from 'rsvp';
 
 var Router = function()
 {
+  EventEmitter.call(this);
+  
   this.recognizer = new RouteRecognizer();
 
   if( typeof window !== 'undefined' ) {
@@ -48,7 +50,9 @@ Router.prototype.resolve = function(url) {
 }
 
 Router.prototype.navigateTo = function(url) {
-  window.history.pushState(null, null, url);
+  if( url ) {
+    window.history.pushState(null, null, url);
+  }
   this.updateUrl()
 }
 

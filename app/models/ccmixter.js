@@ -127,7 +127,17 @@ var UploadBasic = Model.extend( {
 
 });
 
-var Remix  = UploadBasic.extend();
+var Remix  = UploadBasic.extend({
+
+  getId: function() {
+    if( this.upload_id )
+      return this.upload_id;
+    if( this.file_page_url ) {
+      return this.file_page_url.match(/\/([\d]+)$/)[1];
+    }
+  }
+});
+
 var Source = UploadBasic.extend();
 
 var TrackbackUser = Model.extend({
@@ -148,6 +158,7 @@ var Trackback = Model.extend( {
     return name;
   },
   
+  idBinding:    'pool_item_id',
   urlBinding:   'pool_item_url',
   embedBinding: 'pool_item_extra.embed',
   typeBinding:  'pool_item_extra.ttype',
@@ -271,22 +282,27 @@ var Detail = Upload.extend( {
     return this.getTags().contains(tag);
   },
 
+  featuringBinding: 'upload_extra.featuring',
+
   getFeaturing: function() {
     var feat = this.upload_extra.featuring;
-    if( !feat && this.sources ) {
-      var unique = [ ];
-      // hello O(n)
-      this.sources.forEach( f => {
-        var name = f.user_name;
-        if( unique.indexOf(name) === -1 ) {
-          unique.push(name);
-        }
-      });
-      feat = unique.join(', ');
-    }  
     return feat;
   },
   
+  setFeatureSources: function(sources) {
+    if( !this.featuring && sources ) {
+        var unique = [ ];
+        // hello O(n)
+        sources.forEach( f => {
+          var name = f.user_name;
+          if( unique.indexOf(name) === -1 ) {
+            unique.push(name);
+          }
+        });
+        this.featuring = unique.join(', ');
+      }  
+  },
+
   // License stuff 
   
   licenseNameBinding: 'license_name',

@@ -68,8 +68,8 @@ var Query = Class.extend({
 });
 
 // singleton
-if( !global._queryStore ) {
-  global._queryStore = new Query();
-}
 
-module.exports = global._queryStore;
+module.exports = {
+  Query: Query,
+  query: new Query()
+};

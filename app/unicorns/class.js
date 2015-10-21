@@ -48,7 +48,7 @@ module.exports = (function (){
           };
         })(name, prop[name]) :
         prop[name];
-    }
+      }
    
     // The dummy class constructor
     function Class() {

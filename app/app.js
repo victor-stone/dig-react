@@ -20,8 +20,8 @@ const App = React.createClass({
         this.setState(specs);
       });
       // 'component' here is actually the outlet component'
-      if( !this.state.component ) {
-        router.navigateTo(document.location.pathname);
+      if(  !this.state.component ) {
+        router.navigateTo(); // current url
       }
     }
   },

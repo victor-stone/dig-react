@@ -2,46 +2,17 @@
 
 import React from 'react';
 import Link from './Link';
-
-var PlayButton = React.createClass({
-
-  togglePlay: function() {
-
-  },
-
-  render: function() {
-    var upload = this.props.upload;
-    var playStop = 'fa fa-play'; // upload.media.isPlaying ? 'stop' : 'play';
-
-    return <a className="btn btn-lg btn-info" href onClick={this.togglePlay}><i className={playStop}></i></a>
-  },
-
-});
-
-var DownloadPopupButton = React.createClass({
-
-  downloadPopup: function() {
-
-  },
-
-  render: function() {
-
-    return (<a className="btn btn-lg btn-warning" href onClick={this.downloadPopup}><i className="fa fa-cloud-download"></i></a>);
-
-  },
-
-});
+import Glyph from './Glyph';
+import { Play as PlayButton, 
+         DownloadPopup as DownloadPopupButton } from './ActionButtons'
 
 var SongLink = React.createClass({
 
   render: function() {
-    var upload = this.props.upload;
-    var uploadHref = '/files/' + upload.artist.id + '/' + upload.id;
+    var u = this.props.upload;
+    var href = '/files/' + u.artist.id + '/' + u.id;
 
-    var lnk = React.createElement( Link, { href: uploadHref }, upload.name );
-    return React.createElement( 'span', { className: 'song-title' }, lnk );
-
-    //    return (<span className="song-title"><Link href={uploadHref}>{upload.name}</Link></span> );
+    return (<span className="song-title"><Link href={href}>{u.name}</Link></span> );
   }
 
 });
@@ -50,7 +21,9 @@ var ArtistLink = React.createClass({
 
   render: function() {
     var artist = this.props.artist;
-
+    if( this.props.skipUser ) {
+      return null;
+    }
     return (<span className="artist-name light-color"><Link href={'/people/' + artist.id }>{artist.name}</Link></span>);  
   }
 
@@ -60,16 +33,13 @@ var PlaylistItem = React.createClass({
 
   render: function() {
     var u = this.props.upload;
-    if( this.props.skipUserListing ) {
-      return ( <li className="clearfix text-nowrap">
-          <PlayButton upload={u} /> <DownloadPopupButton upload={u} /> <SongLink upload={u} />
-        </li> );
-    } else {
-      return ( <li className="clearfix text-nowrap">
-        <PlayButton upload={u} /> <DownloadPopupButton upload={u} /> <SongLink upload={u} />
-        <ArtistLink artist={u.artist} />
-      </li>);
-    }
+    var skipU = this.props.skipUser;
+
+    return ( 
+      <li className="clearfix text-nowrap">
+        <PlayButton upload={u} /> <DownloadPopupButton upload={u} /> <SongLink upload={u} /> <ArtistLink artist={u.artist} skipUser={skipU} />
+      </li>
+    );
   },
 
 });
@@ -77,13 +47,13 @@ var PlaylistItem = React.createClass({
 var Playlist = React.createClass({
 
   getDefaultProps: function() {
-    return { skipUserListing: false }
+    return { skipUser: false }
   },
 
   render: function() {
 
     var playlistItems = this.props.model.playlist.map( (upload, index) =>
-      <PlaylistItem key={upload.id} upload={upload} skipUserListing={this.props.skipUserListing} />
+      <PlaylistItem key={upload.id} upload={upload} skipUser={this.props.skipUser} />
     );
 
     return (

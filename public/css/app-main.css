@@ -490,6 +490,10 @@ a.btn-exp:hover {
   margin-top: -5px;
 }
 
+.project-icons i {
+  margin-right: 7px;
+}
+
 .project-glyph {
   background-position: -400px -0px;
   width: 155px;

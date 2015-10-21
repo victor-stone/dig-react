@@ -1,8 +1,8 @@
-(function uberRequire(dictionary, moduleCache, registry) {
+(function uberRequire(factories, moduleCache, registry) {
     function outerRequire(module_name, u) {
         if (!moduleCache[module_name]) {
           console.log('importing:',module_name);
-            if (!dictionary[module_name]) {
+            if (!factories[module_name]) {
                 var customRequire = typeof require == "function" && require;
                 if (!u && customRequire) 
                     return customRequire(module_name, !0);
@@ -15,15 +15,15 @@
                 exports: {}
             };
             function innerRequire(modRequest) {
-                var fullName = dictionary[module_name][1][modRequest];
+                var fullName = factories[module_name][1][modRequest];
                 return outerRequire(fullName ? fullName : modRequest);
             }
-            dictionary[module_name][0].call( _module.exports, 
+            factories[module_name][0].call( _module.exports, 
                                     innerRequire, 
                                     _module, 
                                     _module.exports, 
                                     uberRequire, 
-                                    dictionary, 
+                                    factories, 
                                     moduleCache, 
                                     registry)
         }

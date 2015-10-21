@@ -10,6 +10,7 @@ pd.png
 sampling.png
 */
 // 
+import { dasherize } from '../unicorns/goodies';
 
 var logoURLBase = "https://licensebuttons.net/l/";
 
@@ -20,11 +21,11 @@ var logoSize = {
 
 var  licNameMap = {
     'attribution-(3.0)': 'by-3',
-    'attribution-noncommercial--(3.0)': 'by-nc-3',
-    'attribution-noncommercial-share-alike--(3.0)': 'by-nc-sa-3',
+    'attribution-noncommercial-(3.0)': 'by-nc-3',
+    'attribution-noncommercial-share-alike-(3.0)': 'by-nc-sa-3',
     'attribution-noncommercial-share-alike': 'by-nc-sa',
     'attribution-noncommercial': 'by-nc',
-    'attribution-share-alike--(3.0)': 'by-sa-3',
+    'attribution-share-alike-(3.0)': 'by-sa-3',
     'attribution-share-alike': 'by-sa',
     'attribution': 'by',
     'cc0-(cc-zero)': 'zero',
@@ -42,7 +43,7 @@ function logoURLFromAbbr( abbr, size ) {
 }
 
 function logoURLFromName(name, size) {
-    return logoURLFromAbbr( licNameMap[ name.dasherize() ], size );
+    return logoURLFromAbbr( licNameMap[ dasherize(name) ], size );
 }
 
 module.exports = {

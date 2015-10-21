@@ -22,8 +22,10 @@ function _serialize(jsonData,model,bindParent) {
     var boundName = k.match(/^(.*)Binding$/);
 
     if( boundName !== null ) {
-
-      target[boundName[1]] = pathValue( model, model[k] );
+      boundName = boundName[1];
+      if( !target[boundName] ) {
+        target[boundName] = pathValue( model, model[k] );
+      }
 
     } else if( k == '_modelSubtree' ) {
     
@@ -34,6 +36,10 @@ function _serialize(jsonData,model,bindParent) {
         target[propName] = _serialize( jsonData[propName] || {}, subTree[propName], jsonData );
       }
 
+    } else if( k.match(/^set/) ) {
+
+      target[k] = model[k];
+      
     } else {
 
         var propName2 = k.match(/^get(.*)$/);
@@ -43,7 +49,7 @@ function _serialize(jsonData,model,bindParent) {
           propName2 = s[0].toLowerCase() + s.substr(1);
 
           target[propName2] = model[k]();
-      }
+        }
     }
   }
     

@@ -73,7 +73,7 @@ function removeObject(arr,obj) {
   arr.splice( arr.indexOf(obj), 1 );
 }
 
-function find(arr,obj,matcher)
+function find(arr,matcher)
 {
   for( var i = 0; i < arr.length; i++ ) {
     if( matcher(arr[i]) === true ) {

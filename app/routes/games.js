@@ -1,17 +1,26 @@
-import React from 'react';
+'use strict';
 
-const games = React.createClass({
+import React            from 'react';
+import { FeaturedPage } from '../components';
+import { oassign }      from '../unicorns/goodies';
+import { query }        from '../stores/query';
+import qc               from '../models/queryConfigs';
+
+var games = React.createClass({
 
   render() {
-    return  (
-      <div>
-        <h1>Stuff about games</h1>
-        <p>Blbha lblah blah</p>
-      </div>
-    );
+    return (
+      <FeaturedPage {...this.props} icon="gamepad" title="Music for Video Games" />
+    );      
   },
 
 });
+
+games.model = function(params,queryParams) {
+  var qparams = oassign( {}, qc.default, qc.instrumental, qc.games, queryParams||{} );
+  return query.playlistWithCount(qparams);
+}
+
 
 module.exports = games;
 
