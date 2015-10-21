@@ -13,6 +13,8 @@ const LoadingGlyph = React.createClass({
   }  
 });
 
+var router = null;
+
 const SearchBox = React.createClass({
 
  getInitialState: function() {
@@ -21,23 +23,32 @@ const SearchBox = React.createClass({
     };
   },
 
-  submitSearch: function() {
+  handleChange: function(event) {
+    this.setState({value: event.target.value});
+  },
 
+  submitSearch: function() {
+    var text = this.state.value;
+    if( !router ) { // avoid require() recursion
+      router = require('../services/router');
+    }
+    router.navigateTo( '/search?searchp=' + text );
   },
 
   render: function() {
 
     return (
-      <div className="form-group input-group input-group-small">
-        <div className="input-group-btn">
+      <div className="form-group input-group input-group-sm">
           <input
             type="text"
+            className="form-control"
             value={this.state.value}
             placeholder="genre, instrument, etc."
+            onChange={this.handleChange}
             ref="input"
             size="30"
+            id="searchText"
           />
-          </div>
         <span className="input-group-addon">              
           <a href='#' onClick={this.submitSearch} ><Glyph icon="search" /></a>
         </span>

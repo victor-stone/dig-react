@@ -1,20 +1,17 @@
 'use strict';
 
-  
-/** Query **/
-
 import Class from '../unicorns/class';
 import ccmixter from '../models/ccmixter';
 import serialize from '../models/serialize';
 import rsvp from 'rsvp';
 
 // this is a singleton
-import QueryAjaxAdapter from '../services/queryAjaxAdapter';
+import { service as queryAjaxAdapter } from '../services/queryAjaxAdapter';
 
 var Query = Class.extend({
 
   init: function(adapter) {
-    this.adapter = adapter || QueryAjaxAdapter;
+    this.adapter = adapter || queryAjaxAdapter;
   },
 
   query: function(params) {
@@ -68,8 +65,6 @@ var Query = Class.extend({
 });
 
 // singleton
+Query.service = new Query();
 
-module.exports = {
-  Query: Query,
-  query: new Query()
-};
+module.exports = Query;

@@ -5,7 +5,7 @@ import React from 'react';
 import { Link, 
         Glyph }  from '../components';
 
-import { upload as uploadStore }  from '../stores/upload';
+import { service as uploadStore }  from '../stores/upload';
 
 import { Play              as PlayButton, 
          DownloadPopup     as DownloadPopupButton,

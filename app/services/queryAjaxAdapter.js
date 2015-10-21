@@ -51,9 +51,6 @@ QueryAjaxAdapter.prototype.queryOne = function(params) {
   return this._query(querystring.stringify(params),true);
 };
 
-// singleton
-if( !global._queryAjaxAdapter ) {
-  global._queryAjaxAdapter = new QueryAjaxAdapter();
-}
+QueryAjaxAdapter.service = new QueryAjaxAdapter();
 
-module.exports = global._queryAjaxAdapter;
+module.exports = QueryAjaxAdapter;

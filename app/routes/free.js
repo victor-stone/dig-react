@@ -3,8 +3,9 @@
 import React            from 'react';
 import { FeaturedPage } from '../components';
 import { oassign }      from '../unicorns/goodies';
-import { query }        from '../stores/query';
 import qc               from '../models/queryConfigs';
+
+import { service as query } from '../stores/query';
 
 const free = React.createClass({
 

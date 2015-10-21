@@ -25,6 +25,10 @@ function dasherize(str) {
   return decamlize(str).replace(/_/g,'-');
 }
 
+function underscore(str) {
+  return w(trim(str)).join('_');
+}
+
 function commaize(value) {
   if( value === 0 || value === '0' ) {
       return '0';
@@ -40,6 +44,14 @@ function commaize(value) {
 
       return commaized;
   }
+}
+
+function trim(s) { 
+  return s.replace(/^\s+/,'').replace(/\s+$/,''); 
+}
+
+function w(s) {
+  return s.split(/s+/);
 }
 
 var oassign = Object.assign || function (target,...sources) 
@@ -60,4 +72,7 @@ module.exports = {
   oassign,
   dasherize,
   decamlize,
+  trim,
+  w,
+  underscore
 }

@@ -1,8 +1,8 @@
-import { Query }       from './query';
+import Query           from './query';
 import ccmixter        from '../models/ccmixter';
 import serialize       from '../models/serialize';
 import rsvp            from 'rsvp';
-import { oassign }     from '../unicorns/goodies'
+
 
 function _fixFeaturing(model) {
   if( !model.featuring && model.sources && model.upload.setFeaturingSources ) {
@@ -84,7 +84,7 @@ var Upload = Query.extend({
   
 });
 
-module.exports = {
-  Upload: Upload,
-  upload: new Upload(),
-}
+Upload.service = new Upload();
+
+module.exports = Upload;
+
