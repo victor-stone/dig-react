@@ -7,6 +7,7 @@ module.exports = {
   Footer: require('./Footer'),
   Glyph: require('./Glyph'),
   Header: require('./Header'),
+  LicenseInfo: require('./LicenseInfo'),
   Link: require('./Link'),
   Modal: require('./Modal'),
   PageHeader: require('./PageHeader'),

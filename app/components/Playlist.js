@@ -57,10 +57,10 @@ var Playlist = React.createClass({
     );
 
     return (
-      <div className="container play-list">
+      <div className="container">
         <div className="row">
           <div className="col-md-9 col-md-offset-2 col-md-sm-12">
-            <ul>
+            <ul className="play-list">
               {playlistItems}
             </ul>
           </div>

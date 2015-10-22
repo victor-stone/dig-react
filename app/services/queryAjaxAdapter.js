@@ -5,7 +5,8 @@
 import ajax from './ajax';
 import querystring from 'querystring';
 
-var queryHost ='http://ccmixter.org/api/query?';
+//var queryHost ='http://ccmixter.org/api/query?';
+var queryHost ='http://ccm/api/query?';
   
 var QueryAjaxAdapter = function() {
   this.ajax = ajax;

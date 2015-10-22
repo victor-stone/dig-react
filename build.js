@@ -30,8 +30,6 @@ function build() {
           var builders = [ 
               bundleVendorJSFiles(), 
               bundleVendorCSSFiles(), 
-              bundleAppCSSFiles(),
-              publishPublicFiles(),
               publishFontFiles()
             ];
           return RSVP.all(builders);
@@ -48,10 +46,15 @@ function build() {
 }
 
 function commonBuild() {  
-  generateRouteIndex();
-  generateComponentIndex();
-  publishServerLibrary();
-  bundleBrowserJS();
+  RSVP.all( [ 
+      bundleAppCSSFiles(),
+      publishPublicFiles()
+    ]).then( function() {
+        generateRouteIndex();
+        generateComponentIndex();
+        publishServerLibrary();
+        bundleBrowserJS();
+      });
 }
 
 function generateIndexJS(dir,formatter) {

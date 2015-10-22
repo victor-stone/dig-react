@@ -49,10 +49,11 @@ span.light-color a {
    need to get reset
    TODO: something other than this
 */
-.modal, .modal ul > li {
+.modal {
   white-space: normal;
   font-size: 14px;
 }
+
 
 .page-banner {
   text-align: center;
@@ -304,31 +305,31 @@ a.btn-exp:hover {
 .actions {
   padding-left: 0px;
 }
-.actions li {
+.actions > li {
   margin-bottom: 15px;  
 }
-.actions-centered li {
+.actions-centered > li {
   text-align: center;
 }
 
-.play-list .artist-name a:hover {
+.play-list .artist-name > a:hover {
   border-bottom: 1px dashed;
 }
 
-.play-list li {
+.play-list > li {
   margin-bottom: 2px;
   font-size: 22px;
 }
 
-.song-title  a{
+.song-title > a {
   color: black;  
 }
-.song-title  a:hover{
+.song-title > a:hover{
   color: #999;
   text-decoration: none;
 }
 
-.artist-name a:hover{
+.artist-name > a:hover{
   text-decoration: none;
 }
 
@@ -717,16 +718,16 @@ a.btn-exp:hover {
     display: none;
   }
 
-  .play-list li {
+  .play-list > li {
     margin-bottom: 15px;
   }
 
-  .play-list li .artist-name {
+  .play-list > li .artist-name {
     display: block;
     margin-left: 60px;
   }
 
-  .play-list ul {
+  ul.play-list  {
     margin-top: 18px;
   }
 

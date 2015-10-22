@@ -1,13 +1,14 @@
 
 import React from 'react';
+import { PageHeader, LicenseInfo } from '../components';
 
 const Licenses = React.createClass({
 
   render() {
-    return  (
+    return  ( 
       <div>
-        <h1>Stuff about Licenses</h1>
-        <p>Blbha lblah blah</p>
+        <PageHeader title="Our Licenses Overview" icon="creative-commons" />
+        <LicenseInfo /> 
       </div>
     );
   },

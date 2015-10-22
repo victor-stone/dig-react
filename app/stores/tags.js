@@ -4,6 +4,10 @@ import serialize       from '../models/serialize';
 import rsvp            from 'rsvp';
 import TagString       from '../unicorns/tagString';
 
+var remixCategoryNames = ['genre', 'instr', 'mood'];
+var minRemixesForTags = 10;
+
+
 var Tags = Query.extend({
 
   // return a TagUtils object
@@ -34,7 +38,8 @@ var Tags = Query.extend({
   },
   
   // returns a hash with each category name as a property
-  // who's value is an array of Tag models
+  // who's value is an array of objects that were created
+  // serializing the json through the Tag models
   categories: function(categoryNames,pairWith,minCount) {
     var results = { };
     categoryNames.forEach( k => { results[k] = this.category( k, pairWith, minCount ); } );
@@ -46,6 +51,19 @@ var Tags = Query.extend({
     params.f = 'json';
     return this.query(params).then( serialize( ccmixter.Tag ) );
   },
+
+  remixCategories: function() {
+    return this.categories( remixCategoryNames, 'remix', minRemixesForTags );
+  },
+  
+  remixCategoryNames: function() {
+    return remixCategoryNames;
+  },
+  
+  remixGenres:  function() {
+    return this.forCategory('genre','remix');
+  },
+
 });
 
 Tags.service = new Tags();
