@@ -4,6 +4,9 @@ import Glyph from './Glyph';
 import Modal from './Modal';
 import { LicensePopup } from './ActionButtons';
 
+// this sucks
+import { service as store } from '../stores/upload';
+
 var DownloadPopup = React.createClass({
 
   getInitialState: function() {
@@ -15,7 +18,11 @@ var DownloadPopup = React.createClass({
   },
 
   handleShowModal: function(){
-    this.setState({view: {showModal: true}});
+    store.info( this.props.model.id )
+      .then( r => this.setState( {
+                      view: {showModal: true},
+                      fullUpload: r,
+                    }));
   },
 
   selectPlain: function(e) {
@@ -34,8 +41,9 @@ var DownloadPopup = React.createClass({
     window.prompt('Control (or Cmd) + C to copy', this.refs.attributionText.value );
   },
 
-  genPopup: function(upload) {
+  genPopup: function() {
 
+    var upload         = this.state.fullUpload;
     var plainSelected  = this.state.plainSelected;
     var permission     = upload.isOpen ? "Free to use in commercial projects." : "For noncommercial projects only.";
     var featuring      = upload.featuring ? `Ft: ${upload.featuring}` : '';
@@ -71,7 +79,7 @@ var DownloadPopup = React.createClass({
                 <a className="btn btn-info btn-lg" href={upload.mediaURL} download><Glyph icon="cloud-download" x2 left/> Download <small>{upload.downloadSize}</small></a>
               </li>
               <li className="license-badge">
-                <LicensePopup model={upload}/>
+                <a href={upload.licenseURL}><img src={upload.licenseLogoURL} /></a> <LicensePopup model={upload}/>
               </li>
               <li> 
                 <p>{permission}</p>
@@ -101,7 +109,7 @@ var DownloadPopup = React.createClass({
     var fixed  = this.props.fixed || false;
     var upload = this.props.model;
 
-    var popup = this.state.view.showModal ? this.genPopup(upload) : null;
+    var popup = this.state.view.showModal ? this.genPopup() : null;
 
     return (
       <span>

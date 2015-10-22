@@ -1,21 +1,12 @@
 'use strict';
 
-function pathValue(obj, propName) {
-  var names = propName.split('.');
-  var value = obj[names[0]];
-  for( var i = 1; i < names.length; i++ ) {
-    value = value[names[i]];
-  }
-  return value;
-}
-
 /*
   Some things to note:
 
     3 players: 
       jsonData - raw data from server
-      target   - raw js object (target model)
       Model    - description of how to convert from jsonData to target JS object
+      target   - raw js object (target model) returned from serialize()
 
     Phase 1: 
       A Model object is instantiated. The jsonData is copied directly into the
@@ -163,3 +154,14 @@ function serialize(jsonDataOrModel,model) {
 }
 
 module.exports = serialize;
+
+function pathValue(obj, propName) {
+  var names = propName.split('.');
+  var value = obj[names[0]];
+  for( var i = 1; i < names.length; i++ ) {
+    value = value[names[i]];
+  }
+  return value;
+}
+
+

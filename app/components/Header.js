@@ -66,7 +66,7 @@ const NavbarHeader = (
     <span className="icon-bar"></span>
     <span className="icon-bar"></span>
     </button>
-    <Link href="/" className="navbar-brand"><img src="images/logo.png" title="dig.ccMixter" /></Link>
+    <Link href="/" className="navbar-brand"><img src="/images/logo.png" title="dig.ccMixter" /></Link>
   </div>
 );
 
