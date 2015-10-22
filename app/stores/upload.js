@@ -45,8 +45,8 @@ var Upload = Query.extend({
       trackbacksof: forId,
       f: 'json',
       dataview: 'trackbacks',
-      sort: date,
-      ord: desc,
+      sort: 'date',
+      ord: 'desc',
       limit: 25 // TODO: get this from ENV or anywhere else!!
     };
     return this.query(trackbacksQ).then( serialize( ccmixter.Trackback ) );
@@ -57,8 +57,8 @@ var Upload = Query.extend({
       remixes: forId,
       f: 'json',
       dataview: 'links_u',
-      sort: date,
-      ord: desc
+      sort: 'date',
+      ord: 'desc'
     };
     return this.query(remixesQ).then( serialize( ccmixter.Remix ) );
   },

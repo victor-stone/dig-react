@@ -21,19 +21,15 @@ var Play = React.createClass({
 
 });
 
-var DownloadPopup = React.createClass({
-
-  downloadPopup: function() {
-
-  },
+var ExternalLink = React.createClass({
 
   render: function() {
-    var cls   = "btn btn-warning btn-lg";
-    var sz    = this.props.big ? 'x4' : '';
-    var fixed = this.props.fixed || false;
-    return (<a className={cls} href onClick={this.downloadPopup}><Glyph fixed={fixed} sz={sz} icon="cloud-download" /></a>);
-  },
-
+    var subname = this.props.subname || '';
+    var text    = this.props.text;
+    return(        
+        <a {...this.props} target="_blank"><Glyph icon="external-link" /> <span className="light-color">{subname}</span> {text}</a> 
+      );
+  }
 });
 
 var LicensePopup = React.createClass({
@@ -95,10 +91,10 @@ var TrackbackPopup = React.createClass({
 
 module.exports = {
   Play,
-  DownloadPopup,
   LicensePopup,
   SharePopup,
   AddTrackbackPopup,
   TrackbackPopup,
+  ExternalLink
 }
 

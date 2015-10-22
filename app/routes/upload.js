@@ -8,13 +8,14 @@ import { Link,
 import { service as uploadStore }  from '../stores/upload';
 
 import { Play              as PlayButton, 
-         DownloadPopup     as DownloadPopupButton,
          LicensePopup      as LicensePopupButton,
          SharePopup        as SharePopupButton,
          AddTrackbackPopup as AddTrackbackPopupButton,
          TrackbackPopup    as TrackbackPopupButton,
-
+         ExternalLink
  } from '../components/ActionButtons'
+
+import DownloadPopup from '../components/DownloadPopup';
 
 var Actions = React.createClass({
 
@@ -27,7 +28,7 @@ var Actions = React.createClass({
             <PlayButton big fixed upload={model} big />
           </li>
           <li className="hidden-xs">
-            <DownloadPopupButton big fixed upload={model} />
+            <DownloadPopup big fixed model={model} />
           </li>
           <li>
             <SharePopupButton big fixed upload={model} />
@@ -115,16 +116,7 @@ var LicenseSection = React.createClass({
   }
 });
 
-var ExternalLink = React.createClass({
 
-  render: function() {
-    var subname = this.props.subname || '';
-    var text    = this.props.text;
-    return(        
-        <a {...this.props} target="_blank"><Glyph icon="external-link" /> <span className="light-color">{subname}</span> {text}</a> 
-      );
-  }
-});
 
 var TracbackList = React.createClass({
 

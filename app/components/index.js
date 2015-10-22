@@ -2,11 +2,13 @@
 
 module.exports = { 
   ActionButtons: require('./ActionButtons'),
+  DownloadPopup: require('./DownloadPopup'),
   FeaturedPage: require('./FeaturedPage'),
   Footer: require('./Footer'),
   Glyph: require('./Glyph'),
   Header: require('./Header'),
   Link: require('./Link'),
+  Modal: require('./Modal'),
   PageHeader: require('./PageHeader'),
   Paging: require('./Paging'),
   Playlist: require('./Playlist'),

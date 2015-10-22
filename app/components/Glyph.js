@@ -16,6 +16,9 @@ const Glyph = React.createClass({
     if( this.props.x4 || this.props.sz === 'x4' ) {
       cls += " fa-4x";
     }
+    if( this.props.left ) {
+      cls += " pull-left";
+    }
     return  (
       <i className={cls}></i>
     );

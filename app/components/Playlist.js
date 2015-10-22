@@ -3,13 +3,13 @@
 import React from 'react';
 import Link from './Link';
 import Glyph from './Glyph';
-import { Play as PlayButton, 
-         DownloadPopup as DownloadPopupButton } from './ActionButtons'
+import { Play as PlayButton } from './ActionButtons'
+import DownloadPopup from './DownloadPopup';
 
 var SongLink = React.createClass({
 
   render: function() {
-    var u = this.props.upload;
+    var u = this.props.model;
     var href = '/files/' + u.artist.id + '/' + u.id;
 
     return (<span className="song-title"><Link href={href}>{u.name}</Link></span> );
@@ -20,7 +20,7 @@ var SongLink = React.createClass({
 var ArtistLink = React.createClass({
 
   render: function() {
-    var artist = this.props.artist;
+    var artist = this.props.model;
     if( this.props.skipUser ) {
       return null;
     }
@@ -37,7 +37,7 @@ var PlaylistItem = React.createClass({
 
     return ( 
       <li className="clearfix text-nowrap">
-        <PlayButton upload={u} /> <DownloadPopupButton upload={u} /> <SongLink upload={u} /> <ArtistLink artist={u.artist} skipUser={skipU} />
+        <PlayButton upload={u} /> <DownloadPopup model={u} /> <SongLink model={u} /> <ArtistLink model={u.artist} skipUser={skipU} />
       </li>
     );
   },

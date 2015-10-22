@@ -94,7 +94,6 @@ var File = Model.extend({
   
   getMediaTags: function() {
 
-    /* required by audio player */
     var id          = this._bindParent.upload_id;
     var name        = this._bindParent.upload_name;
 
@@ -187,31 +186,36 @@ var Upload = UploadBasic.extend({
     }
   },
 
-  _findFileInfo: function(cb) {
-    for( var i = 0; i < this.files.length; i++ ) {
-      if( cb(this.files[i]) ) {
-        return files[i];
+  _findFileInfo: function(target,cb) {
+    for( var i = 0; i < target.files.length; i++ ) {
+      if( cb(target.files[i]) ) {
+        return target.files[i];
       }
     }
   },
 
-  getFileInfo: function() {
-    return this._findFileInfo( f => f.isMP3 );
+  getFileInfo: function(target) {
+    return this._findFileInfo( target, f => f.isMP3 );
   },
 
-  getWavImageURL: function() {
-    var f = this.getFileInfo();
+  getWavImageURL: function(target) {
+    var f = this.getFileInfo(target);
     return f ? f.wavImageURL : '';
   },
 
+  getDownloadSize: function(target) {
+    var f = this.getFileInfo(target);
+    return f ? f.size.replace(/\(|\)|\s+/g, '') : '';
+  },
+
   /* required by audio player */
-  getMediaURL: function() {
-    var f = this.getFileInfo();
+  getMediaURL: function(target) {
+    var f = this.getFileInfo(target);
     return (f && f.mediaURL) || this.fplay_url || this.download_url;
   },
   
-  getMediaTags: function() {
-    var f = this.getFileInfo();
+  getMediaTags: function(target) {
+    var f = this.getFileInfo(target);
     return f && f.mediaTags;
   },
     
@@ -219,7 +223,7 @@ var Upload = UploadBasic.extend({
 
 var ACappellaFile = File.extend({
   getIsPlayablePell: function() {
-    return this.isMP3 && this._hasTag('acappella');
+    return this.getIsMP3() && this._hasTag('acappella');
   },
 
 });
@@ -231,9 +235,9 @@ var ACappella = Upload.extend( {
     artist: UploadUser,
   },
 
-  getFileInfo: function() {
-    return this._findFileInfo( f => f.getIsPlayablePell() ) ||
-      this._findFileInfo( f => f.isMP3 );
+  getFileInfo: function(target) {
+    return this._findFileInfo( target, f => f.isPlayablePell ) ||
+      this._findFileInfo( target, f => f.isMP3 );
   },
 
 });
@@ -250,7 +254,7 @@ var User = UserBasic.extend( {
     return this.artist_page_url + '/profile';
   },
   
-  homepage: function() {
+  getHomepage: function() {
     if( this.user_homepage === this.artist_page_url ) {
       return null;
     }

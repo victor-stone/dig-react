@@ -45,6 +45,15 @@ span.light-color a {
   width: 100%;
 }
 
+/* modals can be embedded in playlists so these
+   need to get reset
+   TODO: something other than this
+*/
+.modal, .modal ul > li {
+  white-space: normal;
+  font-size: 14px;
+}
+
 .page-banner {
   text-align: center;
   background-color: antiquewhite;

@@ -51,7 +51,7 @@ function trim(s) {
 }
 
 function w(s) {
-  return s.split(/s+/);
+  return s.split(/\s+/);
 }
 
 var oassign = Object.assign || function (target,...sources) 
