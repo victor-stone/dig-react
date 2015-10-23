@@ -1,9 +1,8 @@
-'use strict';
-
 import Class from '../unicorns/class';
 import ccmixter from '../models/ccmixter';
 import serialize from '../models/serialize';
-import rsvp from 'rsvp';
+
+import { EventEmitter } from 'events';
 
 // this is a singleton
 import { service as queryAjaxAdapter } from '../services/queryAjaxAdapter';
@@ -12,6 +11,19 @@ var Query = Class.extend({
 
   init: function(adapter) {
     this.adapter = adapter || queryAjaxAdapter;
+    this._events = new EventEmitter();
+  },
+
+  on: function(name,cb) {
+    this._events.on(name,cb);
+  },
+
+  emit: function() {
+    this._events.emit.apply(this._events,arguments);
+  },
+
+  removeListener: function(name,cb) {
+    this._events.removeListener(name,cb);
   },
 
   query: function(params) {
@@ -46,20 +58,6 @@ var Query = Class.extend({
       }
     }
     return this.queryOne(countParams);
-  },
-
-  playlist: function(params) {
-    params.dataview = 'links_by';
-    params.f = 'json';
-    return this.query(params).then( serialize(ccmixter.Upload) );
-  },
-
-  playlistWithCount: function(params) {
-    var modelRequest = {
-      playlist: this.playlist( params ),
-      total: this.count( params ),
-    };
-    return rsvp.hash( modelRequest );
   },
 
 });

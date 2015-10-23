@@ -4,8 +4,7 @@ import React            from 'react';
 import { FeaturedPage } from '../components';
 import { oassign }      from '../unicorns/goodies';
 import qc               from '../models/queryConfigs';
-
-import { service as query } from '../stores/query';
+import Playlist         from '../stores/playlist';
 
 const tags = React.createClass({
 
@@ -21,7 +20,8 @@ tags.path = '/tags/:tags';
 
 tags.model = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { tags: params.tags }, queryParams||{} );
-  return query.playlistWithCount(qparams);
+  var playlist = new Playlist();
+  return playlist.playlist(qparams);
 };
 
 module.exports = tags;

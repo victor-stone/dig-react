@@ -10,6 +10,29 @@ var minRemixesForTags = 10;
 
 var Tags = Query.extend({
 
+  selectedTags: new TagString(),
+
+
+  addSelected: function(tag) {
+    this.selectedTags.add(tag);
+    this.emit('selectedTags',this.selectedTags);
+  },
+
+  removeSelected: function(tag) {
+    this.selectedTags.remove(tag);
+    this.emit('selectedTags',this.selectedTags);
+  },
+
+  toggleSelected: function(tag,flag) {
+    this.selectedTags.toggle(tag,flag);
+    this.emit('selectedTags',this.selectedTags);
+  },
+
+  clearSelected: function() {
+    this.selectedTags.clear();
+    this.emit('selectedTags',this.selectedTags);    
+  },
+
   // return a TagUtils object
   forCategory: function(category,pairWith) {
     var q = {   

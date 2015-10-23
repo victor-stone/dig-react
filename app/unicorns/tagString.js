@@ -44,25 +44,28 @@
         
         var tags = TagString.combine(tags1, 'hip_hop,remix'); // 'foo,bar,hip_hop,remix'
 */
-var TagString = function(src) 
-{
-  var opts = {
+
+var defaultOpts = {
     ignore:  /^(\*|all)$/,
     invalid: /[^-a-zA-Z0-9_]/,
     separator:  ','
-  };
+};
 
-  if( src.hasOwnProperty('source') ) {
+var TagString = function(src) 
+{
+  var opts = merge({},defaultOpts);
+
+  if( !src ) {
+    opts.source = null;
+  } else if( src.hasOwnProperty('source') ) {
     opts = merge(opts,src);
   } else {
     opts.source = src;
   }
   merge(this,opts);
   
-  this._tagsArray = [ ];
-  if( this.source ) {
-    this._tagsArray = this.toArray(this.source);
-  }
+  this._tagsArray = this.source ? TagString.toArray(this.source,this) : [ ];
+
 };
 
 function contains(arr,obj) {
@@ -125,7 +128,7 @@ TagString.prototype.add = function(tag) {
     }
   }
 
-  this.toArray(tag).forEach( safeAddTag );
+  TagString.toArray(tag,this).forEach( safeAddTag );
   return this;
 };
         
@@ -136,7 +139,7 @@ TagString.prototype.remove = function(tag) {
         removeObject(arr,tag);
       }
   }
-  this.toArray(tag).forEach( safeRemove );
+  TagString.toArray(tag,this).forEach( safeRemove );
   return this;
 };
         
@@ -157,6 +160,10 @@ TagString.prototype.clear = function() {
   return this.removeAll();
 };
         
+TagString.prototype.isEmpty = function() {
+  return this._tagsArray.length == 0;
+};
+
 TagString.prototype.toggle = function(tag,flag) {
   if( flag ) {
     this.add(tag);
@@ -168,14 +175,14 @@ TagString.prototype.toggle = function(tag,flag) {
         
 TagString.prototype.contains = function(tag) {      
   var srcArr = this._tagsArray;
-  return find( this.toArray(tag), function(tag) {
+  return find( TagString.toArray(tag,this), function(tag) {
     return srcArr.contains(tag);
   });
 };
         
 TagString.prototype.intersection = function(other) {
   var opts = this.copyOptions();
-  opts.source = getIntersect(this._tagsArray.slice(),this.toArray(other));
+  opts.source = getIntersect(this._tagsArray.slice(),this.toArray(other,this));
   return new TagString(opts);
 };
 
@@ -199,6 +206,10 @@ TagString.prototype.toString = function() {
   return '';
 };
 
+TagString.prototype.toArray = function() {
+  return this._tagsArray;
+};
+
 TagString.prototype.forEach = function(callback,context) {
   this._tagsArray.forEach(callback,context || this);
   return this;
@@ -208,27 +219,6 @@ TagString.prototype.map = function(callback,context) {
   return this._tagsArray.map(callback,context || this);
 };
     
-TagString.prototype.toArray =function(source) {
-  if( !source ) {
-    return [ ];
-  }
-  var arr = null;
-  if( typeof(source) === 'string' ) {
-    if( source.match(this.ignore) )  {
-      return [ ];
-    }
-    // still not 100% because '-'
-    var r = new RegExp(this.separator,'g');
-    arr = source.replace(r,' ').split(/\s+/);
-  } else if( Array.isArray(source) ) {
-    arr = source.slice();        
-  } else if( source && source.hasOwnProperty('_tagsArray') ) {
-    arr = source._tagsArray.slice();        
-  } else {
-    arr = [ ];
-  }
-  return arr;
-};
         
 TagString.create = function(opts) {
   return new TagString(opts);
@@ -250,14 +240,37 @@ TagString.contains = function(source,tag,opts) {
   return TagString.create(opts).contains(tag);
 };        
 
-TagString.toArray = function(source,opts) {
-  opts = merge( { source: source }, opts || { } );
-  return TagString.create( opts )._tagsArray;
-};
-
 TagString.forEach = function(source,callback,context,opts) {
   opts = merge( { source: source }, opts || { } );
   return TagString.create( opts ).forEach(callback,context);
+};
+
+TagString.toArray = function(source,useropts) {
+  if( !source ) {
+    return [ ];
+  }
+
+  var opts = merge( {}, defaultOpts );
+  if( useropts ) {
+    opts = merge(opts,useropts);
+  }
+
+  var arr = null;
+  if( typeof(source) === 'string' ) {
+    if( source.match(opts.ignore) )  {
+      return [ ];
+    }
+    // still not 100% because '-'
+    var r = new RegExp(opts.separator,'g');
+    arr = source.replace(r,' ').split(/\s+/);
+  } else if( Array.isArray(source) ) {
+    arr = source.slice();        
+  } else if( source && source.hasOwnProperty('_tagsArray') ) {
+    arr = source._tagsArray.slice();        
+  } else {
+    arr = [ ];
+  }
+  return arr;
 };
 
 

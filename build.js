@@ -21,7 +21,7 @@ var verbose  = argv.verbose || false;
 build();
 
 function build() {
-
+  
   if( buildAll ) {
 
     del( ['dist/**/*', 'built/**/*'] )
@@ -89,6 +89,7 @@ function lintSource() {
   log('invoking lint');
   exec('eslint app',function(err, stdout, stderr) {
       if( err ) {
+        console.log(stdout);
         throw err;
       }
       console.log('eslint results: ',stdout || 'ok');

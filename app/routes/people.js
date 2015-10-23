@@ -6,6 +6,8 @@ import { ExternalLink } from '../components/ActionButtons';
 import qc               from '../models/queryConfigs';
 
 import { Playlist, Paging } from '../components';
+
+import PlaylistStore         from '../stores/playlist';
 import { service as query } from '../stores/query';
 
 const PeopleHeader = React.createClass({
@@ -69,7 +71,8 @@ people.model = function(params,queryParams) {
       return retModel;
     }
     
-    return query.playlistWithCount(qparams)
+    var playlist = new PlaylistStore();
+    return playlist.playlist(qparams)
           .then( getArtistDetail )
           .then( returnArtistDetail );
 };

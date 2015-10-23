@@ -4,8 +4,7 @@ import React            from 'react';
 import { FeaturedPage } from '../components';
 import { oassign }      from '../unicorns/goodies';
 import qc               from '../models/queryConfigs';
-
-import { service as query } from '../stores/query';
+import Playlist         from '../stores/playlist';
 
 const edpicks = React.createClass({
 
@@ -18,7 +17,8 @@ const edpicks = React.createClass({
 
 edpicks.model = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { reqtags: 'editorial_pick' }, qc.recent, queryParams||{} );
-  return query.playlistWithCount(qparams);
+  var playlist = new Playlist();
+  return playlist.playlist(qparams);
 };
 
 module.exports = edpicks;

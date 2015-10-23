@@ -9,6 +9,7 @@ import { Link, Glyph, PageHeader, Playlist, Paging } from '../components';
 
 import { service as tagStore }   from '../stores/tags';
 import { service as queryStore } from '../stores/query';
+import PlaylistStore         from '../stores/playlist';
 
 var DidYouMeanSection = React.createClass({
 
@@ -116,8 +117,9 @@ function didYouMean( text )
 
 search.model = function( params, queryParams ) {
   var qparams = oassign( { search_type: 'all' }, qc.default, queryParams );
+  var playlist = new PlaylistStore();
   var modelRequest = {
-    main: queryStore.playlistWithCount(qparams),
+    main: playlist.playlist(qparams),
     didYouMean: didYouMean(queryParams.searchp)
   };
   return rsvp.hash(modelRequest);

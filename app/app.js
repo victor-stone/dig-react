@@ -24,21 +24,22 @@ const App = React.createClass({
   },
 
   render: function() {
-    if( !this.state.component ) {
-      return false;
-    }
+
     //  {{if loading 'loading-screen fade'}}
     return (
       <div>
         <div id="wrap">
           <Header />
           <div className="outlet-wrap">
-            {React.createElement(this.state.component,
+            {this.state.component
+              ? React.createElement(this.state.component,
                 {
                     model: this.state.model,
                     params: this.state.params,
                     queryParams: this.state.queryParams
-                })}
+                })
+              : null
+            }
           </div>
         </div>
         <Footer />

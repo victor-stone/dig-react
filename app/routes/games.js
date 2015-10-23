@@ -4,8 +4,7 @@ import React            from 'react';
 import { FeaturedPage } from '../components';
 import { oassign }      from '../unicorns/goodies';
 import qc               from '../models/queryConfigs';
-
-import { service as query } from '../stores/query';
+import Playlist         from '../stores/playlist';
 
 var games = React.createClass({
 
@@ -19,7 +18,8 @@ var games = React.createClass({
 
 games.model = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, qc.instrumental, qc.games, queryParams||{} );
-  return query.playlistWithCount(qparams);
+  var playlist = new Playlist();
+  return playlist.playlist(qparams);
 };
 
 

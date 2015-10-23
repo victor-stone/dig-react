@@ -49,9 +49,34 @@ var Playlist = React.createClass({
     return { skipUser: false };
   },
 
+  componentWillMount: function() {
+    var model = this.props.model;
+    model.store.on('playlist',this.gotPlaylist);
+    this.setState( { 
+      model: model,
+      loading: false
+    });
+  },
+
+  componentWillUnmount: function() {
+    this.state.model.store.removeListener('playlist',this.gotPlaylist);
+  },
+
+  gotPlaylist: function(promise) {
+    this.setState( { loading: true } );
+    promise.then( results => {
+      // throw this back on the window thread
+       setTimeout( () =>
+        this.setState( {
+          model: results,
+          loading: false,
+        }), 50 );
+    });
+  },
+
   render: function() {
 
-    var playlistItems = this.props.model.playlist.map( upload =>
+    var playlistItems = this.state.model.playlist.map( upload =>
       <PlaylistItem key={upload.id} upload={upload} skipUser={this.props.skipUser} />
     );
 

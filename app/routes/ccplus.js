@@ -4,8 +4,7 @@ import React            from 'react';
 import { FeaturedPage } from '../components';
 import { oassign }      from '../unicorns/goodies';
 import qc               from '../models/queryConfigs';
-
-import { service as query } from '../stores/query';
+import Playlist         from '../stores/playlist';
 
 var ccplus = React.createClass({
 
@@ -19,7 +18,8 @@ var ccplus = React.createClass({
 
 ccplus.model = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { lic: 'ccplus' }, queryParams||{} );
-  return query.playlistWithCount(qparams);
+  var playlist = new Playlist();
+  return playlist.playlist(qparams);
 };
 
 module.exports = ccplus;
