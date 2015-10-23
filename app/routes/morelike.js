@@ -22,7 +22,7 @@ morelike.path = '/morelike/:id';
 morelike.model = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { tags: params.id }, queryParams||{} );
   return query.playlistWithCount(qparams);
-}
+};
 
 module.exports = morelike;
 

@@ -13,7 +13,7 @@ import { Play              as PlayButton,
          AddTrackbackPopup as AddTrackbackPopupButton,
          TrackbackPopup    as TrackbackPopupButton,
          ExternalLink
- } from '../components/ActionButtons'
+ } from '../components/ActionButtons';
 
 import DownloadPopup from '../components/DownloadPopup';
 
@@ -25,7 +25,7 @@ var Actions = React.createClass({
     return (
         <ul className="actions">
           <li>
-            <PlayButton big fixed upload={model} big />
+            <PlayButton big fixed upload={model} />
           </li>
           <li className="hidden-xs">
             <DownloadPopup big fixed model={model} />
@@ -41,9 +41,11 @@ var Actions = React.createClass({
 var Tags = React.createClass({
 
   render: function() {
+
     var tags = this.props.tags.map( t => 
       (<Link key={t} href={'/tags/' + t} className="btn-exp btn-tag light-on-hover">{t}</Link>) );
-    return( <div>{tags}</div>)
+
+    return( <div>{tags}</div> );
   }
 });
 
@@ -55,7 +57,7 @@ var Featuring = React.createClass({
       return null;
     }
     return(
-        <p><span className="light-color">featuring</span> {featuring}</p>
+        <p><span className="light-color">{"featuring"}</span>{" "}{featuring}</p>
       );    
   }
 });
@@ -66,7 +68,7 @@ var UploadHeader = React.createClass({
     var model = this.props.model;
     return (
       <div>
-        <Link href={ '/people/' + model.artist.id}>
+        <Link href={'/people/' + model.artist.id}>
           <img className="img-circle" src={model.artist.avatarURL} />
           {model.artist.name}
         </Link>
@@ -106,7 +108,7 @@ var LicenseSection = React.createClass({
         </li>
         <LicenseLink model={model} />
         <li>
-          <Link href={'/morelike/' + model.id} className="btn btn-success"><Glyph icon="exchange" /> More Like This</Link>
+          <Link href={'/morelike/' + model.id} className="btn btn-success"><Glyph icon="exchange" />{" More Like This"}</Link>
         </li>
         <li>
           <ExternalLink className="btn btn-success" href={model.url} text="@ccMixter" />
@@ -128,7 +130,7 @@ var TracbackList = React.createClass({
       return( 
         <li key={tb.id} className="list-group-item">
           <p>
-            { tb.embed 
+            {tb.embed 
                 ? (<TrackbackPopupButton trackback={tb} />)
                 : (<ExternalLink href={tb.url} subname={tb.type} text={tb.name} />)
             }
@@ -140,12 +142,12 @@ var TracbackList = React.createClass({
 
     var tbs = trackbacks.length 
       ? trackbacks.map( formatTB )
-      : (<li><span className="light-color">No trackbacks yet. Add yours!</span></li>);
+      : (<li><span className="light-color">{"No trackbacks yet. Add yours!"}</span></li>);
 
     return (
         <ul className="list-group remix-list">
           {tbs}
-          {tooManyTBs ? <li><span className="light-color">too many to show here!</span></li> : null }
+          {tooManyTBs ? <li><span className="light-color">{"too many to show here!"}</span></li> : null}
         </ul>
       );
 
@@ -159,7 +161,7 @@ var TrackbacksSection = React.createClass({
     return (
       <div>
         <div className="center-text">
-          <h3 className="inlined">Trackbacks</h3>
+          <h3 className="inlined">{"Trackbacks"}</h3>
           <AddTrackbackPopupButton model={model.upload} />
         </div>
         <TracbackList model={model.trackbacks} />
@@ -174,18 +176,18 @@ var RemixesSection = React.createClass({
     var remixes = this.props.model.remixes || [];
     
     function formatRemix(rmx) {
-      return <li key={rmx.id} className="list-group-item">
+      return (<li key={rmx.id} className="list-group-item">
         <ExternalLink href={rmx.url} text={rmx.name} /><span className="light-color">{rmx.artist.name}</span>
-      </li>
+      </li>);
     }
 
     var lines = remixes.length 
           ? remixes.map(formatRemix) 
-          : <li><span className="light-color">no remixes yet!</span></li>;
+          : <li><span className="light-color">{"no remixes yet!"}</span></li>;
 
     return (
         <div>
-          <h3 className="center-text">Remixes</h3>
+          <h3 className="center-text">{"Remixes"}</h3>
           <ul className="remix-list">{lines}</ul>
         </div>
       );
@@ -243,8 +245,9 @@ const upload = React.createClass({
 
 upload.path = '/files/:userid/:uploadid';
 
-upload.model = function(params,queryParams) {
+upload.model = function(params/*,queryParams*/) {
   return uploadStore.find(params.uploadid);
-}
+};
+
 module.exports = upload;
 

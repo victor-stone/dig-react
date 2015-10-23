@@ -18,7 +18,7 @@ var DidYouMeanSection = React.createClass({
     this.props.model.forEach( function(g) {
 
       if( g.items.length ) {
-        var items = g.items.map( i => <Link key={i.id} href={ '/' + g.route + '/' + i.id} ><Glyph icon={g.icon}/> {i.name}</Link> );
+        var items = g.items.map( i => <Link key={i.id} href={'/' + g.route + '/' + i.id} ><Glyph icon={g.icon}/> {i.name}</Link> );
         groups.push(
             <div>
               <strong>{g.name}</strong>
@@ -38,7 +38,11 @@ var DidYouMeanSection = React.createClass({
     } else {
       return (
           <div className="did-you-mean well no-hit-suggestion">
-            Not what you're looking for? <Link href="/dig" className="btn btn-success"><Glyph icon="tags" /> Dig deep</Link>
+            {"Not what you're looking for? "}
+            <Link href="/dig" className="btn btn-success">
+              <Glyph icon="tags" />
+              {" Dig deep"}
+            </Link>
           </div>                    
         );
     }
@@ -63,7 +67,8 @@ const search = React.createClass({
         <Paging offset={offset}
                 length={plist.playlist.length}
                 limit ={limit}
-                total ={plist.total} />
+                total ={plist.total} 
+        />
         <Playlist model={plist} />
       </div>
     );
@@ -116,6 +121,6 @@ search.model = function( params, queryParams ) {
     didYouMean: didYouMean(queryParams.searchp)
   };
   return rsvp.hash(modelRequest);
-}
+};
 module.exports = search;
 

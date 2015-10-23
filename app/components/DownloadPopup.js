@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from './Link';
 import Glyph from './Glyph';
 import Modal from './Modal';
 import { LicensePopup } from './ActionButtons';
@@ -45,7 +44,7 @@ var DownloadPopup = React.createClass({
 
     var upload         = this.state.fullUpload;
     var plainSelected  = this.state.plainSelected;
-    var permission     = upload.isOpen ? "Free to use in commercial projects." : "For noncommercial projects only.";
+    var permission     = upload.isOpen ? 'Free to use in commercial projects.' : 'For noncommercial projects only.';
     var featuring      = upload.featuring ? `Ft: ${upload.featuring}` : '';
 
     var licenseTextTemplate = {
@@ -60,15 +59,15 @@ var DownloadPopup = React.createClass({
         <div className="row download-popup">
           <div className="col-md-5">
             <div className="col-panel">
-              <p className="text-primary">To use this music you are <mark>required</mark> to give credit to the musicians.</p>
+              <p className="text-primary">{"To use this music you are "}<mark>{"required"}</mark>{" to give credit to the musicians."}</p>
               <div>
                 <ul className="nav nav-tabs">
-                  <li className={plainSelected ? "active" : ''}><a href onClick={this.selectPlain}>Plain</a></li>
-                  <li className={plainSelected ? '' : 'active'}><a href onClick={this.selectHTML}>HTML</a></li>
+                  <li className={plainSelected ? 'active' : ''}><a href onClick={this.selectPlain}>{"Plain"}</a></li>
+                  <li className={plainSelected ? '' : 'active'}><a href onClick={this.selectHTML}>{"HTML"}</a></li>
                 </ul>
                 <textarea ref="attributionText" readOnly cols="30" rows="2" value={licenseText}></textarea>
                 <div className="text-center">
-                  <button className="btn btn-sm btn-info" onClick={this.copyToClip}><Glyph icon="files-o" /> Copy to Clipboard</button>
+                  <button className="btn btn-sm btn-info" onClick={this.copyToClip}><Glyph icon="files-o" />{" Copy to Clipboard"}</button>
                 </div>
               </div>
             </div>
@@ -76,7 +75,7 @@ var DownloadPopup = React.createClass({
           <div className="col-md-6">
             <ul className="actions actions-centered">
               <li>
-                <a className="btn btn-info btn-lg" href={upload.mediaURL} download><Glyph icon="cloud-download" x2 left/> Download <small>{upload.downloadSize}</small></a>
+                <a className="btn btn-info btn-lg" href={upload.mediaURL} download><Glyph icon="cloud-download" x2 left/>{" Download "}<small>{upload.downloadSize}</small></a>
               </li>
               <li className="license-badge">
                 <a href={upload.licenseURL}><img src={upload.licenseLogoURL} /></a> <LicensePopup model={upload}/>
@@ -86,13 +85,13 @@ var DownloadPopup = React.createClass({
               </li>
                {upload.isCCPlus ?
                   <li>
-                    <a href={upload.purchaseLicenseURL} className="btn btn-info btn-lg"><img src={upload.purchaseLogoURL} className="pull-left" />  Buy a License </a>
+                    <a href={upload.purchaseLicenseURL} className="btn btn-info btn-lg"><img src={upload.purchaseLogoURL} className="pull-left" />{"  Buy a License "}</a>
                   </li>
                   : null 
                 }
                {upload.isCCPlus ?
                   <li>
-                    <p>to remove these restrictions</p>
+                    <p>{"to remove these restrictions"}</p>
                   </li> 
                   : null 
                 }
@@ -104,17 +103,16 @@ var DownloadPopup = React.createClass({
   },
 
   render: function() {
-    var cls    = "btn btn-warning btn-lg";
+    var cls    = 'btn btn-warning btn-lg';
     var sz     = this.props.big ? 'x4' : '';
     var fixed  = this.props.fixed || false;
-    var upload = this.props.model;
 
     var popup = this.state.view.showModal ? this.genPopup() : null;
 
     return (
       <span>
         <button className={cls} onClick={this.handleShowModal} ><Glyph fixed={fixed} sz={sz} icon="cloud-download" /></button>
-        { popup }
+        {popup}
       </span>
       );
   },

@@ -12,7 +12,7 @@ var LicenseInfo = React.createClass({
       ccplusURL:     'http://tunetrack.net/license/ccmixter.org/files/djlang59/37792',
       byURL:         'http://creativecommons.org/licenses/by/3.0/',
       byncURL:       'http://creativecommons.org/licenses/by-nc/3.0/',
-    }
+    };
   },
 
   render: function() {
@@ -26,36 +26,36 @@ var LicenseInfo = React.createClass({
           </div>
           <div className="col-md-7">
             <div className="text license-description">
-              Free to use, even in commercial projects <strong>but</strong> you must give credit to the musicians.
+              {"Free to use, even in commercial projects "}<strong>{"but"}</strong>{" you must give credit to the musicians."}
             </div>
           </div>
         </div>
         <div className="row">
           <div className="col-md-4 center-text license-images">
             <a href={this.state.byncURL} ><img src={this.state.byncLogoURL} className="licenseLogo" /></a>
-            <a href={this.state.byncURL} >Full CC license</a>
+            <a href={this.state.byncURL} >{"Full CC license"}</a>
           </div>
           <div className="col-md-7">
             <div className="text license-description">
-              Free to use only in non-commercial projects. Again, you must give credit to the musicians.
+              {"Free to use only in non-commercial projects. Again, you must give credit to the musicians."}
             </div>
           </div>
         </div>
         <div className="row">
           <div className="col-md-4 center-text license-images">
             <a href={this.state.ccplusURL} ><img src={this.state.ccplusLogoURL} className="licenseLogo" /></a>
-            <a href={this.state.ccplusURL} >Example</a>
+            <a href={this.state.ccplusURL} >{"Example"}</a>
           </div>
           <div className="col-md-7">
             <div className="text license-description">
-              Available without any restrictions for a sliding scale, royalty free fee.
+              {"Available without any restrictions for a sliding scale, royalty free fee."}
             </div>
           </div>
         </div>
       </div>
-      )
+      );
   },
 
-})
+});
 
 module.exports = LicenseInfo;

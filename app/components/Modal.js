@@ -1,9 +1,16 @@
-import React from 'react';
+/*eslint "react/no-danger":0 */
+import React    from 'react';
 import ReactDOM from 'react-dom';
+import Glyph    from './Glyph';
 
 let Modal = React.createClass({
 
-  componentDidMount(){
+  propTypes: {
+    handleHideModal: React.PropTypes.func.isRequired
+  },
+
+  componentDidMount: function() {
+    /* globals $ */
     var d = $(ReactDOM.findDOMNode(this));
     d.modal('show');
     d.on('hidden.bs.modal', this.props.handleHideModal);
@@ -13,7 +20,7 @@ let Modal = React.createClass({
     var title    = this.props.title;
     var subTitle = this.props.subTitle;
     var action   = this.props.action;
-    var times    = { __html: '&times;'}
+    var times    = { __html: '&times;'};
 
     return (
       <div className="modal fade">
@@ -27,20 +34,17 @@ let Modal = React.createClass({
             {this.props.children}
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" className="btn btn-default" data-dismiss="modal">{"Close"}</button>
             {action 
-              ? <button className="btn btn-primary btn-success" onClick={action}><Glyph icon="share" /> Submit</button>
+              ? <button className="btn btn-primary btn-success" onClick={action}><Glyph icon="share" />{" Submit"}</button>
               : null
             }
           </div>
           </div>
         </div>
       </div>
-    )
+    );
   },
-  propTypes:{
-    handleHideModal: React.PropTypes.func.isRequired
-  }
 });
 
 module.exports = Modal;

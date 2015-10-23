@@ -1,12 +1,8 @@
-'use strict';
-
-/** QueryAjaxAdapter **/
-
 import ajax from './ajax';
 import querystring from 'querystring';
 
-//var queryHost ='http://ccmixter.org/api/query?';
-var queryHost ='http://ccm/api/query?';
+var queryHost ='http://ccmixter.org/api/query?';
+//var queryHost ='http://ccm/api/query?';
   
 var QueryAjaxAdapter = function() {
   this.ajax = ajax;
@@ -31,6 +27,7 @@ QueryAjaxAdapter.prototype._query = function(qString,isSingleton) {
     }
 
     function _error(r, status, err) {
+      /*eslint no-console:0 */
       if( r.responseText && r.responseText.match(/^<pre>/) ) {
         //something went south at ccMixter and there's a mysql error.
         console.error(r.responseText);

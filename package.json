@@ -19,6 +19,7 @@
     "bootstrap": "^3.3.5",
     "browserify": "^11.2.0",
     "del": "^2.0.2",
+    "eslint-plugin-react": "^3.6.3",
     "font-awesome": "^4.4.0",
     "glob": "^5.0.15",
     "jquery": "^2.1.4",

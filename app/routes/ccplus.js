@@ -20,7 +20,7 @@ var ccplus = React.createClass({
 ccplus.model = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { lic: 'ccplus' }, queryParams||{} );
   return query.playlistWithCount(qparams);
-}
+};
 
 module.exports = ccplus;
 

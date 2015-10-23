@@ -42,7 +42,8 @@ const people = React.createClass({
         <Paging offset={offset}
                 length={this.props.model.playlist.length}
                 limit ={limit}
-                total ={this.props.model.total} />
+                total ={this.props.model.total} 
+        />
         <Playlist model={this.props.model} skipUser />
       </div>
     );
@@ -71,7 +72,7 @@ people.model = function(params,queryParams) {
     return query.playlistWithCount(qparams)
           .then( getArtistDetail )
           .then( returnArtistDetail );
-}
+};
 
 module.exports = people;
 

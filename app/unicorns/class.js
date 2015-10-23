@@ -7,6 +7,7 @@
 // Inspired by base2 and Prototype
 
 // http://stackoverflow.com/questions/3911690/strange-javascript-idiom-what-does-xyz-testfunctionxyz-do
+/*global xyz*/
 var fnContainsSuperCall = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
 
 module.exports = (function (){
@@ -29,8 +30,8 @@ module.exports = (function (){
     // Copy the properties over onto the new prototype
     for (var name in prop) {
       // Check if we're overwriting an existing function
-      prototype[name] = typeof prop[name] == "function" &&
-        typeof _super[name] == "function" && fnContainsSuperCall.test(prop[name]) ?
+      prototype[name] = typeof prop[name] == 'function' &&
+        typeof _super[name] == 'function' && fnContainsSuperCall.test(prop[name]) ?
         (function(name, fn){
           return function() {
             var tmp = this._super;

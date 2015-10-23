@@ -12,7 +12,7 @@ sampling.png
 // 
 import { dasherize } from '../unicorns/goodies';
 
-var logoURLBase = "https://licensebuttons.net/l/";
+var logoURLBase = 'https://licensebuttons.net/l/';
 
 var logoSize = {
     small: '80x15',

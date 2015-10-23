@@ -5,11 +5,10 @@ import Link  from './Link';
 const LoadingGlyph = React.createClass({
 
   render: function() {
-    if( this.props.loading ) {
-      return <ul><Glyph icon="spinner" pulse /></ul>
-    } else {
-      return <ul></ul>
+    if( !this.props.loading ) {
+      return null;
     }
+    return( <Glyph icon="spinner" pulse /> );
   }  
 });
 
@@ -50,7 +49,7 @@ const SearchBox = React.createClass({
             id="searchText"
           />
         <span className="input-group-addon">              
-          <a href='#' onClick={this.submitSearch} ><Glyph icon="search" /></a>
+          <a href="#" onClick={this.submitSearch} ><Glyph icon="search" /></a>
         </span>
       </div>      
     );
@@ -61,7 +60,7 @@ const SearchBox = React.createClass({
 const NavbarHeader = (
   <div className="navbar-header">
     <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#dig-collapse" aria-expanded="false">
-    <span className="sr-only">Toggle navigation</span>
+    <span className="sr-only">{"Toggle navigation"}</span>
     <span className="icon-bar"></span>
     <span className="icon-bar"></span>
     <span className="icon-bar"></span>
@@ -73,24 +72,24 @@ const NavbarHeader = (
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">
       <li>
-        <Link href="/#howitworks">how it works</Link>
+        <Link href="/#howitworks">{"how it works"}</Link>
       </li>
       <li>
-        <Link href="/licenses">licenses</Link>
+        <Link href="/licenses">{"licenses"}</Link>
       </li>
       <li className="hidden-xs hidden-sm">
-        <Link to="/dig">dig deep <Glyph icon="tags" /></Link>
+        <Link href="/dig">{"dig deep "}<Glyph icon="tags" /></Link>
       </li>
       <li>
-        <a  href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Featured <Glyph icon="chevron-down" /></a>
+        <a  href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{"Featured "}<Glyph icon="chevron-down" /></a>
         <ul className="dropdown-menu">
-          <li><Link href="/film"><Glyph fixed icon="film" /> music for film </Link></li>
-          <li><Link href="/games"><Glyph fixed icon="gamepad" /> music for games </Link></li>
+          <li><Link href="/film"><Glyph fixed icon="film" />{" music for film"}</Link></li>
+          <li><Link href="/games"><Glyph fixed icon="gamepad" /> {"music for games"}</Link></li>
           <li className="divider"></li>            
-          <li><Link href="/free"><Glyph fixed icon="beer" /> free for commercial use</Link></li>
-          <li><Link href="/ccplus"><Glyph fixed icon="usd" /> royalty free licensed</Link></li>
+          <li><Link href="/free"><Glyph fixed icon="beer" />{" free for commercial use"}</Link></li>
+          <li><Link href="/ccplus"><Glyph fixed icon="usd" /> {"royalty free licensed"}</Link></li>
           <li className="divider"></li>            
-          <li><Link href="/edpicks"><Glyph fixed icon="thumbs-o-up" /> editors picks</Link></li>
+          <li><Link href="/edpicks"><Glyph fixed icon="thumbs-o-up" /> {" editors picks"}</Link></li>
         </ul>            
       </li>
     </ul>    

@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Link from './Link';
-import Glyph from './Glyph';
-import { Play as PlayButton } from './ActionButtons'
+import { Play as PlayButton } from './ActionButtons';
 import DownloadPopup from './DownloadPopup';
 
 var SongLink = React.createClass({
@@ -24,10 +23,10 @@ var ArtistLink = React.createClass({
     if( this.props.skipUser ) {
       return null;
     }
-    return (<span className="artist-name light-color"><Link href={'/people/' + artist.id }>{artist.name}</Link></span>);  
+    return (<span className="artist-name light-color"><Link href={'/people/' + artist.id}>{artist.name}</Link></span>);  
   }
 
-})
+});
 
 var PlaylistItem = React.createClass({
 
@@ -47,12 +46,12 @@ var PlaylistItem = React.createClass({
 var Playlist = React.createClass({
 
   getDefaultProps: function() {
-    return { skipUser: false }
+    return { skipUser: false };
   },
 
   render: function() {
 
-    var playlistItems = this.props.model.playlist.map( (upload, index) =>
+    var playlistItems = this.props.model.playlist.map( upload =>
       <PlaylistItem key={upload.id} upload={upload} skipUser={this.props.skipUser} />
     );
 

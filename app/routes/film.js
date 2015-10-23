@@ -20,7 +20,7 @@ var film = React.createClass({
 film.model = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, qc.instrumental, qc.film, queryParams||{} );
   return query.playlistWithCount(qparams);
-}
+};
 
 module.exports = film;
 

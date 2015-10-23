@@ -101,6 +101,6 @@ PagingStats.prototype.printableTotal = function() {
 
 module.exports = function(props) {
   return new PagingStats(props).stats;
-}
+};
 
 

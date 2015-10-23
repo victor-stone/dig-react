@@ -10,11 +10,11 @@ function serverAjax(opts) {
           if( res.headers['x-json'] ) {
             resolve(JSON.parse(res.headers['x-json']));
           } else {
-            var data = "";
-            res.on("data", function (chunk) {
+            var data = '';
+            res.on('data', function (chunk) {
               data += chunk.toString();
             });
-            res.on("end", function () {
+            res.on('end', function () {
               resolve(JSON.parse(data));
             });            
           }
@@ -28,6 +28,7 @@ function serverAjax(opts) {
   });
 }
 
+/* globals $ */
 function clientAjax(opts) {
   return $.ajax(opts);
 }

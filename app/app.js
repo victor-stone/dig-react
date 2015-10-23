@@ -1,7 +1,4 @@
-'use strict';
-
-require('./unicorns/goodies');
-
+//import { * } from './unicorns/goodies'
 import React  from 'react';
 import { Header, Footer } from './components';
 import router from './services/router';
@@ -36,12 +33,12 @@ const App = React.createClass({
         <div id="wrap">
           <Header />
           <div className="outlet-wrap">
-            { React.createElement(this.state.component,
+            {React.createElement(this.state.component,
                 {
                     model: this.state.model,
                     params: this.state.params,
                     queryParams: this.state.queryParams
-                }) }
+                })}
           </div>
         </div>
         <Footer />

@@ -23,7 +23,8 @@ const FeaturedPage = React.createClass({
         <Paging offset={offset}
                 length={model.playlist.length}
                 limit ={limit}
-                total ={model.total} />
+                total ={model.total} 
+        />
         <Playlist model={model} />
       </div>
     );

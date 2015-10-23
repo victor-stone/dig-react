@@ -46,6 +46,8 @@ function build() {
 }
 
 function commonBuild() {  
+
+  lintSource();
   RSVP.all( [ 
       bundleAppCSSFiles(),
       publishPublicFiles()
@@ -81,6 +83,16 @@ function generateRouteIndex() {
 
 function generateComponentIndex() {
   generateIndexJS('components', n => n);
+}
+
+function lintSource() {
+  log('invoking lint');
+  exec('eslint app',function(err, stdout, stderr) {
+      if( err ) {
+        throw err;
+      }
+      console.log('eslint results: ',stdout || 'ok');
+  });
 }
 
 function publishServerLibrary() {

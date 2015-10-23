@@ -63,7 +63,7 @@ var TagString = function(src)
   if( this.source ) {
     this._tagsArray = this.toArray(this.source);
   }
-}
+};
 
 function contains(arr,obj) {
   return arr.indexOf(obj) !== -1;

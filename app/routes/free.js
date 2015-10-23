@@ -20,7 +20,7 @@ const free = React.createClass({
 free.model = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { lic: 'open' }, queryParams||{} );
   return query.playlistWithCount(qparams);
-}
+};
 
 module.exports = free;
 

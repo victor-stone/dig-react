@@ -25,11 +25,11 @@ var Router = function()
     var path = component.path || ('/' + handler);
     // temp code:
     if( !component.model ) {
-      component.model = function() { return rsvp.resolve({}); }
+      component.model = function() { return rsvp.resolve({}); };
     }
     this.recognizer.add( [ { path, handler } ] );
   }
-}
+};
 
 util.inherits(Router,EventEmitter);
 
@@ -47,24 +47,24 @@ Router.prototype.resolve = function(url) {
                             });
   }
   return null;
-}
+};
 
 Router.prototype.navigateTo = function(url) {
   if( url ) {
     window.history.pushState(null, null, url);
   }
-  this.updateUrl()
-}
+  this.updateUrl();
+};
 
 Router.prototype.updateUrl = function() {
   var q = document.location.search || '';
-  var handlers = this.resolve(document.location.pathname + q)
+  var handlers = this.resolve(document.location.pathname + q);
   if (!handlers ) {
     // ummmmm
-    return window.alert('Not Found')
+    return window.alert('Not Found');
   }
   if( handlers.length > 1 ) {
-    throw new Error("wups - don't do nested route handlers yet");
+    throw new Error('wups - don\'t do nested route handlers yet');
   }
   var handler = handlers[0];
   handler.component.model(handler.params, handler.queryParams)
@@ -76,7 +76,7 @@ Router.prototype.updateUrl = function() {
           params: handler.params,
           queryParams: handler.queryParams } );
     });
-}
+};
     
 module.exports = new Router();
 

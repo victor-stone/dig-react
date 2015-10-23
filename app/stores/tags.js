@@ -20,7 +20,7 @@ var Tags = Query.extend({
       ord:       'asc',
       dataview: 'tags_with_cat'
     };
-    return this.query(q).then( r =>  TagUtils.create( { source: r.map( t => t.tags_tag ) } ));
+    return this.query(q).then( r =>  TagString.create( { source: r.map( t => t.tags_tag ) } ));
   },
   
   // return an array of Tag models

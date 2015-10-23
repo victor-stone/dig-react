@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import Link from './Link';
 import Glyph from './Glyph';
 
 var Play = React.createClass({
@@ -11,12 +10,11 @@ var Play = React.createClass({
   },
 
   render: function() {
-    var upload   = this.props.upload;
     var playStop = 'play'; // upload.media.isPlaying ? 'stop' : 'play';
-    var cls      = "btn btn-info btn-lg";
+    var cls      = 'btn btn-info btn-lg';
     var sz       = this.props.big ? 'x4' : '';
     var fixed    = this.props.fixed || false;
-    return <a className={cls} href onClick={this.togglePlay}><Glyph fixed={fixed} sz={sz} icon={playStop} /></a>
+    return (<a className={cls} href onClick={this.togglePlay}><Glyph fixed={fixed} sz={sz} icon={playStop} /></a>);
   },
 
 });
@@ -52,7 +50,6 @@ var SharePopup = React.createClass({
   },
 
   render: function() {
-    var cls   = "btn btn-success btn-lg";
     var sz    = this.props.big ? 'x4' : '';
     var fixed = this.props.fixed || false;
     return (
@@ -69,7 +66,7 @@ var AddTrackbackPopup = React.createClass({
 
   render: function() {
     return (
-      <a href onClick={this.addTrackbackPopup} className="btn btn-sm btn-success"><Glyph icon="plus" /> Add</a>
+      <a href onClick={this.addTrackbackPopup} className="btn btn-sm btn-success"><Glyph icon="plus" />{" Add"}</a>
       );
   }
 });
@@ -96,5 +93,5 @@ module.exports = {
   AddTrackbackPopup,
   TrackbackPopup,
   ExternalLink
-}
+};
 

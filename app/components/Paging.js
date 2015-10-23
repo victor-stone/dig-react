@@ -45,7 +45,7 @@ const Paging = React.createClass({
           <Pager offset={s.nextValue}  show={s.showNext}  icon="arrow-right" />
           <Pager offset={s.lastPage}   show={s.showLast}  icon="angle-double-right" />
         </ul>
-        <div className="center-text">{s.printableOffset} - {s.printableLastValue} of {s.printableTotal}</div>
+        <div className="center-text">{s.printableOffset + ' - ' + s.printableLastValue + ' of ' + s.printableTotal}</div>
       </div>
       );
   },

@@ -20,7 +20,7 @@ var games = React.createClass({
 games.model = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, qc.instrumental, qc.games, queryParams||{} );
   return query.playlistWithCount(qparams);
-}
+};
 
 
 module.exports = games;

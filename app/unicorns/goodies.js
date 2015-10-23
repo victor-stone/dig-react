@@ -6,7 +6,7 @@ if (!Array.isArray) {
 }
 
 if( typeof Array.prototype.includes === 'undefined' ) {
-  Array.prototype.includes = function(v) { return this.indexOf(v) !== -1; }
+  Array.prototype.includes = function(v) { return this.indexOf(v) !== -1; };
 }
 
 if( typeof Array.prototype.contains === 'undefined' ) {
@@ -75,4 +75,4 @@ module.exports = {
   trim,
   w,
   underscore
-}
+};

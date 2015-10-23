@@ -22,7 +22,7 @@ tags.path = '/tags/:tags';
 tags.model = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { tags: params.tags }, queryParams||{} );
   return query.playlistWithCount(qparams);
-}
+};
 
 module.exports = tags;
 

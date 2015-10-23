@@ -79,7 +79,7 @@ var File = Model.extend({
   getIsMP3: function() {
     var ffi = this.file_format_info;
     if( (ffi) && ('format-name' in ffi) ) {
-      return ffi['format-name'] === 'audio-mp3-mp3'
+      return ffi['format-name'] === 'audio-mp3-mp3';
     }
     return false;
   },
@@ -180,7 +180,7 @@ var Upload = UploadBasic.extend({
   getBpm: function() {
     if( this.upload_extra ) {
       var bpm = this.upload_extra.bpm;
-      if(  (bpm + "").match(/[^0-9]/) === null ) {
+      if(  (bpm + '').match(/[^0-9]/) === null ) {
         return bpm;
       }
     }
