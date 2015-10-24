@@ -34,7 +34,7 @@ const App = React.createClass({
             {this.state.component
               ? React.createElement(this.state.component,
                 {
-                    model: this.state.model,
+                    store: this.state.store,
                     params: this.state.params,
                     queryParams: this.state.queryParams
                 })

@@ -15,10 +15,9 @@ const edpicks = React.createClass({
   },
 });
 
-edpicks.model = function(params,queryParams) {
+edpicks.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { reqtags: 'editorial_pick' }, qc.recent, queryParams||{} );
-  var playlist = new Playlist();
-  return playlist.playlist(qparams);
+  return Playlist(qparams);
 };
 
 module.exports = edpicks;

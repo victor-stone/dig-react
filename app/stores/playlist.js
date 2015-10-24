@@ -7,10 +7,13 @@ import { oassign } from '../unicorns/goodies';
 var Playlist = Query.extend({
 
   queryParams: {},
+  model: {},
 
   applyParams: function(params) {
     var newParams = oassign({},this.queryParams,params);
-    this.emit('playlist',this.playlist(newParams));
+    this.emit('playlist-loading');
+    this.playlist(newParams)
+      .then( model => this.emit('playlist', model ) );
   },
 
   _playlist: function(params) {
@@ -32,6 +35,7 @@ var Playlist = Query.extend({
     return rsvp.hash( modelRequest ).then( results => {
       results.store = this;
       results.queryParams = this.queryParams;
+      this.model = results;
       return results;
     });
   },
@@ -40,4 +44,7 @@ var Playlist = Query.extend({
 });
 
 
-module.exports = Playlist;
+module.exports = function(params) {
+  var pl = new Playlist();
+  return pl.playlist(params).then( () => pl );
+};

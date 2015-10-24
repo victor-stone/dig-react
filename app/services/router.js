@@ -24,8 +24,8 @@ var Router = function()
     var component = routes[handler];
     var path = component.path || ('/' + handler);
     // temp code:
-    if( !component.model ) {
-      component.model = function() { return rsvp.resolve({}); };
+    if( !component.store ) {
+      component.store = function() { return rsvp.resolve({}); };
     }
     this.recognizer.add( [ { path, handler } ] );
   }
@@ -49,11 +49,15 @@ Router.prototype.resolve = function(url) {
   return null;
 };
 
-Router.prototype.navigateTo = function(url) {
-  if( url ) {
-    window.history.pushState(null, null, url);
-  }
+Router.prototype.navigateTo = function(url,stateObj) {
+  this.setBrowserAddressBar(url,stateObj);
   this.updateUrl();
+};
+
+Router.prototype.setBrowserAddressBar = function(url,stateObj) {
+  if( url ) {
+    window.history.pushState(stateObj || null,null,url);
+  }
 };
 
 Router.prototype.updateUrl = function() {
@@ -67,12 +71,12 @@ Router.prototype.updateUrl = function() {
     throw new Error('wups - don\'t do nested route handlers yet');
   }
   var handler = handlers[0];
-  handler.component.model(handler.params, handler.queryParams)
-    .then( model => {
+  handler.component.store(handler.params, handler.queryParams)
+    .then( store => {
         this.emit('navigateTo', {
           name: handler.component.displayName, 
           component: handler.component,
-          model: model, 
+          store,
           params: handler.params,
           queryParams: handler.queryParams } );
     });

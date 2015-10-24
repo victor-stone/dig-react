@@ -15,15 +15,15 @@ const PeopleHeader = React.createClass({
   render: function() {
     var model = this.props.model;
 
-    var homelink = model.artist.homepage 
-            ? <ExternalLink className="btn btn-info" href={model.artist.homepage} text="homepage" />
+    var homelink = model.homepage 
+            ? <ExternalLink className="btn btn-info" href={model.homepage} text="homepage" />
             : null;
 
     return (
         <div className="page-header">
-          <h1 className="center-text"><img className="img-circle" src={model.artist.avatarURL} /> {model.artist.name}</h1>
+          <h1 className="center-text"><img className="img-circle" src={model.avatarURL} /> {model.name}</h1>
           <div className="center-text">
-            <ExternalLink className="btn btn-info" href={model.artist.url} text="@ccMixter" /> {homelink}
+            <ExternalLink className="btn btn-info" href={model.url} text="@ccMixter" /> {homelink}
           </div>
         </div>
       );
@@ -34,19 +34,13 @@ const PeopleHeader = React.createClass({
 const people = React.createClass({
 
   render() {
-    var model  = this.props.model;
-    var offset = this.props.queryParams.offset || 0;
-    var limit  = this.props.queryParams.limit  || 10;
+    var store  = this.props.store;
 
     return  (
       <div>
-        <PeopleHeader model={model} />
-        <Paging offset={offset}
-                length={this.props.model.playlist.length}
-                limit ={limit}
-                total ={this.props.model.total} 
-        />
-        <Playlist model={this.props.model} skipUser />
+        <PeopleHeader model={store.artist} />
+        <Paging store={store} />
+        <Playlist store={store} skipUser />
       </div>
     );
   },
@@ -55,24 +49,23 @@ const people = React.createClass({
 
 people.path = '/people/:userid';
 
-people.model = function(params,queryParams) {
+people.store = function(params,queryParams) {
   
     var qparams = oassign( {}, qc.default, { u: params.userid }, queryParams||{} );
 
-    var retModel = { };
+    var retStore = null;
 
-    function getArtistDetail( model ) {
-      retModel = model;
+    function getArtistDetail( store ) {
+      retStore = store;
       return query.findUser(params.userid);
     }
     
     function returnArtistDetail( model ) {
-      retModel.artist = model;
-      return retModel;
+      retStore.artist = model;
+      return retStore;
     }
     
-    var playlist = new PlaylistStore();
-    return playlist.playlist(qparams)
+    return PlaylistStore(qparams)
           .then( getArtistDetail )
           .then( returnArtistDetail );
 };

@@ -51,20 +51,25 @@ var defaultOpts = {
     separator:  ','
 };
 
-var TagString = function(src) 
+var TagString = function(opts) 
 {
-  var opts = merge({},defaultOpts);
-
-  if( !src ) {
-    opts.source = null;
-  } else if( src.hasOwnProperty('source') ) {
-    opts = merge(opts,src);
-  } else {
-    opts.source = src;
+  if( !(this instanceof TagString) ) {
+    return new TagString(opts);
   }
-  merge(this,opts);
-  
-  this._tagsArray = this.source ? TagString.toArray(this.source,this) : [ ];
+
+  if( !opts ) {
+    opts = { source: null };
+  } else if( !opts.hasOwnProperty('source') ) {
+    opts = { source: opts };
+  }
+
+  var opts2 = {};
+  for( var k in defaultOpts ) {
+    opts2[k] = opts[k] || defaultOpts[k];
+  }
+
+  merge(this,opts2);
+  this._tagsArray = TagString.toArray(opts.source,this);
 
 };
 
@@ -86,36 +91,59 @@ function find(arr,matcher)
   return false;
 }
 
-function getIntersect(arr1, arr2) {
-  var r = [], o = {}, l = arr2.length, i, v;
-  for (i = 0; i < l; i++) {
-    o[arr2[i]] = true;
+function compare(arr1,arr2,isDiff) {
+  isDiff = !!isDiff;
+
+  var obj = {};
+  for (var i = 0; i < arr1.length; i++) {
+    obj[arr1[i]] = true;
   }
-  l = arr1.length;
-  for (i = 0; i < l; i++) {
-    v = arr1[i];
-    if (v in o) {
-        r.push(v);
+
+  var result = [];
+  for (var n = 0; n < arr2.length; n++) {
+    var arr2ObjInArr1 = arr2[n] in obj;
+    if( (isDiff && !arr2ObjInArr1) || (!isDiff && arr2ObjInArr1) ) {
+      result.push(arr2[n]);
     }
   }
-  return r;
+
+  return result;
 }    
 
-function merge( obj1, obj2 )
+function getIntersect(arr1, arr2) {
+  return compare(arr1,arr2,false);
+}
+
+function getDiff(arr1, arr2) {
+  return compare(arr1,arr2,true);
+}    
+
+function merge( obj1, ...targets )
 {
-  for( var k in obj2 ) {
-    if( obj2.hasOwnProperty(k) ) {
-      obj1[k] = obj2[k];
+  targets.forEach( function(obj2) {
+    for( var k in obj2 ) {
+      if( obj2.hasOwnProperty(k) ) {
+        obj1[k] = obj2[k];
+      }
     }
-  }
+  });
+
   return obj1;
 }
 
 
 TagString.prototype.add = function(tag) {
-  var ignore = this.ignore;
+  
+  if( tag instanceof TagString ) {
+    if( tag._tagsArray.length ) {
+      this._tagsArray = this._tagsArray.concat( tag._tagsArray );
+    }
+    return this;
+  }
+
+  var ignore  = this.ignore;
   var invalid = this.invalid;
-  var arr = this._tagsArray;
+  var arr     = this._tagsArray;
 
   function safeAddTag(tag) {
     tag += ''; // stringize
@@ -156,9 +184,7 @@ TagString.prototype.removeAll = function() {
   return this;
 };
         
-TagString.prototype.clear = function() {
-  return this.removeAll();
-};
+TagString.prototype.clear = TagString.prototype.removeAll;
         
 TagString.prototype.isEmpty = function() {
   return this._tagsArray.length == 0;
@@ -173,17 +199,25 @@ TagString.prototype.toggle = function(tag,flag) {
   return this;
 };
         
-TagString.prototype.contains = function(tag) {      
-  var srcArr = this._tagsArray;
-  return find( TagString.toArray(tag,this), function(tag) {
-    return srcArr.contains(tag);
-  });
+TagString.prototype.contains = function(tagsOrFunction) {
+  if( typeof tagsOrFunction === 'function' ) {
+    return find(this._tagsArray, tagsOrFunction);
+  }
+  var them = TagString.toArray(tagsOrFunction,this);
+  return find( them, tag => this._tagsArray.contains(tag) );
+
 };
         
 TagString.prototype.intersection = function(other) {
   var opts = this.copyOptions();
-  opts.source = getIntersect(this._tagsArray.slice(),this.toArray(other,this));
+  opts.source = getIntersect(this._tagsArray.slice(),TagString.toArray(other,opts));
   return new TagString(opts);
+};
+
+TagString.prototype.diff = function(returnTagsOnlyInThisOne) {
+  var opts = this.copyOptions();
+  opts.source = getDiff(this._tagsArray.slice(),TagString.toArray(returnTagsOnlyInThisOne,opts));
+  return new TagString(opts);  
 };
 
 TagString.prototype.copyOptions = function() {
@@ -265,7 +299,7 @@ TagString.toArray = function(source,useropts) {
     arr = source.replace(r,' ').split(/\s+/);
   } else if( Array.isArray(source) ) {
     arr = source.slice();        
-  } else if( source && source.hasOwnProperty('_tagsArray') ) {
+  } else if( source && (source instanceof TagString) )  {
     arr = source._tagsArray.slice();        
   } else {
     arr = [ ];

@@ -14,9 +14,9 @@ var fopen  = RSVP.denodeify(fs.open);
 var fread  = RSVP.denodeify(fs.readFile);
 var globp  = RSVP.denodeify(glob);
 
-var MODE     = argv.mode || 'dev';
-var buildAll = argv.all || false;
-var verbose  = argv.verbose || false;
+var MODE     = argv.mode || (argv.p ? 'prod' : 'dev');
+var buildAll = argv.all || argv.a || false;
+var verbose  = argv.verbose || argv.v || false;
 
 build();
 
@@ -131,22 +131,6 @@ function bundleBrowserJS() {
         log( "Success. Done. Boom.")
       }
   });
-/*
-  var opts = { 
-    debug: MODE === 'dev',
-    loose: 'all'
-  };
-
-  var ENTRY_FILE = './app/browser.js';
-
-  browserify( opts )
-      .ignore('http')
-      .transform(babelify)
-      .require( ENTRY_FILE, { entry: true } )
-      .bundle()
-      .on( "error", err )
-      .pipe( fs.createWriteStream("dist/js/bundle.js") );
-  */
 }
 
 function bundleVendorJSFiles() {  

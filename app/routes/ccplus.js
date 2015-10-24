@@ -16,10 +16,9 @@ var ccplus = React.createClass({
 
 });
 
-ccplus.model = function(params,queryParams) {
+ccplus.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { lic: 'ccplus' }, queryParams||{} );
-  var playlist = new Playlist();
-  return playlist.playlist(qparams);
+  return Playlist(qparams);
 };
 
 module.exports = ccplus;

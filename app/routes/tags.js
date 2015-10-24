@@ -18,10 +18,9 @@ const tags = React.createClass({
 
 tags.path = '/tags/:tags';
 
-tags.model = function(params,queryParams) {
+tags.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { tags: params.tags }, queryParams||{} );
-  var playlist = new Playlist();
-  return playlist.playlist(qparams);
+  return Playlist(qparams);
 };
 
 module.exports = tags;

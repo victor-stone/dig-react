@@ -16,10 +16,9 @@ var games = React.createClass({
 
 });
 
-games.model = function(params,queryParams) {
+games.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, qc.instrumental, qc.games, queryParams||{} );
-  var playlist = new Playlist();
-  return playlist.playlist(qparams);
+  return Playlist(qparams);
 };
 
 

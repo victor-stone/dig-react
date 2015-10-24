@@ -10,9 +10,7 @@ const FeaturedPage = React.createClass({
 
   render: function() {
 
-    var model    = this.props.model;
-    var offset   = this.props.queryParams.offset || 0;
-    var limit    = this.props.queryParams.limit  || 10;
+    var store    = this.props.store;
     var icon     = this.props.icon;
     var title    = this.props.title;
     var subTitle = this.props.subTitle || null;
@@ -20,12 +18,8 @@ const FeaturedPage = React.createClass({
     return (
       <div className="playlist">
         <PageHeader icon={icon} title={title} subTitle={subTitle} />
-        <Paging offset={offset}
-                length={model.playlist.length}
-                limit ={limit}
-                total ={model.total} 
-        />
-        <Playlist model={model} />
+        <Paging store={store} />
+        <Playlist store={store} />
       </div>
     );
     

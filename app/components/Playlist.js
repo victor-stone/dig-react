@@ -50,33 +50,32 @@ var Playlist = React.createClass({
   },
 
   componentWillMount: function() {
-    var model = this.props.model;
-    model.store.on('playlist',this.gotPlaylist);
-    this.setState( { 
-      model: model,
-      loading: false
-    });
+    var store = this.props.store;
+    store.on('playlist',this.gotPlaylist);
+    store.on('playlist-loading',this.gotPlaylistLoading);
   },
 
   componentWillUnmount: function() {
-    this.state.model.store.removeListener('playlist',this.gotPlaylist);
+    var store = this.props.store;
+    store.removeListener('playlist',this.gotPlaylist);
+    store.removeListener('playlist-loading',this.gotPlaylistLoading);
   },
 
-  gotPlaylist: function(promise) {
-    this.setState( { loading: true } );
-    promise.then( results => {
-      // throw this back on the window thread
-       setTimeout( () =>
-        this.setState( {
-          model: results,
-          loading: false,
-        }), 50 );
-    });
+  gotPlaylist: function() {
+    var state = { loading: false };
+    setTimeout( () => this.setState(state), 50 );
+  },
+
+  gotPlaylistLoading: function() {
+    var state = { loading: true };
+    setTimeout( () => this.setState(state), 50 );
   },
 
   render: function() {
 
-    var playlistItems = this.state.model.playlist.map( upload =>
+    var model = this.props.store.model;
+
+    var playlistItems = model.playlist.map( upload =>
       <PlaylistItem key={upload.id} upload={upload} skipUser={this.props.skipUser} />
     );
 

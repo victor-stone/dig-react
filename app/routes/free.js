@@ -16,10 +16,9 @@ const free = React.createClass({
 
 });
 
-free.model = function(params,queryParams) {
+free.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { lic: 'open' }, queryParams||{} );
-  var playlist = new Playlist();
-  return playlist.playlist(qparams);
+  return Playlist(qparams);
 };
 
 module.exports = free;

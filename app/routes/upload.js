@@ -197,7 +197,7 @@ var RemixesSection = React.createClass({
 const upload = React.createClass({
 
   render() {
-    var model = this.props.model;
+    var model = this.props.store;
     var upload = model.upload;
     return  (
       <div>
@@ -245,7 +245,7 @@ const upload = React.createClass({
 
 upload.path = '/files/:userid/:uploadid';
 
-upload.model = function(params/*,queryParams*/) {
+upload.store = function(params/*,queryParams*/) {
   return uploadStore.find(params.uploadid);
 };
 

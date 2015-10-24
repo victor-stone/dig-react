@@ -10,27 +10,69 @@ var minRemixesForTags = 10;
 
 var Tags = Query.extend({
 
-  selectedTags: new TagString(),
+  selectedTags: {},
 
-
-  addSelected: function(tag) {
-    this.selectedTags.add(tag);
-    this.emit('selectedTags',this.selectedTags);
+  addSelected: function(tag,cat) {
+    cat = this._ensureSelectedCat(cat);
+    this.selectedTags[cat].add(tag);
+    this._emitSelectedTags(cat,true);
   },
 
-  removeSelected: function(tag) {
-    this.selectedTags.remove(tag);
-    this.emit('selectedTags',this.selectedTags);
+  removeSelected: function(tag,cat) {
+    if( !cat ) {
+      cat = this._findCatFromTag(tag);
+      if( !cat ) {
+        return;
+      }
+    }
+    this.selectedTags[cat].remove(tag);
+    this._emitSelectedTags(cat,true);
   },
 
-  toggleSelected: function(tag,flag) {
-    this.selectedTags.toggle(tag,flag);
-    this.emit('selectedTags',this.selectedTags);
+  toggleSelected: function(tag,flag,cat) {
+    cat = this._ensureSelectedCat(cat);
+    this.selectedTags[cat].toggle(tag,flag);
+    this._emitSelectedTags(cat,true);
   },
 
   clearSelected: function() {
-    this.selectedTags.clear();
-    this.emit('selectedTags',this.selectedTags);    
+    for( var cat in this.selectedTags ) {      
+      this.selectedTags[cat].clear();
+      this._emitSelectedTags(cat,false);
+    }
+    this._emitSelectedTags(null,true);
+  },
+
+  _ensureSelectedCat: function(cat) {
+    if( !cat ) {
+      cat = '*';
+    }
+    if( !(cat in this.selectedTags ) ) {
+      this.selectedTags[cat] = TagString();
+    }
+    return cat;
+  },
+
+  _emitSelectedTags: function(cat,doAll) {
+    if( cat ) {
+      this.emit('selectedCatTags',this.selectedTags[cat],cat);      
+    }
+    if( doAll ) {
+      var allTags = TagString();
+      for( var cat2 in this.selectedTags ) {
+        allTags.add( this.selectedTags[cat2] );
+      }
+      this.emit( 'selectedTags', allTags );
+    }
+  },
+
+  _findCatFromTag: function(tag) {
+    for( var cat in this.selectedTags ) {
+      if( this.selectedTags[cat].contains(tag) ) {
+        return cat;
+      }
+    }
+    return '*';
   },
 
   // return a TagUtils object

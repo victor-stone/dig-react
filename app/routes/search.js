@@ -56,21 +56,14 @@ const search = React.createClass({
 
   render() {
     var text   = this.props.queryParams.searchp;
-    var model  = this.props.model;
-    var offset = this.props.queryParams.offset || 0;
-    var limit  = this.props.queryParams.limit  || 10;
-    var plist  = model.main;
+    var store  = this.props.store;
 
     return  (
       <div>
         <PageHeader icon="search" title={text} subTitle="Search Results" />
-        <DidYouMeanSection model={model.didYouMean} />
-        <Paging offset={offset}
-                length={plist.playlist.length}
-                limit ={limit}
-                total ={plist.total} 
-        />
-        <Playlist model={plist} />
+        <DidYouMeanSection model={store.didYouMean} />
+        <Paging store={store} />
+        <Playlist store={store} />
       </div>
     );
   },
@@ -115,14 +108,17 @@ function didYouMean( text )
       );
 }
 
-search.model = function( params, queryParams ) {
+search.store = function( params, queryParams ) {
   var qparams = oassign( { search_type: 'all' }, qc.default, queryParams );
-  var playlist = new PlaylistStore();
+
   var modelRequest = {
-    main: playlist.playlist(qparams),
+    store: PlaylistStore(qparams),
     didYouMean: didYouMean(queryParams.searchp)
   };
-  return rsvp.hash(modelRequest);
+  return rsvp.hash(modelRequest).then( model => {
+    model.store.didYouMean = model.didYouMean;
+    return model.store;
+  });
 };
 module.exports = search;
 

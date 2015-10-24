@@ -113,9 +113,9 @@ function handleReactRoute(url,res) {
 
     var h = handlers[0];
 
-    h.component.model(h.params, h.queryParams)
+    h.component.store(h.params, h.queryParams)
 
-      .then(function (model) {
+      .then(function (store) {
     
         var fname = DIST_DIR + '/index.html';
 
@@ -131,7 +131,7 @@ function handleReactRoute(url,res) {
             var props = {
               name:        h.component.displayName,
               component:   h.component,
-              model:       model,
+              store:       store,
               params:      h.params,
               queryParams: h.queryParams 
             };

@@ -5,7 +5,7 @@ import { FeaturedPage } from '../components';
 import { oassign }      from '../unicorns/goodies';
 import qc               from '../models/queryConfigs';
 
-import { service as query } from '../stores/query';
+import Playlist from '../stores/playlist';
 
 const morelike = React.createClass({
 
@@ -19,9 +19,9 @@ const morelike = React.createClass({
 
 morelike.path = '/morelike/:id';
 
-morelike.model = function(params,queryParams) {
+morelike.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { tags: params.id }, queryParams||{} );
-  return query.playlistWithCount(qparams);
+  return Playlist(qparams);
 };
 
 module.exports = morelike;
