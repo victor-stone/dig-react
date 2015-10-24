@@ -26,7 +26,9 @@ const SelectableTag = React.createClass({
            this.selected != nextState.selected;
   },
 
-  onClick: function() {
+  onClick: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
     var selected = !this.state.selected;
     var catID    = this.props.catID;
     this.props.store.toggleSelected(this.props.model.id, selected, catID);
@@ -125,7 +127,9 @@ const TagCategoryRow = React.createClass({
 
 const SelectedTag = React.createClass({
 
-  remove: function() {
+  remove: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.props.store.removeSelected(this.props.name);
   },
 

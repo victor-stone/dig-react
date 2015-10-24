@@ -29,6 +29,7 @@
     "react-dom": "^0.14.0",
     "reflux": "^0.3.0",
     "rsvp": "^3.1.0",
+    "soundmanager2": "^2.97.20150601",
     "uglify-js": "^2.5.0",
     "uglifyify": "^3.0.1"
   },

@@ -30,14 +30,16 @@ function build() {
           var builders = [ 
               bundleVendorJSFiles(), 
               bundleVendorCSSFiles(), 
-              publishFontFiles()
+              publishFontFiles(),
+              publishSMFiles(),
             ];
           return RSVP.all(builders);
         })
       .then( () => {
           commonBuild();
-          publishSourceMaps();
-        });        
+          publishSourceMaps();          
+        })
+      .catch( errr => err(errr) );    
 
   } else {
     commonBuild();
@@ -138,11 +140,13 @@ function bundleVendorJSFiles() {
   var vendorJSSources = {
     dev: [
         'node_modules/jquery/dist/jquery.js',
-        'node_modules/bootstrap/dist/js/bootstrap.js'
+        'node_modules/bootstrap/dist/js/bootstrap.js',
+        'node_modules/soundmanager2/script/soundmanager2.js'
         ],
     prod: [
         'node_modules/jquery/dist/jquery.min.js',
-        'node_modules/bootstrap/dist/js/bootstrap.min.js'
+        'node_modules/bootstrap/dist/js/bootstrap.min.js',
+        'node_modules/soundmanager2/script/soundmanager2-nodebug-jsmin.js'
     ]
   };
   return bundleVendorFiles(vendorJSSources[MODE],'js');
@@ -154,8 +158,16 @@ function publishFontFiles() {
 
   var rootd = 'node_modules/font-awesome/';
 
-  return globp( rootd + 'fonts/*.*' )
-    .then( fnames => fnames.forEach( f => copy( f, f.replace(rootd,'dist/') ) ) );
+  return publishDir(rootd + 'fonts/*.*', rootd );
+}
+
+function publishSMFiles() {
+
+  mkdir('dist/swf');
+
+  var rootd = 'node_modules/soundmanager2/';
+
+  return publishDir( rootd + 'swf/soundmanager2{_flash9.swf,.swf}' ,rootd);
 }
 
 function publishSourceMaps() {
@@ -190,6 +202,11 @@ function bundleVendorCSSFiles() {
     ]
   };
   return bundleVendorFiles(vendorCSSSources[MODE],'css');
+}
+
+function publishDir(files,rootd) {
+  return globp( files )
+    .then( fnames => fnames.forEach( f => copy( f, f.replace(rootd,'dist/') ) ) );
 }
 
 function bundleVendorFiles(arr,outext) {
