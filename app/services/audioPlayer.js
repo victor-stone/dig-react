@@ -91,28 +91,26 @@ oassign(Media.prototype,{
       },
       onfinish: function() {
         me.setIsPlaying(false);
-        me.safeEmit('finish');
+        me.safeEmit('finish',me);
       },
-      whileloading: function() {
-        debounce(this.setPositionProperties.bind(this), 50);
-      },
-      whileplaying: function() {
-        debounce(this.setPositionProperties.bind(this), 50);
-      }
+
+      whileloading: debounce(me.setPositionProperties.bind(me), 50),
+      whileplaying: debounce(me.setPositionProperties.bind(me), 50),
     });
-        
-    sound.setPositionProperties = function() {
-        oassign(me.positionProperties,{
-              bytesLoaded: this.bytesLoaded,
-              bytesTotal: this.bytesTotal,
-              position: this.position,
-              duration: this.duration
-            });
-        me.safeEmit('position',me.positionProperties,me);
-      };
-      
+
     this._sound = sound;
     return sound;
+  },
+
+  setPositionProperties: function() {
+    var sound = this._sound;
+    oassign(this.positionProperties,{
+          bytesLoaded: sound.bytesLoaded,
+          bytesTotal: sound.bytesTotal,
+          position: sound.position,
+          duration: sound.duration
+        });
+    this.safeEmit('position',this.positionProperties,this);
   },
 
   stop: function() {
@@ -149,8 +147,8 @@ oassign(Media.prototype,{
   },
 
   setPositionPercentage: function(percentage) {
-    var duration = this.duration;
-    return this.setPosition(duration * (percentage / 100));
+    var duration = this.positionProperties.duration;
+    return this.setPosition(duration * percentage);
   },
 
   setIsPlaying: function(flag) {

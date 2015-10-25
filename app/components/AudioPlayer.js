@@ -9,7 +9,6 @@ const PlaybackScrubber = React.createClass({
 
   getInitialState: function() {
     return {
-        isMouseDown: false,
         position: this.props.position
       };
   },
@@ -19,24 +18,29 @@ const PlaybackScrubber = React.createClass({
     e.preventDefault();
   },
 
+  _isMouseDown: false,
+
   mouseDown: function() {
-    this.setState( { isMouseDown: true } );
+    this._isMouseDown = true;
   },
 
   mouseUp: function(evt) {
-    this.setState( { isMouseDown: false } );
-    this.sendPostion(evt.offsetX);
+    this._isMouseDown = false;
+    this.sendPostion(evt.clientX);
   },
 
   mouseMove: function(evt) {
-    if( this.state.isMouseDown ) {
-      this.sendPostion(evt.offsetX);
+    if( this._isMouseDown ) {
+      this.sendPostion(evt.clientX);
     }
   },
 
   sendPostion: function(offset) {
-    var ratio = offset / $(this.refs['position']).width();
-    this.props.media.setPositionPercentage(ratio*100);
+    var $e = $(this.refs['container']);
+    var width = $e.width();
+    offset -= $e.position().left;
+    var ratio = offset / width;
+    this.props.media.setPositionPercentage(ratio);
   },
 
   loadingWidth: function() {
@@ -66,15 +70,21 @@ const PlaybackScrubber = React.createClass({
     var posCss  = { width: this.positionWidth() + '%' };
 
     return (
-        <div onClick={this.click}>
+        <div onClick={this.click} ref="container" className="playback-scrubber pull-left">
           <div className="waveimage bar" />
-          <div className="loaded bar"   ref="loading"  style={loadCss} />
+          <div className="loaded bar"   
+               ref="loading"  
+               style={loadCss} 
+               onMouseMove={this.mouseMove}
+               onMouseDown={this.mouseDown}
+               onMouseUp={this.mouseUp}          
+          />
           <div className="position bar"
                ref="position" 
-               style={posCss}
-               onMouseMove={this.onMouseMove}
-               onMouseDown={this.onMouseDown}
-               onMouseUp={this.onMouseUp}
+               style={posCss}               
+               onMouseMove={this.mouseMove}
+               onMouseDown={this.mouseDown}
+               onMouseUp={this.mouseUp}          
           />
         </div>
       );
@@ -109,7 +119,7 @@ const PlayControls = React.createClass({
 
     var prevClass    = 'btn play-previous ' + ( this.state.hasPrev ? '' : 'disabled' );
     var nextClass    = 'btn play-next '     + ( this.state.hasNext ? '' : 'disabled' );
-    var playIcon     = this.state.isPaused ? 'play' : 'pause';
+    var playIcon     = (this.state.isPlaying && !this.state.isPaused) ? 'pause' : 'play';
 
     return (
       <div className="btn-group pull-left">
@@ -243,6 +253,7 @@ const AudioPlayer = React.createClass({
   getControlsState: function(nowPlaying) {
     return {
         isPaused: nowPlaying.isPaused,
+        isPlaying: nowPlaying.isPlaying,
         hasNext: AudioPlayerService.hasNext(),
         hasPrev: AudioPlayerService.hasPrev()
       };
@@ -287,9 +298,10 @@ const AudioPlayer = React.createClass({
             <PlayControls ref="controls" controls={controlState} />
             <div className="media-body clearfix">
               <PlaylistButton   ref="playlistButton" media={nowPlaying} hasPlaylist={hasPlaylist} />
-              <TrackTitleLink   ref="trackTitle"  artistID={artist.id} id={nowPlaying.id} name={nowPlaying.name} />
-              <ArtistLink       ref="artist"  id={artist.id} name={artist.name} />
               <PlaybackScrubber ref="scrubber" media={nowPlaying} position={position} />
+              <TrackTitleLink   ref="trackTitle"  artistID={artist.id} id={nowPlaying.id} name={nowPlaying.name} />
+              {" "}
+              <ArtistLink       ref="artist"  id={artist.id} name={artist.name} />
             </div>
           </article>
         </div>

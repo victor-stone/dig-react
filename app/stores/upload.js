@@ -5,8 +5,8 @@ import rsvp            from 'rsvp';
 
 
 function _fixFeaturing(model) {
-  if( !model.featuring && model.sources && model.upload.setFeaturingSources ) {
-    model.upload.setFeaturingSources(model.sources);
+  if( !model.featuring && model.sources && model.upload.setFeatureSources ) {
+    model.upload.setFeatureSources(model.sources);
   }
   return model;
 }

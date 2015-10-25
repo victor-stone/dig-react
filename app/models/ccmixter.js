@@ -337,7 +337,7 @@ class Detail extends Upload {
           var unique = [ ];
           // hello O(n)
           sources.forEach( f => {
-            var name = f.user_name;
+            var name = f.artist.name;
             if( unique.indexOf(name) === -1 ) {
               unique.push(name);
             }
