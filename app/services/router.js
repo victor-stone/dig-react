@@ -1,8 +1,7 @@
 
-import RouteRecognizer from 'route-recognizer';
-
-import routes from '../routes';
-import util from 'util';
+import RouteRecognizer  from 'route-recognizer';
+import routes           from '../routes';
+import util             from 'util';
 import { EventEmitter } from 'events';
 
 // temp

@@ -13,12 +13,23 @@ if( typeof Array.prototype.contains === 'undefined' ) {
   Array.prototype.contains = Array.prototype.includes;
 }
 
+if( typeof Array.prototype.findBy === 'undefined' ) {
+  Array.prototype.findBy = function(key,value) {
+    for( var i = 0; i < this.length; i++ ) {
+      if( this[i][key] == value ) {
+        return this[i];
+      }
+    }
+    return null;
+  };
+}
+
 function decamlize(str) {
-return str.replace(/::/g, '/')
-          .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
-          .replace(/([a-z\d])([A-Z])/g, '$1_$2')
-          .replace(/(-|\s+)/g, '_')
-          .toLowerCase();
+  return str.replace(/::/g, '/')
+            .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
+            .replace(/([a-z\d])([A-Z])/g, '$1_$2')
+            .replace(/(-|\s+)/g, '_')
+            .toLowerCase();
 }
 
 function dasherize(str) {
