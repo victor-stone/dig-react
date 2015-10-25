@@ -2,25 +2,16 @@
 import React from 'react';
 import Glyph from './Glyph';
 import Link  from './Link';
-import { oassign } from '../unicorns/goodies';
 
-import AudioPlayer from '../services/audioPlayer';
+import AudioPlayerService from '../services/audioPlayer';
 
 const PlaybackScrubber = React.createClass({
 
-
-  componentWillReceiveProps: function(props) {
-    this.unListen();
-  },
-
-  componentWillMount: function() {
-    var media = this.props.media;
-    media.on('playback',this.onPlayback);
-    this.setState( { media } );
-  },
-
-  componentWillUnmount: function() {
-    this.unListen();
+  getInitialState: function() {
+    return {
+        isMouseDown: false,
+        position: this.props.position
+      };
   },
 
   click: function(e) {
@@ -43,33 +34,17 @@ const PlaybackScrubber = React.createClass({
     }
   },
 
-  unListen: function() {
-    if( this.state.media ) {
-      this.state.media.removeListener('playback',this.onPlayback);
-    }
-  },
-
   sendPostion: function(offset) {
-    var ratio = evt.offsetX / $(this.refs.position).width();
-    this.state.media.setPositionPercentage(ratio*100);
-  },
-
-  onPlayback: function(media) {
-    var state = {
-      bytesLoaded: media.bytesLoaded,
-      bytesTotal: media.bytesTotal,
-      position: media.position,
-      duration: media.duration,
-    }
-    this.setState( )
+    var ratio = offset / $(this.refs['position']).width();
+    this.props.media.setPositionPercentage(ratio*100);
   },
 
   loadingWidth: function() {
 
-    var loaded = this.state.state.bytesLoaded;
+    var loaded = this.state.position.bytesLoaded;
     var val = 0;
     if( loaded > 0  ) {
-      val = 100 * (loaded /  this.state.bytesTotal);
+      val = 100 * (loaded /  this.state.position.bytesTotal);
     }
     return val + '';
     
@@ -77,101 +52,74 @@ const PlaybackScrubber = React.createClass({
 
   positionWidth: function() {
 
-    var position = this.state.state.position;
+    var position = this.state.position.position;
     var val = 0;
     if( position > 0 ) {
-      val = 100 * (position / this.state.state.duration);
+      val = 100 * (position / this.state.position.duration);
     }
     return (val + '');      
 
   },
 
   render: function() {
-    var loadCss = 'width:' + this.loadingWidth() + '%';
-    var posCss  = 'width:' + this.positionWidth() + '%';
+    var loadCss = { width: this.loadingWidth() + '%' };
+    var posCss  = { width: this.positionWidth() + '%' };
 
     return (
         <div onClick={this.click}>
-          <div className="waveimage bar"></div>
-          <div className='loaded bar'   ref="loading"  style={loadCss}></div>
-          <div className='position bar' 
+          <div className="waveimage bar" />
+          <div className="loaded bar"   ref="loading"  style={loadCss} />
+          <div className="position bar"
                ref="position" 
                style={posCss}
                onMouseMove={this.onMouseMove}
                onMouseDown={this.onMouseDown}
                onMouseUp={this.onMouseUp}
-          </div>
+          />
         </div>
-      )
+      );
   }
 });
 
 const PlayControls = React.createClass({
 
-  componentWillMount: function() {
-    this.handleNewMedia( this.props.nowPlaying );
+  getInitialState: function() {
+    return this.props.controls;
   },
-
-  componentWillReceiveProps: function(props) {
-    this.handleNewMedia( props.nowPlaying );
-  },
-
-  handleNewMedia: function(nowPlaying,opts) {
-    var oldMedia = this.state.nowPlaying;
-    if( oldMedia != nowPlaying ) {
-      if( oldMedia ) {
-        oldMedia.removeListener( 'isPaused',   this.onIsPaused );
-        oldMedia.removeListener( 'isPlaying',  this.onIsPlaying );
-      }
-      if( nowPlaying ) {
-        nowPlaying.on( 'isPaused',   this.onIsPaused );
-        nowPlaying.on( 'isPlaying',  this.onIsPlaying );
-      }
-    }
-    this.setState( oassign{ nowPlaying, opts || {} } );
-  },
-
-  isPlaying: function(nowPlaying,isPlaying) {
-    this.handleNewMedia( nowPlaying, { isPlaying } );
-  },
-
-  isPaused: function(nowPlaying,isPaused) {
-    this.handleNewMedia( nowPlaying, { isPaused } );    
-  }
 
   playPrevious: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    AudioPlayer.playPrevious();
+    AudioPlayerService.playPrevious();
   },
 
   togglePause: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    AudioPlayer.togglePause();
+    AudioPlayerService.togglePause();
   },
 
   playNext: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    AudioPlayer.playNext();
+    AudioPlayerService.playNext();
   },
 
   render: function() {
 
-    var prevClass    = 'btn play-previous ' + ( AudioPlayer.hasPrev() ? '' : 'disabled' );
-    var nextClass    = 'btn play-next '     + ( AudioPlayer.hasNext() ? '' : 'disabled' );
-    var playIcon     = this.state.nowPlaying.isPaused ? 'play' : 'pause';
+    var prevClass    = 'btn play-previous ' + ( this.state.hasPrev ? '' : 'disabled' );
+    var nextClass    = 'btn play-next '     + ( this.state.hasNext ? '' : 'disabled' );
+    var playIcon     = this.state.isPaused ? 'play' : 'pause';
 
     return (
-      <div className='btn-group pull-left'>
-          <a href='#' onClick={this.playPrevious} className={prevClass} >
+      <div className="btn-group pull-left">
+          <a href="#" onClick={this.playPrevious} className={prevClass} >
             <Glyph icon="backward" />
           </a>
-          <a href='#' onClick={this.togglePause}  className="btn play"  >
+          <a href="#" onClick={this.togglePause}  className="btn play"  >
             <Glyph icon={playIcon} />
           </a>
-          <a href='#' onClick={this.playNext}     className={nextClass}>
+          <a href="#" onClick={this.playNext}     className={nextClass}>
             <Glyph icon="forward" />
           </a>
       </div>
@@ -182,27 +130,39 @@ const PlayControls = React.createClass({
 
 const PlaylistButton = React.createClass({
 
+  getInitialState: function() {
+    return { hasPlaylist: this.props.hasPlaylist };
+  },
+
   render: function() {
+
+    var hasPlaylist = this.state.hasPlaylist;
+
     return(
-        {this.props.playlist
-          ? <div className="pull-right">
+        hasPlaylist
+          ? (<div className="pull-right">
               <Link href="/nowplaying" className="btn btn-sm btn-info" id="playlist-button">
                 <Glyph icon="music" />{" playlist"}
               </Link>
-            </div>
-          : null
-        }
+            </div>)
+          : null     
       );
   }
 });
 
 const TrackTitleLink = React.createClass({
 
+  getInitialState: function() {
+    return this.props;
+  },
+
   render: function() {
-    var nowPlaying = this.props.nowPlaying;
-    var trackHREF  = '/files/' + nowPlaying.artist.id + '/' + nowPlaying.id;
+    if( !this.state.name ) {
+      return null;
+    }
+    var trackHREF  = '/files/' + this.state.artistID + '/' + this.state.id;
     return (
-      <h4 className='media-heading'><Link href={trackHREF}>{nowPlaying.name}</Link></h4>
+      <h4 className="media-heading"><Link href={trackHREF}>{this.state.name}</Link></h4>
     );
   },
 
@@ -210,52 +170,126 @@ const TrackTitleLink = React.createClass({
 
 const ArtistLink = React.createClass({
 
+  getInitialState: function() {
+    return this.props;
+  },
+
   render: function() {
-    var nowPlaying = this.props.nowPlaying;
-    var userHREF   = '/people/' + nowPlaying.artist.id;
+    if( !this.state.id ) {
+      return null;
+    }
+    var userHREF   = '/people/' + this.state.id;
     return (
-      <Link href={userHREF} className="user"><span class='light-color'>{nowPlaying.artist.name}</span></Link>
+      <Link href={userHREF} className="user"><span className="light-color">{this.state.name}</span></Link>
     );
   }
 });
 
 const AudioPlayer = React.createClass({
 
+  getInitialState: function() {
+    return { nowPlaying: null,
+             isPlaying: false,
+             isPaused: false,
+             position: { 
+                bytesLoaded: -1,
+                bytesTotal: -1,
+                position: -1,
+                duration: -1,
+              }              
+            };
+  },
+
   componentWillMount: function() {
-    AudioPlayer.on('nowPlaying',this.onNowPlaying);
+    AudioPlayerService.on('nowPlaying',this.onNowPlaying);
   },
 
   onNowPlaying: function(nowPlaying) {
     if( this.state.nowPlaying ) {
-      this.nowPlaying.removeListener( 'isPlaying', this.onIsPlaying );
+      this.state.nowPlaying.removeListener( 'controls', this.onControls );
+      this.state.nowPlaying.removeListener( 'position',  this.onPosition );
     }
-    nowPlaying.on('isPlaying', this.onIsPlaying)
-    this.setState( { nowPlaying } );
+    if( nowPlaying ) {
+      nowPlaying.on( 'controls', this.onControls );
+      nowPlaying.on( 'position',  this.onPosition );
+
+      this.setRefsStates(nowPlaying);
+      this.updateControlsStates(nowPlaying);
+
+    } else {
+      this.setState( { nowPlaying } );
+    }
   },
 
-  onIsPlaying: function(media,isPlaying) {
-    this.setState( { media, isPlaying } );
+  setRefsStates: function( nowPlaying ) {
+    if( this.refs && 'artist' in this.refs ) {
+      this.refs['artist'].setState( {
+        id: nowPlaying.artist.id,
+        name: nowPlaying.artist.name
+      });
+
+      this.refs['trackTitle'].setState( {
+        artistID: nowPlaying.artist.id,
+        id: nowPlaying.id,
+        name: nowPlaying.name
+      });
+
+      this.refs['playlistButton'].setState( {
+        hasPlaylist: !!AudioPlayerService.playlist
+      });
+    }
+  },
+
+  getControlsState: function(nowPlaying) {
+    return {
+        isPaused: nowPlaying.isPaused,
+        hasNext: AudioPlayerService.hasNext(),
+        hasPrev: AudioPlayerService.hasPrev()
+      };
+  },
+
+  updateControlsStates: function(nowPlaying) {
+    if( this.refs && 'controls' in this.refs ) {
+      this.refs['controls'].setState( this.getControlsState(nowPlaying) );
+    }
+
+    this.setState( 
+        { nowPlaying,
+          isPaused: nowPlaying.isPaused,
+          isPlaying: nowPlaying.isPlaying
+        } );
+  },
+
+  onControls: function(nowPlaying) {
+    this.updateControlsStates(nowPlaying);
+  },
+
+  onPosition: function(position) {
+    this.refs['scrubber'].setState( { position } );
+    this.setState( { position } );
   },
 
   render: function() {
-    var nowPlaying = this.state.nowPlaying;
-
-    if( !nowplaying ) {
+    if( !this.state.nowPlaying ) {
       return null;
     }
-
-    var articleClass = 'clearfix audio-player ' + ( nowPlaying.isPlaying ? 'is-playing' : '' );
+    var nowPlaying   = this.state.nowPlaying;
+    var artist       = nowPlaying.artist;
+    var position     = this.state.position;
+    var articleClass = 'clearfix audio-player ' + ( this.state.isPlaying ? 'is-playing' : '' );
+    var hasPlaylist  = !!AudioPlayerService.playlist;
+    var controlState = this.getControlsState(nowPlaying);
 
     return(
       <nav className="navbar navbar-default navbar-fixed-bottom">
         <div className="container-fluid">
           <article className={articleClass} >
-            <PlayControls nowPlaying={nowPlaying} />
+            <PlayControls ref="controls" controls={controlState} />
             <div className="media-body clearfix">
-              <PlaylistButton playlist={AudioPlayer.playlist} />
-              <TrackTitleLink nowPlaying={nowPlaying} />
-              <ArtistLink nowPlaying={nowPlaying} />
-              <PlaybackScrubber media={nowPlaying} />
+              <PlaylistButton   ref="playlistButton" media={nowPlaying} hasPlaylist={hasPlaylist} />
+              <TrackTitleLink   ref="trackTitle"  artistID={artist.id} id={nowPlaying.id} name={nowPlaying.name} />
+              <ArtistLink       ref="artist"  id={artist.id} name={artist.name} />
+              <PlaybackScrubber ref="scrubber" media={nowPlaying} position={position} />
             </div>
           </article>
         </div>
@@ -264,4 +298,48 @@ const AudioPlayer = React.createClass({
       );
   },
 });
+
+AudioPlayer.PlayButton = React.createClass({
+
+  getInitialState: function() {
+    AudioPlayerService.bindToNowPlaying(this.props.model);
+    var media = this.props.model.media;
+    return { isPlaying: media && media.isPlaying, 
+             media,
+             isMediaHooked: false };
+  },
+
+  componentWillUnmount: function() {
+    if( this.state.isMediaHooked ) {
+      this.state.media.removeListener( 'controls', this.onControls );
+    }
+  },
+
+  togglePlay: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    var upload = this.props.model;
+    AudioPlayerService.togglePlay(upload);
+    if( !this.state.isMediaHooked ) {
+      var media = upload.media;
+      media.on('controls',this.onControls);
+      this.setState( { media, isMediaHooked: true } );
+    }
+  },
+
+  onControls: function(media) {
+    this.setState( { isPlaying: media.isPlaying } );
+  },
+
+  render: function() {
+    var playStop = this.state.isPlaying ? 'stop' : 'play'; 
+    var cls      = 'btn btn-info btn-lg';
+    var sz       = this.props.big ? 'x4' : '';
+    var fixed    = this.props.fixed || false;
+    return (<a className={cls} href="#" onClick={this.togglePlay}><Glyph fixed={fixed} sz={sz} icon={playStop} /></a>);
+  },
+
+});
+
+module.exports = AudioPlayer;
 

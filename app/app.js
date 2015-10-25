@@ -1,6 +1,6 @@
 //import { * } from './unicorns/goodies'
 import React  from 'react';
-import { Header, Footer } from './components';
+import { Header, Footer, AudioPlayer } from './components';
 import router from './services/router';
 
 const App = React.createClass({
@@ -43,6 +43,7 @@ const App = React.createClass({
           </div>
         </div>
         <Footer />
+        <AudioPlayer />
       </div>
     );
   },

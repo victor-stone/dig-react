@@ -137,11 +137,13 @@ function bundleBrowserJS() {
 
 function bundleVendorJSFiles() {  
   
+  // soundmanager with debug is very noisy
+  
   var vendorJSSources = {
     dev: [
         'node_modules/jquery/dist/jquery.js',
         'node_modules/bootstrap/dist/js/bootstrap.js',
-        'node_modules/soundmanager2/script/soundmanager2.js'
+        'node_modules/soundmanager2/script/soundmanager2-nodebug.js'
         ],
     prod: [
         'node_modules/jquery/dist/jquery.min.js',

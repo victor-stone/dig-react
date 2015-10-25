@@ -54,10 +54,12 @@ oassign(Media.prototype,{
 
   isPlaying:  false,
   isPaused: false,
-  position: -1,
-  duration: -1,
-  bytesLoaded: -1,
-  bytesTotal: -1,
+  positionProperties: {
+    position: -1,
+    duration: -1,
+    bytesLoaded: -1,
+    bytesTotal: -1,
+  },
   
   _sound: null,
 
@@ -77,48 +79,40 @@ oassign(Media.prototype,{
       url: url,
       onplay: function() {
         me.setIsPlaying(true);
-        me.trigger('onPlay');
       },
       onstop: function() {
         me.setIsPlaying(false);
-        me.trigger('onStop');
       },
       onpause: function() {
         me.setIsPaused(true);
-        me.trigger('onPause');
       },
       onresume: function() {
         me.setIsPaused(false);
-        me.trigger('onResume');
       },
       onfinish: function() {
         me.setIsPlaying(false);
-        me.trigger('onFinish');
+        me.safeEmit('finish');
       },
       whileloading: function() {
-        debounce(this.setPlaybackProperties.bind(this), 50);
+        debounce(this.setPositionProperties.bind(this), 50);
       },
       whileplaying: function() {
-        debounce(this.setPlaybackProperties.bind(this), 50);
+        debounce(this.setPositionProperties.bind(this), 50);
       }
-      });
+    });
         
-    sound.setPlaybackProperties = function() {
-        me.setPlaybackProperties({
-            bytesLoaded: this.bytesLoaded,
-            bytesTotal: this.bytesTotal,
-            position: this.position,
-            duration: this.duration
+    sound.setPositionProperties = function() {
+        oassign(me.positionProperties,{
+              bytesLoaded: this.bytesLoaded,
+              bytesTotal: this.bytesTotal,
+              position: this.position,
+              duration: this.duration
             });
-        };
+        me.safeEmit('position',me.positionProperties,me);
+      };
       
     this._sound = sound;
     return sound;
-  }
-
-  setPlaybackProperties: function(args) {
-    oassign(this,args);
-    this.trigger('playing');
   },
 
   stop: function() {
@@ -161,21 +155,18 @@ oassign(Media.prototype,{
 
   setIsPlaying: function(flag) {
     this.isPlaying = flag;
-    this.trigger('isPlaying',flag);
+    this.safeEmit( flag ? 'play' : 'stop', this );
+    this.safeEmit( 'controls', this );
   },
 
   setIsPaused: function(flag) {
     this.isPaused = flag;
-    this.trigger('isPaused',flag);
+    this.safeEmit( 'controls', this );
   },
 
-  trigger: function(event,arg) {
-    var args = [ event, this ];
-    if( arg ) {
-      args.push(args);
-    }
+  safeEmit: function() {
     // throw the event over to the main window thread
-    setTimeout( () => this.emit.apply(this,args), 50 );
+    setTimeout( () => this.emit.apply(this,arguments), 50 );    
   }
 
 });
@@ -185,7 +176,7 @@ function AudioPlayer() {
     return new AudioPlayer();
   }
   EventEmitter.call(this);
-};
+}
 
 util.inherits(AudioPlayer,EventEmitter);
 
@@ -242,14 +233,8 @@ oassign( AudioPlayer.prototype,
   
   bindToNowPlaying: function(model) {
     var np = this.nowPlaying;
-    if( np && model) {
-      if( !Array.isArray(model) ) {
-        model = [ model ];
-      }
-      model = model.findBy('mediaURL',this.nowPlaying.url);
-      if( model ) {
-        model.media = np;
-      }
+    if( np && model && model.mediaURL == np.url ) {
+      model.media = np;
     }
   },      
 
@@ -290,8 +275,8 @@ oassign( AudioPlayer.prototype,
     }
     this.nowPlaying = media;
     this._updatePlaylist();
-    media.once('onFinish',this._onFinish.bind(this));
-    this.emit('nowPlaying',nowPlaying);
+    media.once('finish',this._onFinish.bind(this));
+    this.emit('nowPlaying',media);
   },
   
   _onFinish: function(media) {
@@ -320,7 +305,7 @@ oassign( AudioPlayer.prototype,
       } else {  
         var args = oassign( { url: url },  playable.mediaTags );
         media = Media(args);
-        media.on('onPlay',this._onPlay.bind(this));
+        media.on('play',this._onPlay.bind(this));
         cache[url] = media;
       }
       playable.media = media;

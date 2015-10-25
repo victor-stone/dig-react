@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Link from './Link';
-import { Play as PlayButton } from './ActionButtons';
 import DownloadPopup from './DownloadPopup';
+import { PlayButton } from './AudioPlayer';
 
 var SongLink = React.createClass({
 
@@ -36,7 +36,7 @@ var PlaylistItem = React.createClass({
 
     return ( 
       <li className="clearfix text-nowrap">
-        <PlayButton upload={u} /> <DownloadPopup model={u} /> <SongLink model={u} /> <ArtistLink model={u.artist} skipUser={skipU} />
+        <PlayButton model={u} /> <DownloadPopup model={u} /> <SongLink model={u} /> <ArtistLink model={u.artist} skipUser={skipU} />
       </li>
     );
   },

@@ -7,15 +7,15 @@ import { Link,
 
 import { service as uploadStore }  from '../stores/upload';
 
-import { Play              as PlayButton, 
-         LicensePopup      as LicensePopupButton,
+import { LicensePopup      as LicensePopupButton,
          SharePopup        as SharePopupButton,
          AddTrackbackPopup as AddTrackbackPopupButton,
          TrackbackPopup    as TrackbackPopupButton,
          ExternalLink
  } from '../components/ActionButtons';
 
-import DownloadPopup from '../components/DownloadPopup';
+import DownloadPopup   from '../components/DownloadPopup';
+import { PlayButton }  from '../components/AudioPlayer';
 
 var Actions = React.createClass({
 
@@ -25,7 +25,7 @@ var Actions = React.createClass({
     return (
         <ul className="actions">
           <li>
-            <PlayButton big fixed upload={model} />
+            <PlayButton big fixed model={model} />
           </li>
           <li className="hidden-xs">
             <DownloadPopup big fixed model={model} />

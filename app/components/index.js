@@ -2,6 +2,7 @@
 
 module.exports = { 
   ActionButtons: require('./ActionButtons'),
+  AudioPlayer: require('./AudioPlayer'),
   DownloadPopup: require('./DownloadPopup'),
   FeaturedPage: require('./FeaturedPage'),
   Footer: require('./Footer'),

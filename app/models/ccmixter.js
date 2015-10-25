@@ -42,321 +42,372 @@ import Model from './model';
 import LicenseUtils from './licenses';
 import TagString from '../unicorns/tagString';
 
-var File = Model.extend({
+class File extends Model {
 
-  urlBinding:      'download_url',
-  idBinding:       'file_id',
-  sizeBinding:     'file_filesize',
-  typeBinding:     'file_extra.type',
-  uploadBinding:   '_bindParent',
+  constructor() {
+    super(...arguments);
+    this.urlBinding =    'download_url';
+    this.idBinding =       'file_id';
+    this.sizeBinding =     'file_filesize';
+    this.typeBinding =    'file_extra.type';
+    this.uploadBinding =   '_bindParent';
+    this.mediaURLBinding = 'download_url';
 
-  getExtension: function() {
-    return this.local_path.replace(/.*\.([a-z0-9]+)$/,'$1');
-  },
+    this.getExtension = function() {
+      return this.local_path.replace(/.*\.([a-z0-9]+)$/,'$1');
+    };
 
-  getNicName: function() {
-    if( this.file_nicname !== this.getExtension() ) {
-      return this.file_nicname;
-    }
-    return this.file_extra.type;
-  },
+    this.getNicName = function() {
+      if( this.file_nicname !== this.getExtension() ) {
+        return this.file_nicname;
+      }
+      return this.file_extra.type;
+    };
 
-  getTags: function() {
-    if( 'ccud' in this.file_extra ) {
-      return TagString.create( this.file_extra.ccud );
-    }
-    return '';
-  },
+    this.getTags = function() {
+      if( 'ccud' in this.file_extra ) {
+        return TagString( this.file_extra.ccud );
+      }
+      return '';
+    };
 
-  _hasTag: function(tag) {
+    this.getIsMP3 = function() {
+      var ffi = this.file_format_info;
+      if( (ffi) && ('format-name' in ffi) ) {
+        return ffi['format-name'] === 'audio-mp3-mp3';
+      }
+      return false;
+    };
+
+    this.getWavImageURL = function() {
+      var baseURL = 'http://ccmixter.org/waveimage/'; // um, hello ENV?
+      return baseURL + this.file_upload + '/' + this.file_id;
+    };
+
+    /* required by audio player */
+    
+    this.getMediaTags = function() {
+
+      var id          = this._bindParent.upload_id;
+      var name        = this._bindParent.upload_name;
+
+      var fileID      = this.file_id;
+      var wavImageURL = this.getWavImageURL();
+      var artist      = {
+                     name: this._bindParent.user_real_name,
+                     id: this._bindParent.user_name
+                   };
+
+      return { name, id, fileID, artist, wavImageURL };
+
+    };
+  }
+
+
+  _hasTag(tag) {
     var tags = this.getTags();
     if( tags ) {
       return tags.contains(tag);
     }
     return false;
-  },
-
-  getIsMP3: function() {
-    var ffi = this.file_format_info;
-    if( (ffi) && ('format-name' in ffi) ) {
-      return ffi['format-name'] === 'audio-mp3-mp3';
-    }
-    return false;
-  },
-
-  getWavImageURL: function() {
-    var baseURL = 'http://ccmixter.org/waveimage/'; // um, hello ENV?
-    return baseURL + this.file_upload + '/' + this.file_id;
-  },
-
-  /* required by audio player */
-  mediaURLBinding: 'download_url',
-  
-  getMediaTags: function() {
-
-    var id          = this._bindParent.upload_id;
-    var name        = this._bindParent.upload_name;
-
-    var fileID      = this.file_id;
-    var wavImageURL = this.getWavImageURL();
-    var artist      = {
-                   name: this._bindParent.user_name,
-                   id: this._bindParent.user_id
-                 };
-
-    return { name, id, fileID, artist, wavImageURL };
-
-  },
-
-});
-
-var UploadUserBasic = Model.extend( {
-  nameBinding: '_bindParent.user_real_name',
-});
-
-var UploadBasic = Model.extend( {
-
-  nameBinding: 'upload_name',
-  urlBinding:  'file_page_url',
-  idBinding:   'upload_id',
-  
-  _modelSubtree: {
-    artist: UploadUserBasic,
-  },
-
-});
-
-var Remix  = UploadBasic.extend({
-
-  getId: function() {
-    if( this.upload_id )
-      return this.upload_id;
-    if( this.file_page_url ) {
-      return this.file_page_url.match(/\/([\d]+)$/)[1];
-    }
   }
-});
 
-var Source = UploadBasic.extend();
 
-var TrackbackUser = Model.extend({
-  nameBinding: '_bindParent.pool_item_artist',
-});
+}
 
-var Trackback = Model.extend( {
+class UploadUserBasic extends Model {
+  constructor() {
+    super(...arguments);
+    this.nameBinding = '_bindParent.user_real_name';
+    this.idBinding = '_bindParent.user_name';
+  }
+}
 
-  _modelSubtree: {
-    artist: TrackbackUser,
-  },
+class UploadBasic extends Model {
 
-  getName: function() {
-    var name = this.pool_item_name + '';
-    if( name.match(/^watch\?/) !== null ) {
-      name = 'You Tube Video';
-    }
-    return name;
-  },
-  
-  idBinding:    'pool_item_id',
-  urlBinding:   'pool_item_url',
-  embedBinding: 'pool_item_extra.embed',
-  typeBinding:  'pool_item_extra.ttype',
-  
-});
+  constructor() {
+    super(...arguments);
+    this.nameBinding = 'upload_name';
+    this.urlBinding = 'file_page_url';
+    this.idBinding = 'upload_id';
+    this._modelSubtree = {
+          artist: UploadUserBasic,
+        };
+  }
 
-var UploadUser = UploadUserBasic.extend({
-  idBinding: '_bindParent.user_name',
-});
+}
 
-var Upload = UploadBasic.extend({
+class Remix  extends UploadBasic {
 
-  _modelSubtree: {
-    files: File,
-    artist: UploadUser,
-  },
+  constructor() {
+    super(...arguments);
 
-  idBinding: 'upload_id',
-  
-  getBpm: function() {
-    if( this.upload_extra ) {
-      var bpm = this.upload_extra.bpm;
-      if(  (bpm + '').match(/[^0-9]/) === null ) {
-        return bpm;
+    this.getId = function() {
+      if( this.upload_id )
+        return this.upload_id;
+      if( this.file_page_url ) {
+        return this.file_page_url.match(/\/([\d]+)$/)[1];
       }
-    }
-  },
+    };
+  }
+}
 
-  _findFileInfo: function(target,cb) {
+class Source extends UploadBasic { }
+
+class TrackbackUser extends Model {
+  constructor() {
+    super(...arguments);
+    this.nameBinding = '_bindParent.pool_item_artist';
+  }
+}
+
+class Trackback extends Model {
+
+  constructor() {
+    super(...arguments);
+    this._modelSubtree = {
+        artist: TrackbackUser,
+      };
+    this.idBinding = 'pool_item_id';
+    this.urlBinding = 'pool_item_url';
+    this.embedBinding = 'pool_item_extra.embed';
+    this.typeBinding = 'pool_item_extra.ttype';
+
+    this.getName = function() {
+      var name = this.pool_item_name + '';
+      if( name.match(/^watch\?/) !== null ) {
+        name = 'You Tube Video';
+      }
+      return name;
+    };
+      
+  }
+}
+
+class Upload extends UploadBasic {
+
+  constructor() {
+    super(...arguments);
+
+    this._modelSubtree = {
+      files: File,
+      artist: UploadUserBasic,
+    };
+
+    this.idBinding = 'upload_id';
+
+    this.getMediaURL = function(target) {
+      var f = this.getFileInfo(target);
+      return (f && f.mediaURL) || this.fplay_url || this.download_url;
+    };
+  
+    this.getMediaTags = function(target) {
+      var f = this.getFileInfo(target);
+      return f && f.mediaTags;
+    };
+
+    this.getBpm = function() {
+      if( this.upload_extra ) {
+        var bpm = this.upload_extra.bpm;
+        if( (bpm + '').match(/[^0-9]/) === null ) {
+          return bpm;
+        }
+      }
+    };
+
+    this.getFileInfo = function(target) {
+      return this._findFileInfo( target, f => f.isMP3 );
+    };
+
+    this.getWavImageURL = function(target) {
+      var f = this.getFileInfo(target);
+      return f ? f.wavImageURL : '';
+    };
+
+    this.getDownloadSize = function(target) {
+      var f = this.getFileInfo(target);
+      return f ? f.size.replace(/\(|\)|\s+/g, '') : '';
+    };
+
+  }
+
+  _findFileInfo(target,cb) {
     for( var i = 0; i < target.files.length; i++ ) {
       if( cb(target.files[i]) ) {
         return target.files[i];
       }
     }
-  },
+  }
 
-  getFileInfo: function(target) {
-    return this._findFileInfo( target, f => f.isMP3 );
-  },
 
-  getWavImageURL: function(target) {
-    var f = this.getFileInfo(target);
-    return f ? f.wavImageURL : '';
-  },
+}
 
-  getDownloadSize: function(target) {
-    var f = this.getFileInfo(target);
-    return f ? f.size.replace(/\(|\)|\s+/g, '') : '';
-  },
+class ACappellaFile extends File {
 
-  /* required by audio player */
-  getMediaURL: function(target) {
-    var f = this.getFileInfo(target);
-    return (f && f.mediaURL) || this.fplay_url || this.download_url;
-  },
-  
-  getMediaTags: function(target) {
-    var f = this.getFileInfo(target);
-    return f && f.mediaTags;
-  },
+  constructor() {
+    super(...arguments);
+
+    this.getIsPlayablePell = function() {
+      return this.getIsMP3() && this._hasTag('acappella');
+    };
+  }
+}
+
+class ACappella extends Upload {
+
+  constructor() {
+    super(...arguments);
+    this._modelSubtree = {
+      files: ACappellaFile,
+      artist: UploadUserBasic,
+    };
+
+    this.getFileInfo = function(target) {
+      return this._findFileInfo( target, f => f.isPlayablePell ) ||
+        this._findFileInfo( target, f => f.isMP3 );
+    };
+
+  }
+}
+
+class UserBasic extends Model {
+
+    constructor() {
+     super(...arguments);
+     this.nameBinding = 'user_real_name';
+      this.idBinding = 'user_name';
+    }
+}
+
+class User extends UserBasic {
+
+  constructor() {
+    super(...arguments);
+    this.avatarURLBinding = 'user_avatar_url';
+
+    this.getUrl = function() {
+      return this.artist_page_url + '/profile';
+    };
     
-});
+    this.getHomepage = function() {
+      if( this.user_homepage === this.artist_page_url ) {
+        return null;
+      }
+      return this.user_homepage;
+    };
 
-var ACappellaFile = File.extend({
-  getIsPlayablePell: function() {
-    return this.getIsMP3() && this._hasTag('acappella');
-  },
+  }
+}
 
-});
+class DetailUploadUser extends UploadUserBasic {
+  constructor() {
+    super(...arguments);
+    this.avatarURLBinding = '_bindParent.user_avatar_url';
+  }
+}
 
-var ACappella = Upload.extend( {
+class Detail extends Upload {
 
-  _modelSubtree: {
-    files: ACappellaFile,
-    artist: UploadUser,
-  },
+  constructor() {
+    super(...arguments);
+    this._modelSubtree = {
+      files: File,
+      artist: DetailUploadUser,
+    };
 
-  getFileInfo: function(target) {
-    return this._findFileInfo( target, f => f.isPlayablePell ) ||
-      this._findFileInfo( target, f => f.isMP3 );
-  },
+    this.licenseNameBinding = 'license_name';
+    this.licenseURLBinding = 'license_url';
+    //this.featuringBinding = 'upload_extra.featuring';
 
-});
+    this.getTags = function() {
+      return TagString(this.upload_tags);
+    };
+    
+    this.getUserTags = function() {
+      return TagString( this.upload_extra.usertags );
+    };
+    
+    this.getFeaturing = function() {
+      var feat = this.upload_extra.featuring;
+      return feat;
+    };
+    
+    this.setFeatureSources = function(sources) {
+      if( !this.featuring && sources ) {
+          var unique = [ ];
+          // hello O(n)
+          sources.forEach( f => {
+            var name = f.user_name;
+            if( unique.indexOf(name) === -1 ) {
+              unique.push(name);
+            }
+          });
+          this.featuring = unique.join(', ');
+        }  
+    };
 
-var UserBasic = Model.extend( {
-  nameBinding: 'user_real_name',
-  idBinding:   'user_name',
-});
+    // License stuff 
+    
+    this.getIsCCPlus = function() {
+      return this._hasTag('ccplus');
+    };
 
-var User = UserBasic.extend( {
-  avatarURLBinding: 'user_avatar_url',
+    this.getIsOpen = function() {
+      return this._hasTag('attribution,cczero');
+    };
+    
+    this.getLicenseLogoURL = function() {
+      return LicenseUtils.logoURLFromName( this.license_name );
+    };
+    
+    this.getLicenseYear = function() {
+      return this.year || (this.upload_date || this.upload_date_format).match(/(19|20)[0-9]{2}/)[0];
+    };
+    
+    this.getPurchaseLicenseURL = function() {
+      if( this.getIsCCPlus() ) {
+        var baseURL = 'http://tunetrack.net/license/';
+        return baseURL + this.file_page_url.replace('http://', '');
+      }
+    };
 
-  getUrl: function() {
-    return this.artist_page_url + '/profile';
-  },
-  
-  getHomepage: function() {
-    if( this.user_homepage === this.artist_page_url ) {
-      return null;
+    this.getPurchaseLogoURL = function() {
+      if( this.getIsCCPlus() ) {
+        return LicenseUtils.logoURLFromAbbr( 'ccplus' );
+      }
+    };
+    
+  }
+
+  _hasTag(tag) {
+    if( !this._tags ) {
+      this._tags = this.getTags();
     }
-    return this.user_homepage;
-  },
+    return this._tags.contains(tag);
+  }
 
-});
+}
 
-var DetailUser = UploadUser.extend( {
-  avatarURLBinding: '_bindParent.user_avatar_url',
-});
+class Tag extends Model {
+  constructor() {  
+    super(...arguments);
+    this.idBinding = 'tags_tag';
+    this.nameBinding = 'tags_tag';
+    this.countBinding = 'tags_count';
+  }
+}
 
-var Detail = Upload.extend( {
-
-  _modelSubtree: {
-    files: File,
-    artist: DetailUser,
-  },
-
-  getTags: function() {
-    return new TagString(this.upload_tags);
-  },
-  
-  getUserTags: function() {
-    return new TagString( this.upload_extra.usertags );
-  },
-  
-  _hasTag: function(tag) {
-    return this.getTags().contains(tag);
-  },
-
-  featuringBinding: 'upload_extra.featuring',
-
-  getFeaturing: function() {
-    var feat = this.upload_extra.featuring;
-    return feat;
-  },
-  
-  setFeatureSources: function(sources) {
-    if( !this.featuring && sources ) {
-        var unique = [ ];
-        // hello O(n)
-        sources.forEach( f => {
-          var name = f.user_name;
-          if( unique.indexOf(name) === -1 ) {
-            unique.push(name);
-          }
-        });
-        this.featuring = unique.join(', ');
-      }  
-  },
-
-  // License stuff 
-  
-  licenseNameBinding: 'license_name',
-  licenseURLBinding: 'license_url',
-  
-  getIsCCPlus: function() {
-    return this._hasTag('ccplus');
-  },
-
-  getIsOpen: function() {
-    return this._hasTag('attribution,cczero');
-  },
-  
-  getLicenseLogoURL: function() {
-    return LicenseUtils.logoURLFromName( this.license_name );
-  },
-  
-  getLicenseYear: function() {
-    return this.year || (this.upload_date || this.upload_date_format).match(/(19|20)[0-9]{2}/)[0];
-  },
-  
-  getPurchaseLicenseURL: function() {
-    if( this.getIsCCPlus() ) {
-      var baseURL = 'http://tunetrack.net/license/';
-      return baseURL + this.file_page_url.replace('http://', '');
-    }
-  },
-
-  getPurchaseLogoURL: function() {
-    if( this.getIsCCPlus() ) {
-      return LicenseUtils.logoURLFromAbbr( 'ccplus' );
-    }
-  },
-  
-});
-
-var Tag = Model.extend( {
-  idBinding:    'tags_tag',
-  nameBinding:  'tags_tag',
-  countBinding: 'tags_count'
-});
-
-var Topic = Model.extend({
-  publishedBinding: 'topic_date',
-  idBinding:        'topic_id',
-  nameBinding:      'topic_name',
-  rawBinding:       'topic_text',
-  htmlBinding:      'topic_text_html',
-  textBinding:      'topic_text_plain',
-});
+class Topic extends Model {
+  constructor() {
+    super(...arguments);
+    this.publishedBinding = 'topic_date';
+    this.idBinding = 'topic_id';
+    this.nameBinding = 'topic_name';
+    this.rawBinding = 'topic_text';
+    this.htmlBinding = 'topic_text_html';
+    this.textBinding = 'topic_text_plain';
+  }
+}
 
 module.exports = {
   Remix,

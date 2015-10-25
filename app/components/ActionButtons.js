@@ -1,23 +1,5 @@
-'use strict';
-
 import React from 'react';
 import Glyph from './Glyph';
-
-var Play = React.createClass({
-
-  togglePlay: function() {
-
-  },
-
-  render: function() {
-    var playStop = 'play'; // upload.media.isPlaying ? 'stop' : 'play';
-    var cls      = 'btn btn-info btn-lg';
-    var sz       = this.props.big ? 'x4' : '';
-    var fixed    = this.props.fixed || false;
-    return (<a className={cls} href onClick={this.togglePlay}><Glyph fixed={fixed} sz={sz} icon={playStop} /></a>);
-  },
-
-});
 
 var ExternalLink = React.createClass({
 
@@ -87,7 +69,6 @@ var TrackbackPopup = React.createClass({
 });
 
 module.exports = {
-  Play,
   LicensePopup,
   SharePopup,
   AddTrackbackPopup,
