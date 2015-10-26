@@ -88,7 +88,7 @@ const NavbarRight = (
         <Link href="/dig">{"dig deep "}<Glyph icon="tags" /></Link>
       </li>
       <li>
-        <a  href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{"Featured "}<Glyph icon="chevron-down" /></a>
+        <a  href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{"featured "}<Glyph icon="chevron-down" /></a>
         <ul className="dropdown-menu">
           <li><Link href="/film"><Glyph fixed icon="film" />{" music for film"}</Link></li>
           <li><Link href="/games"><Glyph fixed icon="gamepad" /> {"music for games"}</Link></li>

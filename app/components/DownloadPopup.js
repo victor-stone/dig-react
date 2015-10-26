@@ -1,7 +1,8 @@
 import React from 'react';
 import Glyph from './Glyph';
 import Modal from './Modal';
-import { LicensePopup } from './ActionButtons';
+import { LicenseInfoLink, 
+         LicenseInfo } from './LicenseInfo';
 
 // this sucks
 import { service as store } from '../stores/upload';
@@ -40,7 +41,37 @@ var DownloadPopup = React.createClass({
     window.prompt('Control (or Cmd) + C to copy', this.refs.attributionText.value );
   },
 
+  showLicense: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState( { showLicense: true } );
+  },
+
+  showDownload: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState( { showLicense: false } );
+  },
+
   genPopup: function() {
+    var upload = this.state.fullUpload;
+
+    return (
+        <Modal handleHideModal={this.handleHideModal} subTitle="Download" title={upload.name} >
+        {this.state.showLicense
+          ? <div ref="license">
+              <a href="#" className="pull-left" onClick={this.showDownload}><Glyph icon="chevron-left" />{" back"}</a>
+              <div className="text-center"><strong>{LicenseInfo.title}</strong></div>
+              <div className="clearfix" />
+              <LicenseInfo />
+            </div>
+          : this.genDLPopup()
+        }
+        </Modal>
+      );
+  },
+
+  genDLPopup: function() {
 
     var upload         = this.state.fullUpload;
     var plainSelected  = this.state.plainSelected;
@@ -55,8 +86,7 @@ var DownloadPopup = React.createClass({
     var licenseText = licenseTextTemplate[ plainSelected ? 'plain' : 'html' ];
 
     return (
-      <Modal handleHideModal={this.handleHideModal} subTitle="Download" title={upload.name} >
-        <div className="row download-popup">
+        <div className="row download-popup" ref="download-content">
           <div className="col-md-5">
             <div className="col-panel">
               <p className="text-primary">{"To use this music you are "}<mark>{"required"}</mark>{" to give credit to the musicians."}</p>
@@ -78,7 +108,7 @@ var DownloadPopup = React.createClass({
                 <a className="btn btn-info btn-lg" href={upload.mediaURL} download><Glyph icon="cloud-download" x2 left/>{" Download "}<small>{upload.downloadSize}</small></a>
               </li>
               <li className="license-badge">
-                <a href={upload.licenseURL}><img src={upload.licenseLogoURL} /></a> <LicensePopup model={upload}/>
+                <a href={upload.licenseURL}><img src={upload.licenseLogoURL} /></a> <LicenseInfoLink onShow={this.showLicense} />
               </li>
               <li> 
                 <p>{permission}</p>
@@ -98,7 +128,6 @@ var DownloadPopup = React.createClass({
             </ul>
           </div>
         </div>
-      </Modal>
       );
   },
 

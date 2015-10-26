@@ -12,19 +12,6 @@ var ExternalLink = React.createClass({
   }
 });
 
-var LicensePopup = React.createClass({
-
-  licensePopup: function() {
-
-  },
-
-  render: function() {
-    return(
-        <a href onClick={this.licensePopup}><Glyph icon="question-circle" /></a>
-      );
-  }
-});
-
 var SharePopup = React.createClass({
 
   sharePopup: function() {
@@ -69,7 +56,6 @@ var TrackbackPopup = React.createClass({
 });
 
 module.exports = {
-  LicensePopup,
   SharePopup,
   AddTrackbackPopup,
   TrackbackPopup,

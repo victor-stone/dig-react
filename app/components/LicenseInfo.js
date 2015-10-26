@@ -1,6 +1,15 @@
-
-import React from 'react';
+import React        from 'react';
 import LicenseUtils from '../models/licenses';
+import Glyph        from './Glyph';
+
+var LicenseInfoLink = React.createClass({
+
+  render: function() {
+    return(
+        <a href="#" onClick={this.props.onShow}><Glyph icon="question-circle" /></a>
+      );
+  }
+});
 
 var LicenseInfo = React.createClass({
 
@@ -57,5 +66,9 @@ var LicenseInfo = React.createClass({
   },
 
 });
+
+LicenseInfo.LicenseInfoLink = LicenseInfoLink;
+LicenseInfo.LicenseInfo = LicenseInfo;
+LicenseInfo.title = 'Our Licenses Overview';
 
 module.exports = LicenseInfo;
