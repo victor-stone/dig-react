@@ -67,7 +67,7 @@ var LicenseInfo = React.createClass({
         <div className="row">
           <div className="col-md-4 center-text license-images">
             <a href={this.state.byURL} ><img src={this.state.byLogoURL} className="licenseLogo" /></a>
-            <a href={this.state.byURL} >{this.state.linkToLic}</a>
+            <a href={this.state.byURL} >{"Full CC license"}</a>
           </div>
           <div className="col-md-7">
             <div className="text license-description">

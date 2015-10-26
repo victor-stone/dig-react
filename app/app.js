@@ -29,6 +29,14 @@ const App = React.createClass({
     }
   },
 
+  componentDidMount: function() {
+    this.scrollToHash();
+  },
+
+  componentDidUpdate: function() {
+    this.scrollToHash();
+  },
+
   componentWillUnmount: function() {
     if( !global.IS_SERVER_REQUEST ) {
       ajaxAdapter.removeListener( 'loading',    this.onLoading );
@@ -42,6 +50,33 @@ const App = React.createClass({
 
   onLoading: function(loading) {
     this.setState( { loading } ); 
+  },
+
+  scrollToHash: function() {
+    if( global.IS_SERVER_REQUEST ) {
+      return;
+    }
+
+    var hash = this.state.hash;
+    if( !hash ) {
+      return;
+    }
+
+    try {  
+      /* global $ */
+      hash = hash.replace(/#/,'');
+      var anchor = $('a[name="'+hash+'"]');
+      var offset = 0; 
+      $('html,body').animate(
+          { scrollTop: $(anchor).offset().top - offset },
+          { duration: 'slow', 
+            easing: 'swing'
+          }
+        );
+    }
+    catch( e ) {
+      //Ember.debug('wups ' + e.toString() );
+    }      
   },
 
   render: function() {

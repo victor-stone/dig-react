@@ -70,6 +70,7 @@ Router.prototype.updateUrl = function() {
     throw new Error('wups - don\'t do nested route handlers yet');
   }
   var handler = handlers[0];
+  var hash = document.location.hash || '';
   handler.component.store(handler.params, handler.queryParams)
     .then( store => {
         this.emit('navigateTo', {
@@ -77,7 +78,8 @@ Router.prototype.updateUrl = function() {
           component: handler.component,
           store,
           params: handler.params,
-          queryParams: handler.queryParams } );
+          queryParams: handler.queryParams,
+          hash } );
     });
 };
     
