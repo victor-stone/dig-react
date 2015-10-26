@@ -211,7 +211,15 @@ const AudioPlayer = React.createClass({
   },
 
   componentWillMount: function() {
-    AudioPlayerService.on('nowPlaying',this.onNowPlaying);
+    if( !global.IS_SERVER_REQUEST ) {
+      AudioPlayerService.on('nowPlaying',this.onNowPlaying);
+    }
+  },
+
+  componentWillUnmount: function() {
+    if( !global.IS_SERVER_REQUEST ) {
+      AudioPlayerService.removeListener('nowPlaying',this.onNowPlaying);
+    }
   },
 
   onNowPlaying: function(nowPlaying) {

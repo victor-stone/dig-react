@@ -21,7 +21,7 @@ var DidYouMeanSection = React.createClass({
       if( g.items.length ) {
         var items = g.items.map( i => <Link key={i.id} href={'/' + g.route + '/' + i.id} ><Glyph icon={g.icon}/> {i.name}</Link> );
         groups.push(
-            <div>
+            <div key={g.name}>
               <strong>{g.name}</strong>
               {items}
             </div>

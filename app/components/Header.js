@@ -26,6 +26,12 @@ const SearchBox = React.createClass({
     this.setState({value: event.target.value});
   },
 
+  onKey: function(e) {
+    if( e.keyCode === 13 ) {
+      this.submitSearch();
+    }
+  },
+
   submitSearch: function() {
     var text = this.state.value;
     if( !router ) { // avoid require() recursion
@@ -44,6 +50,7 @@ const SearchBox = React.createClass({
             value={this.state.value}
             placeholder="genre, instrument, etc."
             onChange={this.handleChange}
+            onKeyDown={this.onKey}
             ref="input"
             size="30"
             id="searchText"

@@ -3,6 +3,8 @@ import React  from 'react';
 import { Header, Footer, AudioPlayer } from './components';
 import router from './services/router';
 
+//         <GoogleAnalytics id="UA-2878955-3" />
+
 const App = React.createClass({
 
   getInitialState: function() {
@@ -17,7 +19,7 @@ const App = React.createClass({
         this.setState(specs);
       });
       // 'component' here is actually the outlet component'
-      if(  !this.state.component ) {
+      if( !this.state.component ) {
         router.navigateTo(); // current url
       }
     }

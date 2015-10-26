@@ -1,7 +1,8 @@
 
-// node --expose-gc server 
+// node --expose-gc server -mem
 
 global.IS_SERVER_REQUEST = true;
+process.env.NODE_ENV = 'production';
 
 var DIST_DIR = './dist';
 var port     = 3000;
@@ -10,6 +11,7 @@ var http = require('http');
 var fs   = require('fs');
 var glob = require('glob');
 var url  = require('url');
+var argv = require('minimist')(process.argv.slice(2));
 
 var log  = console.log;
 
@@ -62,7 +64,9 @@ function sniffMime(fname) {
 
 function handleRequest( req, res ) {
 
-  //manageMemory();
+  if( argv.mem ) {
+    manageMemory();
+  }
 
   var file = url.parse(req.url,true).pathname;
   
