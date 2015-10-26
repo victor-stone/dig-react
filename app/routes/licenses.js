@@ -6,9 +6,11 @@ const Licenses = React.createClass({
 
   render() {
     return  ( 
-      <div>
-        <PageHeader title="Our Licenses Overview" icon="creative-commons" />
-        <LicenseInfo /> 
+      <div className="row">
+        <div className="col-md-4 col-offset=4">
+          <PageHeader title="Our Licenses Overview" icon="creative-commons" />
+          <LicenseInfo.LicenseInfo /> 
+        </div>
       </div>
     );
   },

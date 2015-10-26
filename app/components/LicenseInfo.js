@@ -1,6 +1,7 @@
 import React        from 'react';
 import LicenseUtils from '../models/licenses';
 import Glyph        from './Glyph';
+import Modal        from './Modal';
 
 var LicenseInfoLink = React.createClass({
 
@@ -9,6 +10,41 @@ var LicenseInfoLink = React.createClass({
         <a href="#" onClick={this.props.onShow}><Glyph icon="question-circle" /></a>
       );
   }
+});
+
+var LicenseInfoPopup = React.createClass({
+
+  getInitialState: function() {
+    return {view: {showModal: false} };
+  },
+  
+  handleHideModal: function() {
+    this.setState({view: {showModal: false}});
+  },
+
+  handleShowModal: function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState({view: {showModal: true}});
+  },
+
+  genPopup: function() {
+    return ( <Modal handleHideModal={this.handleHideModal} title={title}>
+                <LicenseInfo />
+            </Modal> );
+  },
+
+  render: function() {
+
+    var popup = this.state.view.showModal ? this.genPopup() : null;
+    return (
+        <span>
+          <LicenseInfoLink onShow={this.handleShowModal} />
+          {popup}
+        </span>
+      );
+  }
+
 });
 
 var LicenseInfo = React.createClass({
@@ -67,8 +103,11 @@ var LicenseInfo = React.createClass({
 
 });
 
-LicenseInfo.LicenseInfoLink = LicenseInfoLink;
-LicenseInfo.LicenseInfo = LicenseInfo;
-LicenseInfo.title = 'Our Licenses Overview';
+var title = 'Our Licenses Overview';
 
-module.exports = LicenseInfo;
+module.exports = {
+    LicenseInfoLink,
+    LicenseInfo,
+    LicenseInfoPopup,
+    title
+};

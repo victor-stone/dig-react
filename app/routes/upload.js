@@ -3,12 +3,12 @@
 import React from 'react';
 
 import { Link, 
-        Glyph }  from '../components';
+        Glyph,
+        LicenseInfo }  from '../components';
 
 import { service as uploadStore }  from '../stores/upload';
 
-import { LicensePopup      as LicensePopupButton,
-         SharePopup        as SharePopupButton,
+import { SharePopup        as SharePopupButton,
          AddTrackbackPopup as AddTrackbackPopupButton,
          TrackbackPopup    as TrackbackPopupButton,
          ExternalLink
@@ -79,7 +79,7 @@ var UploadHeader = React.createClass({
 });
 
 
-var LicenseLink = React.createClass({
+var ccPlusLink = React.createClass({
 
   render: function() {
     var model = this.props.model;
@@ -88,8 +88,8 @@ var LicenseLink = React.createClass({
     }
     return(
       <li className="license-badge">
-        <a href="{model.purchaseLicenseURL}"><img src="{model.purchaseLogoURL}" /></a>
-        <LicensePopupButton />
+        <a href={model.purchaseLicenseURL}><img src={model.purchaseLogoURL} /></a>
+        <LicenseInfo.LicenseInfoPopup />
       </li>
       );
   }
@@ -104,9 +104,9 @@ var LicenseSection = React.createClass({
       <ul className="actions">
         <li className="license-badge">
           <a href={model.license_url}><img className="download-license" src={model.licenseLogoURL} /></a>  
-          <LicensePopupButton />
+          <LicenseInfo.LicenseInfoPopup />
         </li>
-        <LicenseLink model={model} />
+        <ccPlusLink model={model} />
         <li>
           <Link href={'/morelike/' + model.id} className="btn btn-success"><Glyph icon="exchange" />{" More Like This"}</Link>
         </li>
