@@ -176,7 +176,7 @@ const SelectedTags = React.createClass({
   },
 
   onMatchAny: function() {
-    this.props.onMatchAny( $(this.refs.matchAny).is(':checked') );
+    this.props.onMatchAny( $(this.refs['matchAny']).is(':checked') );
     this.setState( { matchAny: !this.state.matchAny });
   },
 

@@ -4,6 +4,7 @@ import React from 'react';
 import Link from './Link';
 import DownloadPopup from './DownloadPopup';
 import { PlayButton } from './AudioPlayer';
+import QueryOptions   from './QueryOptions';
 
 var SongLink = React.createClass({
 
@@ -83,6 +84,7 @@ var Playlist = React.createClass({
       <div className="container">
         <div className="row">
           <div className="col-md-9 col-md-offset-2 col-md-sm-12">
+            <QueryOptions store={this.props.store} />
             <ul className="play-list">
               {playlistItems}
             </ul>

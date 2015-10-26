@@ -11,7 +11,6 @@ var Playlist = Query.extend({
 
   applyParams: function(params) {
     var newParams = oassign({},this.queryParams,params);
-    this.emit('playlist-loading');
     this.playlist(newParams)
       .then( model => this.emit('playlist', model ) );
   },
@@ -26,7 +25,8 @@ var Playlist = Query.extend({
     if( !params.offset ) {
       params.offset = 0;
     }
-    this.queryParams = oassign({},params);
+    this.queryParams = params;
+    this.emit('playlist-loading');
 
     var modelRequest = {
       playlist: this._playlist( params ),

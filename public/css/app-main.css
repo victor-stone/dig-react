@@ -738,3 +738,41 @@ a.btn-exp:hover {
   
 }
 
+.filter-box {
+  float: right;
+  position:absolute;
+  right: -100px;
+  top: -79;
+}
+
+.filter-box.open {
+  margin: 0px;
+  background-color: antiquewhite;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 7px;
+  text-align: center;
+
+}
+
+.filter-box button {
+  margin: 0px auto;
+  margin-bottom: 10px;
+  width: 100px;
+}
+
+.filter-box ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+.filter-box li {
+  margin-bottom: 17px;
+}
+
+.filter-box #limit {
+  display: inline-block;
+  width: 60px;
+  margin-left: 15px;
+}
+

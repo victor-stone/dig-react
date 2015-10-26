@@ -40,7 +40,7 @@ function build() {
 
   promise
     .then( () => console.log('build done') )
-    .catch( errr => err(errr) );    
+    .catch( errr => { err(errr) } );    
 
 }
 
@@ -263,6 +263,7 @@ function copy(src,dest) {
 
 function err(err) {
   console.log("Error : " + err.message);
+  process.exit(1);
 }
 
 function mkdir( dir ) {

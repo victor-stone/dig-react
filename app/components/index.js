@@ -14,6 +14,7 @@ module.exports = {
   PageHeader: require('./PageHeader'),
   Paging: require('./Paging'),
   Playlist: require('./Playlist'),
+  QueryOptions: require('./QueryOptions'),
 
 };
 
