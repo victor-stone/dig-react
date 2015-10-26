@@ -63,7 +63,7 @@ function _commonBuilders() {
 }
 
 function clean() {
-  return del( ['dist/**/*', 'built/**/*'] );
+  return del( ['dist/**/*', 'built/**/*'] ).then( () => mkdir('dist') );
 }
 
 function _allBuilders() {

@@ -4,16 +4,20 @@
 global.IS_SERVER_REQUEST = true;
 process.env.NODE_ENV = 'production';
 
-var DIST_DIR = './dist';
-var port     = 3000;
-
 var http = require('http');
 var fs   = require('fs');
 var glob = require('glob');
 var url  = require('url');
 var argv = require('minimist')(process.argv.slice(2));
 
-var log  = console.log;
+var DIST_DIR = './dist';
+var port     = argv.port || 3000;
+
+var log  = function() {
+  if( argv.v ) {
+    console.log.apply(console.log,arguments);
+  }
+}
 
 var matches = [
   [ new RegExp('\.js$'),    'text/javascript'],
@@ -35,7 +39,7 @@ var staticIncludes = [];
 glob('dist/**/*.*',function(e,f) { 
   staticIncludes = f;
   http.createServer(handleRequest).listen(port);
-  log('listening on port ' + port);
+  console.log('listening on port ' + port);
 });
 
 function sendFile(res,fileName) {
@@ -47,7 +51,7 @@ function sendFile(res,fileName) {
       res.end('Not Found');
     } else {
       var mime = sniffMime(fileName);
-      console.log( 'sending file: ' + fname + ' (' + mime + ')' );
+      log( 'sending file: ' + fname + ' (' + mime + ')' );
       res.setHeader( 'Content-Type', mime );
       res.end(data);
     }
@@ -78,13 +82,13 @@ function handleRequest( req, res ) {
 }
 
 var hitCount = 0;
-var MAX_MEMORY_LIMIT = 50 * (1024*1024);
+var MAX_MEMORY_LIMIT = 150 * (1024*1024);
 
 function manageMemory() {
   var heapUsed = process.memoryUsage().heapUsed;
   console.log( 'memoryUsage: ' + Math.floor((heapUsed / (1024*1024))) + 'MB' );
   if( ++hitCount % 20 === 0 || heapUsed > MAX_MEMORY_LIMIT ) {
-    log( "Doing GC");
+    console.log( "------> Doing GC");
     global.gc();
   } 
 }
@@ -142,7 +146,7 @@ function handleReactRoute(url,res) {
 
             var bodyHTML =  renderToString( AppFactory(props) );
 
-            console.log( 'sending routed url: ' + url );
+            log( 'sending routed url: ' + url );
             res.setHeader( 'Content-Type', 'text/html' );
             res.end(data.replace(/(<div\s+id="content">)([^<]+)?(<\/div>)/,'$1' + bodyHTML + '$3'));
           }

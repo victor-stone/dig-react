@@ -1,43 +1,48 @@
 {
-  "name": "myreact",
-  "version": "1.0.0",
-  "description": "testing react-reflux etc.",
-  "main": "index.js",
+  "name": "ccm-dig",
+  "version": "3.1.0",
+  "description": "A music discovery site owned by ArtisTech Media, founded by Creative Commons",
   "scripts": {
+    "start": "node server --port=4000",
+    "start-with-memcheck": "node --expose-gc server --mem --port=4000",
+    "build": "node build -avp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "test",
-    "victor",
-    "withoutparachute"
+  "repository": "https://github.com/victor/dig-react",
+  "engines": {
+    "node": ">= 4.0.0"
+  },
+  "author": {
+    "name": "Victor Stone",
+    "email": "assoverteakettle.org@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Alex Goodwin"
+    }
   ],
-  "author": "victor",
-  "license": "MIT",
+  "readme": "readme.md",
+  "license": "GPL-3.0",
+  "keywords": [
+    "ccmixter",
+    "dig",
+    "music"
+  ],
   "devDependencies": {
-    "babel": "^5.8.23",
     "babelify": "^6.3.0",
     "bootstrap": "^3.3.5",
-    "browserify": "^11.2.0",
     "del": "^2.0.2",
     "eslint-plugin-react": "^3.6.3",
     "font-awesome": "^4.4.0",
     "glob": "^5.0.15",
     "jquery": "^2.1.4",
     "minimist": "^1.2.0",
-    "react": "^0.14.0",
-    "react-bootstrap": "^0.27.1",
-    "react-dom": "^0.14.0",
-    "reflux": "^0.3.0",
-    "rsvp": "^3.1.0",
-    "soundmanager2": "^2.97.20150601",
-    "uglify-js": "^2.5.0",
-    "uglifyify": "^3.0.1"
+    "soundmanager2": "^2.97.20150601"
   },
   "dependencies": {
-    "route-recognizer": "^0.1.9"
-  },
-  "jshintConfig": {
-    "node": true,
-    "esnext": true
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "route-recognizer": "^0.1.9",
+    "rsvp": "^3.1.0"
   }
 }
