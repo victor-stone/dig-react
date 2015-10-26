@@ -10,6 +10,7 @@ required tools for building:
 npm i browserify -g
 npm i babel -g 
 npm i eslint -g 
+npm i eslint-plugin-react -g
 npm i uglify -g
 ```
 
