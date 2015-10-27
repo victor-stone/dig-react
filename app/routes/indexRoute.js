@@ -7,7 +7,7 @@ const homePage = (
 <div className="dig-img container">
   <div className="row">
   <div className="col-md-8 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-12">
-    <h1>{"You Already"}<br className="hidden-xs" />{"Have Permission"}</h1>
+    <h1>{"You Already "}<br className="hidden-xs" />{"Have Permission"}</h1>
     <h3>{"The music discovery site used in"}<br className="hidden-xs" />{" over 1 million videos and games"}</h3>
   </div>
   </div>

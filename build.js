@@ -14,7 +14,7 @@ var fread  = RSVP.denodeify(fs.readFile);
 var globp  = RSVP.denodeify(glob);
 
 var MODE     = argv.mode || (argv.p ? 'prod' : 'dev');
-var buildAll = argv.all || argv.a || false;
+var buildAll = argv.all || argv.a || argv.p || argv.d;
 var verbose  = argv.verbose || argv.v || false;
 
 console.log( '------------------------ Building ------------------------');
@@ -124,7 +124,7 @@ function publishPublicFiles() {
 
   mkdir('dist/images');
 
-  return globp('public/{*.html,images/*.*}')
+  return globp('public/{*.html,images/*.*,*.ico}')
     .then( fnames => fnames.forEach( f => copy( f, f.replace('public/','dist/') ) ) );
 }
 
