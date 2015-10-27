@@ -49,8 +49,12 @@ const people = React.createClass({
 
 people.path = '/people/:userid';
 
+people.title = 'People';
+
 people.store = function(params,queryParams) {
   
+    people.title = 'People';
+
     var qparams = oassign( {}, qc.default, { u: params.userid }, queryParams );
 
     var retStore = null;
@@ -61,6 +65,7 @@ people.store = function(params,queryParams) {
     }
     
     function returnArtistDetail( model ) {
+      people.title = model.name;
       retStore.artist = model;
       return retStore;
     }

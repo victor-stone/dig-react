@@ -6,6 +6,7 @@ import { service as
 import { Header, 
          Footer, 
          Banner,
+         TitleSetter,
          AudioPlayer }   from './components';
 
 //         <GoogleAnalytics id="UA-2878955-3" />
@@ -83,10 +84,12 @@ const App = React.createClass({
   render: function() {
 
     var cls = 'outlet-wrap' + (this.state.loading ? ' loading-screen fade' : '');
+    var title = this.state.component && this.state.component.title;
 
     return (
       <div>
         <div id="wrap">
+          <TitleSetter title={title} />
           <Banner />
           <Header />
           <div className={cls}>

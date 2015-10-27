@@ -1,5 +1,3 @@
-'use strict';
-
 import React            from 'react';
 import { FeaturedPage } from '../components';
 import { oassign }      from '../unicorns';
@@ -10,11 +8,13 @@ var games = React.createClass({
 
   render() {
     return (
-      <FeaturedPage {...this.props} icon="gamepad" title="Music for Video Games" />
+      <FeaturedPage {...this.props} icon="gamepad" title={games.title} />
     );      
   },
 
 });
+
+games.title = 'Music for Video Games';
 
 games.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, qc.instrumental, qc.games, queryParams );

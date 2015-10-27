@@ -16,6 +16,7 @@ module.exports = {
   Paging: require('./Paging'),
   Playlist: require('./Playlist'),
   QueryOptions: require('./QueryOptions'),
+  TitleSetter: require('./TitleSetter'),
   TrackbackPopup: require('./TrackbackPopup'),
 
 };

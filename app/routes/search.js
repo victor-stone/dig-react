@@ -14,7 +14,8 @@ import {  Link,
 
 import { service as tagStore }   from '../stores/tags';
 import { service as queryStore } from '../stores/query';
-import PlaylistStore         from '../stores/playlist';
+import { Transaction }           from '../services/queryAjaxAdapter';
+import PlaylistStore             from '../stores/playlist';
 
 var DidYouMeanSection = React.createClass({
 
@@ -113,17 +114,23 @@ function didYouMean( text )
       );
 }
 
+search.title = 'Search';
+
 search.store = function( params, queryParams ) {
   var qparams = oassign( { search_type: 'all' }, qc.default, queryParams );
 
-  var modelRequest = {
-    store: PlaylistStore.queryAndReturnStore(qparams),
-    didYouMean: didYouMean(queryParams.searchp)
-  };
-  return rsvp.hash(modelRequest).then( model => {
-    model.store.didYouMean = model.didYouMean;
-    return model.store;
-  });
+  function makePromise() {
+    var modelRequest = {
+      store: PlaylistStore.queryAndReturnStore(qparams),
+      didYouMean: didYouMean(queryParams.searchp)
+    };
+    return rsvp.hash(modelRequest).then( model => {
+      model.store.didYouMean = model.didYouMean;
+      return model.store;
+    });
+  }
+
+  return Transaction( makePromise() );
 };
 module.exports = search;
 

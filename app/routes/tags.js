@@ -16,6 +16,8 @@ const tags = React.createClass({
   },
 });
 
+tags.title = 'Tags';
+
 tags.path = '/tags/:tags';
 
 tags.store = function(params,queryParams) {

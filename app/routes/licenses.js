@@ -8,7 +8,7 @@ const Licenses = React.createClass({
     return  ( 
       <div className="row">
         <div className="col-md-5 col-md-offset-3">
-          <PageHeader title="Our Licenses Overview" icon="creative-commons" />
+          <PageHeader title={Licenses.title} icon="creative-commons" />
           <LicenseInfo.LicenseInfo /> 
         </div>
       </div>
@@ -16,5 +16,7 @@ const Licenses = React.createClass({
   },
 
 });
+
+Licenses.title = 'Our Licenses Overview';
 
 module.exports = Licenses;

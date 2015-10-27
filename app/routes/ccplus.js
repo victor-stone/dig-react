@@ -10,11 +10,13 @@ var ccplus = React.createClass({
 
   render() {
     return (
-      <FeaturedPage {...this.props} icon="usd" title="Music Available for Royalty-Free License" />
+      <FeaturedPage {...this.props} icon="usd" title={ccplus.title} />
     );      
   },
 
 });
+
+ccplus.title = 'Music Available for Royalty-Free License';
 
 ccplus.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { lic: 'ccplus' }, queryParams  );

@@ -16,6 +16,7 @@ import { SharePopup        as SharePopupButton,
 
 import DownloadPopup   from '../components/DownloadPopup';
 import { PlayButton }  from '../components/AudioPlayer';
+import { Transaction } from '../services/queryAjaxAdapter';
 
 var Actions = React.createClass({
 
@@ -244,10 +245,16 @@ const upload = React.createClass({
 
 });
 
+upload.title = 'Files';
+
 upload.path = '/files/:userid/:uploadid';
 
 upload.store = function(params/*,queryParams*/) {
-  return UploadStore.findAndReturnStore(params.uploadid);
+  return Transaction( UploadStore.findAndReturnStore(params.uploadid).then( store =>
+            { 
+                upload.title = store.model.upload.name;
+                return store;
+            }) );
 };
 
 module.exports = upload;

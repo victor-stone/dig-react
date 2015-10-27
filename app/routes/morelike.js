@@ -20,6 +20,8 @@ const morelike = React.createClass({
 
 morelike.path = '/morelike/:id';
 
+morelike.title = 'More Like';
+
 morelike.store = function(params,queryParams) {
 
   var id          = params.id;

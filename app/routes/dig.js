@@ -326,6 +326,8 @@ const dig = React.createClass({
 
 });
 
+dig.title = 'Dig Deep';
+
 dig.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, queryParams );
   return PlaylistStore.queryAndReturnStore(qparams);

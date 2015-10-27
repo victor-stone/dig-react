@@ -144,11 +144,16 @@ function handleReactRoute(url,res) {
               queryParams: h.queryParams 
             };
 
-            var bodyHTML =  renderToString( AppFactory(props) );
+            var bodyHTML = renderToString( AppFactory(props) );
+            var html     = data.replace(/(<div\s+id="content">)([^<]+)?(<\/div>)/,'$1' + bodyHTML + '$3'); 
+
+            if( h.component.title ) {
+              html = html.replace( /<title>[^<]+<\/title>/, '<title>' + h.component.title + '</title>');
+            }
 
             log( 'sending routed url: ' + url );
             res.setHeader( 'Content-Type', 'text/html' );
-            res.end(data.replace(/(<div\s+id="content">)([^<]+)?(<\/div>)/,'$1' + bodyHTML + '$3'));
+            res.end(html);
           }
 
         });

@@ -112,6 +112,8 @@ const index = React.createClass({
 
 });
 
+index.title = 'Home';
+
 index.path = '/';
 
 module.exports = index;
