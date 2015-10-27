@@ -4,13 +4,13 @@ import React from 'react';
 
 import { Link, 
         Glyph,
+        TrackbackPopup,
         LicenseInfo }  from '../components';
 
 import { service as uploadStore }  from '../stores/upload';
 
 import { SharePopup        as SharePopupButton,
          AddTrackbackPopup as AddTrackbackPopupButton,
-         TrackbackPopup    as TrackbackPopupButton,
          ExternalLink
  } from '../components/ActionButtons';
 
@@ -129,13 +129,13 @@ var TracbackList = React.createClass({
     function formatTB(tb) {
       return( 
         <li key={tb.id} className="list-group-item">
-          <p>
+          <div>
             {tb.embed 
-                ? (<TrackbackPopupButton trackback={tb} />)
+                ? (<TrackbackPopup trackback={tb} />)
                 : (<ExternalLink href={tb.url} subname={tb.type} text={tb.name} />)
             }
             {' '}<span className="light-color">{tb.artist.name}</span>
-          </p>
+          </div>
         </li>
       );
     }

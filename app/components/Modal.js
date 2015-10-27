@@ -1,7 +1,7 @@
-/*eslint "react/no-danger":0 */
 import React    from 'react';
 import ReactDOM from 'react-dom';
 import Glyph    from './Glyph';
+import { CloseButton } from './ActionButtons';
 
 let Modal = React.createClass({
 
@@ -20,14 +20,13 @@ let Modal = React.createClass({
     var title    = this.props.title;
     var subTitle = this.props.subTitle;
     var action   = this.props.action;
-    var times    = { __html: '&times;'};
 
     return (
       <div className="modal fade">
         <div className="modal-dialog">
           <div className="modal-content">
           <div className="modal-header">
-            <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" dangerouslySetInnerHTML={times} /></button>
+            <CloseButton className="close" data-dismiss="modal" />
             <h4 className="modal-title"><span className="light-color">{subTitle}</span> {title}</h4>
           </div>
           <div className="modal-body">

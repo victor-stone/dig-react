@@ -5,6 +5,7 @@ import { service as
            ajaxAdapter } from './services/queryAjaxAdapter';
 import { Header, 
          Footer, 
+         Banner,
          AudioPlayer }   from './components';
 
 //         <GoogleAnalytics id="UA-2878955-3" />
@@ -86,6 +87,7 @@ const App = React.createClass({
     return (
       <div>
         <div id="wrap">
+          <Banner />
           <Header />
           <div className={cls}>
             {this.state.component

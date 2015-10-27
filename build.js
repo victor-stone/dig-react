@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+process.env.BROWSERIFYSHIM_DIAGNOSTICS=1;
 
 var fs         = require('fs');
 var path       = require('path');
@@ -109,7 +110,7 @@ function lintSource() {
 function publishServerLibrary() {
   log('spawing babel for server libs')
   var cmd = 'babel app --out-dir built';
-  return execp(cmd).then( stdout => log( 'Babel output: ', stdout) );
+  return execp(cmd);
 }
 
 function minifyDist() {
@@ -136,7 +137,7 @@ function bundleBrowserJS() {
   log('creating bundle.js');
   mkdir('dist/js');
 
-  var cmd = 'browserify app/**/*.js -e app/browser.js  -t babelify --noparse=http -u http -u stream-http ';
+  var cmd = 'browserify app/**/*.js -e app/browser.js  -t babelify --noparse=http -u http -u stream-http  ';
   if( MODE === 'dev') {
     cmd += " --full-paths ";
   }
@@ -154,11 +155,13 @@ function bundleVendorJSFiles() {
         'node_modules/jquery/dist/jquery.js',
         'node_modules/bootstrap/dist/js/bootstrap.js',
         'node_modules/soundmanager2/script/soundmanager2-nodebug.js'
+        //'node_modules/react/dist/react.js'
         ],
     prod: [
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/bootstrap/dist/js/bootstrap.min.js',
         'node_modules/soundmanager2/script/soundmanager2-nodebug-jsmin.js'
+        //'node_modules/react/dist/react.min.js'
     ]
   };
   return bundleVendorFiles(vendorJSSources[MODE],'js');

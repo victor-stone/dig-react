@@ -10,13 +10,13 @@ const edpicks = React.createClass({
 
   render() {
     return (
-      <FeaturedPage {...this.props} icon="thumbs-o-up" title="Editors' Picks" />
+      <FeaturedPage {...this.props} icon="thumbs-o-up" title="Editors Picks" />
     );      
   },
 });
 
 edpicks.store = function(params,queryParams) {
-  var qparams = oassign( {}, qc.default, { reqtags: 'editorial_pick' }, qc.recent, queryParams||{} );
+  var qparams = oassign( {}, qc.default, { tags: 'editorial_pick' }, qc.recent, queryParams||{} );
   return Playlist(qparams);
 };
 

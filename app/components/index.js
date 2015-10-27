@@ -3,6 +3,7 @@
 module.exports = { 
   ActionButtons: require('./ActionButtons'),
   AudioPlayer: require('./AudioPlayer'),
+  Banner: require('./Banner'),
   DownloadPopup: require('./DownloadPopup'),
   FeaturedPage: require('./FeaturedPage'),
   Footer: require('./Footer'),
@@ -15,6 +16,7 @@ module.exports = {
   Paging: require('./Paging'),
   Playlist: require('./Playlist'),
   QueryOptions: require('./QueryOptions'),
+  TrackbackPopup: require('./TrackbackPopup'),
 
 };
 

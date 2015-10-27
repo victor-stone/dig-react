@@ -1,6 +1,18 @@
 import React from 'react';
 import Glyph from './Glyph';
 
+var CloseButton = React.createClass({
+
+  render: function() {
+    /*eslint "react/no-danger":0 */
+    var times    = { __html: '&times;'};
+
+    return (
+        <button type="button" {...this.props} className="close" aria-label="Close"><span aria-hidden="true" dangerouslySetInnerHTML={times} /></button>
+      );
+  }
+});
+
 var ExternalLink = React.createClass({
 
   render: function() {
@@ -40,25 +52,11 @@ var AddTrackbackPopup = React.createClass({
   }
 });
 
-var TrackbackPopup = React.createClass({
-
-  trackbackPopup: function() {
-
-  },
-
-  render: function() {
-    var trackback = this.props.trackback;
-    return (
-        <a href onClick="this.trackbackPopup"><Glyph icon="youtube-play" /> {trackback.name}</a>
-      );
-  }
-
-});
 
 module.exports = {
   SharePopup,
   AddTrackbackPopup,
-  TrackbackPopup,
+  CloseButton,
   ExternalLink
 };
 
