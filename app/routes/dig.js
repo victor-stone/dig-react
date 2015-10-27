@@ -1,7 +1,7 @@
 /* globals $ */
   
 import React        from 'react';
-import { oassign }  from '../unicorns/goodies';
+import { oassign }  from '../unicorns';
 import TagString    from '../unicorns/tagString';
 import qc           from '../models/queryConfigs';
 import { Glyph, 
@@ -327,8 +327,8 @@ const dig = React.createClass({
 });
 
 dig.store = function(params,queryParams) {
-  var qparams = oassign( {}, qc.default, queryParams||{} );
-  return PlaylistStore(qparams);
+  var qparams = oassign( {}, qc.default, queryParams );
+  return PlaylistStore.queryAndReturnStore(qparams);
 };
 
 module.exports = dig;

@@ -1,6 +1,6 @@
 'use strict';
 
-import { commaize } from '../unicorns/goodies';
+import { commaize } from '../unicorns';
 
 function PagingStats(props) {
 

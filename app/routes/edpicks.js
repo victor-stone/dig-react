@@ -2,7 +2,7 @@
 
 import React            from 'react';
 import { FeaturedPage } from '../components';
-import { oassign }      from '../unicorns/goodies';
+import { oassign }      from '../unicorns';
 import qc               from '../models/queryConfigs';
 import Playlist         from '../stores/playlist';
 
@@ -16,8 +16,8 @@ const edpicks = React.createClass({
 });
 
 edpicks.store = function(params,queryParams) {
-  var qparams = oassign( {}, qc.default, { tags: 'editorial_pick' }, qc.recent, queryParams||{} );
-  return Playlist(qparams);
+  var qparams = oassign( {}, qc.default, { tags: 'editorial_pick' }, qc.recent, queryParams );
+  return Playlist.queryAndReturnStore(qparams);
 };
 
 module.exports = edpicks;

@@ -1,7 +1,7 @@
 'use strict';
 
 import React            from 'react';
-import { oassign }      from '../unicorns/goodies';
+import { oassign }      from '../unicorns';
 import { ExternalLink } from '../components/ActionButtons';
 import qc               from '../models/queryConfigs';
 
@@ -51,7 +51,7 @@ people.path = '/people/:userid';
 
 people.store = function(params,queryParams) {
   
-    var qparams = oassign( {}, qc.default, { u: params.userid }, queryParams||{} );
+    var qparams = oassign( {}, qc.default, { u: params.userid }, queryParams );
 
     var retStore = null;
 
@@ -65,7 +65,7 @@ people.store = function(params,queryParams) {
       return retStore;
     }
     
-    return PlaylistStore(qparams)
+    return PlaylistStore.queryAndReturnStore(qparams)
           .then( getArtistDetail )
           .then( returnArtistDetail );
 };

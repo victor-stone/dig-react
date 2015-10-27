@@ -94,6 +94,12 @@ function find(arr,matcher)
 function compare(arr1,arr2,isDiff) {
   isDiff = !!isDiff;
 
+  if( arr1.length < arr2.length ) {
+    var tmp = arr1;
+    arr1 = arr2;
+    arr2 = tmp;
+  }
+
   var obj = {};
   for (var i = 0; i < arr1.length; i++) {
     obj[arr1[i]] = true;

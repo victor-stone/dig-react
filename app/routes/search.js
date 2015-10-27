@@ -1,11 +1,16 @@
 import React from 'react';
 import rsvp  from 'rsvp';
 
-import { underscore } from '../unicorns/goodies';
-import { oassign }    from '../unicorns/goodies';
-import qc             from '../models/queryConfigs';
+import { underscore, 
+            oassign } from '../unicorns';
 
-import { Link, Glyph, PageHeader, Playlist, Paging } from '../components';
+import qc from '../models/queryConfigs';
+
+import {  Link, 
+          Glyph, 
+          PageHeader, 
+          Playlist, 
+          Paging } from '../components';
 
 import { service as tagStore }   from '../stores/tags';
 import { service as queryStore } from '../stores/query';
@@ -112,7 +117,7 @@ search.store = function( params, queryParams ) {
   var qparams = oassign( { search_type: 'all' }, qc.default, queryParams );
 
   var modelRequest = {
-    store: PlaylistStore(qparams),
+    store: PlaylistStore.queryAndReturnStore(qparams),
     didYouMean: didYouMean(queryParams.searchp)
   };
   return rsvp.hash(modelRequest).then( model => {

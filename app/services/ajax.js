@@ -1,8 +1,9 @@
 'use strict';
 
+var rsvp = require('rsvp');
+
 function serverAjax(opts) {
   var http = require('http');
-  var rsvp = require('rsvp');
   return new rsvp.Promise( function(resolve, reject) {
     if( opts.method == 'GET') {
       http.get(opts.url, function(res) {
@@ -30,7 +31,9 @@ function serverAjax(opts) {
 
 /* globals $ */
 function clientAjax(opts) {
-  return $.ajax(opts);
+  return new rsvp.Promise( function(resolve,reject) {
+      $.ajax(opts).done( resolve ).fail( reject );
+  });
 }
 
 module.exports = (global.IS_SERVER_REQUEST ? serverAjax : clientAjax);

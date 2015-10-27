@@ -47,7 +47,7 @@ var AddTrackbackPopup = React.createClass({
 
   render: function() {
     return (
-      <a href onClick={this.addTrackbackPopup} className="btn btn-sm btn-success"><Glyph icon="plus" />{" Add"}</a>
+      <a href onClick={this.addTrackbackPopup} className="hidden btn btn-sm btn-success"><Glyph icon="plus" />{" Add"}</a>
       );
   }
 });

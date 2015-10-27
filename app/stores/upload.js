@@ -1,7 +1,8 @@
-import Query           from './query';
-import ccmixter        from '../models/ccmixter';
-import serialize       from '../models/serialize';
-import rsvp            from 'rsvp';
+import Query            from './query';
+import ccmixter         from '../models/ccmixter';
+import serialize        from '../models/serialize';
+import rsvp             from 'rsvp';
+import { Transaction }  from '../services/queryAjaxAdapter';
 
 
 function _fixFeaturing(model) {
@@ -85,6 +86,15 @@ var Upload = Query.extend({
 });
 
 Upload.service = new Upload();
+
+Upload.findAndReturnStore = function(id) {
+  var uploadStore = new Upload();
+  return Transaction( uploadStore.find(id)
+                        .then( model => {
+                            uploadStore.model = model;
+                            return uploadStore;
+                        }) );
+};
 
 module.exports = Upload;
 

@@ -2,6 +2,7 @@ import querystring      from 'querystring';
 import { EventEmitter } from 'events';
 import util             from 'util';
 import ajax             from './ajax';
+import { debounce }     from '../unicorns';
 
 var queryHost ='http://ccmixter.org/api/query?';
 //var queryHost ='http://ccm/api/query?';
@@ -9,8 +10,28 @@ var queryHost ='http://ccmixter.org/api/query?';
 var QueryAjaxAdapter = function() {
   EventEmitter.call(this);
   this.ajax = ajax;
-  this._loadingCount = 0;
+  this._loading = false;
+  this._transaction = false;
+
+  var DEBOUNCE_START_LOADING = 50;
+  var DEBOUNCE_STOP_LOADING  = 300;
+
+  this._inc = debounce( function() {
+      if( !this._transaction && !this._loading ) {
+        this.emit('loading', true  );
+        this._loading = true;
+      }
+    }.bind(this),  DEBOUNCE_START_LOADING );
+
+  this._dec = debounce( function() {
+      if( !this._transaction ) {
+        this.emit('loading', false );
+        this._loading = false;
+      }
+    }.bind(this), DEBOUNCE_STOP_LOADING );
 };
+
+
 
 util.inherits(QueryAjaxAdapter,EventEmitter);
 
@@ -60,20 +81,25 @@ QueryAjaxAdapter.prototype.queryOne = function(params) {
   return this._query(querystring.stringify(params),true);
 };
 
-QueryAjaxAdapter.prototype._inc = function() {
-  if( !this._loadingCount ) {
-    this.emit('loading', true );
-  }
-  ++this._loadingCount;
-};
-
-QueryAjaxAdapter.prototype._dec = function() {
-  --this._loadingCount;
-  if( !this._loadingCount ) {
-    this.emit('loading', false );
+QueryAjaxAdapter.prototype.transaction = function(startOrStop) {
+  if( startOrStop ) {
+    this._inc();
+    this._transaction = true;
+  } else {
+    this._transaction = false;
+    this._dec();
   }
 };
 
-QueryAjaxAdapter.service = new QueryAjaxAdapter();
+var service = new QueryAjaxAdapter();
+
+QueryAjaxAdapter.Transaction = function(promise) {
+  service.transaction(true);
+  return promise.finally( function() {
+    service.transaction(false);
+  });
+};
+
+QueryAjaxAdapter.service = service;
 
 module.exports = QueryAjaxAdapter;

@@ -1,6 +1,6 @@
 import React    from 'react';
 import Topics   from '../stores/topics';
-import { trim } from '../unicorns/goodies';
+import { trim } from '../unicorns';
 
 const Banner = React.createClass({
 

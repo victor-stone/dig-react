@@ -2,7 +2,7 @@
 
 import React            from 'react';
 import { FeaturedPage } from '../components';
-import { oassign }      from '../unicorns/goodies';
+import { oassign }      from '../unicorns';
 import qc               from '../models/queryConfigs';
 import Playlist         from '../stores/playlist';
 
@@ -17,8 +17,8 @@ var games = React.createClass({
 });
 
 games.store = function(params,queryParams) {
-  var qparams = oassign( {}, qc.default, qc.instrumental, qc.games, queryParams||{} );
-  return Playlist(qparams);
+  var qparams = oassign( {}, qc.default, qc.instrumental, qc.games, queryParams );
+  return Playlist.queryAndReturnStore(qparams);
 };
 
 

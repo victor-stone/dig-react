@@ -24,6 +24,27 @@ if( typeof Array.prototype.findBy === 'undefined' ) {
   };
 }
 
+if( typeof Array.prototype.filter === 'undefined' ) {
+  Array.prototype.filter = function(cb) {
+    var results = [];
+    for( var i = 0; i < this.length; i++ ) {
+      if( cb( this[i], i ) ) {
+        results.push(this[i]);
+      }
+    }
+    return results;
+  };
+
+}
+
+if( typeof Array.prototype.rejectBy === 'undefined' ) {
+  Array.prototype.rejectBy = function(key,value) {
+    return this.filter( function(obj) {
+      return obj[key] != value;
+    });
+  };
+}
+
 function decamlize(str) {
   return str.replace(/::/g, '/')
             .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
@@ -78,6 +99,43 @@ var oassign = Object.assign || function (target,...sources)
   return target; 
 };
 
+// cribbed from '_'
+var debounce = function(func, wait, immediate) {
+  var timeout, args, context, timestamp, result;
+
+  var later = function() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        if (!timeout) {
+          context = args = null;
+        }
+      }
+    }
+  };
+
+  return function() {
+      context = this;
+      args = arguments;
+      timestamp = Date.now();
+      var callNow = immediate && !timeout;
+      if (!timeout) {
+        timeout = setTimeout(later, wait);
+      }
+      if (callNow) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+
+      return result;
+    };
+};
+
 module.exports = {
   commaize,
   oassign,
@@ -85,5 +143,6 @@ module.exports = {
   decamlize,
   trim,
   w,
-  underscore
+  underscore,
+  debounce
 };

@@ -1,11 +1,11 @@
-import React from 'react';
-import Glyph from './Glyph';
-import Modal from './Modal';
+import React   from 'react';
+import Glyph   from './Glyph';
+import Modal   from './Modal';
+import Upload  from '../stores/upload';
+
 import { LicenseInfoLink, 
          LicenseInfo } from './LicenseInfo';
 
-// this sucks
-import { service as store } from '../stores/upload';
 
 var DownloadPopup = React.createClass({
 
@@ -18,6 +18,7 @@ var DownloadPopup = React.createClass({
   },
 
   handleShowModal: function(){
+    var store = new Upload();
     store.info( this.props.model.id )
       .then( r => this.setState( {
                       view: {showModal: true},

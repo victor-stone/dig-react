@@ -7,7 +7,7 @@ import { Link,
         TrackbackPopup,
         LicenseInfo }  from '../components';
 
-import { service as uploadStore }  from '../stores/upload';
+import UploadStore from '../stores/upload';
 
 import { SharePopup        as SharePopupButton,
          AddTrackbackPopup as AddTrackbackPopupButton,
@@ -124,7 +124,7 @@ var TracbackList = React.createClass({
 
   render: function() {
     var trackbacks = this.props.model || [];
-    var tooManyTBs = trackbacks.length > 25; // see stores/upload.js#trackbacks
+    var tooManyTBs = trackbacks.length >= 25; // see stores/upload.js#trackbacks
 
     function formatTB(tb) {
       return( 
@@ -147,7 +147,7 @@ var TracbackList = React.createClass({
     return (
         <ul className="list-group remix-list">
           {tbs}
-          {tooManyTBs ? <li><span className="light-color">{"too many to show here!"}</span></li> : null}
+          {tooManyTBs ? <li key="toomany"><span className="light-color">{"too many to show here!"}</span></li> : null}
         </ul>
       );
 
@@ -197,7 +197,8 @@ var RemixesSection = React.createClass({
 const upload = React.createClass({
 
   render() {
-    var model = this.props.store;
+    var store  = this.props.store;
+    var model  = store.model;
     var upload = model.upload;
     return  (
       <div>
@@ -246,7 +247,7 @@ const upload = React.createClass({
 upload.path = '/files/:userid/:uploadid';
 
 upload.store = function(params/*,queryParams*/) {
-  return uploadStore.find(params.uploadid);
+  return UploadStore.findAndReturnStore(params.uploadid);
 };
 
 module.exports = upload;

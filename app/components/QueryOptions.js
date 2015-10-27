@@ -9,7 +9,7 @@ var LicenseInfoPopup = React.createClass({
 
   // unfortunately popup is broken from this <ul>
   // not sure why, can't care
-  
+
   render: function() {
     return(
         <Link href="/licenses"><Glyph icon="question-circle" /></Link>
@@ -153,15 +153,16 @@ const QueryOptions = React.createClass({
 
   render: function() {
 
-    var showP = this.state.view.showOptions;
-    var popup = showP ? this.genOptions() : null;
-    var cls   = 'filter-box' + (showP ? ' open' : '' );
+    var showP       = this.state.view.showOptions;
+    var popup       = showP ? this.genOptions() : null;
+    var cls         = 'hidden-xs hidden-sm filter-box' + (showP ? ' open' : '' );
+    var buttonColor = this.state.dirty ? { color: 'yellow' } : {};
 
     return (
       <div className={cls}>
         {showP 
           ? popup 
-          : <button className="btn btn-primary" onClick={this.handleShowOptions} ><Glyph icon="gear" />{" filters"}</button>
+          : <button className="btn btn-primary" style={buttonColor} onClick={this.handleShowOptions} ><Glyph icon="gear" />{" filters"}</button>
         }
       </div>
     );

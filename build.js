@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-process.env.BROWSERIFYSHIM_DIAGNOSTICS=1;
-
 var fs         = require('fs');
 var path       = require('path');
 var RSVP       = require('rsvp');

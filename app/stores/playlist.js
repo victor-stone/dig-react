@@ -2,7 +2,7 @@ import rsvp        from 'rsvp';
 import Query       from './query';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
-import { oassign } from '../unicorns/goodies';
+import { oassign } from '../unicorns';
 
 var Playlist = Query.extend({
 
@@ -69,8 +69,15 @@ var Playlist = Query.extend({
 
 });
 
-
-module.exports = function(params) {
+// performs the query but returns the store
+// from the promise (which contains the result
+// of the query in the .model property )
+//
+// very handy for routing
+//
+Playlist.queryAndReturnStore = function(params) {
   var pl = new Playlist();
-  return pl.playlist(params).then( () => pl );
+  return pl.playlist(params).then( () => pl );  
 };
+
+module.exports = Playlist;

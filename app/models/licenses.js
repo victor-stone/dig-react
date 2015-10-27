@@ -10,7 +10,7 @@ pd.png
 sampling.png
 */
 // 
-import { dasherize } from '../unicorns/goodies';
+import { dasherize } from '../unicorns';
 
 var logoURLBase = 'https://licensebuttons.net/l/';
 

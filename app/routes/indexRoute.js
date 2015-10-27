@@ -103,6 +103,7 @@ const homePage = (
 </div>  
 </div>
 );
+
 const index = React.createClass({
 
   render() {
