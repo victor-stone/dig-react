@@ -1,6 +1,3 @@
-
-// node --expose-gc server -mem
-
 global.IS_SERVER_REQUEST = true;
 process.env.NODE_ENV = 'production';
 
@@ -12,6 +9,11 @@ var argv = require('minimist')(process.argv.slice(2));
 
 var DIST_DIR = './dist';
 var port     = argv.port || 3000;
+
+var serverRulesTimestamp = 0;
+var serverRules          = null;
+var ServerRulesModule    = 'bin/ServerRules.js';
+var serverRulesAreBroken = false;
 
 var log  = function() {
   if( argv.v ) {
@@ -51,7 +53,7 @@ function sendFile(res,fileName) {
       res.end('Not Found');
     } else {
       var mime = sniffMime(fileName);
-      log( 'sending file: ' + fname + ' (' + mime + ')' );
+      //log( 'sending file: ' + fname + ' (' + mime + ')' );
       res.setHeader( 'Content-Type', mime );
       res.end(data);
     }
@@ -66,19 +68,66 @@ function sniffMime(fname) {
   }
 }
 
+function _setServerRules(fn) {
+  serverRules = fn;
+}
+
+function _getServerRules() {
+  serverRulesTimestamp = fs.statSync(ServerRulesModule).mtime.getTime();
+  var code = fs.readFileSync(ServerRulesModule,'utf8');
+  console.log( 'Loading Server Rules Code: ');
+  try {
+    var _serverRules = null;
+    eval(code);
+    serverRules = _serverRules;
+    serverRulesAreBroken = false;
+  } catch(e) {
+    console.log( 'SERVER RULE  PARSE ERROR: ', e.message );
+    serverRulesAreBroken = true;
+  }
+}
+
+function validateRequest( req, res ) {
+  var result = true;
+
+  if( !serverRules && !serverRulesAreBroken ) {
+    _getServerRules();
+  } else {
+    var currRulesTimestamp = fs.statSync(ServerRulesModule).mtime.getTime();
+    if( currRulesTimestamp > serverRulesTimestamp ) {
+      _getServerRules();
+    }
+  }
+  try {
+    if( !serverRulesAreBroken ) {
+      result = serverRules(req,res);
+    }
+  } catch( e ) {
+    console.log( 'SERVER RULE ERROR: ', e.message );
+    serverRulesAreBroken = true;
+    result = false;
+  }
+  return result;
+}
+
 function handleRequest( req, res ) {
 
   if( argv.mem ) {
     manageMemory();
   }
 
-  var file = url.parse(req.url,true).pathname;
-  
-  if( staticIncludes.includes( 'dist' + file ) ) {
-    sendFile( res, file );
+  if( validateRequest(req,res) ) {
+    var file = url.parse(req.url,true).pathname;
+    
+    if( staticIncludes.includes( 'dist' + file ) ) {
+      sendFile( res, file );
+    } else {
+      handleReactRoute( req.url, res );
+    } 
   } else {
-    handleReactRoute( req.url, res );
-  } 
+    res.statusCode = 500;
+    res.end('Server error');
+  }
 }
 
 var hitCount = 0;
@@ -114,6 +163,7 @@ function handleReactRoute(url,res) {
 
   if( !handlers ) {
     
+    console.log( '404:', url );
     res.statusCode = 404;
     res.end('Not Found');
 

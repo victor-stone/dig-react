@@ -24,21 +24,6 @@ var ExternalLink = React.createClass({
   }
 });
 
-var SharePopup = React.createClass({
-
-  sharePopup: function() {
-
-  },
-
-  render: function() {
-    var sz    = this.props.big ? 'x4' : '';
-    var fixed = this.props.fixed || false;
-    return (
-        <a className="btn btn-lg btn-success" href onClick={this.sharePopup}><Glyph fixed={fixed} icon="share-alt" sz={sz} /></a>
-      );
-  }
-});
-
 var AddTrackbackPopup = React.createClass({
 
   addTrackbackPopup: function() {
@@ -54,7 +39,6 @@ var AddTrackbackPopup = React.createClass({
 
 
 module.exports = {
-  SharePopup,
   AddTrackbackPopup,
   CloseButton,
   ExternalLink

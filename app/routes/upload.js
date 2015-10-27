@@ -5,12 +5,12 @@ import React from 'react';
 import { Link, 
         Glyph,
         TrackbackPopup,
+        SharePopup,
         LicenseInfo }  from '../components';
 
 import UploadStore from '../stores/upload';
 
-import { SharePopup        as SharePopupButton,
-         AddTrackbackPopup as AddTrackbackPopupButton,
+import { AddTrackbackPopup as AddTrackbackPopupButton,
          ExternalLink
  } from '../components/ActionButtons';
 
@@ -32,7 +32,7 @@ var Actions = React.createClass({
             <DownloadPopup big fixed model={model} />
           </li>
           <li>
-            <SharePopupButton big fixed upload={model} />
+            <SharePopup big fixed model={model} />
           </li>
         </ul>
       );

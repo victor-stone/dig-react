@@ -32,6 +32,7 @@ var Router = function()
 
 util.inherits(Router,EventEmitter);
 
+/* safe for server */
 Router.prototype.resolve = function(url) {
   var results = this.recognizer.recognize(url);
   if( results ) {
@@ -48,6 +49,7 @@ Router.prototype.resolve = function(url) {
   return null;
 };
 
+/* in browser methods */
 Router.prototype.navigateTo = function(url,stateObj) {
   this.setBrowserAddressBar(url,stateObj);
   this.updateUrl();
@@ -56,6 +58,9 @@ Router.prototype.navigateTo = function(url,stateObj) {
 Router.prototype.setBrowserAddressBar = function(url,stateObj) {
   if( url ) {
     window.history.pushState(stateObj || null,null,url);
+    if( window.ga ) {
+      window.ga( 'send'. 'pageview', url);
+    }
   }
 };
 

@@ -2,7 +2,9 @@
 
 /**
   Module exists to normalize the wild & crazy results from the query API.
-  
+
+  These classes are used by ./serialize to convert raw json to pretty JS objects.
+
   For all models there are some consistent naming (if not always present - sigh):
   
   use .name for printable name
@@ -24,17 +26,15 @@
      upload.artist.url   -> artist_page_url
      upload.artist.id  -> user_name
   
-  for UploadDetail there is additionally remixes, sources and trackbacks (added 
-  in the store)
-  
-    upload.remixes[0].name
-    upload.remixes[0].artist.name
-    
-    upload.trackbacks[0].name
-  
   The audio player will add a .media object that needs to have a .name, .artist.name and 
   .artist.id for the player to display. These are added below in a callback from 
   the player.
+  
+  See ./serialize for naming conventions.
+
+  Because of the way ES6 handles methods vs. properties, the 'get' methods that end
+  up in the target JS object must be declared in the ctor as properties. Anything
+  outside the ctor is a helper used during serialization then discarded.
   
 */
 
