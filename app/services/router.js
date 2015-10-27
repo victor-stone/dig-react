@@ -59,7 +59,7 @@ Router.prototype.setBrowserAddressBar = function(url,stateObj) {
   if( url ) {
     window.history.pushState(stateObj || null,null,url);
     if( window.ga ) {
-      window.ga( 'send'. 'pageview', url);
+      window.ga( 'send', 'pageview', document.location.pathname );
     }
   }
 };

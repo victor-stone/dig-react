@@ -3,6 +3,7 @@ console.log('Making Server Rules');
 
 var just_one = false;
 
+
 function dumpCleanReq(req) {
     var r = {};
     var d = {
@@ -56,15 +57,23 @@ function isValidRequest(req,res) {
   return true;
 }
 
+function skipThese(req,res) {
+  return req.url.match(/(.js|.css|.html|.png|.eot|.otf|.ttf|.woff|.woff2|woff2\?v\=4.4\.0|.svg|.jpg|.jpeg|.ico)$/) !== null;
+}
+
 _serverRules = function(req,res) {
+
+  if( skipThese(req,res) ) {
+    return true;
+  }
 
   var ip = req.connection.remoteAddres || 'ip?';
   console.log( 'Validating ', req.url, ip, req.headers['user-agent']);
 
-  if( isValidRequest(req,res) ) {
+  if( !isValidRequest(req,res) ) {
     return false;
   }
-  
+
   if( !just_one ) {
     //dumpCleanReq(req);
     just_one = true;
