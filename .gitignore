@@ -3,21 +3,18 @@
 # compiled output
 /dist
 /tmp
-/fastboot-dist
-/vendor/bower_components_*
 /built
+/logs
 
 # dependencies
 /node_modules
 /bower_components
 
 # misc
+/bin/serverHook.js
 /.sass-cache
 /connect.lock
-/coverage/*
-/libpeerconnection.log
 npm-debug.log
 testem.log
-dig.ccMixter.bbprojectd
 .DS_Store
 build.log

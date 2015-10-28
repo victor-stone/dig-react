@@ -1,3 +1,5 @@
+'use strict';
+
 global.IS_SERVER_REQUEST = true;
 process.env.NODE_ENV = 'production';
 
@@ -5,15 +7,18 @@ var http = require('http');
 var fs   = require('fs');
 var glob = require('glob');
 var url  = require('url');
+var util = require('util');
 var argv = require('minimist')(process.argv.slice(2));
+
+var LogWriter = require('./log');
+
+console.log( 'Server invoked with: ', argv )
 
 var DIST_DIR = './dist';
 var port     = argv.port || 3000;
 
-var serverRulesTimestamp = 0;
-var serverRules          = null;
-var ServerRulesModule    = 'bin/ServerRules.js';
-var serverRulesAreBroken = false;
+var appLog = new LogWriter('app', 'logs');
+var sysLog = new LogWriter('sys', 'logs');
 
 var log  = function() {
   if( argv.v ) {
@@ -37,12 +42,6 @@ var matches = [
 ];
 
 var staticIncludes = [];
-
-glob('dist/**/*.*',function(e,f) { 
-  staticIncludes = f;
-  http.createServer(handleRequest).listen(port);
-  console.log('listening on port ' + port);
-});
 
 function sendFile(res,fileName) {
   var fname = DIST_DIR + fileName;
@@ -68,49 +67,9 @@ function sniffMime(fname) {
   }
 }
 
-function _setServerRules(fn) {
-  serverRules = fn;
-}
-
-function _getServerRules() {
-  serverRulesTimestamp = fs.statSync(ServerRulesModule).mtime.getTime();
-  var code = fs.readFileSync(ServerRulesModule,'utf8');
-  console.log( 'Loading Server Rules Code: ');
-  try {
-    var _serverRules = null;
-    eval(code);
-    serverRules = _serverRules;
-    serverRulesAreBroken = false;
-  } catch(e) {
-    console.log( 'SERVER RULE  PARSE ERROR: ', e.message );
-    serverRulesAreBroken = true;
-  }
-}
-
-function validateRequest( req, res ) {
-  var result = true;
-
-  if( !serverRules && !serverRulesAreBroken ) {
-    _getServerRules();
-  } else {
-    var currRulesTimestamp = fs.statSync(ServerRulesModule).mtime.getTime();
-    if( currRulesTimestamp > serverRulesTimestamp ) {
-      _getServerRules();
-    }
-  }
-  try {
-    if( !serverRulesAreBroken ) {
-      result = serverRules(req,res);
-    }
-  } catch( e ) {
-    console.log( 'SERVER RULE ERROR: ', e.message );
-    serverRulesAreBroken = true;
-    result = false;
-  }
-  return result;
-}
-
 function handleRequest( req, res ) {
+
+  var ip = getIP(req);
 
   if( argv.mem ) {
     manageMemory();
@@ -121,14 +80,30 @@ function handleRequest( req, res ) {
     
     if( staticIncludes.includes( 'dist' + file ) ) {
       sendFile( res, file );
+      sysLog.logRequest(ip,req,res)
     } else {
       handleReactRoute( req.url, res );
+      appLog.logRequest(ip,req,res);
     } 
   } else {
     res.statusCode = 500;
     res.end('Server error');
+    sysLog.logRequest(ip,req,res)
   }
 }
+
+function getIP(req) {
+  if( req.connection.remoteAddress ) {
+    return req.connection.remoteAddress.replace(/(ffff|:)/g,'');
+  }
+  if( 'x-forwaded-for' in req.headers ) {
+    return req.headers['x-forwaded-for'].split(',')[0].replace(/[A-Za-z:\s-]/g,'');
+  }
+  return '?ip?'
+}
+
+
+/* memory handling */
 
 var hitCount = 0;
 var MAX_MEMORY_LIMIT = 150 * (1024*1024);
@@ -211,3 +186,79 @@ function handleReactRoute(url,res) {
     }).catch( handleError );
   }
 }
+
+/* Server request validation */
+
+var serverRulesTimestamp = 0;
+var serverRules          = null;
+var ServerRulesModule    = argv.sr;
+var serverRulesAreBroken = false;
+
+function _getServerRules() {
+  serverRulesTimestamp = fs.statSync(ServerRulesModule).mtime.getTime();
+  var code = fs.readFileSync(ServerRulesModule,'utf8');
+  console.log( 'Loading Server Rules Code: ');
+  try {
+    var _serverRules = null;
+    eval(code);
+    serverRules = _serverRules;
+    serverRulesAreBroken = false;
+  } catch(e) {
+    console.log( 'SERVER RULE  PARSE ERROR: ', e.message );
+    serverRulesAreBroken = true;
+  }
+}
+
+function validateRequest( req, res ) {
+  var result = true;
+
+  if( ServerRulesModule && fs.existsSync(ServerRulesModule) ) {
+    if( !serverRules && !serverRulesAreBroken ) {
+      _getServerRules();
+    } else {
+      var currRulesTimestamp = fs.statSync(ServerRulesModule).mtime.getTime();
+      if( currRulesTimestamp > serverRulesTimestamp ) {
+        _getServerRules();
+      }
+    }
+    try {
+      if( !serverRulesAreBroken ) {
+        var ip = getIP(req);
+        result = serverRules({ req, res, sysLog, appLog, ip } );
+      }
+    } catch( e ) {
+      console.log( 'SERVER RULE ERROR: ', e.message );
+      serverRulesAreBroken = true;
+      result = false;
+    }
+  }
+  return result;
+}
+
+
+process.on('SIGINT', function() {
+  console.log("\n" + 'Got SIGINT. Exiting server.');
+  try {
+    sysLog.end();
+    appLog.end();    
+  } catch(e) {
+    console.log( e );
+  }
+  process.exit(0);
+});
+
+process.on('uncaughtException', function(err) {
+  console.log(err);
+  sysLog.write( { exception: util.inspect(err) } );
+});
+
+process.on('unhandledRejection', function(reason, p) {
+  // unhandled rejected promise
+  sysLog.write( { reject: util.inspect(p), reason })  ;
+});
+
+glob('dist/**/*.*',function(e,f) { 
+  staticIncludes = f;
+  http.createServer(handleRequest).listen(port);
+  console.log('listening on port ' + port);
+});
