@@ -93,11 +93,11 @@ function handleRequest( req, res ) {
 }
 
 function getIP(req) {
+  if( 'x-forwaded-for' in req.headers ) {
+    return req.headers['x-forwaded-for']; // .split(',')[0].replace(/[A-Za-z:\s-]/g,'');
+  }
   if( req.connection.remoteAddress ) {
     return req.connection.remoteAddress.replace(/(ffff|:)/g,'');
-  }
-  if( 'x-forwaded-for' in req.headers ) {
-    return req.headers['x-forwaded-for'].split(',')[0].replace(/[A-Za-z:\s-]/g,'');
   }
   return '?ip?'
 }
@@ -107,11 +107,12 @@ function getIP(req) {
 
 var hitCount = 0;
 var MAX_MEMORY_LIMIT = 150 * (1024*1024);
+var MAX_NON_GC_ALLOC = 200;
 
 function manageMemory() {
   var heapUsed = process.memoryUsage().heapUsed;
   console.log( 'memoryUsage: ' + Math.floor((heapUsed / (1024*1024))) + 'MB' );
-  if( ++hitCount % 20 === 0 || heapUsed > MAX_MEMORY_LIMIT ) {
+  if( ++hitCount % MAX_NON_GC_ALLOC === 0 || heapUsed > MAX_MEMORY_LIMIT ) {
     console.log( "------> Doing GC");
     global.gc();
   } 
@@ -197,7 +198,7 @@ var serverRulesAreBroken = false;
 function _getServerRules() {
   serverRulesTimestamp = fs.statSync(ServerRulesModule).mtime.getTime();
   var code = fs.readFileSync(ServerRulesModule,'utf8');
-  console.log( 'Loading Server Rules Code: ');
+  sysLog.write( 'Loading Server Rules Code');
   try {
     var _serverRules = null;
     eval(code);
