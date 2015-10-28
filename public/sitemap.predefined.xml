@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://dig.ccmixter.org/</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+  <url>
+    <loc>http://dig.ccmixter.org/free</loc>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>http://dig.ccmixter.org/ccplus</loc>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>http://dig.ccmixter.org/games</loc>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>http://dig.ccmixter.org/video</loc>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>http://dig.ccmixter.org/search</loc>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>http://dig.ccmixter.org/edpicks</loc>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>http://dig.ccmixter.org/dig</loc>
+    <changefreq>daily</changefreq>
+  </url>
+</urlset>
