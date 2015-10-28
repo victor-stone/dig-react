@@ -39,6 +39,8 @@ var matches = [
   [ new RegExp('\.map$'),   'application/octet-stream' ],
   [ new RegExp('\.jpe?g$'), 'image/jpeg'],
   [ new RegExp('\.ico$'),   'image/x-icon'],
+  [ new RegExp('\.xml$'),   'text/xml'],
+  [ new RegExp('\.txt$'),   'text/plain'],
 ];
 
 var staticIncludes = [];
