@@ -93,7 +93,7 @@ function handleRequest( req, res ) {
 }
 
 function getIP(req) {
-  if( 'x-forwaded-for' in req.headers ) {
+  if( 'x-forwarded-for' in req.headers ) {
     return req.headers['x-forwaded-for']; // .split(',')[0].replace(/[A-Za-z:\s-]/g,'');
   }
   if( req.connection.remoteAddress ) {
