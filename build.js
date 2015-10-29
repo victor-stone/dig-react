@@ -152,8 +152,8 @@ function publishServerLibrary() {
 function minifyDist() {
   log('spawing uglify for dist js/css')
   var dir = TEMP_DIR + WEB_DIR;
-  var cssCmd = `uglify -s dist/css/app.css -o ${dir}css/app.css -c`;
-  var jsCmd  = `uglify -s dist/js/bundle.js -o ${dir}js/bundle.js`;
+  var cssCmd = `uglify -s ${TEMP_DIR}dist/css/app.css  -o ${dir}css/app.css -c`;
+  var jsCmd  = `uglify -s ${TEMP_DIR}dist/js/bundle.js -o ${dir}js/bundle.js`;
   return execp(cssCmd).then( () => execp( jsCmd ) );
 }
 
