@@ -9,7 +9,28 @@
     <script src="/js/vendor.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/vendor.css">
     <link rel="stylesheet" type="text/css" href="/css/app.css">
-  </head>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "url": "http://dig.ccmixter.org",
+      "name" : "dig.ccMixter",
+      "alternateName" : "dig Music Discovery",
+      "logo": "http://dig.ccmixter.org/images/logo-black.png",
+        "sameAs" : [
+          "https://twitter.com/ccmixtermusic",
+          "https://www.youtube.com/channel/UCU7QBXVX4gcePOcEyha7yng",
+          "https://www.facebook.com/CCMixter",
+          "http://instagram.com/ccmixter"
+        ],
+       "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://dig.ccmixter.org/search?searchp={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>  
+    </head>
   <body>
     <div id="content"></div>
     <script src="/js/bundle.js"></script>

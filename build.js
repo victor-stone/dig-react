@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+process.env.NODE_DEBUG = fs;
+
 var fs         = require('fs');
 var path       = require('path');
 var RSVP       = require('rsvp');
@@ -7,9 +9,10 @@ var del        = require('del');
 var exec       = require('child_process').exec;
 var argv       = require('minimist')(process.argv.slice(2));
 
-var fopen  = RSVP.denodeify(fs.open);
-var fread  = RSVP.denodeify(fs.readFile);
-var globp  = RSVP.denodeify(glob);
+var fopen   = RSVP.denodeify(fs.open);
+var fread   = RSVP.denodeify(fs.readFile);
+var globp   = RSVP.denodeify(glob);
+var frename = RSVP.denodeify(fs.rename);
 
 var MODE     = argv.mode || (argv.p ? 'prod' : 'dev');
 var buildAll = argv.all || argv.a || argv.p || argv.d;
@@ -20,6 +23,9 @@ console.log( ' options: ', argv );
 console.log( ' MODE(', MODE, ') build all(', buildAll, ') verbose (', verbose, ') ' );
 console.log( '----------------------------------------------------------');
 
+var TEMP_DIR   = MODE === 'dev' ? './' : 'tmp/';
+var WEB_DIR    = 'dist/';
+var SERVER_DIR = 'built/';
 
 build();
 
@@ -29,17 +35,18 @@ function build() {
 
   if( buildAll ) {
 
-    promise =  clean()
-              .then( () =>  commonBuild() )
-              .then( () => RSVP.all(_allBuilders()) );
+    promise =  clean(true)
+              .then( () => RSVP.all(_allBuilders()) )
+              .then( () => commonBuild() );
 
   } else {
     promise = commonBuild();
   }
 
   promise
+    .then( () => stageResults() )
     .then( () => console.log('build done') )
-    .catch( errr => { err(errr) } );    
+    .catch( err );    
 
 }
 
@@ -61,8 +68,39 @@ function _commonBuilders() {
   ];
 }
 
-function clean() {
-  return del( ['dist/**/*', 'built/**/*'] ).then( () => mkdir('dist') );
+function clean(makeNew) {
+  return del( [ 
+                TEMP_DIR + WEB_DIR + '**/*', 
+                TEMP_DIR + SERVER_DIR + '**/*',
+                TEMP_DIR + 'x/**/*'
+              ] )
+        .then( () => { 
+            if( makeNew ) {
+              mkdir( TEMP_DIR );
+              mkdir( TEMP_DIR + 'x' );
+              mkdir( TEMP_DIR + WEB_DIR );
+              mkdir( TEMP_DIR + SERVER_DIR );
+            }
+          });
+}
+
+function stageResults() {
+  if( MODE === 'dev' ) {
+    return RSVP.resolve(0);
+  }
+
+  log('staging results');
+  rename(                WEB_DIR,               TEMP_DIR + 'x/' + WEB_DIR)
+    .then( () => rename( SERVER_DIR,            TEMP_DIR + 'x/' + SERVER_DIR) )
+    .then( () => rename( TEMP_DIR + WEB_DIR,    WEB_DIR )  )
+    .then( () => rename( TEMP_DIR + SERVER_DIR, SERVER_DIR )  )
+    .then( () => clean(false) )
+    .catch( err );
+}
+
+function rename( from, to ) {
+  log( 'renaming: ', from, ' => ', to );
+  return frename( from, to );
 }
 
 function _allBuilders() {
@@ -107,23 +145,24 @@ function lintSource() {
 
 function publishServerLibrary() {
   log('spawing babel for server libs')
-  var cmd = 'babel app --out-dir built';
+  var cmd = 'babel app --out-dir ' + TEMP_DIR + SERVER_DIR;
   return execp(cmd);
 }
 
 function minifyDist() {
   log('spawing uglify for dist js/css')
-  var cssCmd = 'uglify -s dist/css/app.css -o dist/css/app.css -c';
-  var jsCmd  = 'uglify -s dist/js/bundle.js -o dist/js/bundle.js';
+  var dir = TEMP_DIR + WEB_DIR;
+  var cssCmd = `uglify -s dist/css/app.css -o ${dir}css/app.css -c`;
+  var jsCmd  = `uglify -s dist/js/bundle.js -o ${dir}js/bundle.js`;
   return execp(cssCmd).then( () => execp( jsCmd ) );
 }
 
 function publishPublicFiles() {
 
-  mkdir('dist/images');
+  mkdir( TEMP_DIR + WEB_DIR + 'images');
 
-  return globp('public/{*.html,images/*.*,*.ico}')
-    .then( fnames => fnames.forEach( f => copy( f, f.replace('public/','dist/') ) ) );
+  return globp('public/{*.html,*.ico,*.xml,*.txt,images/*.*}')
+    .then( fnames => fnames.forEach( f => copy( f, f.replace('public/', TEMP_DIR + WEB_DIR ) ) ) );
 }
 
 function bundleAppCSSFiles() {
@@ -133,13 +172,14 @@ function bundleAppCSSFiles() {
 
 function bundleBrowserJS() {
   log('creating bundle.js');
-  mkdir('dist/js');
+
+  mkdir( TEMP_DIR + WEB_DIR + 'js');
 
   var cmd = 'browserify app/**/*.js -e app/browser.js  -t babelify --noparse=http -u http -u stream-http  ';
   if( MODE === 'dev') {
     cmd += " --full-paths ";
   }
-  cmd += "-o dist/js/bundle.js";
+  cmd += "-o " + TEMP_DIR + WEB_DIR + "js/bundle.js";
 
   return execp(cmd);
 }
@@ -167,7 +207,7 @@ function bundleVendorJSFiles() {
 
 function publishFontFiles() {
 
-  mkdir('dist/fonts');
+  mkdir( TEMP_DIR + WEB_DIR + 'fonts');
 
   var rootd = 'node_modules/font-awesome/';
 
@@ -176,7 +216,7 @@ function publishFontFiles() {
 
 function publishSMFiles() {
 
-  mkdir('dist/swf');
+  mkdir( TEMP_DIR + WEB_DIR + 'swf');
 
   var rootd = 'node_modules/soundmanager2/';
 
@@ -185,14 +225,14 @@ function publishSMFiles() {
 
 function publishSourceMaps() {
 
-  mkdir('dist/fonts');
+  mkdir( TEMP_DIR + WEB_DIR + 'css');
 
   if( MODE === 'dev' ) {
 
     var fromTos = [
       {
         from: 'node_modules/bootstrap/dist/css/bootstrap-theme.css.map',
-        to: 'dist/css/bootstrap-theme.css.map'
+        to: TEMP_DIR + WEB_DIR + 'css/bootstrap-theme.css.map'
       }
     ];
 
@@ -219,18 +259,18 @@ function bundleVendorCSSFiles() {
 
 function publishDir(files,rootd) {
   return globp( files )
-    .then( fnames => fnames.forEach( f => copy( f, f.replace(rootd,'dist/') ) ) );
+    .then( fnames => fnames.forEach( f => copy( f, f.replace(rootd,TEMP_DIR + WEB_DIR) ) ) );
 }
 
 function bundleVendorFiles(arr,outext) {
-  var dir = 'dist/' + outext;
+  var dir = TEMP_DIR + WEB_DIR + outext;
   mkdir(dir);
   return bundleFiles(arr, dir + '/vendor.' + outext);
 }
 
 function bundleAppFiles(arr,outext) {
-  // should be uglify step here
-  var dir = 'dist/' + outext;
+
+  var dir = TEMP_DIR + WEB_DIR + outext;
   mkdir(dir);
   return bundleFiles(arr, dir + '/app.' + outext);
 }
