@@ -69,7 +69,7 @@ const homePage = (
           {"Find that perfect soundtrack or theme music for your film or video project."}
         </div>
         <div className="panel-footer center-text">
-          <Link href="/video" className="btn btn-default">{"Dig!"}</Link>
+          <Link href="/film" className="btn btn-default">{"Dig!"}</Link>
         </div>
       </div>
     </div>
