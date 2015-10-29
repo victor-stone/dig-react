@@ -69,7 +69,7 @@ const homePage = (
           {"Find that perfect soundtrack or theme music for your film or video project."}
         </div>
         <div className="panel-footer center-text">
-          <Link to="/video" className="btn btn-default">{"Dig!"}</Link>
+          <Link href="/video" className="btn btn-default">{"Dig!"}</Link>
         </div>
       </div>
     </div>
@@ -82,7 +82,7 @@ const homePage = (
           {"Thousands of hours of free music - all you have to do is give credit to the musicians."}
         </div>
         <div className="panel-footer center-text">
-          <Link to="/free" className="btn btn-default">{"Dig!"}</Link>
+          <Link href="/free" className="btn btn-default">{"Dig!"}</Link>
         </div>
       </div>
     </div>
@@ -95,7 +95,7 @@ const homePage = (
           {"Eclectic, eccentric, experimental genres for themes and looping backgrounds"}
         </div>
         <div className="panel-footer center-text">
-          <Link to="/games" className="btn btn-default">{"Dig!"}</Link>
+          <Link href="/games" className="btn btn-default">{"Dig!"}</Link>
         </div>
       </div>
     </div>
