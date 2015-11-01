@@ -81,37 +81,36 @@ const QueryOptions = React.createClass({
     var filters = {
       limit: qp.limit
     };
-    filters.lic = qp.lic || 'all';
+    filters.lic              = qp.lic || 'all';
     filters.instrumentalOnly = !!qp.reqtags; // stupid, dangerous, awesome
-    filters.recent = qp.digrank === qc.recent.digrank;
+    filters.sort             = qp.digrank || qc.recent.digrank;
     return filters;
   },
 
   handleShowOptions: function(){
-    var show = !this.state.view.showOptions;
-    this.setState({view: {showOptions: show}});
+    var showOptions = !this.state.view.showOptions;
+    this.setState({view: {showOptions}});
   },
 
-  onRecent: function() {
-    var val = !this.state.filters.recent;
-    var recent = val ? qc.recent.digrank : qc.default.digrank;
-    this.props.store.applyParams( { digrank: recent, offset: 0 } );
+  onSort: function() {
+    var digrank = this.refs['sort'].value;
+    this.props.store.applyParams( { digrank, offset: 0 } );
   },
 
   onInstrumentalOnly: function() {
     var val = !this.state.filters.instrumentalOnly;
-    var tags = val ? qc.instrumental.reqtags : '';
-    this.props.store.applyParams( { reqtags: tags, offset: 0 });
+    var reqtags = val ? qc.instrumental.reqtags : '';
+    this.props.store.applyParams( { reqtags, offset: 0 });
   },
 
   onLimit: function() {
-    var val = this.refs['limit'].value;
-    this.props.store.applyParams( { limit: val, offset: 0 } );
+    var limit = this.refs['limit'].value;
+    this.props.store.applyParams( { limit, offset: 0 } );
   },
 
   onLic: function() {
-    var val = this.refs['lic'].value;
-    this.props.store.applyParams( { lic: val, offset: 0 } );
+    var lic = this.refs['lic'].value;
+    this.props.store.applyParams( { lic, offset: 0 } );
   },
 
   genOptions: function() {
@@ -130,7 +129,11 @@ const QueryOptions = React.createClass({
         <LicenseInfoPopup />
       </li>
       <li>
-        <label className="form-control" htmlFor="recent">{"recent "}<input onChange={this.onRecent} checked={this.state.filters.recent} type="checkbox" id="recent" /></label>
+        <select id="sort" ref="sort" value={this.state.filters.sort} onChange={this.onSort} className="form-control" >
+          <option value={qc.magicSort.digrank}>{"magic sort"}</option>
+          <option value={qc.recent.digrank}>{"recent"}</option>
+          <option value={qc.alltime.digrank}>{"all time"}</option>
+        </select>
       </li>
       <li>
         <label className="form-control" htmlFor="instrumentalOnly">{"instrumental only "}<input onChange={this.onInstrumentalOnly} checked={this.state.filters.instrumentalOnly} type="checkbox" id="instrumentalOnly" /></label>

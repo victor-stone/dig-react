@@ -1,9 +1,11 @@
 
+var MAGIC_SORT_DIGRANK = '280';
+
 module.exports = {
 
   default: {  
     limit: 10,
-    digrank: '280',
+    digrank: MAGIC_SORT_DIGRANK,
     oneof: 'remix,extended_mix',
   },
 
@@ -14,6 +16,14 @@ module.exports = {
   recent: {
     digrank: '10000',
   }, 
+
+  alltime: {
+    digrank: '1',
+  },
+
+  magicSort: {
+    digrank: MAGIC_SORT_DIGRANK,
+  },
 
   games: {
     tags: 'loops,techno',

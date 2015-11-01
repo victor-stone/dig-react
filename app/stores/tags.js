@@ -53,16 +53,30 @@ var Tags = Query.extend({
     return cat;
   },
 
-  _emitSelectedTags: function(cat,doAll) {
+  getSelectedTags: function(cat) {
     if( cat ) {
-      this.emit('selectedCatTags',this.selectedTags[cat],cat);      
+      if( cat in this.selectedTags ) {
+        return this.selectedTags[cat];
+      }
+      return new TagString();
+    }
+    var allTags = TagString();
+    for( var cat2 in this.selectedTags ) {
+      allTags.add( this.selectedTags[cat2] );
+    }
+    return allTags;
+  },
+
+  _emitSelectedTags: function(cat,doAll) {
+    var tags = this.getSelectedTags(cat);
+    if( cat ) {
+      this.emit('selectedCatTags',tags,cat);      
     }
     if( doAll ) {
-      var allTags = TagString();
-      for( var cat2 in this.selectedTags ) {
-        allTags.add( this.selectedTags[cat2] );
+      if( cat ) {
+        tags = this.getSelectedTags();
       }
-      this.emit( 'selectedTags', allTags );
+      this.emit( 'selectedTags', tags );
     }
   },
 

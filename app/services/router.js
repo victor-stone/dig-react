@@ -1,6 +1,5 @@
 
 import RouteRecognizer  from 'route-recognizer';
-import routes           from '../routes';
 import util             from 'util';
 import { EventEmitter } from 'events';
 
@@ -12,11 +11,21 @@ var Router = function()
   EventEmitter.call(this);
   
   this.recognizer = new RouteRecognizer();
+  this.routes = [];
+  this.rewrites = [];
 
   if( typeof window !== 'undefined' ) {
     window.onpopstate = this.updateUrl.bind(this);
   }
 
+};
+
+util.inherits(Router,EventEmitter);
+
+Router.prototype.addRoutes = function(routes, rewrites) {
+
+  this.routes = routes;
+  this.rewrites = rewrites;
   // baby steps: nothing nested for now
 
   for( var handler in routes ) {
@@ -30,14 +39,23 @@ var Router = function()
   }
 };
 
-util.inherits(Router,EventEmitter);
-
+Router.prototype.runRewrites = function(url) {
+  for( var i = 0; i < this.rewrites.length; i++) {
+    var rule = this.rewrites[i];
+    if( url.match(rule.regex) !== null ) {
+      return rule.now;
+    }
+  }
+  return url;
+};
 /* safe for server */
 Router.prototype.resolve = function(url) {
+  url = this.runRewrites(url);
   var results = this.recognizer.recognize(url);
   if( results ) {
     var handlers = results.slice();
     var queryParams = results.queryParams || {};
+    var routes = this.routes;
     return handlers.map( function(h) { 
                               return { 
                                 component: routes[h.handler], 

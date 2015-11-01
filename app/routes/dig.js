@@ -1,11 +1,10 @@
-/* globals $ */
-  
 import React        from 'react';
 import { oassign }  from '../unicorns';
 import TagString    from '../unicorns/tagString';
 import qc           from '../models/queryConfigs';
 import { Glyph, 
          Paging, 
+         QueryOptions,
          Playlist } from '../components';
 
 import PlaylistStore  from '../stores/playlist';
@@ -142,61 +141,83 @@ const SelectedTag = React.createClass({
 
 });
 
-const SelectedTags = React.createClass({
+const MatchAnyButton = React.createClass({
 
-  /*
-    props:
-      store: tagStore
-
-    state: 
-      selectedTags: [],
-  */
   getInitialState: function() {
-    return { 
-      selectedTags: [],
-      matchAny: false
-    };
+    var qp = this.props.store.queryParams;
+    return { matchAny: qp.type && qp.type === 'any' };
   },
 
   componentWillMount: function() {
-    this.props.store.on('selectedTags', this.onSelectedTags );
+    this.props.store.on('playlist', this.onParamsChanged );
   },
 
   componentWillUnmount: function() {
-    this.props.store.removeListener('selectedTags', this.onSelectedTags );
+    this.props.store.removeListener('playlist', this.onParamsChanged );
   },
 
-  onSelectedTags: function(t) {
-    setTimeout( () => this.setState( {selectedTags: t.toArray()} ),
-                500 );
-  },
-
-  clear: function(/*e*/) {
-    this.props.store.clearSelected();
+  onParamsChanged: function() {
+    var qp = this.props.store.queryParams;
+    this.setState( { matchAny: qp.type && qp.type === 'any' } );
   },
 
   onMatchAny: function() {
-    this.props.onMatchAny( $(this.refs['matchAny']).is(':checked') );
-    this.setState( { matchAny: !this.state.matchAny });
+    var matchAny = !this.state.matchAny;
+    this.props.store.applyParams( 
+        { 
+          type: matchAny ? 'any' : 'all',
+          offset: 0 // do I need do this?
+         });
+  },
+
+  render: function() {
+    return (<label className="btn btn-primary btn-xs"><input onChange={this.onMatchAny} checked={this.state.matchAny} type="checkbox" />{" match any"}</label>);
+  },
+});
+
+const SelectedTags = React.createClass({
+
+  getInitialState: function() {
+    return { selectedTags: new TagString() };
+  },
+
+  componentWillMount: function() {
+    var store = this.props.tagStore;
+    store.on('selectedTags', this.onSelectedTags );
+  },
+
+  componentWillUnmount: function() {
+    var store = this.props.tagStore;
+    store.removeListener('selectedTags', this.onSelectedTags );
+  },
+
+  onSelectedTags: function(selectedTags) {
+    this.setState( { selectedTags } );
+  },
+
+  clear: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    var store = this.props.tagStore;
+    store.clearSelected();
   },
 
   render: function() {
     var tags       = this.state.selectedTags;
     var store      = this.props.store;
-    var matchAnyOK = tags.length > 1;
+    var tagStore   = this.props.tagStore;
+    var matchAnyOK = tags.getLength() > 1;
 
     return( 
-        <div>{tags.map( (t,i) => <SelectedTag key={i} name={t} store={store} /> )
-          }{tags.length 
+        <div>{tags.toArray().map( (t,i) => <SelectedTag key={i} name={t} store={tagStore} /> )}
+          {tags.getLength()
              ? <a  href="#" onClick={this.clear} className="btn btn-xs btn-danger">
                 <Glyph icon="trash" />{" clear"}</a>
               : null
           }
-          {" "}
-          {matchAnyOK 
-            ? <label className="btn btn-primary btn-xs"><input onChange={this.onMatchAny} checked={this.state.matchAny} type="checkbox" ref="matchAny" />{" match any"}</label>
-            : null 
-        }</div>
+          {' '}
+          {matchAnyOK ? <MatchAnyButton store={store} /> : null}
+      </div>
       );
   },
 
@@ -237,18 +258,19 @@ const RemixTagSelectionSection = React.createClass({
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      var store = this.props.store;
+      var store = this.props.tagStore;
       var names = store.remixCategoryNames();
       store.remixCategories().then( cats => {
-        // throw this back on the window thread
-         setTimeout( () =>
-          this.setState( {
-            categories: cats,
-            categoryNames: names,
-            loading: false
-          }), 50 );
+        this.setState( {
+          categories: cats,
+          categoryNames: names,
+          loading: false });
       });
     }
+  },
+
+  componentDidUpdate: function() {
+    this.props.onUpdate(this.state.loading);
   },
 
   render: function() {
@@ -261,7 +283,8 @@ const RemixTagSelectionSection = React.createClass({
       categories:    this.state.categories,
       categoryNames: this.state.categoryNames
     };
-    var store = this.props.store;
+    var store    = this.props.store;
+    var tagStore = this.props.tagStore;
 
     return (
         <div className="page-header">
@@ -270,14 +293,87 @@ const RemixTagSelectionSection = React.createClass({
               this.state.loading 
                 ? <TagsLoading />
                 : <div>
-                    <TagCategoryRow store={store} model={model} />
-                    <SelectedTagRow store={store} onMatchAny={this.props.onMatchAny} />
+                    <TagCategoryRow store={tagStore} model={model} />
+                    <SelectedTagRow store={store} tagStore={tagStore} />
                   </div>
             }
           </div>
         </div>
       );
   }
+});
+
+const NoTagHits = React.createClass({
+
+  getInitialState: function() {
+    var state = this.getStateFromStore();
+    var numTags = this.props.tagStore.getSelectedTags().getLength();
+    state.showMatchAny =  numTags > 1 && this.props.store.queryParams.type === 'all';
+    return state;
+  },
+
+  componentWillMount: function() {
+    this.props.store.on('playlist', this.onParamsChanged );
+    this.props.tagStore.on('selectedTags', this.onSelectedTags );
+  },
+
+  componentWillUnmount: function() {
+    this.props.store.removeListener('playlist', this.onParamsChanged );
+    this.props.tagStore.removeListener('selectedTags', this.onSelectedTags );
+  },
+
+  onSelectedTags: function(tags) {
+    var numTags = tags.getLength();
+    var showMatchAny =  numTags > 1 && this.props.store.queryParams.type === 'all';
+    this.setState( { showMatchAny } );
+  },
+
+  onParamsChanged: function() {
+    this.setState( this.getStateFromStore() );
+  },
+
+  getStateFromStore: function() {
+    var store = this.props.store;
+    var paramsDirty = store.paramsDirty();
+    var showNoHits = !store.model || !store.model.total;
+    return { paramsDirty, showNoHits };
+  },
+
+  render: function() {
+    var store        = this.props.store;
+    var paramsDirty  = this.state.paramsDirty;
+    var showMatchAny = this.state.showMatchAny;
+
+    if( !this.state.showNoHits ) {
+      return null;
+    }
+    return (
+      <div className="row">
+        <div className="col-md-6 col-md-offset-3 no-hit-suggestion">
+          <div className="jumbotron empty-query">
+            <h3>{"wups, no matches for that combination of tags..."}</h3>
+              <ul>
+                <li>
+                  {"Try removing tags by clicking on the tags marked "}<Glyph icon="times-circle" />
+                </li>
+                {showMatchAny
+                  ?<li>
+                    {"The default search is for music that matches "}<strong>{"all"}</strong>{" the tags. "}
+                    {"Try a search for "}<strong>{"any"}</strong>{" combination of them: "}
+                    <MatchAnyButton store={store} />
+                  </li>
+                  : null
+                }
+                {paramsDirty
+                  ?<li>{"Try resetting your filters "}<QueryOptions.ResetOptionsButton store={store} /></li>
+                  : null
+                }
+              </ul>
+          </div>
+        </div>
+      </div>
+      );
+  },
 });
 
 const dig = React.createClass({
@@ -296,18 +392,17 @@ const dig = React.createClass({
   _myStore: null,
 
   onSelectedTags: function(t) {
-    this._myStore.applyParams( 
+    this._myStore.applyToOriginalParams( 
         {
           tags: t.toString(),
           offset: 0
         } );
   },
 
-  onMatchAny: function(val) {
-    this._myStore.applyParams( 
-        { type: val ? 'any' : 'all',
-          offset: 0 // do I need do this?
-         });
+  onTagSectionUpdate: function(loading) {
+    if( !loading ) {
+      this.refs['paging'].handleResize();
+    }
   },
 
   render() {
@@ -317,9 +412,10 @@ const dig = React.createClass({
 
     return (
       <div>
-        <RemixTagSelectionSection store={tagStore} onMatchAny={this.onMatchAny}/>
-        <Paging store={store} />
-        <Playlist store={store} />        
+        <RemixTagSelectionSection store={store} tagStore={tagStore} onUpdate={this.onTagSectionUpdate}/>
+        <Paging store={store} ref="paging"/>
+        <Playlist store={store} />   
+        <NoTagHits store={store} tagStore={tagStore} />     
       </div>
     );
   }
@@ -329,7 +425,7 @@ const dig = React.createClass({
 dig.title = 'Dig Deep';
 
 dig.store = function(params,queryParams) {
-  var qparams = oassign( {}, qc.default, queryParams );
+  var qparams = oassign( {}, qc.default, { type: 'all' }, queryParams );
   return PlaylistStore.queryAndReturnStore(qparams);
 };
 

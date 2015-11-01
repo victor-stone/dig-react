@@ -777,7 +777,7 @@ a.btn-exp:hover {
 }
 
 .filter-box li {
-  margin-bottom: 2px;
+  margin-bottom: 7px;
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -805,6 +805,10 @@ a.btn-exp:hover {
 .filter-box #limit {
   width: 60px;
   margin-left: 15px;
+}
+
+.filter-box li #sort {
+  width: inherit;
 }
 
 .filter-box .title .close {

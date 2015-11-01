@@ -48,7 +48,9 @@ class LogWriter {
     }
   }
 
-  logRequest (ip,req,res) {
+  logRequest (req,res) {
+    var ip = req.ip;
+    
     var currdate = this.formatNowForName();
     if( currdate !== this.logdate ) {
       this.makeStream();

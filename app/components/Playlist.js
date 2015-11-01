@@ -95,5 +95,60 @@ var Playlist = React.createClass({
   }
 });
 
+var NotALotHere = React.createClass({
+
+  getInitialState: function() {
+    var showNotALot = this.getShowNotALot();
+    return { showNotALot };
+  },
+
+  componentWillMount: function() {
+    var store = this.props.store;
+    store.on('playlist',this.updateState);
+  },
+
+  componentWillUnmount: function() {
+    var store = this.props.store;
+    store.removeListener('playlist',this.updateState);
+  },
+
+  getShowNotALot: function() {
+    var store = this.props.store;
+    return store.model.total < store.queryParams.limit && store.paramsDirty();
+  },
+
+  updateState: function() {
+    var showNotALot = this.getShowNotALot();
+    this.setState( { showNotALot } );
+  },
+
+  render: function() {
+
+      if( !this.state.showNotALot ) {
+        return null;
+      }
+
+      return (
+        <div className="container-fluid no-hit-suggestion">
+            <div className="row">
+              <div className="col-md-6 col-md-offset-3">
+                <div className="jumbotron empty-query">
+                  <h3>{"eh, not a lot here..."}</h3>
+                    <ul>
+                        <li>
+                            {"You might consider resetting the options "}
+                            <QueryOptions.ResetOptionsButton store={this.props.store} />
+                        </li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+  }
+});
+
+Playlist.NotALotHere = NotALotHere;
+
 module.exports = Playlist;
 

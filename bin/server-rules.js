@@ -1,5 +1,4 @@
-
-console.log('Importing Server Rules');
+console.log('Importing Server Validation Rules ' + new Date());
 
 var just_one = false;
 
@@ -19,7 +18,7 @@ var validationTests = [
 
   function(req,res) {
     var userAgent = req.headers['user-agent'];
-    if( req.url.match(/^\/dig/) && userAgent.match(/Dalvik/) ) {
+    if( req.url.match(/^\/dig/) && userAgent.match(/\u0044\u0061\u006c\u0076/) ) {
       res.statusCode = 404;
       res.end();
       return false;
@@ -43,8 +42,7 @@ function skipThese(req,res) {
   return req.url.match(/(.js|.css|.html|.png|.eot|.otf|.ttf|.woff|.woff2|woff2\?v\=4.4\.0|.svg|.jpg|.jpeg|.ico)$/) !== null;
 }
 
-
-_serverRules = function(ctx) {
+module.exports = function(ctx) {
 
   var req = ctx.req;
   var res = ctx.res;
@@ -58,7 +56,7 @@ _serverRules = function(ctx) {
   }
 
   if( !just_one ) {
-    ctx.sysLog.write( { req: util.inspect(req) } );
+    // ctx.sysLog.write( { req: util.inspect(req) } );
     just_one = true;
   }
 
@@ -81,4 +79,3 @@ function dumpCleanReq(req) {
     }
     console.log(r);  
 }
-

@@ -20,6 +20,7 @@ const FeaturedPage = React.createClass({
         <PageHeader icon={icon} title={title} subTitle={subTitle} />
         <Paging store={store} />
         <Playlist store={store} />
+        <Playlist.NotALotHere store={store} />
       </div>
     );
     

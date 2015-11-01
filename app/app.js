@@ -1,4 +1,3 @@
-//import { * } from './unicorns'
 import React             from 'react';
 import router            from './services/router';
 import { service as 
@@ -9,7 +8,15 @@ import { Header,
          TitleSetter,
          AudioPlayer }   from './components';
 
-//         <GoogleAnalytics id="UA-2878955-3" />
+import routes from './routes';
+
+var rewriteRules = [
+  { regex: new RegExp(/^\/free_music/),                now: '/free' },
+  { regex: new RegExp(/^\/music_for_film_and_video/),  now: '/film' },
+  { regex: new RegExp(/^\/podcast_music/),             now: '/free'}
+];
+
+router.addRoutes( routes, rewriteRules );
 
 const App = React.createClass({
 

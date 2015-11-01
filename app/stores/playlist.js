@@ -21,6 +21,11 @@ var Playlist = Query.extend({
     this.applyParams( this.originalParams || {} );
   },
 
+  applyToOriginalParams: function(params) {
+    oassign( this.originalParams, params );
+    this.applyParams( params );
+  },
+
   paramsDirty: function() {
     if( this.originalParams ) {
       for( var k in this.queryParams ) {

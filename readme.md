@@ -36,7 +36,7 @@ node build -vap
 run:
 
 ```
-node server
+node dig
 ```
 
 options:
@@ -44,14 +44,16 @@ options:
 ```
   --port=<port>    - default 3000
   --mem            - display memory usage (must run with node with --expose-gc option)
+  --sr=<path>      - install a dynamic hook for every request
   -v               - verbose print outs
 ```
 
 examples:
 
 ```
-  node server
-  node server --port=4000
-  node --expose-gc server -mem --port=4000
+  node dig
+  node dig --port=4000
+  node --expose-gc dig -mem --port=4000
+  node dig --sr=bin/server-rules.js
 ```
 

@@ -158,15 +158,16 @@ const Paging = React.createClass({
     router.setBrowserAddressBar('?offset='+offset);
   },
   
+  componentDidUpdate: function() {
+    this.handleResize();
+  },
+
   render: function() {
     var s = pagingStats(this.state);
-    
-    if( !s.shouldShow ) {
-      return null;
-    }
+    var cls = 'paging' + (s.shouldShow ? '' : ' hidden');
     
     return(
-      <div className="paging">
+      <div className={cls}>
         <ul className="pagination">  
           <PagerLink newOffset={this.onNewOffset} offset="0"            show={s.showFirst} icon="angle-double-left" />
           <PagerLink newOffset={this.onNewOffset} offset={s.prevValue}  show={s.showPrev}  icon="arrow-left" />

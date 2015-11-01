@@ -45,7 +45,7 @@ class Footer extends React.Component {
           <div className="col-md-3">
             <h1>{"Resources"}</h1>
             <ul>
-              <li><a href="https://github.com/ArtisTechMedia/dig.ccMixter"><i className="fa fa-github"></i>{" GitHub"}</a></li>
+              <li><a href="https://github.com/victor-stone/dig-react"><i className="fa fa-github"></i>{" GitHub"}</a></li>
               <li><a href="http://ccmixter.org/query-api">{"Query API"}</a></li>
               <li><a href="https://ccmixter.org/forum">{"Forums"}</a></li>
               <li><a href="http://ccmixter.org/media/people/contact/admin">{"Contact"}</a></li>

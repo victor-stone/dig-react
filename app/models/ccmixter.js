@@ -391,8 +391,10 @@ class Detail extends Upload {
 class Tag extends Model {
   constructor() {  
     super(...arguments);
-    this.idBinding = 'tags_tag';
-    this.nameBinding = 'tags_tag';
+    this.getName = 
+    this.getId = function() {
+      return this.tags_tag + '';
+    };
     this.countBinding = 'tags_count';
   }
 }

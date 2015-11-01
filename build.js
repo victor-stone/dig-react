@@ -15,12 +15,12 @@ var globp   = RSVP.denodeify(glob);
 var frename = RSVP.denodeify(fs.rename);
 
 var MODE     = argv.mode || (argv.p ? 'prod' : 'dev');
-var buildAll = argv.all || argv.a || argv.p || argv.d;
+var buildAll = argv.all || argv.a || argv.p;
 var verbose  = argv.verbose || argv.v || false;
 
 console.log( '------------------------ Building ------------------------');
 console.log( ' options: ', argv );
-console.log( ' MODE(', MODE, ') build all(', buildAll, ') verbose (', verbose, ') ' );
+console.log( ' MODE(', MODE, ') ALL(', buildAll, ') VERBOSE(', verbose, ') ' );
 console.log( '----------------------------------------------------------');
 
 var TEMP_DIR   = MODE === 'dev' ? './' : 'tmp/';
@@ -74,10 +74,13 @@ function clean(makeNew) {
                 TEMP_DIR + SERVER_DIR + '**/*',
                 TEMP_DIR + 'x/**/*'
               ] )
-        .then( () => { 
+        .then( (files) => { 
+            log( `deleted ${files.length} files`);
             if( makeNew ) {
               mkdir( TEMP_DIR );
-              mkdir( TEMP_DIR + 'x' );
+              if( MODE === 'prod') {
+                mkdir( TEMP_DIR + 'x' );
+              }
               mkdir( TEMP_DIR + WEB_DIR );
               mkdir( TEMP_DIR + SERVER_DIR );
             }
@@ -152,8 +155,8 @@ function publishServerLibrary() {
 function minifyDist() {
   log('spawing uglify for dist js/css')
   var dir = TEMP_DIR + WEB_DIR;
-  var cssCmd = `uglify -s ${TEMP_DIR}dist/css/app.css  -o ${dir}css/app.css -c`;
-  var jsCmd  = `uglify -s ${TEMP_DIR}dist/js/bundle.js -o ${dir}js/bundle.js`;
+  var cssCmd = `uglify -s ${dir}css/app.css  -o ${dir}css/app.css -c`;
+  var jsCmd  = `uglify -s ${dir}js/bundle.js -o ${dir}js/bundle.js`;
   return execp(cssCmd).then( () => execp( jsCmd ) );
 }
 
@@ -171,8 +174,6 @@ function bundleAppCSSFiles() {
 }
 
 function bundleBrowserJS() {
-  log('creating bundle.js');
-
   mkdir( TEMP_DIR + WEB_DIR + 'js');
 
   var cmd = 'browserify app/**/*.js -e app/browser.js  -t babelify --noparse=http -u http -u stream-http  ';
@@ -180,6 +181,8 @@ function bundleBrowserJS() {
     cmd += " --full-paths ";
   }
   cmd += "-o " + TEMP_DIR + WEB_DIR + "js/bundle.js";
+
+  log('creating bundle.js with cmd: ', cmd);
 
   return execp(cmd);
 }
