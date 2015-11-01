@@ -22,7 +22,8 @@ class ServerHook {
   validateRequest(req,res) {
     var filenames = Object.keys(this.hooks);
     log( 'searching through hooks', filenames);
-    filenames.forEach( filename => {
+    for( var i = 0; i < filenames.length; i++ ) {
+      var filename = filenames[i];
       log( 'reloading request ', filename);
       var hook = this.hooks[filename] = this.reloader.reload(filename);
       if( hook ) {
@@ -42,7 +43,7 @@ class ServerHook {
       } else {
         log( 'did not get a hook back, seems to be invalid')
       }
-    });
+    };
     return true;
   }
 }
