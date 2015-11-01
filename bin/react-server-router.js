@@ -51,6 +51,9 @@ class ReactServerRouter {
               };
 
               var bodyHTML = renderToString( this.AppFactory(props) );
+
+              //console.log( bodyHTML );
+
               var html     = data.replace(this.bodyRegex,'$1' + bodyHTML + '$3'); 
 
               if( h.component.title ) {

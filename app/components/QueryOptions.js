@@ -55,7 +55,11 @@ const ResetOptionsButton = React.createClass({
 const QueryOptions = React.createClass({
 
   getInitialState: function() {
+    if( !this.props.store.paramsDirty ) {
+      return { filterSupport: false };
+    }
     return {
+        filterSupport: true,
         view: { showOptions: false },
         filters: this.filtersFromStore(),
         dirty:   this.props.store.paramsDirty()
@@ -156,6 +160,10 @@ const QueryOptions = React.createClass({
 
   render: function() {
 
+    if( !this.state.filterSupport ) {
+      return null;
+    }
+    
     var showP       = this.state.view.showOptions;
     var popup       = showP ? this.genOptions() : null;
     var cls         = 'hidden-xs hidden-sm filter-box' + (showP ? ' open' : '' );

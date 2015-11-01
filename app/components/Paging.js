@@ -128,6 +128,10 @@ const Paging = React.createClass({
     this.setState(state);
   },
   
+  componentDidUpdate: function() {
+    this.handleResize();
+  },
+
   componentWillUnmount: function() {
     this.props.store.removeListener('playlist',this.onPlaylist);
   },
@@ -158,10 +162,6 @@ const Paging = React.createClass({
     router.setBrowserAddressBar('?offset='+offset);
   },
   
-  componentDidUpdate: function() {
-    this.handleResize();
-  },
-
   render: function() {
     var s = pagingStats(this.state);
     var cls = 'paging' + (s.shouldShow ? '' : ' hidden');

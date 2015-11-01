@@ -25,7 +25,7 @@ util.inherits(Router,EventEmitter);
 Router.prototype.addRoutes = function(routes, rewrites) {
 
   this.routes = routes;
-  this.rewrites = rewrites;
+  this.rewrites = rewrites || [];
   // baby steps: nothing nested for now
 
   for( var handler in routes ) {
@@ -43,7 +43,7 @@ Router.prototype.runRewrites = function(url) {
   for( var i = 0; i < this.rewrites.length; i++) {
     var rule = this.rewrites[i];
     if( url.match(rule.regex) !== null ) {
-      return rule.now;
+      return url.replace(rule.regex,rule.now);
     }
   }
   return url;

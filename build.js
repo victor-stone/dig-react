@@ -3,9 +3,9 @@ process.env.NODE_DEBUG = fs;
 
 var fs         = require('fs');
 var path       = require('path');
-var RSVP       = require('rsvp');
 var glob       = require('glob');
 var del        = require('del');
+var RSVP       = require('rsvp');
 var exec       = require('child_process').exec;
 var argv       = require('minimist')(process.argv.slice(2));
 

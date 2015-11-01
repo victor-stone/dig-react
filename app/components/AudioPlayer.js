@@ -141,7 +141,23 @@ const PlayControls = React.createClass({
 const PlaylistButton = React.createClass({
 
   getInitialState: function() {
-    return { hasPlaylist: this.props.hasPlaylist };
+    return { hasPlaylist: !!AudioPlayerService.playlist };
+  },
+
+  componentWillMount: function() {
+    if( !global.IS_SERVER_REQUEST ) {
+      AudioPlayerService.on('playlist',this.onPlaylist);      
+    }
+  },
+
+  componentWillUnmount: function() {
+    if( !global.IS_SERVER_REQUEST ) {
+      AudioPlayerService.removeListener('playlist',this.onPlaylist);      
+    }
+  },
+
+  onPlaylist: function(playlist) {
+    this.setState( { hasPlaylist: !!playlist } );
   },
 
   render: function() {
@@ -252,9 +268,6 @@ const AudioPlayer = React.createClass({
         name: nowPlaying.name
       });
 
-      this.refs['playlistButton'].setState( {
-        hasPlaylist: !!AudioPlayerService.playlist
-      });
     }
   },
 
@@ -296,7 +309,6 @@ const AudioPlayer = React.createClass({
     var artist       = nowPlaying.artist;
     var position     = this.state.position;
     var articleClass = 'clearfix audio-player ' + ( this.state.isPlaying ? 'is-playing' : '' );
-    var hasPlaylist  = !!AudioPlayerService.playlist;
     var controlState = this.getControlsState(nowPlaying);
 
     return(
@@ -305,7 +317,7 @@ const AudioPlayer = React.createClass({
           <article className={articleClass} >
             <PlayControls ref="controls" controls={controlState} />
             <div className="media-body clearfix">
-              <PlaylistButton   ref="playlistButton" media={nowPlaying} hasPlaylist={hasPlaylist} />
+              <PlaylistButton   media={nowPlaying} />
               <PlaybackScrubber ref="scrubber" media={nowPlaying} position={position} />
               <TrackTitleLink   ref="trackTitle"  artistID={artist.id} id={nowPlaying.id} name={nowPlaying.name} />
               {" "}
@@ -322,28 +334,31 @@ const AudioPlayer = React.createClass({
 AudioPlayer.PlayButton = React.createClass({
 
   getInitialState: function() {
-    AudioPlayerService.bindToNowPlaying(this.props.model);
-    var media = this.props.model.media;
-    return { isPlaying: media && media.isPlaying, 
-             media,
-             isMediaHooked: false };
+    if( !AudioPlayerService.bindToNowPlaying(this.props.model) ) {
+      AudioPlayerService._media(this.props.model);
+    }
+    var media     = this.props.model.media;
+    var isPlaying = media && media.isPlaying;
+    return { isPlaying, media };
+  },
+
+  componentWillMount: function() {
+    if( this.state.media ) {
+      this.state.media.on( 'controls', this.onControls );
+    }
   },
 
   componentWillUnmount: function() {
-    if( this.state.isMediaHooked ) {
+    if( this.state.media ) {
       this.state.media.removeListener( 'controls', this.onControls );
     }
   },
 
   togglePlay: function(e) {
-    e.stopPropagation();
     e.preventDefault();
-    var upload = this.props.model;
-    AudioPlayerService.togglePlay(upload);
-    if( !this.state.isMediaHooked ) {
-      var media = upload.media;
-      media.on('controls',this.onControls);
-      this.setState( { media, isMediaHooked: true } );
+    AudioPlayerService.togglePlay(this.props.model);
+    if( this.props.onPlay ) {
+      this.props.onPlay();
     }
   },
 

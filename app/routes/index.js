@@ -10,6 +10,7 @@ module.exports = {
   index: require('./indexRoute'),
   licenses: require('./licenses'),
   morelike: require('./morelike'),
+  nowplaying: require('./nowplaying'),
   people: require('./people'),
   search: require('./search'),
   tags: require('./tags'),

@@ -194,11 +194,18 @@ oassign( AudioPlayer.prototype,
     return this._nowPlayingIndex() > 0;
   },
   
+  setPlaylist: function(playlist) {
+    this.playlist = playlist;
+    this.emit('playlist', playlist);
+  },
+
   bindToNowPlaying: function(model) {
     var np = this.nowPlaying;
-    if( np && model && model.mediaURL == np.url ) {
+    if( np && model && model.mediaURL === np.url ) {
       model.media = np;
+      return true;
     }
+    return false;
   },      
 
   _delegate: function(playable,method) {
@@ -252,27 +259,34 @@ oassign( AudioPlayer.prototype,
   _mediaCache: {},
 
   _media: function(playable) {
+    
     if( !playable ) {
       return;
     }
+    
     if( playable instanceof Media ) {
       return playable;
     }
-    var media = playable.media;
-    if( !media ) {
-      //Ember.assert('Object '+playable+' is not playable without a "mediaURL" property', playable.mediaURL);
-      var url = playable.mediaURL;
-      var cache = this._mediaCache;
-      if (cache[url]) {
-        media = cache[url];
-      } else {  
-        var args = oassign( { url: url },  playable.mediaTags );
-        media = Media(args);
-        media.on('play',this._onPlay.bind(this));
-        cache[url] = media;
-      }
-      playable.media = media;
+    
+    if( 'media' in playable && playable.media instanceof Media ) {
+      return playable.media;
     }
+
+    var media = null;
+    var url   = playable.mediaURL;
+    var cache = this._mediaCache;
+
+    if (cache[url]) {
+      media = cache[url];
+    } else {  
+      var args = oassign( { url: url },  playable.mediaTags );
+      media = Media(args);
+      media.on('play',this._onPlay.bind(this));
+      cache[url] = media;
+    }
+
+    playable.media = media;
+
     return media;
   }
 });
