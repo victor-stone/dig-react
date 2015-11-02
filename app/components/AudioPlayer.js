@@ -334,8 +334,10 @@ const AudioPlayer = React.createClass({
 AudioPlayer.PlayButton = React.createClass({
 
   getInitialState: function() {
-    if( !AudioPlayerService.bindToNowPlaying(this.props.model) ) {
-      AudioPlayerService._media(this.props.model);
+    if( !global.IS_SERVER_REQUEST ) {
+      if( !AudioPlayerService.bindToNowPlaying(this.props.model) ) {
+        AudioPlayerService._media(this.props.model);
+      }
     }
     var media     = this.props.model.media;
     var isPlaying = media && media.isPlaying;
