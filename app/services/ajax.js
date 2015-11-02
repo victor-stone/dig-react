@@ -2,6 +2,17 @@
 
 var rsvp = require('rsvp');
 
+function resolveWithJSON(resolve, reject, url, supposedJSON) {
+  try {
+    resolve(JSON.parse(supposedJSON));
+  } catch( e ) {
+    if( supposedJSON.charAt(0) === '<' ) {
+      supposedJSON = supposedJSON.substr(0,40);                  
+    }
+    e.message = `Bad json from ${url}\n[${supposedJSON}...]\n${e.message}`;
+    reject( e );
+  }
+}
 
 function serverAjax(opts) {
   var http = require('http');
@@ -12,14 +23,14 @@ function serverAjax(opts) {
         //console.log( 'ajax response ',res.headers['x-json'] );
         if( opts.dataType == 'json') {
           if( res.headers['x-json'] ) {
-            resolve(JSON.parse(res.headers['x-json']));
+            resolveWithJSON(resolve,reject,opts.url,res.headers['x-json']);
           } else {
             var data = '';
             res.on('data', function (chunk) {
               data += chunk.toString();
             });
             res.on('end', function () {
-              resolve(JSON.parse(data));
+              resolveWithJSON(resolve,reject,opts.url,data);
             });            
           }
         } else {
@@ -35,7 +46,15 @@ function serverAjax(opts) {
 /* globals $ */
 function clientAjax(opts) {
   return new rsvp.Promise( function(resolve,reject) {
-      $.ajax(opts).done( resolve ).fail( reject );
+    opts.success = function(data) {
+      // breakout for debugging;
+      resolve(data);
+    };
+    opts.error = function( jqXHR, textStatus, errorThrown ) {
+      var err = errorThrown instanceof Error ? errorThrown : new Error(errorThrown || textStatus);
+      reject(err);
+    };
+    $.ajax(opts);
   });
 }
 

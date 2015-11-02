@@ -4,6 +4,13 @@ import { commaize } from '../unicorns';
 
 function PagingStats(props) {
 
+  /*
+    props provide:
+      offset
+      limit
+      total
+      length
+  */
   this.stats = {
       showPrev: false,
       showNext: true,
@@ -27,6 +34,10 @@ function PagingStats(props) {
 
   keys.forEach( k => this.stats[k] = this[k]() );
 
+  ['Prev','Next','First','Last'].forEach( k => {
+    var y = 'show' + k;
+    this.stats[y] = this.stats[y] && this.stats.shouldShow;
+  });
 }
 
 PagingStats.prototype._isValidOffset = function() {

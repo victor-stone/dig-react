@@ -8,7 +8,7 @@ class ReactServerRouter {
 
   constructor( router, AppModule, pathToIndexHTML, bodyRegex ) {
     this.router     = router;
-    this.indexHTML  = pathToIndexHTML;
+    this.indexHTML  = fs.readFileSync(pathToIndexHTML,'utf8');
     this.bodyRegex  = bodyRegex;
     this.AppFactory = React.createFactory(AppModule);
   }
@@ -22,54 +22,42 @@ class ReactServerRouter {
       console.log( '404:', url );
       res.statusCode = 404;
       res.end('Not Found');
+      successCallback(null);
+      return;
+    } 
 
-    } else {
+  var h = handlers[0];
 
-      var h = handlers[0];
+  h.component.store(h.params, h.queryParams)
 
-      h.component.store(h.params, h.queryParams)
+    .then( (store) => {
+  
+        var props = {
+          name:        h.component.displayName,
+          component:   h.component,
+          store:       store,
+          params:      h.params,
+          queryParams: h.queryParams 
+        };
 
-        .then( (store) => {
-      
-          var fname = this.indexHTML;
+        var bodyHTML = renderToString( this.AppFactory(props) );
 
-          fs.readFile(fname, 'utf8', (err, data) => {
-            if (err) {
+        //console.log( bodyHTML );
 
-              throw err;
+        var html = this.indexHTML.replace(this.bodyRegex,'$1' + bodyHTML + '$3'); 
 
-            } else {
+        if( h.component.title ) {
+          html = html.replace( /<title>[^<]+<\/title>/, '<title>' + h.component.title + '</title>');
+        }
 
-              var props = {
-                name:        h.component.displayName,
-                component:   h.component,
-                store:       store,
-                params:      h.params,
-                queryParams: h.queryParams 
-              };
+        res.setHeader( 'Content-Type', 'text/html' );
+        res.end(html);
 
-              var bodyHTML = renderToString( this.AppFactory(props) );
+        successCallback(url); 
 
-              //console.log( bodyHTML );
-
-              var html = data.replace(this.bodyRegex,'$1' + bodyHTML + '$3'); 
-
-              if( h.component.title ) {
-                html = html.replace( /<title>[^<]+<\/title>/, '<title>' + h.component.title + '</title>');
-              }
-
-              res.setHeader( 'Content-Type', 'text/html' );
-              res.end(html);
-
-              successCallback(url);
-            }
-
-          });
-
-      }).catch( function(err) {
-        errCallback( url, err );
-      });
-    }
+    }).catch( function(err) {
+      errCallback( url, err );
+    });
   }
 }
 

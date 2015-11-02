@@ -69,8 +69,10 @@ class Server {
             sysLog.write( { url, 
                             exception: exception + '', 
                             stack: exception.stack || 'no stack available'} );
-          }, function( /* url */ ) {
-            appLog.logRequest(req,res);
+          }, function( url ) {
+            if( url && res.statusCode !== 404 ) {
+              appLog.logRequest(req,res);
+            }
           });
       } 
       

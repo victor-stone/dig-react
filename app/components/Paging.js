@@ -86,24 +86,36 @@ var BoundingMixin = {
 
 const PagerLink = React.createClass({
 
+  getInitialState: function() {
+    var href = this.props.show ? '?offset=' + this.props.offset : '#';
+    return { href };
+  },
+
+  componentWillReceiveProps: function(newProps) {
+    var href = newProps.show ? '?offset=' + newProps.offset : '#';
+    this.setState( { href } );
+  },
+
+
   onClick: function(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    this.props.newOffset(this.props.offset);
+    // it seems this link happens
+    // on phones even when disabled
 
+    if( this.state.href !== '#') {
+      this.props.newOffset(this.props.offset);
+    }
   },
 
   render: function() {
     var icon = this.props.icon;
     var cls  = this.props.show ? '' : 'disabled';
-    var href = '?offset=' + this.props.offset;
+    var href = this.state.href;
 
     return (<li className={cls}>
-              {this.props.show
-                ? <a href={href} onClick={this.onClick}><Glyph x2 icon={icon} /></a>
-                : <a href><Glyph x2 icon={icon} /></a>
-              }
+              <a href={href} onClick={this.onClick}><Glyph x2 icon={icon} /></a>
             </li>);
   },
 
