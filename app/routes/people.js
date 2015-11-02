@@ -70,7 +70,7 @@ people.store = function(params,queryParams) {
       return retStore;
     }
     
-    return PlaylistStore.queryAndReturnStore(qparams)
+    return PlaylistStore.storeFromQuery(qparams)
           .then( getArtistDetail )
           .then( returnArtistDetail );
 };

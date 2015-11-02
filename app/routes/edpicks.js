@@ -19,7 +19,7 @@ edpicks.title = 'Editors Picks';
 
 edpicks.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { tags: 'editorial_pick' }, qc.recent, queryParams );
-  return Playlist.queryAndReturnStore(qparams);
+  return Playlist.storeFromQuery(qparams);
 };
 
 module.exports = edpicks;

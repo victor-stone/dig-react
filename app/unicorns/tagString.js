@@ -63,12 +63,10 @@ var TagString = function(opts)
     opts = { source: opts };
   }
 
-  var opts2 = {};
   for( var k in defaultOpts ) {
-    opts2[k] = opts[k] || defaultOpts[k];
+    this[k] = opts[k] || defaultOpts[k];
   }
 
-  merge(this,opts2);
   this._tagsArray = TagString.toArray(opts.source,this);
 
 };
@@ -153,7 +151,7 @@ TagString.prototype.add = function(tag) {
 
   function safeAddTag(tag) {
     tag += ''; // stringize
-    if( tag && 
+    if( !!tag && 
         tag.match(ignore) === null &&
         tag.match(invalid) === null && 
         !contains(arr,tag) ) 
@@ -166,14 +164,16 @@ TagString.prototype.add = function(tag) {
   return this;
 };
         
-TagString.prototype.remove = function(tag) {
+TagString.prototype.remove = function(tagSpec) {
   var arr = this._tagsArray;
+
   function safeRemove(tag) {
       if( contains(arr,tag) ) {
         removeObject(arr,tag);
       }
   }
-  TagString.toArray(tag,this).forEach( safeRemove );
+
+  TagString.toArray(tagSpec,this).forEach( safeRemove );
   return this;
 };
         
@@ -276,7 +276,7 @@ TagString.combine = function(tags1,tags2,opts) {
 };
 
 TagString.contains = function(source,tag,opts) {
-  opts = merge( { source: source }, opts || { } );
+  opts = merge( { source }, opts || { } );
   return TagString.create(opts).contains(tag);
 };        
 

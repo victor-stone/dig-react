@@ -22,7 +22,7 @@ tags.path = '/tags/:tags';
 
 tags.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { tags: params.tags }, queryParams );
-  return Playlist.queryAndReturnStore(qparams);
+  return Playlist.storeFromQuery(qparams);
 };
 
 module.exports = tags;

@@ -64,7 +64,7 @@ var NotALotHere = React.createClass({
 
   getShowNotALot: function() {
     var store = this.props.store;
-    return store.model.total < store.queryParams.limit && store.paramsDirty();
+    return store.model.total < store.model.queryParams.limit && store.paramsDirty();
   },
 
   updateState: function() {

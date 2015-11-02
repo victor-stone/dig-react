@@ -1,14 +1,16 @@
 import React     from 'react';
 import qc        from '../models/queryConfigs';
 import Glyph     from './Glyph';
-import { CloseButton }      from './ActionButtons';
-//import { LicenseInfoPopup } from './LicenseInfo';
-import Link from './Link';
+import Link      from './Link';
+import TagString from '../unicorns/tagString';
+
+import { CloseButton } from './ActionButtons';
 
 var LicenseInfoPopup = React.createClass({
 
   // unfortunately popup is broken from this <ul>
   // not sure why, can't care
+  // TODO: care
 
   render: function() {
     return(
@@ -67,11 +69,11 @@ const QueryOptions = React.createClass({
   },
   
   componentWillMount: function() {
-    this.props.store.on('playlist-loading',this.paramsChanged);
+    this.props.store.on('playlist',this.paramsChanged);
   },
 
   componentWillUnmount: function() {
-    this.props.store.removeListener('playlist-loading',this.paramsChanged);
+    this.props.store.removeListener('playlist',this.paramsChanged);
   },
 
   paramsChanged: function() {
@@ -81,12 +83,12 @@ const QueryOptions = React.createClass({
   },
 
   filtersFromStore: function() {
-    var qp = this.props.store.queryParams;
+    var qp = this.props.store.model.queryParams;
     var filters = {
       limit: qp.limit
     };
     filters.lic              = qp.lic || 'all';
-    filters.instrumentalOnly = !!qp.reqtags; // stupid, dangerous, awesome
+    filters.instrumentalOnly = TagString.contains(qp.reqtags,qc.instrumental.reqtags);
     filters.sort             = qp.digrank || qc.recent.digrank;
     return filters;
   },
@@ -102,9 +104,11 @@ const QueryOptions = React.createClass({
   },
 
   onInstrumentalOnly: function() {
-    var val = !this.state.filters.instrumentalOnly;
-    var reqtags = val ? qc.instrumental.reqtags : '';
-    this.props.store.applyParams( { reqtags, offset: 0 });
+    var val    = !this.state.filters.instrumentalOnly;
+    var key    = (val ? '' : '--') + 'reqtags';
+    var params = { offset: 0 };
+    params[key] = qc.instrumental.reqtags;
+    this.props.store.applyParams( params );
   },
 
   onLimit: function() {

@@ -3,34 +3,81 @@ import Query       from './query';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
 import { oassign } from '../unicorns';
+import TagString   from '../unicorns/tagString';
+
+
+function mergeParams( oldp, newp ) {
+  var target = oassign( {}, oldp );
+  var tagFields = [ 'tags', 'reqtags', 'oneof' ];
+  for( var k in newp ) {
+    var isRemoveParam  = k.match(/^--(.*)/);
+    if( isRemoveParam ) {
+      var realParamName = isRemoveParam[1];
+      if( tagFields.contains(realParamName) ) {
+        if( realParamName in oldp ) {
+          target[realParamName] = (new TagString(oldp[realParamName])).remove(newp[k]).toString();
+        }
+      }
+    } else {
+      if( tagFields.contains(k) ) {
+        if( oldp[k] ) {
+          target[k] = (new TagString(oldp[k])).add( newp[k]).toString();
+        } else {
+          target[k] = newp[k];
+        }
+      } else {
+        target[k] = newp[k];
+      }
+    }
+  }
+  return target;
+}
 
 var Playlist = Query.extend({
 
-  queryParams: {},
-  model: {},
-  originalParams: null,
+  model:       {},
+  orgParams:   null,
 
-  applyParams: function(params) {
-    var newParams = oassign({},this.queryParams,params);
+  /**
+    annotadedParams is a JS object that specifies QueryAPI
+    parameters with addition of being able to remove items
+    during merge. (For now this only really applies to tag
+    fields like 'tags', 'reqtags' and 'oneof')
+
+    put a '--' (2 minus signs) before the key name in the
+    object
+
+    ```
+      {
+          'tags':       'hip_hop,jazz',         // these will be merged
+          '--reqtags':  'instrumental,-vocals'  // these will be removed
+      }
+    ```
+  */
+  applyParams: function(annotadedParams) {
+
+    var newParams = mergeParams( this.model.queryParams || {}, annotadedParams );
+
     this.playlist(newParams)
       .then( model => this.emit('playlist', model ) );
   },
 
   applyOriginalParams: function() {
-    this.queryParams = {}; // we have to forget these
-    this.applyParams( this.originalParams || {} );
+    this.applyParams( this.orgParams || {} );
   },
 
-  applyToOriginalParams: function(params) {
-    oassign( this.originalParams, params );
+  applyToOriginalParams: function(annotadedParams) {
+    this.orgParams = mergeParams(this.orgParams, annotadedParams);
+    var params = mergeParams({}, annotadedParams);
     this.applyParams( params );
   },
 
   paramsDirty: function() {
-    if( this.originalParams ) {
-      for( var k in this.queryParams ) {
+    if( this.orgParams && !!this.model.queryParams ) {
+      var qp = this.model.queryParams;
+      for( var k in qp ) {
         if( k !== 'offset' ) {
-          if( !(k in this.originalParams) || (this.queryParams[k] !== this.originalParams[k]) ) {
+          if( !(k in this.orgParams) || (qp[k] !== this.orgParams[k]) ) {
             return true;
           }
         }
@@ -41,7 +88,7 @@ var Playlist = Query.extend({
 
   _playlist: function(params) {
     params.dataview = 'links_by';
-    params.f = 'json';
+    params.f        = 'json';
     return this.query(params).then( serialize(ccmixter.Upload) );
   },
 
@@ -50,22 +97,21 @@ var Playlist = Query.extend({
       params.offset = 0;
     }
 
-    if( !this.originalParams ) {
-      this.originalParams = oassign( {}, params );
+    if( !this.orgParams ) {
+      this.orgParams = oassign( {}, params );
     }
-    this.queryParams = oassign( {}, params );
 
-    this.emit('playlist-loading');
+    var paramsCopy = oassign( {}, params );
 
+    this.emit('playlist-loading',params);
 
     var modelRequest = {
       playlist: this._playlist( params ),
       total: this.count( params ),
     };
+
     return rsvp.hash( modelRequest ).then( results => {
-      //results.store = this;
-      results.queryParams = this.queryParams;
-      results.fullQueryParams = params;
+      results.queryParams = oassign( {}, paramsCopy );
       this.model = results;
       return results;
     });
@@ -80,7 +126,7 @@ var Playlist = Query.extend({
 //
 // very handy for routing
 //
-Playlist.queryAndReturnStore = function(params) {
+Playlist.storeFromQuery = function(params) {
   var pl = new Playlist();
   return pl.playlist(params).then( () => pl );  
 };

@@ -149,13 +149,12 @@ const Paging = React.createClass({
   },
 
   stateFromStore: function() {
-    var store = this.props.store;
-    var model = store.model;
+    var model = this.props.store.model;
     return {
-        offset: store.queryParams.offset,
-        limit: store.queryParams.limit,
+        offset: model.queryParams.offset,
+        limit:  model.queryParams.limit,
         length: model.playlist.length,
-        total: model.total      
+        total:  model.total      
     };
   },
 

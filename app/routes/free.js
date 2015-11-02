@@ -18,7 +18,7 @@ free.title = 'Free for Commercial Use';
 
 free.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { lic: 'open' }, queryParams );
-  return Playlist.queryAndReturnStore(qparams);
+  return Playlist.storeFromQuery(qparams);
 };
 
 module.exports = free;

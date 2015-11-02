@@ -18,7 +18,7 @@ games.title = 'Music for Video Games';
 
 games.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, qc.instrumental, qc.games, queryParams );
-  return Playlist.queryAndReturnStore(qparams);
+  return Playlist.storeFromQuery(qparams);
 };
 
 

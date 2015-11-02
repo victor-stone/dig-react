@@ -18,7 +18,7 @@ film.title = 'Instrumental Music for Film and Video';
 
 film.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, qc.instrumental, qc.film, queryParams );
-  return Playlist.queryAndReturnStore(qparams);
+  return Playlist.storeFromQuery(qparams);
 };
 
 module.exports = film;

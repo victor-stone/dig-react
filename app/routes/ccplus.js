@@ -20,7 +20,7 @@ ccplus.title = 'Music Available for Royalty-Free License';
 
 ccplus.store = function(params,queryParams) {
   var qparams = oassign( {}, qc.default, { lic: 'ccplus' }, queryParams  );
-  return Playlist.queryAndReturnStore(qparams);
+  return Playlist.storeFromQuery(qparams);
 };
 
 module.exports = ccplus;

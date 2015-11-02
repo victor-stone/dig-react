@@ -121,7 +121,7 @@ search.store = function( params, queryParams ) {
 
   function makePromise() {
     var modelRequest = {
-      store: PlaylistStore.queryAndReturnStore(qparams),
+      store: PlaylistStore.storeFromQuery(qparams),
       didYouMean: didYouMean(queryParams.searchp)
     };
     return rsvp.hash(modelRequest).then( model => {
