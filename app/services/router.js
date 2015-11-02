@@ -103,6 +103,11 @@ Router.prototype.updateUrl = function() {
           params: handler.params,
           queryParams: handler.queryParams,
           hash } );
+    }).catch( function(err) {
+      /* eslint no-console:0 */
+      console.log( err + '', err.stack );
+      /* xeslint no-console:2 */
+      window.alert('Wups, could not show you that');
     });
 };
     

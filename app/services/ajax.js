@@ -2,11 +2,14 @@
 
 var rsvp = require('rsvp');
 
+
 function serverAjax(opts) {
   var http = require('http');
   return new rsvp.Promise( function(resolve, reject) {
     if( opts.method == 'GET') {
       http.get(opts.url, function(res) {
+        /* xeslint no-console:0 */
+        //console.log( 'ajax response ',res.headers['x-json'] );
         if( opts.dataType == 'json') {
           if( res.headers['x-json'] ) {
             resolve(JSON.parse(res.headers['x-json']));

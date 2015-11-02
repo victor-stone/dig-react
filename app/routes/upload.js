@@ -197,10 +197,11 @@ var RemixesSection = React.createClass({
 
 const upload = React.createClass({
 
-  render() {
+  render: function() {
     var store  = this.props.store;
     var model  = store.model;
     var upload = model.upload;
+
     return  (
       <div>
 

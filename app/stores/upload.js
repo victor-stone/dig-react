@@ -29,6 +29,9 @@ var Upload = Query.extend({
 
       .then( record => {
         
+        if( !record.upload || !Object.keys(record.upload) ) {
+          throw( new Error('No record found') );
+        }
         model = _fixFeaturing(record);
 
         return this.findUser(model.upload.artist.id);

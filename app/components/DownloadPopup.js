@@ -93,8 +93,8 @@ var DownloadPopup = React.createClass({
               <p className="text-primary">{"To use this music you are "}<mark>{"required"}</mark>{" to give credit to the musicians."}</p>
               <div>
                 <ul className="nav nav-tabs">
-                  <li className={plainSelected ? 'active' : ''}><a href onClick={this.selectPlain}>{"Plain"}</a></li>
-                  <li className={plainSelected ? '' : 'active'}><a href onClick={this.selectHTML}>{"HTML"}</a></li>
+                  <li className={plainSelected ? 'active' : ''}><a href="#" onClick={this.selectPlain}>{"Plain"}</a></li>
+                  <li className={plainSelected ? '' : 'active'}><a href="#" onClick={this.selectHTML}>{"HTML"}</a></li>
                 </ul>
                 <textarea ref="attributionText" readOnly cols="30" rows="2" value={licenseText}></textarea>
                 <div className="text-center">

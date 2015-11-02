@@ -26,13 +26,14 @@ var ExternalLink = React.createClass({
 
 var AddTrackbackPopup = React.createClass({
 
-  addTrackbackPopup: function() {
-
+  addTrackbackPopup: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
   },
 
   render: function() {
     return (
-      <a href onClick={this.addTrackbackPopup} className="hidden btn btn-sm btn-success"><Glyph icon="plus" />{" Add"}</a>
+      <a href="#" onClick={this.addTrackbackPopup} className="hidden btn btn-sm btn-success"><Glyph icon="plus" />{" Add"}</a>
       );
   }
 });

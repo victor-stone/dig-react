@@ -62,8 +62,16 @@ class Server {
       if( this.staticRouter.resolve( this.distDir + file, res ) ) {
         sysLog.logRequest(req,res)
       } else {
-        this.reactServer.resolve( req.url, res, handleReactError );
-        appLog.logRequest(req,res);
+        this.reactServer.resolve( req.url, res, function(url, exception) {
+            console.log('error during route:', url, exception);
+            res.statusCode = 500;
+            res.end(exception.message || 'Internal server doodah');
+            sysLog.write( { url, 
+                            exception: exception + '', 
+                            stack: exception.stack || 'no stack available'} );
+          }, function( /* url */ ) {
+            appLog.logRequest(req,res);
+          });
       } 
       
     } else {
@@ -103,7 +111,9 @@ process.on('SIGINT', function() {
 process.on('uncaughtException', function(err) {
   console.log(err);
   if( sysLog ) {
-    sysLog.write( { exception: util.inspect(err) } );
+    sysLog.write( { msg: 'uncaughtException', 
+                    exception: err + '', 
+                    stack: err.stack || 'no stack available' } );
   }
 });
 

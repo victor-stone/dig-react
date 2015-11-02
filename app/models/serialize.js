@@ -79,6 +79,10 @@
 */
 function _serialize(jsonData,model,bindParent) {
 
+  if( !jsonData ) {
+    throw new Error('Nothing here');
+  }
+
   if( Array.isArray(jsonData) ) {
     return jsonData.map( j => _serialize(j,model,bindParent) );
   }

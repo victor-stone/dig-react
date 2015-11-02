@@ -13,7 +13,7 @@ class ReactServerRouter {
     this.AppFactory = React.createFactory(AppModule);
   }
 
-  resolve(url,res,errCallback) {
+  resolve(url,res,errCallback,successCallback) {
   
     var handlers = this.router.resolve(url);
 
@@ -36,9 +36,7 @@ class ReactServerRouter {
           fs.readFile(fname, 'utf8', (err, data) => {
             if (err) {
 
-              console.log( 'Error ******', err );
-              res.statusCode = 500;
-              res.end('Not Good');
+              throw err;
 
             } else {
 
@@ -54,7 +52,7 @@ class ReactServerRouter {
 
               //console.log( bodyHTML );
 
-              var html     = data.replace(this.bodyRegex,'$1' + bodyHTML + '$3'); 
+              var html = data.replace(this.bodyRegex,'$1' + bodyHTML + '$3'); 
 
               if( h.component.title ) {
                 html = html.replace( /<title>[^<]+<\/title>/, '<title>' + h.component.title + '</title>');
@@ -62,6 +60,8 @@ class ReactServerRouter {
 
               res.setHeader( 'Content-Type', 'text/html' );
               res.end(html);
+
+              successCallback(url);
             }
 
           });

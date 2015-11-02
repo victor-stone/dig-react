@@ -13,7 +13,9 @@ var Link = React.createClass({
     if( !router ) {
       router = require('../services/router');
     }
-    router.navigateTo( this.props.href );
+    if( typeof this.props.href === 'string' && this.props.href !== '#') {
+      router.navigateTo( this.props.href );
+    }
     return true;
   },
 
