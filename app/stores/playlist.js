@@ -14,14 +14,14 @@ function mergeParams( oldp, newp ) {
     if( isRemoveParam ) {
       var realParamName = isRemoveParam[1];
       if( tagFields.contains(realParamName) ) {
-        if( realParamName in oldp ) {
-          target[realParamName] = (new TagString(oldp[realParamName])).remove(newp[k]).toString();
+        if( realParamName in target ) {
+          target[realParamName] = (new TagString(target[realParamName])).remove(newp[k]).toString();
         }
       }
     } else {
       if( tagFields.contains(k) ) {
-        if( oldp[k] ) {
-          target[k] = (new TagString(oldp[k])).add( newp[k]).toString();
+        if( target[k] ) {
+          target[k] = (new TagString(target[k])).add( newp[k]).toString();
         } else {
           target[k] = newp[k];
         }
@@ -68,8 +68,7 @@ var Playlist = Query.extend({
 
   applyToOriginalParams: function(annotadedParams) {
     this.orgParams = mergeParams(this.orgParams, annotadedParams);
-    var params = mergeParams({}, annotadedParams);
-    this.applyParams( params );
+    this.applyParams( annotadedParams );
   },
 
   paramsDirty: function() {

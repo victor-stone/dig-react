@@ -394,11 +394,13 @@ const dig = React.createClass({
   _myStore: null,
 
   onSelectedTags: function(t) {
-    this._myStore.applyToOriginalParams( 
-        {
-          tags: t.toString(),
-          offset: 0
-        } );
+    var opts = { offset: 0 };
+    if( this.previousTags ) {
+      opts['--tags'] = this.previousTags.toString();
+    }
+    opts.tags = t.toString();
+    this._myStore.applyToOriginalParams( opts );
+    this.previousTags = t;
   },
 
   onTagSectionUpdate: function(loading) {
