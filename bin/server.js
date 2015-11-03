@@ -63,9 +63,10 @@ class Server {
         sysLog.logRequest(req,res)
       } else {
         this.reactServer.resolve( req.url, res, function(url, exception) {
-            console.log('error during route:', url, exception);
+            var msg = '404 routing:' + exception.message;
+            console.log(msg, url);
             res.statusCode = 404;
-            res.end(exception.message || 'Internal server doodah');
+            res.end(msg);
             sysLog.write( { url, 
                             exception: exception + '', 
                             stack: exception.stack || 'no stack available'} );
@@ -78,9 +79,9 @@ class Server {
       
     } else {
       //console.log( 'status: ', res.statusCode);
-      if( res.statusCode == 200 ) {
+      if( !res._handled ) {
         res.statusCode = 500;
-        res.end('Server error');
+        res.end('500 Server error');
       }
       sysLog.logRequest(req,res)
     }

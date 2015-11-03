@@ -41,7 +41,8 @@ function google404s(req,res) {
   if( url.match(/^\/files\/[^\/]*\/true$/) !== null || 
       url.match(/^\/files\/[0-9]+\/[0-9]+$/) !== null ) {
     res.statusCode = 404;
-    res.end('Not found');
+    res._handled = true;
+    res.end('404 Not found');
     return false;
   }
 
