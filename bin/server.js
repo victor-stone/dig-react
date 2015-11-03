@@ -64,7 +64,7 @@ class Server {
       } else {
         this.reactServer.resolve( req.url, res, function(url, exception) {
             console.log('error during route:', url, exception);
-            res.statusCode = 500;
+            res.statusCode = 404;
             res.end(exception.message || 'Internal server doodah');
             sysLog.write( { url, 
                             exception: exception + '', 
@@ -77,8 +77,11 @@ class Server {
       } 
       
     } else {
-      res.statusCode = 500;
-      res.end('Server error');
+      console.log( 'status: ', res.statusCode);
+      if( res.statusCode == 200 ) {
+        res.statusCode = 500;
+        res.end('Server error');
+      }
       sysLog.logRequest(req,res)
     }
   }

@@ -34,6 +34,20 @@ function isValidRequest(req,res) {
   return true;
 }
 
+function google404s(req,res) {
+
+  var url = req.url;
+
+  if( url.match(/^\/files\/[^\/]*\/true$/) !== null || 
+      url.match(/^\/files\/[0-9]+\/[0-9]+$/) !== null ) {
+    res.statusCode = 404;
+    res.end('Not found');
+    return false;
+  }
+
+  return true;
+}
+
 function skipThese(req,res) {
   return req.url.match(/(.js|.css|.html|.png|.eot|.otf|.ttf|.woff|.woff2|woff2\?v\=4.4\.0|.svg|.jpg|.jpeg|.ico)$/) !== null;
 }
@@ -45,6 +59,10 @@ module.exports = function(ctx) {
 
   if( skipThese(req,res) ) {
     return true;
+  }
+
+  if( !google404s(req,res) ) {
+    return false;
   }
 
   if( !isValidRequest(req,res) ) {

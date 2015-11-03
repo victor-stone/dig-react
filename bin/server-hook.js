@@ -2,7 +2,7 @@
 
 var Reloader = require('./reloader');
 
-var log = function() {}; //console.log;
+var log = console.log;
 
 class ServerHook {
   constructor(sysLog, appLog) {
