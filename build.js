@@ -177,7 +177,7 @@ function publishPublicFiles() {
 
   mkdir( BUILD_DIR + WEB_DIR + 'images');
 
-  return globp('public/{*.html,*.ico,*.xml,*.txt,images/*.*}')
+  return globp('public/{*.html,*.ico,*.xml,*.txt,*.png,images/*.*}')
     .then( fnames => fnames.forEach( f => copy( f, f.replace('public/', BUILD_DIR + WEB_DIR ) ) ) );
 }
 
