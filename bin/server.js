@@ -77,7 +77,7 @@ class Server {
       } 
       
     } else {
-      console.log( 'status: ', res.statusCode);
+      //console.log( 'status: ', res.statusCode);
       if( res.statusCode == 200 ) {
         res.statusCode = 500;
         res.end('Server error');
