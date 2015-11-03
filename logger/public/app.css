@@ -1,0 +1,34 @@
+
+body {
+  font-family: Avenir Next, Verdana;
+  margin: 30px;
+}
+
+ul {
+  list-style: none;
+}
+
+.log-viewer .date {
+  color: green;
+}
+
+.log-viewer .msg {
+  color: blue;
+  font-weight: bold;
+}
+
+.log-viewer .ua {
+  font-style: italic;
+  color: brown;
+}
+
+.log-viewer .url {
+  font-weight: bold;
+}
+
+.log-viewer .ip {
+  color: #999;
+  font-family: "Lucida Console", Monaco, monospace;
+  display: inline-block;
+  width: 100px;
+}
