@@ -1,7 +1,6 @@
 
 body {
   font-family: Avenir Next, Verdana;
-  margin: 30px;
 }
 
 ul {
@@ -26,9 +25,33 @@ ul {
   font-weight: bold;
 }
 
+.log-viewer .error,
+.log-viewer .exception {
+  color: red;
+}
+
 .log-viewer .ip {
   color: #999;
   font-family: "Lucida Console", Monaco, monospace;
   display: inline-block;
-  width: 100px;
+  width: 160px;
+}
+
+.log-viewer div.dropdown {
+  display: inline-block;
+}
+
+.log-viewer div.dropdown li {
+  white-space: nowrap;;
+  margin: 4px;
+  font-family: monospace;
+}
+
+
+ul.nav {
+  margin: 30px;
+}
+
+ul.nav li {
+  margin-right: 30px;
 }
