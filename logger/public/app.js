@@ -109,8 +109,7 @@ class LogStore extends EventEmiiter {
     super();
     this.model = [];
     this.lastFetch = null;
-    this.offset = 0;
-    this.noffset = 0;
+    this.offset = 0; //3270;
   }
 
   get atEnd() {
@@ -160,6 +159,7 @@ class LogStore extends EventEmiiter {
 
   fetchLog(date,app,type) {
     var f = { date, app, type };
+    this.offset = 0;
     this._fetchTotal(f);
     this.lastFetch = f;
   }
@@ -482,13 +482,10 @@ var NextButton = React.createClass({
   mixins: [ LogPager ],
 
   render: function() {
-    var showNext = this.state.hasNext;
+    var cls = 'btn' + (this.state.hasNext ? '' : ' disabled');
     return( 
         <li>
-          {showNext 
-            ? <button onClick={this.onNext} className="btn">next</button>
-            : null
-          }
+          <button className={cls} onClick={this.onNext} >next</button>
         </li>
       )
   },
@@ -499,13 +496,10 @@ var TailButton = React.createClass({
   mixins: [ LogPager ],
 
   render: function() {
-    var showTail = !this.state.atEnd;
+    var cls = 'btn' + (this.state.atEnd ? ' disabled' : '');
     return (
         <li>
-          {showTail
-            ? <button onClick={this.onTail} className="btn">tail</button>
-            : null
-          }
+          <button className={cls} onClick={this.onTail} >tail</button>
         </li>
       )
   },
@@ -516,13 +510,10 @@ var HeadButton = React.createClass({
   mixins: [ LogPager ],
 
   render: function() {
-    var showHead = !this.state.atHead;
+    var cls = 'btn' + (this.state.atHead ? ' disabled' : '');
     return (
         <li>
-          {showHead
-            ? <button onClick={this.onHead} className="btn">head</button>
-            : null
-          }
+          <button className={cls} onClick={this.onHead} >head</button>
         </li>
       )
   },
@@ -533,13 +524,10 @@ var PrevButton = React.createClass({
   mixins: [ LogPager ],
 
   render: function() {
-    var showPrev = this.state.hasPrev;
+    var cls = 'btn' + (this.state.hasPrev ? '' : ' disabled');
     return (
         <li>
-          {showPrev
-            ? <button onClick={this.onPrev} className="btn">prev</button>
-            : null
-          }
+          <button className={cls} onClick={this.onPrev} >prev</button>
         </li>
       )
   },

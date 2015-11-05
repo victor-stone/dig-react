@@ -39,8 +39,12 @@ function getlog(req,res) {
     var figs = translateMapOffsets(logMap);
     readChunk( figs.offset, figs.amount, function(json) {
       var eof = figs.eof ? ',{"end":"end"}' : '';
-      json = JSON.parse( `[${json}${eof}]` );
-      res.send( JSON.stringify(json) );
+      try {
+        json = JSON.parse( `[${json}${eof}]` );
+        res.send( JSON.stringify(json) );
+      } catch(e) {
+        handleError(e);
+      }
     });
   }
 
@@ -59,32 +63,40 @@ function getlog(req,res) {
     }
     if( map.length < limit ) {
       offset = 0;
-      limit = map.length;
+      limit = map.length - 1 ;
     } else {
-      if( offset === 'tail' || offset + limit > map.length ) {
-        offset = map.length - limit;
+      if( offset === 'tail' || offset + limit >= map.length ) {
+        offset = map.length - (limit+1);
       }
     }
-    var fileOffset = map[offset];
-    var endOffset  = map[ (offset+limit)-1 ];
+    var trailingComma = `,\n`;
+    var lastOffset    = (offset+limit);
+    var fileOffset    = map[offset];
+    var endOffset     = map[lastOffset];
+    var amount        = (endOffset - fileOffset) - trailingComma.length;
+    //console.log(`${offset} => ${fileOffset} - ${lastOffset} => ${endOffset} - read: ${amount} `);
     return {
       offset: fileOffset,
-      amount: (endOffset - fileOffset) - 2, // shave off trailing ',\n'
+      amount,
       eof: offset + limit >= (map.length-1)
     };
   }
 
   function readChunk(offset,amount,resolve) {
     fs.open(fname, 'r', function(err, fd) {
-      var buffer = new Buffer(amount);
-      fs.read(fd, buffer, 0, amount, offset, function(err,bytesRead,buffer) {
-        if( err ) {
-          handleError(err);
-        } else {
-          resolve(buffer.toString('utf8'));
-        }
-        fs.close(fd);
-      });
+      if( err ) {
+        handleError(err);
+      } else {
+        var buffer = new Buffer(amount);
+        fs.read(fd, buffer, 0, amount, offset, function(err,bytesRead,buffer) {
+          fs.close(fd);
+          if( err ) {
+            handleError(err);
+          } else {
+            resolve(buffer.toString('utf8'));
+          }
+        });
+      }
     });  
   }
 

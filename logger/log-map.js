@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var log = console.log;
+var log = function() { }; // console.log;
 
 function checkForMap(logName,mapName) {
 
@@ -45,28 +45,31 @@ function createMap(logName, reject, resolve ) {
     }
   } else {
 
+    var offset  = 0;
+    var offsets = [ 0 ];
+    var sig     = `},\n`;
+    var sigLen  = sig.length;
+    var fsize   = fs.statSync(logName).size;
+
     log(`creating map for ${logName}`)
     var readable = fs.createReadStream(logName,'utf8');
 
-    var offset = 0;
-    var offsets = [ 0 ];
-
     readable.on('data', function(chunk) {
-      var pos = offset;
-      offset += chunk.length;
-      var index = 0;
-      while (pos < offset) {
-        index = chunk.indexOf(`\n`);
+      var pos      = offset;
+      var localPos = 0;
+      while (localPos < chunk.length) {
+        var index = chunk.indexOf(sig,localPos);
         if( index === -1 ) {
           break;
         }
-        pos += (index+1);
-        offsets.push(pos);
-        chunk = chunk.substr(index+1);
+        localPos = (index+sigLen);
+        offsets.push(offset + localPos);
       }
+      offset += chunk.length;
     });
 
     readable.on('end', function() {
+      offsets.push(fsize);
       var json = JSON.stringify(offsets);
       fs.writeFile( mapName, json, 'utf8');
       mapCache[logName] = offsets;

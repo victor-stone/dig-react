@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 /* eslint no-console:0 */
 process.env.NODE_DEBUG = fs;
+var clog = console.log;
 
 var fs         = require('fs');
 var path       = require('path');
 var glob       = require('glob');
 var del        = require('del');
+var mkdirp     = require('mkdirp');
 var rsvp       = require('rsvp');
 var exec       = require('child_process').exec;
 var argv       = require('minimist')(process.argv.slice(2));
@@ -15,75 +17,93 @@ var fread   = rsvp.denodeify(fs.readFile);
 var globp   = rsvp.denodeify(glob);
 var frename = rsvp.denodeify(fs.rename);
 
+
 var MODE     = argv.mode || (argv.p ? 'prod' : 'dev');
 var buildAll = argv.all || argv.a || argv.p;
 var verbose  = argv.verbose || argv.v || false;
+var APP_NAME = 'dig';
 
-console.log( '------------------------ Building ------------------------');
-console.log( ' options: ', argv );
-console.log( ' MODE(', MODE, ') ALL(', buildAll, ') VERBOSE(', verbose, ') ' );
-console.log( '----------------------------------------------------------');
+clog( '------------------------ Building ------------------------');
+clog( ' options: ', argv );
+clog( ' APP(', APP_NAME, ') MODE(', MODE, ') ALL(', buildAll, ') VERBOSE(', verbose, ') ' );
+clog( '----------------------------------------------------------');
 
-var TEMP_DIR   = 'tmp/';
-var BUILD_DIR  = MODE === 'dev' ? './' : TEMP_DIR;
-var WEB_DIR    = 'dist/';
-var SERVER_DIR = 'built/';
-var APP_NAME   = 'dig';
+var TEMP_DIR      = tmpDir();
+
+//
+// in dev mode we just build in place
+// in prod mode we build in tmp/ and need
+// to stage after
+//
+var BUILD_DIR     = MODE === 'dev' ? './' : TEMP_DIR;
+
+var SERVER_TARGET = APP_NAME + '/';
+var WEB_TARGET    = SERVER_TARGET + 'web/';
+
+var SERVER_DIR    = BUILD_DIR + SERVER_TARGET;
+var WEB_DIR       = SERVER_DIR + 'web/';
 
 build();
 
 function build() {
 
+  var commonBuilders = [ 
+        bundleAppCSSFiles,
+        publishAppPublicFiles,
+        publishServerLibrary,
+        bundleAppJS
+      ];  
+
   if( buildAll ) {
 
+    var allBuilders = [ 
+          bundleVendorJSFiles, 
+          bundleVendorCSSFiles, 
+          publishVendorFontFiles,
+          publishVendorSWFFiles,
+        ];
+
     lintSource()
-      .then( () => clean() )
       .then( () => mkdirs() )
-      .then( () => rsvp.all(_commonBuilders()) )
-      .then( () => rsvp.all(_allBuilders()) )
+      .then( () => generateComponentIndex() )
+      .then( () => makePromises( commonBuilders ) )
+      .then( () => makePromises( allBuilders ) )
       .then( () => minifyDist() )
       .then( () => stageResults() )
-      .then( () => console.log('build done') )
+      .then( () => clean() )
+      .then( () => clog('build done') )
       .catch( err );    
 
   } else {
 
     lintSource()
-      .then( () => rsvp.all(_commonBuilders()) )
-      .then( () => console.log('build done') )
+      .then( () => generateComponentIndex() )
+      .then( () => makePromises( commonBuilders ) )
+      .then( () => clog('build done') )
       .catch( err );    
   }
 
 }
 
-function _commonBuilders() {
-  log('fetching common builders');
-  return [ 
-    bundleAppCSSFiles(),
-    publishPublicFiles(),
-    //generateRouteIndex(),
-    generateComponentIndex(),
-    publishServerLibrary(),
-    bundleBrowserJS()
-  ];
+function makePromises(arr) {
+  return rsvp.all( arr.map( p => p() ) );
 }
 
 function clean() {
-  return del( [ 
-                BUILD_DIR + WEB_DIR + '**/*', 
-                BUILD_DIR + SERVER_DIR + '**/*',
-                BUILD_DIR + 'x/**/*'
-              ] )
+  if( MODE === 'dev' ) {
+    return rsvp.resolve(0);
+  }
+  var delfiles = [ TEMP_DIR ];
+  clog('delfiles ', delfiles );
+  return del( delfiles )
         .then( (files) => { 
-            log( `deleted ${files.length} files`);
+            clog( `deleted ${files.length} files`);
           });
 }
 
 function mkdirs() {
-  return new rsvp.Promise( function( success /*, reject */ ) {
-      mkdir( BUILD_DIR );
-      mkdir( BUILD_DIR + WEB_DIR );
-      mkdir( BUILD_DIR + SERVER_DIR );
+  return new rsvp.Promise( function( success, reject  ) {
+      mkdir( WEB_DIR );
       success('ok');
     });
 }
@@ -93,31 +113,21 @@ function stageResults() {
     return rsvp.resolve(0);
   }
 
-  log('staging results');
-  mkdir( BUILD_DIR + 'x' );
-  var renames = [
-    rename( WEB_DIR,                BUILD_DIR + 'x/' + WEB_DIR),
-    rename( SERVER_DIR,             BUILD_DIR + 'x/' + SERVER_DIR),
-    rename( BUILD_DIR + WEB_DIR,    WEB_DIR ),
-    rename( BUILD_DIR + SERVER_DIR, SERVER_DIR )
-  ];
+  clog('staging results');
 
-  return rsvp.all(renames).then( () => clean() );
+  var tmp = tmpDir();
+
+  return rename( SERVER_TARGET, tmp )
+          .then( () => rename( SERVER_DIR, SERVER_TARGET ))
+          .then( () => del( [tmp+'**',tmp] ) )
+          .then( (files) => { 
+            log( `deleted ${files.length} files in ${tmp}`);
+          });
 }
 
 function rename( from, to ) {
   log( `renaming ${from} => ${to}` );
   return frename( from, to );
-}
-
-function _allBuilders() {
-  log('fetching build all builders');
-  return [ 
-      bundleVendorJSFiles(), 
-      bundleVendorCSSFiles(), 
-      publishFontFiles(),
-      publishSMFiles(),
-    ];  
 }
 
 function generateIndexJS(dir,formatter) {
@@ -139,24 +149,19 @@ function generateIndexJS(dir,formatter) {
     });
 }
 
-/*
-function generateRouteIndex() {
-  return generateIndexJS('routes', n => n.replace(/-?(r|R)oute$/,''));
-}
-*/
-
 function generateComponentIndex() {
   return generateIndexJS('components', n => n);
 }
 
 function lintSource() {
-  log('invoking lint');
+  clog('invoking lint');
   return execp('eslint app');
 }
 
 function publishServerLibrary() {
-  log('spawing babel for server libs');
-  var cmd = 'babel app --out-dir ' + BUILD_DIR + SERVER_DIR;
+  log('creating server runtime')
+  var cmd = 'babel app --out-dir ' + SERVER_DIR;
+  clog('compiling to ',SERVER_DIR);
   return execp(cmd);
 }
 
@@ -165,20 +170,20 @@ function minifyDist() {
     log( 'skipping minify' );
     return rsvp.resolve({});
   }
-  var dir = BUILD_DIR + WEB_DIR;
+  var dir = WEB_DIR;
   var app = APP_NAME;
-  log(`spawing uglify for ${dir} js/css`);
+  log(`spawning uglify for ${dir} js/css`);
   var cssCmd = `uglify -s ${dir}css/${app}.css  -o ${dir}css/${app}.css -c`;
   var jsCmd  = `uglify -s ${dir}js/${app}.js -o ${dir}js/${app}.js`;
   return execp(cssCmd).then( () => execp( jsCmd ) );
 }
 
-function publishPublicFiles() {
+function publishAppPublicFiles() {
 
-  mkdir( BUILD_DIR + WEB_DIR + 'images');
+  mkdir( WEB_DIR + 'images');
 
   return globp('public/{*.html,*.ico,*.xml,*.txt,*.png,images/*.*}')
-    .then( fnames => fnames.forEach( f => copy( f, f.replace('public/', BUILD_DIR + WEB_DIR ) ) ) );
+    .then( fnames => fnames.forEach( f => copy( f, f.replace('public/', WEB_DIR ) ) ) );
 }
 
 function bundleAppCSSFiles() {
@@ -186,27 +191,35 @@ function bundleAppCSSFiles() {
     .then( files => bundleAppFiles(files,'css') );
 }
 
-function _writeBrowserJS() {
-  var text = fs.readFileSync( 'app/browser.template', 'utf8' );
-  var app = APP_NAME;
-  text = text.replace(/\{app\}/g, app );
-  var fname = `app/${app}-browser.js`;
-  fs.writeFileSync( fname, `// generated by build\n${text}` );
+function _compileTemplate(platform, outfile) {
+
+  var text  = fs.readFileSync( `app/${platform}.template`, 'utf8' );
+  var app   = APP_NAME;
+      text  = text.replace(/\{app\}/g, app );
+  var fname = outfile || `${SERVER_DIR}${platform}.js`;
+
+  log('compiling to ', fname);
+
+  var dt = new Date() + '';
+  fs.writeFileSync( fname, `// generated by build ${dt}\n${text}` );
+  
   return fname;
 }
 
-function bundleBrowserJS() {
-  mkdir( BUILD_DIR + WEB_DIR + 'js');
+function bundleAppJS() {
+  mkdir( WEB_DIR + 'js');
 
   var app = APP_NAME;
   var fp  = MODE === 'dev' ? ' --full-paths ' : '';
-  var dir = BUILD_DIR + WEB_DIR;
-  var ent = _writeBrowserJS();
-  var cmd = `browserify app/**/*.js -e ${ent} -t babelify --noparse=http -u http -u stream-http ${fp} -o ${dir}js/${app}.js`;
+  var dir = WEB_DIR;
+  var ent = _compileTemplate('browser');
+  var bnd = `${dir}js/${app}.js`;
+  var cmd = `browserify app/**/*.js -e ${ent} -t babelify --noparse=http -u http -u stream-http ${fp} -o ${bnd}`;
 
-  log(`creating browser(ify) ${cmd}`);
+  clog('creating bundle',bnd);
+  log(`spawning browser(ify) ${cmd}`);
 
-  return execp(cmd);
+  return execp(cmd).then( () => _compileTemplate('server', SERVER_DIR + 'index.js') );
 }
 
 function bundleVendorJSFiles() {  
@@ -230,42 +243,23 @@ function bundleVendorJSFiles() {
   return bundleVendorFiles(vendorJSSources[MODE],'js');
 }
 
-function publishFontFiles() {
+function publishVendorFontFiles() {
 
-  mkdir( BUILD_DIR + WEB_DIR + 'fonts');
+  mkdir( WEB_DIR + 'fonts');
 
   var rootd = 'node_modules/font-awesome/';
 
   return publishDir(rootd + 'fonts/*.*', rootd );
 }
 
-function publishSMFiles() {
+function publishVendorSWFFiles() {
 
-  mkdir( BUILD_DIR + WEB_DIR + 'swf');
+  mkdir( WEB_DIR + 'swf');
 
   var rootd = 'node_modules/soundmanager2/';
 
   return publishDir( rootd + 'swf/soundmanager2{_flash9.swf,.swf}' ,rootd);
 }
-
-/*
-function publishSourceMaps() {
-
-  mkdir( BUILD_DIR + WEB_DIR + 'css');
-
-  if( MODE === 'dev' ) {
-
-    var fromTos = [
-      {
-        from: 'node_modules/bootstrap/dist/css/bootstrap-theme.css.map',
-        to: BUILD_DIR + WEB_DIR + 'css/bootstrap-theme.css.map'
-      }
-    ];
-
-    fromTos.forEach( ft => copy(ft.from, ft.to) );
-  }
-}
-*/
 
 function bundleVendorCSSFiles() {
 
@@ -286,18 +280,18 @@ function bundleVendorCSSFiles() {
 
 function publishDir(files,rootd) {
   return globp( files )
-    .then( fnames => fnames.forEach( f => copy( f, f.replace(rootd,BUILD_DIR + WEB_DIR) ) ) );
+    .then( fnames => fnames.forEach( f => copy( f, f.replace(rootd, WEB_DIR) ) ) );
 }
 
 function bundleVendorFiles(arr,outext) {
-  var dir = BUILD_DIR + WEB_DIR + outext;
+  var dir = WEB_DIR + outext;
   mkdir(dir);
   return bundleFiles(arr, dir + '/vendor.' + outext);
 }
 
 function bundleAppFiles(arr,outext) {
 
-  var dir = BUILD_DIR + WEB_DIR + outext;
+  var dir = WEB_DIR + outext;
   var app = APP_NAME;
   mkdir(dir);
   return bundleFiles(arr, `${dir}/${app}.${outext}`);
@@ -306,7 +300,7 @@ function bundleAppFiles(arr,outext) {
 function bundleFiles(arr,destination) {
   var fd = null;
 
-  log( 'creating bundle ', destination, arr );
+  clog( 'creating bundle ', destination  );
 
   return fopen(destination, 'w')
     .then( function(fileDescriptor) {
@@ -322,9 +316,7 @@ function bundleFiles(arr,destination) {
 
 function copy(src,dest) {
 
-  if( verbose ) {
-    log(`copying ${src} => ${dest}`);
-  }
+  log(`copying ${src} => ${dest}`);
 
   fs.createReadStream(src)
     .on('error', err )
@@ -332,17 +324,13 @@ function copy(src,dest) {
 }
 
 function err(err) {
-  console.log('Error : ' + err.message);
+  clog('Error : ' + err.message);
   process.exit(1);
 }
 
 function mkdir( dir ) {
-  try { 
-    fs.mkdirSync(dir); 
-    log('created directory', dir);
-  } catch(e) { 
-    return e;
-  }
+  log('making dir',dir);
+  mkdirp.sync(dir);
 }
 
 function log() {
@@ -356,12 +344,22 @@ function execp(cmd)
   return new rsvp.Promise( function(success,reject) {
     exec(cmd,function(err, stdout /*, stderr*/ ) {
       if( err ) {
-        console.log(stdout);
+        clog(stdout);
         reject(err);
       } else {
-        log( 'Result from: ', cmd.split(/\s+/)[0], stdout || '(empty)');
+        var name = cmd.split(/\s+/)[0];
+        log( 'Result from: ', name, stdout || '(empty)');
         success(stdout);
       }
     });
   });
+}
+
+function tmpDir() {
+  return './tmp/' + nowString() + '/';
+}
+
+function nowString() { 
+  function t(n) { return Number(n) < 10 ? '0' + n : n; }
+  var d = new Date(); return (1900+d.getYear())+''+t(1+d.getMonth())+t(d.getDay())+''+t(d.getHours())+t(d.getMinutes())+t(d.getSeconds())+d.getMilliseconds(); 
 }

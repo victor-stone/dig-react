@@ -1,6 +1,6 @@
 
 
-build and run requires node > 4
+build and run requires node >= 4
 
 we're building with command line tools (for now)
 
@@ -23,14 +23,15 @@ node build
 options:
 ```
   -v    - verbose
-  -a    - build all (vendor)
-  -p    - production 
+  -a    - build all
+  -p    - production (implies build all)
+  -d    - development (default)
 ```
 
 example:
 
 ```
-node build -vap
+node build -vp
 ```
 
 run:
@@ -56,4 +57,14 @@ examples:
   node --expose-gc dig -mem --port=4000
   node dig --sr=bin/server-rules.js
 ```
+
+Access logs are written to ./logs. To browse the logs start:
+
+```
+  node logger
+```
+
+Then browse to http://localhost:4080 
+
+
 

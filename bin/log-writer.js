@@ -58,12 +58,13 @@ class LogWriter {
     var date    = new Date() + '';
     var ua      = req.headers['user-agent'];
     var status  = res.statusCode;
+    var ref     = req.headers['referer'];
 
     var url     = urlParse(req.url,true);
     
     url = { path: url.pathname, q: url.query };
 
-    this.write( { ip, status, url, ua, date } );
+    this.write( { ip, status, url, ua, date, ref } );
   }
 
   write (obj) {
@@ -82,7 +83,7 @@ class LogWriter {
 
   _writeString (str) {
     if( this.stream ) {
-      return this.stream.write(str);
+      return this.stream.write(str.replace(/[^\x00-\x7F]/g,' '));
     }
     return false;
   }

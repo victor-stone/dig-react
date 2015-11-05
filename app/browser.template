@@ -2,9 +2,9 @@
 
 global.IS_SERVER_REQUEST = false;
 
-import React    from 'react';
-import ReactDOM from 'react-dom';
-import {app}      from './{app}';
+var React = require('react');
+var ReactDOM = require('react-dom');
+var app = require('./{app}');
 
-ReactDOM.render( React.createElement({app}),  document.getElementById('content') );
+ReactDOM.render( React.createElement(app),  document.getElementById('content') );
 

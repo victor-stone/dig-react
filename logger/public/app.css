@@ -7,6 +7,9 @@ ul {
   list-style: none;
 }
 
+.log-viewer {
+  margin-bottom: 60px;
+}
 .log-viewer .date {
   color: green;
 }
@@ -54,4 +57,17 @@ ul.nav {
 
 ul.nav li {
   margin-right: 30px;
+}
+
+nav.navbar {
+  background-color: #021C33 ;
+}
+
+nav.navbar button {
+  background-color: beige;
+}
+
+nav.navbar select {
+  background-color: #07072F ;
+  color: white;
 }

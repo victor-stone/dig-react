@@ -6,6 +6,7 @@
 /built
 /logs
 /app/dig-browser.js
+/dig
 
 # dependencies
 /node_modules

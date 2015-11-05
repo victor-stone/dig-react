@@ -37,6 +37,7 @@
     "glob": "^5.0.15",
     "jquery": "^2.1.4",
     "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1",
     "soundmanager2": "^2.97.20150601"
   },
   "dependencies": {
