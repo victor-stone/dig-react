@@ -374,7 +374,7 @@ var LogViewerLine = React.createClass({
         <div className="dropdown">
           <a href="#" data-toggle="dropdown" className="dropdown-toggle">{key}{" "}<b className="caret"></b></a>
           <ul className="dropdown-menu">
-          {value.map( (t,i) => <li key={i}>{t}</li> )}
+          {value.map( (t,i) => <li key={i+key}>{t}</li> )}
           </ul>
         </div>
         </span>);
@@ -400,7 +400,7 @@ var LogViewerLine = React.createClass({
   render: function() {
     var m = this.props.model;
     var keys = Object.keys(m);
-    var children = keys.map( (k,i) => this.formatKey(i,k,m[k]) );
+    var children = keys.map( (k,i) => this.formatKey(i+k,k,m[k]) );
     return (
         <li>{children}</li>
       )
@@ -431,7 +431,7 @@ var LogViewer = React.createClass({
     return (
           <ul className="log-viewer">
           <li key="0">offset: {this.props.store.offset} of {this.props.store.total}</li>
-          { this.state.model.map( (m,i) => <LogViewerLine key={i+1} model={m} /> ) }
+          { this.state.model.map( (m,i) => <LogViewerLine key={i} model={m} /> ) }
           </ul>
       );
   }

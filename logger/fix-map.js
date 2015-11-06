@@ -8,6 +8,8 @@ var tmpName = '../tmp/logtemp';
 
 var readable = fs.createReadStream(logFile,'utf8');
 
+console.log('fixing: ',logFile);
+
 readable.on('data', function(chunk) {
   chunk = chunk.replace(/[^\x00-\x7F]/g,' ');
   fs.appendFileSync(tmpName,chunk,'utf8');

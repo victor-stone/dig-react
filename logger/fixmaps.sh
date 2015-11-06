@@ -1,0 +1,10 @@
+node fix-map --l=../logs/2015-11-05-dig-app-log.json
+node fix-map --l=../logs/2015-11-05-dig-sys-log.json
+node fix-map --l=../logs/2015-11-04-dig-app-log.json
+node fix-map --l=../logs/2015-11-04-dig-sys-log.json
+node fix-map --l=../logs/2015-11-03-dig-app-log.json
+node fix-map --l=../logs/2015-11-03-dig-sys-log.json
+node fix-map --l=../logs/2015-11-02-dig-app-log.json
+node fix-map --l=../logs/2015-11-02-dig-sys-log.json
+node fix-map --l=../logs/2015-11-01-dig-app-log.json
+node fix-map --l=../logs/2015-11-01-dig-sys-log.json
