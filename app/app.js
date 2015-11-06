@@ -2,9 +2,8 @@ import React             from 'react';
 import { service as 
            ajaxAdapter } from './services/queryAjaxAdapter';
 import router            from './services/router';
-import { Header, 
-         Footer, 
-         Banner,
+import env               from './services/env';
+import { Banner,
          TitleSetter,
          AudioPlayer }   from './components';
 
@@ -88,7 +87,7 @@ const App = React.createClass({
         <div id="wrap">
           <TitleSetter title={title} />
           <Banner />
-          <Header />
+          <env.Header />
           <div className={cls}>
             {this.state.component
               ? React.createElement(this.state.component,
@@ -101,7 +100,7 @@ const App = React.createClass({
             }
           </div>
         </div>
-        <Footer />
+        <env.Footer />
         <AudioPlayer />
       </div>
     );

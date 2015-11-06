@@ -195,7 +195,7 @@ var RemixesSection = React.createClass({
   }
 });
 
-const upload = React.createClass({
+var upload = React.createClass({
 
   render: function() {
     var store  = this.props.store;

@@ -6,7 +6,7 @@ import { oassign }      from '../unicorns';
 import qc               from '../models/queryConfigs';
 import Playlist         from '../stores/playlist';
 
-const tags = React.createClass({
+var tags = React.createClass({
 
   render() {
     var title = this.props.params.tags.replace(/[^a-z_]+/,' ');

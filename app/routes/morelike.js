@@ -8,7 +8,7 @@ import UploadStore      from '../stores/upload';
 import Playlist         from '../stores/playlist';
 import { Transaction }  from '../services/queryAjaxAdapter';
 
-const morelike = React.createClass({
+var morelike = React.createClass({
 
   render() {
     var title = this.props.store.trackTitle;

@@ -58,7 +58,7 @@ var DidYouMeanSection = React.createClass({
 
 });
 
-const search = React.createClass({
+var search = React.createClass({
 
   render() {
     var text   = this.props.queryParams.searchp;
@@ -132,5 +132,6 @@ search.store = function( params, queryParams ) {
 
   return Transaction( makePromise() );
 };
+
 module.exports = search;
 

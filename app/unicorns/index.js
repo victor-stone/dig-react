@@ -1,3 +1,6 @@
+import Class from './class';
+import pagingStats from './paging-stats';
+import TagString from './tag-string';
 
 if (!Array.isArray) {
   Array.isArray = function(arg) {
@@ -144,5 +147,8 @@ module.exports = {
   trim,
   w,
   underscore,
-  debounce
+  debounce,
+  Class,
+  pagingStats,
+  TagString
 };

@@ -17,23 +17,44 @@ var port = 4080;
 app.listen(port);
 console.log(`Listening on port ${port}...`);
 
+var filterCache = {};
+
 function getlog(req,res) {
   var date   = req.params.date;
   var app    = req.params.app;
   var type   = req.params.type;
   var offset = req.query.offset || 0;
   var limit  = 30;
-  var wantCount = req.query.wantCount || false;
 
+  var wantCount = req.query.wantCount || false;
+  var filter    = null;
+  var filterSig = null;
+  
   var fname = `${LOG_DIR}${date}-${app}-${type}-log.json`;
+
+  if( req.query.filter ) {
+    filterSig = req.query.filter;
+    filter    = JSON.parse(req.query.filter);
+  }
 
   getLogMap(fname, handleError, function(logMap) {
     if( wantCount ) {
-      res.end( JSON.stringify( [ logMap.length ]));
+      res.end( JSON.stringify([ logMap.length ]));
     } else {
       getLogItems(logMap)
     }
   });    
+
+  function getFilterMap(logMap) {
+    if( fname in filterCache ) {
+      var filters = filterCache[fname];
+      if( filterSig in filters ) {
+        return filters[filterSig];
+      }
+    } else {
+      filterCache[fname] = {};
+    }
+  }
 
   function getLogItems(logMap) {
     var figs = translateMapOffsets(logMap);

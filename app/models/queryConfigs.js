@@ -9,6 +9,11 @@ module.exports = {
     oneof: 'remix,extended_mix',
   },
 
+  pells: {
+    limit: 10,
+    reqtags: 'acappella',
+  },
+  
   instrumental: {
     reqtags: 'instrumental,-vocals,-male_vocals,-female_vocals',
   },   

@@ -6,7 +6,7 @@ import { oassign }      from '../unicorns';
 import qc               from '../models/queryConfigs';
 import Playlist         from '../stores/playlist';
 
-const edpicks = React.createClass({
+var edpicks = React.createClass({
 
   render() {
     return (

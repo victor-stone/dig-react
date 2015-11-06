@@ -1,3 +1,26 @@
+var ObjectAssign = function(target, firstSource) {
+    "use strict";
+    if (target === undefined || target === null) {
+      throw new TypeError("Cannot convert first argument to object");
+    }
+    var to = Object(target);
+    for (var i = 1; i < arguments.length; i++) {
+      var src = arguments[i];
+      if (src === undefined || src === null) {
+        continue;
+      }
+      var arr = Object.keys(Object(src));
+      for (var n = 0, len = arr.length; n < len; n++) {
+        var k = arr[n];
+        var desc = Object.getOwnPropertyDescriptor(src, k);
+        if (desc !== undefined && desc.enumerable) {
+          to[k] = src[k];
+        }
+      }
+    }
+    return to;
+  };  
+
 function two(s) {
   if( Number(s) < 10 ) {
     return '0' + s;
@@ -6,11 +29,11 @@ function two(s) {
 }
 
 function formatNowForName (d) {
-    d = d || new Date();
-    var curr_date = two(d.getDate());
-    var curr_month = two(d.getMonth() + 1); //Months are zero based
-    var curr_year = d.getFullYear();
-    return ( curr_year + '-' + curr_month + '-' + curr_date );
+  d = d || new Date();
+  var curr_date = two(d.getDate());
+  var curr_month = two(d.getMonth() + 1); //Months are zero based
+  var curr_year = d.getFullYear();
+  return ( curr_year + '-' + curr_month + '-' + curr_date );
 }
 
 class EventEmiiter {
@@ -40,8 +63,9 @@ class EventEmiiter {
     }
   }
 
-  removeListener(evname,cb) { }
-
+  removeListener(evname,cb) { 
+    //console.log( 'removeListener no impl', evname);
+  }
 }
 
 class DateStore extends EventEmiiter {
@@ -98,17 +122,16 @@ class LogTypeStore extends EventEmiiter {
 
   set selectedType(index) {
     this._selected = index;
-    console.log('selecting type',index);
     this.emit('onchange', this.selectedType );
   }
 }
-
 
 class LogStore extends EventEmiiter {
   constructor() {
     super();
     this.model = [];
     this.lastFetch = null;
+    this._filter = null;
     this.offset = 0; //3270;
   }
 
@@ -157,9 +180,34 @@ class LogStore extends EventEmiiter {
     this.pageTo(off);
   }
 
+  addFilter(k,v) {
+    if( !this._filter ) {
+      this._filter = {};
+    }
+    this._filter[k] = v;
+    this.emit('filter',this._filter);
+  }
+
+  applyFilter() {
+    this.offset = 0;
+    this._fetchLog( this.lastFetch );
+  }
+
+  clearFilter() {
+    this.offset = 0;
+    this._filter = null;
+    this.emit('filter', {});
+    this._fetchLog( this.lastFetch );
+  }
+
+  get filter() {
+    return this._filter;
+  }
+
   fetchLog(date,app,type) {
     var f = { date, app, type };
     this.offset = 0;
+    this._filter = null;
     this._fetchTotal(f);
     this.lastFetch = f;
   }
@@ -171,15 +219,18 @@ class LogStore extends EventEmiiter {
   _fetchTotal(fetch) {
     this.total = 0;
     var opts = {
-      url: this._logName(fetch) + '?wantCount=1',
+      url: this._addQueryParams(this._logName(fetch),{wantCount:1}),
       error: this.ajaxError
     }
+
     opts.success = data => {
       // breakout for debugging;
       var result = JSON.parse(data);
       if( typeof result[0] === 'number' ) {
-        console.log('total result', result, ' data:', data);
         this.total = result[0];
+        if( this.total > 30 ) {
+          this.offset = this.total - 30;
+        }
         this._fetchLog(fetch);
       } else {
         result.push( {end:'end'} );
@@ -193,18 +244,32 @@ class LogStore extends EventEmiiter {
 
   _fetchLog(fetch) {
     var opts = {
-      url: this._logName(fetch),
+      url: this._addQueryParams(this._logName(fetch)),
       error: this.ajaxError
     }
-    if( this.offset ) {
-      opts.url += '?offset=' + this.offset;
-    }
     opts.success = data => {
-      // breakout for debugging;
       this.model = JSON.parse(data);
       this.emit('update',this.model)
     };
     $.ajax(opts);  
+  }
+
+  _addQueryParams(url,additional) {
+    var qp = {}
+    if( additional ) {
+      ObjectAssign(qp,additional);
+    }
+    if( this.offset ) {
+      qp.offset = this.offset;
+    }
+    if( this._filter ) {
+      qp.filter = JSON.stringify(this._filter);
+    }
+    qp = $.param(qp);
+    if( qp ) {
+      url += '?' + qp;
+    }
+    return url;
   }
 
   ajaxError( jqXHR, textStatus, errorThrown ) {
@@ -269,7 +334,6 @@ var AppSelect = React.createClass({
       </li>
     );
   }
-
 });
 
 var LogTypeSelect = React.createClass({
@@ -294,6 +358,21 @@ var LogTypeSelect = React.createClass({
     );
   }
 
+});
+
+var FilterLink = React.createClass({
+
+  onFilter: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.props.f( this.props.k, this.props.v );
+  },
+
+  render: function() {
+    return (
+        <span className="filter-link" onClick={this.onFilter}>{this.props.children}</span>
+      );
+  }
 });
 
 var LogViewerLine = React.createClass({
@@ -382,28 +461,113 @@ var LogViewerLine = React.createClass({
 
   genericFormat: function(i,key,value) {
     var text = value + '';
+    var _this = this;
     return (<span className={key} key={i}> {text} </span>);
   },
 
   formatKey: function(i,key,value) {
     var method = key + 'Format';
 
-    this.statusFormat = this.genericFormat;
-    this.reqFormat    = this.stackFormat;
+    var m = (method in this) ? this[method] : this.genericFormat;
+    var f = this.props.addFilter;
+    var v = value;
 
-    if( method in this ) {
-      return this[method](i,key,value);
+    if( typeof v === 'number') {
+      v += '';
     }
-    return this.genericFormat(i,key,value);
+
+    return (<FilterLink f={f} key={i} k={key} v={v}>{m(i,key,v)}</FilterLink>);
   },
 
   render: function() {
+    this.statusFormat = this.genericFormat;
+    this.reqFormat    = this.stackFormat;
+
     var m = this.props.model;
     var keys = Object.keys(m);
     var children = keys.map( (k,i) => this.formatKey(i+k,k,m[k]) );
     return (
         <li>{children}</li>
       )
+  }
+});
+
+/*
+var LogFilterItem = React.createClass({
+
+});
+*/
+var LogFilter = React.createClass({
+
+  getInitialState: function() {
+    var filter = this.props.store.filter || {};
+    return { filter };
+  },
+
+  componentWillMount: function() {
+    this.props.store.on( 'update', this.onUpdate );
+    this.props.store.on( 'filter', this.onFilter );
+  },
+
+  componentWIllUnmount: function() {
+    this.props.store.removeListener( 'update', this.onUpdate );
+    this.props.store.removeListener( 'filter', this.onFilter );
+  },
+
+  onUpdate: function() {
+    var filter = this.props.store.filter || {};
+    this.setState( { filter } );
+  },
+
+  onFilter: function(filter) {
+    this.setState( { filter } );
+  },
+
+  clear: function() {
+    this.props.store.clearFilter();
+  },
+
+  doFilter: function() {
+    this.props.store.applyFilter();
+  }
+
+  val: function(k) {
+    var v = null;
+    var f = this.state.filter;
+    if( typeof f[k] !== 'string' ) {
+      var keys = Object.keys(f[k]);
+      v = f[k][keys[0]] + '';
+    } else {
+      v = f[k] + '';
+    }
+    if( v.length > 20 ) {
+      return v.substr(0,20) + '...';
+    }
+    return v;
+  },
+
+  doFilter: function() {
+    this.props.store.applyFilter();
+  },
+
+  render: function() {
+    var f    = this.state.filter;
+    var keys = Object.keys(f);
+    var kids = keys.map( (k,i) => <li key={i} k={k} className="filter">{k + ': ' + this.val(k)}</li>);
+    var fcls = keys.length ? '' : ' disabled';
+    return(
+        <div className="log-filter">
+          <ul>
+            {keys.length
+              ? null
+              : <li key='nn' className="no-filter">(none)</li>
+            }
+            {kids}
+            <li key="fb"><button onClick={this.doFilter} className={'btn ' + fcls}>{"apply"}</button></li>
+            <li key="fb"><button onClick={this.clear} className={'btn btn-warning' + fcls}>{"clear"}</button></li>
+          </ul>
+        </div>
+      );
   }
 });
 
@@ -427,11 +591,15 @@ var LogViewer = React.createClass({
     this.setState( { model } );
   },
 
+  addFilter: function(key,value) {
+    this.props.store.addFilter(key,value);
+  },
+
   render: function() {
     return (
           <ul className="log-viewer">
           <li key="0">offset: {this.props.store.offset} of {this.props.store.total}</li>
-          { this.state.model.map( (m,i) => <LogViewerLine key={i} model={m} /> ) }
+          { this.state.model.map( (m,i) => <LogViewerLine addFilter={this.addFilter} key={i} model={m} /> ) }
           </ul>
       );
   }
@@ -564,7 +732,6 @@ var Header = React.createClass({
     var date = this.state.dateStore.selectedDate;
     var app  = this.state.appStore.selectedApp;
     var type = this.state.typeStore.selectedType;
-    console.log('got log change',arg,date,app,type);
     this.props.store.fetchLog(date,app,type);
   },
 
@@ -602,10 +769,12 @@ var logStore = new LogStore();
 
 var Page = React.createClass({
   render: function() {
+    var s = this.props.store;
     return (
         <div>
-          <Header store={this.props.store} />
-          <LogViewer store={this.props.store} />
+          <Header store={s} />
+          <LogFilter store={s} />
+          <LogViewer store={s} />
         </div>
       );
   }

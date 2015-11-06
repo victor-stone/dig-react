@@ -4,7 +4,7 @@ import { oassign }      from '../unicorns';
 import qc               from '../models/queryConfigs';
 import Playlist         from '../stores/playlist';
 
-const free = React.createClass({
+var free = React.createClass({
 
   render() {
     return (

@@ -2,8 +2,9 @@ import rsvp        from 'rsvp';
 import Query       from './query';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
-import { oassign } from '../unicorns';
-import TagString   from '../unicorns/tagString';
+
+import { oassign,
+         TagString } from '../unicorns';
 
 
 function mergeParams( oldp, newp ) {

@@ -1,14 +1,16 @@
-import React        from 'react';
-import { oassign }  from '../unicorns';
-import TagString    from '../unicorns/tagString';
-import qc           from '../models/queryConfigs';
+import React         from 'react';
+import qc            from '../models/queryConfigs';
+import PlaylistStore from '../stores/playlist';
+import TagStore      from '../stores/tags';
+
+import { oassign,
+         TagString } from '../unicorns';
+
 import { Glyph, 
          Paging, 
          QueryOptions,
          Playlist } from '../components';
 
-import PlaylistStore  from '../stores/playlist';
-import TagStore       from '../stores/tags';
 
 const SelectableTag = React.createClass({
 
@@ -378,7 +380,7 @@ const NoTagHits = React.createClass({
   },
 });
 
-const dig = React.createClass({
+var dig = React.createClass({
 
   componentWillMount: function() {
     this._myStore = this.props.store;

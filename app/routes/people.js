@@ -31,7 +31,7 @@ const PeopleHeader = React.createClass({
 
 });
 
-const people = React.createClass({
+var people = React.createClass({
 
   render() {
     var store  = this.props.store;

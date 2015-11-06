@@ -17,11 +17,10 @@ var fread   = rsvp.denodeify(fs.readFile);
 var globp   = rsvp.denodeify(glob);
 var frename = rsvp.denodeify(fs.rename);
 
-
 var MODE     = argv.mode || (argv.p ? 'prod' : 'dev');
 var buildAll = argv.all || argv.a || argv.p;
 var verbose  = argv.verbose || argv.v || false;
-var APP_NAME = 'dig';
+var APP_NAME = argv.pells ? 'pells' : (argv.dig ? 'dig' : (argv.app || 'dig'));
 
 clog( '------------------------ Building ------------------------');
 clog( ' options: ', argv );
@@ -41,6 +40,8 @@ var SERVER_TARGET = APP_NAME + '/';
 var WEB_TARGET    = SERVER_TARGET + 'web/';
 
 var SERVER_DIR    = BUILD_DIR + SERVER_TARGET;
+
+// N.B. WEB_DIR is assumed to be below SERVER_DIR
 var WEB_DIR       = SERVER_DIR + 'web/';
 
 build();
@@ -117,6 +118,8 @@ function stageResults() {
 
   var tmp = tmpDir();
 
+  mkdir( SERVER_TARGET ); // first time ever build requires this
+
   return rename( SERVER_TARGET, tmp )
           .then( () => rename( SERVER_DIR, SERVER_TARGET ))
           .then( () => del( [tmp+'**',tmp] ) )
@@ -182,12 +185,15 @@ function publishAppPublicFiles() {
 
   mkdir( WEB_DIR + 'images');
 
-  return globp('public/{*.html,*.ico,*.xml,*.txt,*.png,images/*.*}')
-    .then( fnames => fnames.forEach( f => copy( f, f.replace('public/', WEB_DIR ) ) ) );
+  var rootd = /public\/[^\/]+\//;
+  clog('publishing web files to',WEB_DIR);
+
+  return globp( `public/{shared,${APP_NAME}}/{*.html,*.ico,*.xml,*.txt,*.png,images/*.*}`)
+    .then( fnames => fnames.forEach( f => copy( f, f.replace(rootd, WEB_DIR ) ) ) );    
 }
 
 function bundleAppCSSFiles() {
-  return globp( 'public/css/*.css' )
+  return globp( `public/{shared,${APP_NAME}}/css/*.css` )
     .then( files => bundleAppFiles(files,'css') );
 }
 
@@ -286,7 +292,7 @@ function publishDir(files,rootd) {
 function bundleVendorFiles(arr,outext) {
   var dir = WEB_DIR + outext;
   mkdir(dir);
-  return bundleFiles(arr, dir + '/vendor.' + outext);
+  return bundleFiles(arr, dir + '/vendor.' + outext, /\/jquery\//);
 }
 
 function bundleAppFiles(arr,outext) {
@@ -294,22 +300,29 @@ function bundleAppFiles(arr,outext) {
   var dir = WEB_DIR + outext;
   var app = APP_NAME;
   mkdir(dir);
-  return bundleFiles(arr, `${dir}/${app}.${outext}`);
+  log(' => ', outext, arr);
+  return bundleFiles(arr, `${dir}/${app}.${outext}`, /\/shared\//);
 }
 
-function bundleFiles(arr,destination) {
+function bundleFiles(arr,destination,sortpri) {
   var fd = null;
 
   clog( 'creating bundle ', destination  );
-
+  log( ' => ', arr );
+  
   return fopen(destination, 'w')
     .then( function(fileDescriptor) {
         fd = fileDescriptor;
-        var promises = arr.map( n => fread(n,'utf8') );
-        return rsvp.all(promises);
+        var hash = {};
+        arr.forEach( n => hash[n] = fread(n,'utf8') );
+        return rsvp.hash(hash);
       })
-    .then( function(datas) {
-        fs.write(fd,datas.join(`\n/* ccmbuildjoint */\n`));
+    .then( function(hash) {
+        var data = Object.keys(hash)
+                         .sort( (a,b) => a.match(sortpri) !== null ? -1 : 1 )
+                         .map( k => hash[k] )
+                         .join( `\n/* ccmbuildjoint */\n` );
+        fs.write(fd,data);
         fs.close(fd);
       });
 }

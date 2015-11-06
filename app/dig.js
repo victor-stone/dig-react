@@ -1,6 +1,15 @@
 import router from './services/router';
+import env    from './services/env';
 import routes from './routes/dig';
 import App    from './app';
+
+import {
+          DigHeader,
+          DigFooter
+        } from './components';
+
+env.Header = DigHeader;
+env.Footer = DigFooter;
 
 var rewriteRules = [
   { regex: new RegExp(/^\/free_music/),                now: '/free' },

@@ -4,10 +4,8 @@ var router      = require('./services/router');
 var AppModule   = require('./{app}.js');
 var logPrefix   = '{app}';
 var webDir      = __dirname + '/web';
-var pathToIndex = webDir + '/{app}.html';
-var bodyRegex   =/(<div\s+id="content">)([^<]+)?(<\/div>)/;
 
-var server = new Server( router, webDir, AppModule, logPrefix, pathToIndex, bodyRegex );
+var server = new Server( router, webDir, AppModule, logPrefix );
 
 server.start();
 

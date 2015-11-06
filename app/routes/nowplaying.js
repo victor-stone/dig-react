@@ -23,7 +23,7 @@ class NowPlayingStore {
 }
 
 
-const nowplaying = React.createClass({
+var nowplaying = React.createClass({
 
   render() {
     var store  = this.props.store;

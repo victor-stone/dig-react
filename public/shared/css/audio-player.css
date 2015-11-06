@@ -1,5 +1,16 @@
 
-/* ember-cli-ccm-core */
+
+/* this selector is a hold-over from history 
+   somewhat sure it doesn't apply here but
+   not 100% sure
+*/
+
+nav > article {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  display: none;
+}
+
 /* audio player */
 
 .playback-scrubber {

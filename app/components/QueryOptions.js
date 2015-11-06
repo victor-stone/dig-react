@@ -2,8 +2,8 @@ import React     from 'react';
 import qc        from '../models/queryConfigs';
 import Glyph     from './Glyph';
 import Link      from './Link';
-import TagString from '../unicorns/tagString';
 
+import { TagString }   from '../unicorns';
 import { CloseButton } from './ActionButtons';
 
 var LicenseInfoPopup = React.createClass({

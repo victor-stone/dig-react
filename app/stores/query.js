@@ -1,5 +1,5 @@
-import Class from '../unicorns/class';
-import ccmixter from '../models/ccmixter';
+import { Class } from '../unicorns';
+import ccmixter  from '../models/ccmixter';
 import serialize from '../models/serialize';
 
 import { EventEmitter } from 'events';

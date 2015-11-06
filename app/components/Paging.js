@@ -2,7 +2,7 @@ import React    from 'react';
 import ReactDOM from 'react-dom';
 import Glyph    from './Glyph';
 
-import pagingStats from '../unicorns/pagingStats';
+import { pagingStats } from '../unicorns';
 
 var router = null;
 

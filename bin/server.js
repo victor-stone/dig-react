@@ -1,7 +1,7 @@
 'use strict';
 
 global.IS_SERVER_REQUEST = true;
-process.env.NODE_ENV = 'production';
+//process.env.NODE_ENV = 'production';
 
 var http = require('http');
 var url  = require('url');
@@ -21,19 +21,32 @@ var sysLog = null;
 
 var port   = argv.port || 3000;
 
+global.verbose = argv.v;
+
+function log() {
+  if( verbose ) {
+    console.log.apply(console,arguments);
+  }
+}
+
 class Server {
-  constructor( router, distDir, AppModule, logPrefix, pathToIndex, bodyRegex ) {
+  constructor( router, distDir, AppModule, logPrefix, bodyRegex ) {
     appLog = new LogWriter( logPrefix + '-app', 'logs');
     sysLog = new LogWriter( logPrefix + '-sys', 'logs');
+    
     this.distDir = distDir;
+
+    var pathToIndex = distDir + '/index.html';
+
+    bodyRegex = bodyRegex || /(<div\s+id="content">)([^<]+)?(<\/div>)/;
+
+    this.reactServer  = new ReactServer( router, AppModule, pathToIndex, bodyRegex );
 
     this.serverHook = new ServerHook( sysLog, appLog );
     this.serverHook.installHook( argv.sr || null );
 
     this.staticRouter = new StaticRouter();
     
-    this.reactServer  = new ReactServer( router, AppModule, pathToIndex, bodyRegex );
-
     var MAX_MEMORY_LIMIT = 150 * (1024*1024);
     var MAX_NON_GC_ALLOC = 200;
     this.memManager = new MemoryManager( argv.mem, MAX_MEMORY_LIMIT, MAX_NON_GC_ALLOC );
@@ -60,23 +73,9 @@ class Server {
       var file = url.parse(req.url,true).pathname;
       
       if( this.staticRouter.resolve( this.distDir + file, res ) ) {
+        log( 'static router took ', req.url );
         sysLog.logRequest(req,res)
       } else {
-
-        function reactError(url,req,res,exception) {
-          res.statusCode = 404;
-          res.end('not found');
-          sysLog.logRequest(req,res,exception);
-        }
-
-        function reactSuccess ( url, req, res ) {
-          if( res.statusCode === 200  ) {
-            appLog.logRequest(req,res);
-          } else {
-            sysLog.logRequest(req,res);
-          }
-        }
-
         this.reactServer.resolve( req.url, req, res, reactError, reactSuccess );
       } 
       
@@ -101,9 +100,24 @@ function getIP(req) {
   return '?ip?'
 }
 
-function handleReactError(url, exception ) {
-  console.log('error handling:', url, exception);
-  sysLog( { url, exception } );
+function reactError(url,req,res,exception) {
+  log( 'react router rejected ', url );
+  res.statusCode = 404;
+  res.end('not found');
+  if( exception ) {
+    console.log( exception );
+  }
+  sysLog.logRequest(req,res,exception);
+}
+
+function reactSuccess ( url, req, res ) {
+  if( res.statusCode === 200  ) {
+    log( 'react router accepted ', url );
+    appLog.logRequest(req,res);
+  } else {
+    log( 'react router weired out ', res.statusCode, url );
+    sysLog.logRequest(req,res);
+  }
 }
 
 process.on('SIGINT', function() {

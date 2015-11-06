@@ -2,7 +2,7 @@ import Query           from './query';
 import ccmixter        from '../models/ccmixter';
 import serialize       from '../models/serialize';
 import rsvp            from 'rsvp';
-import TagString       from '../unicorns/tagString';
+import { TagString }   from '../unicorns';
 
 var remixCategoryNames = ['genre', 'instr', 'mood'];
 var minRemixesForTags = 10;

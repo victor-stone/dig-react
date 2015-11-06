@@ -12,6 +12,8 @@ ul {
 }
 .log-viewer .date {
   color: green;
+  display: inline-block;
+  margin-left: 6px;
 }
 
 .log-viewer .msg {
@@ -26,6 +28,8 @@ ul {
 
 .log-viewer .url {
   font-weight: bold;
+  margin-right: 4px;
+  margin-left: 7px;
   min-width: 220px;
   display: inline-block;
 }
@@ -59,6 +63,9 @@ ul {
   font-family: monospace;
 }
 
+.filter-link { 
+  display: inline-block;
+}
 
 ul.nav {
   margin: 30px;
@@ -81,3 +88,34 @@ nav.navbar select {
   color: white;
 }
 
+.log-filter {
+  float: right;
+  margin: 12px;
+  padding: 7px;
+  width: 210px;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 2px 2px #777;
+}
+
+.log-filter ul:before {
+  content: 'filters';
+  text-align: center;
+  font-weight: bold;
+  width: 100%;
+  display: inline-block;
+  background-color: black;
+  color: white;
+  border-radius: 6px;
+  margin-bottom: 9px;
+  padding: 5px;
+}
+.log-filter ul {
+  margin: 4px;
+  padding: 0px;
+}
+
+.log-filter li  {
+  text-align: center;
+  padding-top: 4px;
+}

@@ -38,9 +38,9 @@
   
 */
 
-import Model from './model';
-import LicenseUtils from './licenses';
-import TagString from '../unicorns/tagString';
+import Model          from './model';
+import LicenseUtils   from './licenses';
+import { TagString }  from '../unicorns';
 
 class File extends Model {
 

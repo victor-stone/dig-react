@@ -2,7 +2,7 @@
 import React from 'react';
 import { PageHeader, LicenseInfo } from '../components';
 
-const Licenses = React.createClass({
+var Licenses = React.createClass({
 
   render() {
     return  ( 
