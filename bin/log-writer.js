@@ -48,7 +48,7 @@ class LogWriter {
     }
   }
 
-  logRequest (req,res) {
+  logRequest (req,res,exception) {
     var ip = req.ip;
     
     var currdate = this.formatNowForName();
@@ -58,13 +58,22 @@ class LogWriter {
     var date    = new Date() + '';
     var ua      = req.headers['user-agent'];
     var status  = res.statusCode;
-    var ref     = req.headers['referer'];
-
     var url     = urlParse(req.url,true);
     
     url = { path: url.pathname, q: url.query };
 
-    this.write( { ip, status, url, ua, date, ref } );
+    var entry = { ip, status, url, ua, date };
+
+    if( 'referer' in req.headers ) {
+      entry.ref = req.headers['referer'];
+    }
+
+    if( exception ) {
+      entry.exception = exception + '';
+      entry.stack     = exception.stack || 'no stack available';
+    }
+    
+    this.write( entry );
   }
 
   write (obj) {

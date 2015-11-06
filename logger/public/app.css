@@ -26,6 +26,8 @@ ul {
 
 .log-viewer .url {
   font-weight: bold;
+  min-width: 220px;
+  display: inline-block;
 }
 
 .log-viewer .error,
@@ -38,6 +40,13 @@ ul {
   font-family: "Lucida Console", Monaco, monospace;
   display: inline-block;
   width: 160px;
+}
+
+.log-viewer span.ref a {
+  margin-left: 11px;
+  font-weight: 500;
+  color: #337ab7;
+  font-size: 11px;
 }
 
 .log-viewer div.dropdown {
@@ -71,3 +80,4 @@ nav.navbar select {
   background-color: #07072F ;
   color: white;
 }
+

@@ -13,51 +13,49 @@ class ReactServerRouter {
     this.AppFactory = React.createFactory(AppModule);
   }
 
-  resolve(url,res,errCallback,successCallback) {
+  resolve(url,req,res,errCallback,successCallback) {
   
     var handlers = this.router.resolve(url);
 
     if( !handlers ) {
       
-      console.log( '404:', url );
+      console.log( '404:', url, req.headers['referer'] || '' );
       res.statusCode = 404;
       res.end('Not Found');
-      successCallback(null);
+      successCallback(url,req,res);
       return;
     } 
 
-  var h = handlers[0];
+    var h = handlers[0];
 
-  h.component.store(h.params, h.queryParams)
+    h.component.store(h.params, h.queryParams)
 
-    .then( (store) => {
-  
-        var props = {
-          name:        h.component.displayName,
-          component:   h.component,
-          store:       store,
-          params:      h.params,
-          queryParams: h.queryParams 
-        };
+      .then( (store) => {
+    
+          var props = {
+            name:        h.component.displayName,
+            component:   h.component,
+            store:       store,
+            params:      h.params,
+            queryParams: h.queryParams 
+          };
 
-        var bodyHTML = renderToString( this.AppFactory(props) );
+          var bodyHTML = renderToString( this.AppFactory(props) );
 
-        //console.log( bodyHTML );
+          var html = this.indexHTML.replace(this.bodyRegex,'$1' + bodyHTML + '$3'); 
 
-        var html = this.indexHTML.replace(this.bodyRegex,'$1' + bodyHTML + '$3'); 
+          if( h.component.title ) {
+            html = html.replace( /<title>[^<]+<\/title>/, '<title>' + h.component.title + '</title>');
+          }
 
-        if( h.component.title ) {
-          html = html.replace( /<title>[^<]+<\/title>/, '<title>' + h.component.title + '</title>');
-        }
+          res.setHeader( 'Content-Type', 'text/html' );
+          res.end(html);
 
-        res.setHeader( 'Content-Type', 'text/html' );
-        res.end(html);
+          successCallback(url, req, res); 
 
-        successCallback(url); 
-
-    }).catch( function(err) {
-      errCallback( url, err );
-    });
+      }).catch( function(err) {
+        errCallback( url, req, res, err );
+      });
   }
 }
 

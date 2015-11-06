@@ -300,39 +300,43 @@ var LogViewerLine = React.createClass({
 
   uaFormat: function(i,key,value) {
     var ua = value;
-    if( value.match(/Googlebot/) !== null ) {
-      value = 'Googlebot';
-    } else if( value.match(/^server$/) !== null ) {
-      value = '';
-    } else if( value.match(/Firefox/) !== null ) {
-      value = 'Firefox';
-    } else if( value.match(/bingbot/) !== null ) {
-      value = 'Bing';
-    } else if( value.match(/facebookexternalhit/) !== null ) {
-      value = 'Facebook';
-    } else if( value.match(/Yahoo! Slurp/) !== null ) {
-      value = 'Yahoo bot';
-    } else if( value.match(/CC Metadata Scaper/) !== null ) {
-      value = 'CC scraper';
-    } else if( value.match(/Chrome/) !== null ) {
-      value = 'Chrome';
-    } else if( value.match(/Safari/) !== null ) {
-      value = 'Safari';
-    } else if( value.match(/Trident/) !== null ) {
-      value = 'IE';
-    } else if( value.match(/Opera/) !== null ) {
-      value = 'Opera';
-    } else if( value.match(/AhrefsBot/) !== null ) {
-      value = 'AhrefsBot';
-    } else if( value.match(/Macintosh; Intel Mac OS X [0-9_]+\) AppleWebKit/) !== null ) {
-      value = 'AppleWebKit';
-    } else {
+    var map = [
+      { r: /Googlebot/,            v: 'Googlebot' },
+      { r: /^server$/,             v: '' },
+      { r: /Firefox/ ,             v: 'Firefox' },
+      { r: /bingbot/ ,             v: 'Bing' },
+      { r: /facebookexternalhit/ , v: 'Facebook' },
+      { r: /Yahoo! Slurp/ ,        v: 'Yahoo bot' },
+      { r: /CC Metadata Scaper/ ,  v: 'CC scraper' },
+      { r: /Chrome/ ,              v: 'Chrome' },
+      { r: /Safari/ ,              v: 'Safari' },
+      { r: /Trident/ ,             v: 'IE' },
+      { r: /Opera/ ,               v: 'Opera' },
+      { r: /AhrefsBot/ ,           v: 'AhrefsBot' },
+      { r: /Macintosh; Intel Mac OS X [0-9_]+\) AppleWebKit/ , v: 'AppleWebKit' },
+    ];
+
+    var found = false;
+    for( var i = 0; i < map.length; i++ ) {
+      var m = map[i];
+      if( ua.match(m.r) !== null ) {
+        value = m.v;
+        found = true;
+        break;
+      }
+    }
+
+    if( !found ) {
       value = value.replace(/Mozilla\/[0-9\.]+ \(compatible;/,'');
       if( value.length > 20 ) {
         value = value.substr(0,30) + '... ';
       }
     }
     return (<span className={key} key={i} data-ua={ua}> {value} </span>);
+  },
+
+  refFormat: function(i,key,url) {
+    return (<span className={key} key={i} ><a href={url} target="_blank">{url}</a> </span>);
   },
 
   urlFormat: function(i,key,url) {

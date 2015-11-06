@@ -62,19 +62,22 @@ class Server {
       if( this.staticRouter.resolve( this.distDir + file, res ) ) {
         sysLog.logRequest(req,res)
       } else {
-        this.reactServer.resolve( req.url, res, function(url, exception) {
-            var msg = '404 routing:' + exception.message;
-            console.log(msg, url);
-            res.statusCode = 404;
-            res.end(msg);
-            sysLog.write( { url, 
-                            exception: exception + '', 
-                            stack: exception.stack || 'no stack available'} );
-          }, function( url ) {
-            if( url && res.statusCode !== 404 ) {
-              appLog.logRequest(req,res);
-            }
-          });
+
+        function reactError(url,req,res,exception) {
+          res.statusCode = 404;
+          res.end('not found');
+          sysLog.logRequest(req,res,exception);
+        }
+
+        function reactSuccess ( url, req, res ) {
+          if( res.statusCode === 200  ) {
+            appLog.logRequest(req,res);
+          } else {
+            sysLog.logRequest(req,res);
+          }
+        }
+
+        this.reactServer.resolve( req.url, req, res, reactError, reactSuccess );
       } 
       
     } else {
