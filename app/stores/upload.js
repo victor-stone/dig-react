@@ -2,7 +2,7 @@ import Query            from './query';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import rsvp             from 'rsvp';
-import { Transaction }  from '../services/queryAjaxAdapter';
+import { Transaction }  from '../services/query-ajax-adapter';
 
 
 function _fixFeaturing(model) {

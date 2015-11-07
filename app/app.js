@@ -1,6 +1,6 @@
 import React             from 'react';
 import { service as 
-           ajaxAdapter } from './services/queryAjaxAdapter';
+           ajaxAdapter } from './services/query-ajax-adapter';
 import router            from './services/router';
 import env               from './services/env';
 import { Banner,

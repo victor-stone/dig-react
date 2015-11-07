@@ -162,15 +162,6 @@
 .pell-browser .tab-content ul li:hover {
   background-color: #e2e2e2;
 }
-.artist-header {
-  margin-top: -70px;
-}
-
-.artist-header img {
-  border-radius: 15px;
-  box-shadow: 4px 7px 14px #AAA;
-  margin-right: 18px;
-}
 
 
 svg {
@@ -182,7 +173,7 @@ svg {
 polyline {
   stroke: black;
   stroke-opacity: 0.8;
-  stroke-width:5;
+  stroke-width:1.5;
   fill:none;
   stroke-linecap: round;
 }
@@ -201,9 +192,15 @@ polyline {
 
 .audio-player .bar {
   opacity: 0.5;
-  height: 200px;
+  height: 80px;
 }
 
+article.audio-player {
+  line-height: 34px;
+  height: 84px;
+  /* padding-bottom: 20px; */
+  margin-bottom:  12px;
+}
 .waveimage {
   width: 100%;
   opacity: 1.0;
@@ -238,15 +235,6 @@ polyline {
   margin: 10px;
 }
 
-
-.pell-detail ul {
-  margin: 0px;
-  padding: 0px;
-}
-
-.pell-detail ul li {
-  margin-bottom: 7px;
-}
 
 .footer-pad {
   padding-bottom: 100px;
@@ -290,3 +278,85 @@ polyline {
   background-color: white;
   border: 0px;
 }
+.pell-detail {
+  background-color: white;
+  border: 2px solid #aaa;
+  border-radius: 8px;
+  box-shadow: 9px 9px #eee;
+  padding: 0px;
+}
+.pell-detail > div {
+  margin: 0px;
+}
+
+.pell-detail h3 {
+  border-bottom: 1px solid #ddd;;
+}
+
+.pell-detail > div > a {
+  border-top: 1px solid #ddd;;
+}
+
+.pell-detail h3,
+.pell-detail > div > a {
+  margin: 0px;
+  text-align: center;
+  padding: 5px;
+  width: 100%;  
+  display: block;
+  color: #347AB7;
+}
+
+.pell-detail .download-list { 
+  padding: 6px;
+  margin: 0px;
+}
+
+.pell-detail .download-list li {
+  margin-bottom: 4px;
+  cursor: default;
+}
+
+.pell-detail .download-list li .ext {
+   text-transform: uppercase;
+   float: right;
+}
+
+.pell-detail .download-list li .nic {
+   text-transform: lowercase;
+   font-size: 12px;
+}
+
+.pell-detail .download-list button {
+  padding: 4px 6px;
+  font-size: 14px;
+  
+}
+
+.modal .actions-centered > li {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.modal .nav-tabs > li {
+  margin-bottom: 0px;
+}
+
+.modal .pell-detail .download-list button {
+  margin: 7px;
+}
+
+.pells-page .page-header h2 a {
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: bottom;
+  position: relative;
+  left: -130px;
+}
+
+.pells-page .page-header h2 img {
+  border-radius: 15px;
+  box-shadow: 4px 7px 14px #AAA;
+  margin-right: 18px;
+}
+

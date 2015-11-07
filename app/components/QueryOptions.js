@@ -1,5 +1,5 @@
 import React     from 'react';
-import qc        from '../models/queryConfigs';
+import qc        from '../models/query-configs';
 import Glyph     from './Glyph';
 import Link      from './Link';
 

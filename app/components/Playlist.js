@@ -5,7 +5,7 @@ import Link               from './Link';
 import DownloadPopup      from './DownloadPopup';
 import { PlayButton }     from './AudioPlayer';
 import QueryOptions       from './QueryOptions';
-import AudioPlayerService from '../services/audioPlayer';
+import AudioPlayerService from '../services/audio-player';
 
 var SongLink = React.createClass({
 

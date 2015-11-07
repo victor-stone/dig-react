@@ -245,3 +245,56 @@ span.light-color a {
   }
 
 }
+
+li.license-badge i { /* help icon */
+  font-size: 125%;
+  margin-left: 8px;
+}
+
+/* licenses popup */
+.license-images img {
+  display: block;
+  margin: 20px auto 3px auto;
+}
+
+.license-images a {
+  margin: 4px auto;
+}
+
+.license-description {
+  padding: 12px 0px 12px 0px;
+}
+
+/* download popup */
+a > small {
+  font-size: 60%;
+}
+a > small::before {
+  content: '('
+}
+
+a > small:after {
+  content: ')'
+}
+
+.col-panel {
+  background-color: #EEE;
+  border-radius: 4px;
+  padding: 12px;
+  margin: 4px;
+}
+
+.col-panel textarea {
+  max-width: 88%;
+  opacity: 0.5;
+}
+
+.col-panel p {
+  margin-top: 7px;
+  margin-bottom: 15px;
+}
+
+.download-popup a.btn img {
+  margin-right: 8px;
+  margin-left: -8px;
+}

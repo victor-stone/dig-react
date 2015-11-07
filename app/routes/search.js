@@ -4,7 +4,7 @@ import rsvp  from 'rsvp';
 import { underscore, 
             oassign } from '../unicorns';
 
-import qc from '../models/queryConfigs';
+import qc from '../models/query-configs';
 
 import {  Link, 
           Glyph, 
@@ -14,7 +14,7 @@ import {  Link,
 
 import { service as tagStore }   from '../stores/tags';
 import { service as queryStore } from '../stores/query';
-import { Transaction }           from '../services/queryAjaxAdapter';
+import { Transaction }           from '../services/query-ajax-adapter';
 import PlaylistStore             from '../stores/playlist';
 
 var DidYouMeanSection = React.createClass({

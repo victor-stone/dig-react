@@ -1,11 +1,12 @@
 import React            from 'react';
 import { oassign }      from '../unicorns';
-import qc               from '../models/queryConfigs';
+import qc               from '../models/query-configs';
 import Acappellas       from '../stores/acappellas';
 import { Glyph,
           DownloadPopup,
           Paging  }     from '../components';
 import { ExternalLink } from '../components/ActionButtons';
+import AudioPlayerService from '../services/audio-player';
 
 var PellTabs = React.createClass({
 
@@ -99,11 +100,12 @@ var PellListing = React.createClass({
     };
   },
 
-  selectLine: function(pellID) {
+  selectLine: function(pell) {
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
-      this.props.store.selected = pellID;
+      this.props.store.selected = pell.id;
+      AudioPlayerService.togglePlay(pell);
     };
   },
 
@@ -111,7 +113,7 @@ var PellListing = React.createClass({
 
     function pellLine(pell) {
 
-      var args = [ 'li', { onClick: this.selectLine(pell.id), key: pell.id } ];
+      var args = [ 'li', { onClick: this.selectLine(pell), key: pell.id } ];
       if( pell.bpm ) {
         var e = React.createElement('span', { className: 'bpm' }, 'bpm: ', pell.bpm);
         args.push(e); 
@@ -139,7 +141,7 @@ var PellListing = React.createClass({
     }
 });
 
-var PellArtist = React.createClass({
+var PellHeader = React.createClass({
 
   getInitialState: function() {
     var artist = this.props.store.model.artist;
@@ -168,16 +170,12 @@ var PellArtist = React.createClass({
   render: function() {
     var artist = this.state.artist;
     return (
-      artist
-        ?<div className="row">
-          <div className="col-md-2 col-md-offset-1">
-            <h4><a href="#" onClick={this.clearArtist} ><Glyph icon="chevron-circle-left" />{" everybody"}</a></h4>
-          </div>
-          <div className="col-md-9 artist-header">
-            <h2><img src={artist.avatarURL} />{artist.name}</h2>
-          </div>
+        <div className="page-header center-text">
+         {artist          
+          ? <h2><a href="#" onClick={this.clearArtist} ><Glyph icon="chevron-circle-left" />{" everybody"}</a> <img src={artist.avatarURL} />{artist.name}</h2>
+          : <h1><Glyph icon="microphone" />{" Pells"}</h1>
+        }
         </div>
-        : null
       );
   }
 
@@ -211,10 +209,10 @@ var PellDetail = React.createClass({
 
     return (
         <div>
-          <h3><img src={model.artist.avatarUrl} />{model.artist.name}</h3>
-          <ul>
+          <h3>{model.name}</h3>
+          <ul className="download-list">
             {model.files.map( file => {
-              return <li><DownloadPopup fullDownload={model} file={file} /> {file.extension} {file.nicName}</li>;
+              return <li key={file.id}><DownloadPopup fullUpload={model} file={file} /> <span className="ext">{file.extension}</span> <span className="nic">{file.nicName}</span></li>;
             })}
           </ul>
           <ExternalLink href={model.url} text="@ccMixter" />
@@ -229,12 +227,7 @@ var pells = React.createClass({
     return (
       <div className="container pells-page">
         <div className="gear">{"filter gadget here"}</div>
-        <div className="row">
-          <div className="col-md-12">
-            <h1>{"Pells"}</h1>
-          </div>
-        </div>
-        <PellArtist store={store} />
+        <PellHeader store={store} />
         <div className="row">
           <div className="col-md-8 col-md-offset-1 pell-browser">
             <PellTabs store={store} />

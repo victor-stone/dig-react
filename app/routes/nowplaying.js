@@ -5,7 +5,7 @@ import rsvp             from 'rsvp';
 import { PageHeader, 
          Playlist }     from '../components';
 
-import AudioPlayerService from '../services/audioPlayer';
+import AudioPlayerService from '../services/audio-player';
 
 class NowPlayingStore {
 

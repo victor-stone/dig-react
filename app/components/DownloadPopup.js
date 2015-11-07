@@ -140,10 +140,14 @@ var DownloadPopup = React.createClass({
   },
 
   render: function() {
-    var cls    = 'btn btn-warning btn-lg';
+    var cls    = 'btn btn-warning';
     var sz     = this.props.big ? 'x4' : '';
     var fixed  = this.props.fixed || false;
 
+    if( !this.props.sm ) {
+      cls += ' btn-lg';
+    }
+    
     var popup = this.state.view.showModal ? this.genPopup() : null;
 
     return (

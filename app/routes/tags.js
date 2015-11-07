@@ -3,7 +3,7 @@
 import React            from 'react';
 import { FeaturedPage } from '../components';
 import { oassign }      from '../unicorns';
-import qc               from '../models/queryConfigs';
+import qc               from '../models/query-configs';
 import Playlist         from '../stores/playlist';
 
 var tags = React.createClass({

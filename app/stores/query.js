@@ -6,7 +6,7 @@ import serialize from '../models/serialize';
 import { EventEmitter } from 'events';
 
 // this is a singleton
-import { service as queryAjaxAdapter } from '../services/queryAjaxAdapter';
+import { service as queryAjaxAdapter } from '../services/query-ajax-adapter';
 
 class Query 
 {

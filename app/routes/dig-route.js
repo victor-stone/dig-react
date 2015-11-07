@@ -1,5 +1,5 @@
 import React         from 'react';
-import qc            from '../models/queryConfigs';
+import qc            from '../models/query-configs';
 import PlaylistStore from '../stores/playlist';
 import TagStore      from '../stores/tags';
 

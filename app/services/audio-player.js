@@ -160,6 +160,11 @@ oassign( AudioPlayer.prototype,
     present on these items.
   */
   playlist: null,
+
+  /**
+    store this here for now
+  */
+  wantWavImg: false,
   
   play: function(playable) {
     this._delegate(playable,'play');

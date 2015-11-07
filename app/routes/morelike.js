@@ -1,12 +1,12 @@
 import React            from 'react';
 import { FeaturedPage } from '../components';
 import { oassign }      from '../unicorns';
-import qc               from '../models/queryConfigs';
+import qc               from '../models/query-configs';
 
 import TagStore         from '../stores/tags';
 import UploadStore      from '../stores/upload';
 import Playlist         from '../stores/playlist';
-import { Transaction }  from '../services/queryAjaxAdapter';
+import { Transaction }  from '../services/query-ajax-adapter';
 
 var morelike = React.createClass({
 

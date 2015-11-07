@@ -16,7 +16,7 @@ import { AddTrackbackPopup as AddTrackbackPopupButton,
 
 import DownloadPopup   from '../components/DownloadPopup';
 import { PlayButton }  from '../components/AudioPlayer';
-import { Transaction } from '../services/queryAjaxAdapter';
+import { Transaction } from '../services/query-ajax-adapter';
 
 var Actions = React.createClass({
 

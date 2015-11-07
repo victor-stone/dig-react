@@ -3,7 +3,7 @@
 import React            from 'react';
 import { oassign }      from '../unicorns';
 import { ExternalLink } from '../components/ActionButtons';
-import qc               from '../models/queryConfigs';
+import qc               from '../models/query-configs';
 
 import { Playlist, Paging } from '../components';
 
