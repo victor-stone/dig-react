@@ -6,9 +6,13 @@ var nameMap = {
   banner: 223608
 };
 
-const Topics = Query.extend({
+class Topics extends Query {
 
-  find: function(id) {
+  constructor() {
+    super(...arguments);
+  }
+
+  find(id) {
     if( typeof id === 'string' ) {
       id = nameMap[id];
     }
@@ -19,8 +23,8 @@ const Topics = Query.extend({
     };
     return this.queryOne(args)
       .then( serialize( ccmixter.Topic ) );
-  },
+  }
 
-});
+}
 
 module.exports = Topics;

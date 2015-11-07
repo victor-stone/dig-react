@@ -11,7 +11,7 @@ var router = null;
 var BoundingMixin = {
 
   componentDidMount: function() {
-    if( !global.IS_SERVER_REQUEST ) {
+    if( !global.IS_SERVER_REQUEST && !this.props.disableBumping ) {
       var $e = $(ReactDOM.findDOMNode(this));
       if( $e.is(':visible') ) {
         if( this.props.keepAbove ) {
@@ -26,7 +26,7 @@ var BoundingMixin = {
   },
 
   componentWillUnmount: function() {
-    if( !global.IS_SERVER_REQUEST ) {
+    if( !global.IS_SERVER_REQUEST && !this.props.disableBumping ) {
       window.removeEventListener('resize', this.handleResize);
       var $e = $(ReactDOM.findDOMNode(this));
       ['a', 'b'].forEach( k => {

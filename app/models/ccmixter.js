@@ -46,11 +46,13 @@ class File extends Model {
 
   constructor() {
     super(...arguments);
-    this.urlBinding =    'download_url';
-    this.idBinding =       'file_id';
-    this.sizeBinding =     'file_filesize';
-    this.typeBinding =    'file_extra.type';
-    this.uploadBinding =   '_bindParent';
+    
+    this.urlBinding      = 'download_url';
+    this.idBinding       = 'file_id';
+    this.sizeBinding     = 'file_filesize';
+    this.downloadSize    = 'file_filesize';
+    this.typeBinding     = 'file_extra.type';
+    this.uploadBinding   = '_bindParent';
     this.mediaURLBinding = 'download_url';
 
     this.getExtension = function() {

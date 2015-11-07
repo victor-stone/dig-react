@@ -34,10 +34,13 @@ function mergeParams( oldp, newp ) {
   return target;
 }
 
-var Playlist = Query.extend({
+class Playlist extends Query {
 
-  model:       {},
-  orgParams:   null,
+  constructor() {
+    super(...arguments);
+    this.model = {};
+    this.orgParams = null;
+  }
 
   /**
     annotadedParams is a JS object that specifies QueryAPI
@@ -55,24 +58,24 @@ var Playlist = Query.extend({
       }
     ```
   */
-  applyParams: function(annotadedParams) {
+  applyParams(annotadedParams) {
 
     var newParams = mergeParams( this.model.queryParams || {}, annotadedParams );
 
     this.playlist(newParams)
       .then( model => this.emit('playlist', model ) );
-  },
+  }
 
-  applyOriginalParams: function() {
+  applyOriginalParams() {
     this.applyParams( this.orgParams || {} );
-  },
+  }
 
-  applyToOriginalParams: function(annotadedParams) {
+  applyToOriginalParams(annotadedParams) {
     this.orgParams = mergeParams(this.orgParams, annotadedParams);
     this.applyParams( annotadedParams );
-  },
+  }
 
-  paramsDirty: function() {
+  paramsDirty() {
     if( this.orgParams && !!this.model.queryParams ) {
       var qp = this.model.queryParams;
       for( var k in qp ) {
@@ -84,15 +87,15 @@ var Playlist = Query.extend({
       }
     }
     return false;
-  },
+  }
 
-  _playlist: function(params) {
+  _playlist(params) {
     params.dataview = 'links_by';
     params.f        = 'json';
     return this.query(params).then( serialize(ccmixter.Upload) );
-  },
+  }
 
-  playlist: function(params) {
+  playlist(params) {
     if( !params.offset ) {
       params.offset = 0;
     }
@@ -115,10 +118,9 @@ var Playlist = Query.extend({
       this.model = results;
       return results;
     });
-  },
+  }
 
-
-});
+}
 
 // performs the query but returns the store
 // from the promise (which contains the result

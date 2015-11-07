@@ -12,9 +12,13 @@ function _fixFeaturing(model) {
   return model;
 }
 
-var Upload = Query.extend({
+class Upload extends Query {
 
-  find: function(id) {
+  constructor() {
+    super(...arguments);
+  }
+
+  find(id) {
     
     var model = null;
 
@@ -42,9 +46,9 @@ var Upload = Query.extend({
 
         return model;
       });
-  },
+  }
   
-  trackbacks: function(forId) {
+  trackbacks(forId) {
     var trackbacksQ = {
       trackbacksof: forId,
       f: 'json',
@@ -54,9 +58,9 @@ var Upload = Query.extend({
       limit: 25 // TODO: get this from ENV or anywhere else!!
     };
     return this.query(trackbacksQ).then( serialize( ccmixter.Trackback ) );
-  },
+  }
   
-  remixes: function(forId) {
+  remixes(forId) {
     var remixesQ = {
       remixes: forId,
       f: 'json',
@@ -65,9 +69,9 @@ var Upload = Query.extend({
       ord: 'desc'
     };
     return this.query(remixesQ).then( serialize( ccmixter.Remix ) );
-  },
+  }
   
-  sources: function(forId) {
+  sources(forId) {
     var sourcesQ = {
       sources: forId,
       f: 'json',
@@ -75,18 +79,18 @@ var Upload = Query.extend({
       datasource: 'uploads'
     };
     return this.query(sourcesQ).then( serialize( ccmixter.Source ) );
-  },
+  }
   
-  info: function(id) {
+  info(id) {
     var uploadQ = {
       ids: id,
       f: 'json',
       dataview: 'default'
     };    
     return this.queryOne(uploadQ).then( serialize( ccmixter.Detail ) );
-  },
+  }
   
-});
+}
 
 Upload.service = new Upload();
 

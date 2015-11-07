@@ -1,0 +1,292 @@
+.pell-browser ul.pagination li a {
+  color: white;
+}
+
+.pell-browser ul.pagination li.disabled a {
+  color: #999;
+} 
+
+.navbar-brand img {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  border-radius: 10px;
+  border: 1px solid;
+  background-image: -webkit-linear-gradient(top, #111155 0%, #448 100%);
+  background-image: -o-linear-gradient(top, #111155 0%, #448 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#111155), to(#448));
+  background-image: linear-gradient(to bottom, #111155 0%, #448 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff111155', endColorstr='#ff444488', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-repeat: repeat-x;
+  border-radius: 4px;
+  margin-bottom: 0px;
+}
+
+.pell-browser ul.pagination li a,
+.navbar-inverse {
+  background-image: -webkit-linear-gradient(top, #3c3c55 0%, #226 100%);
+  background-image: -o-linear-gradient(top, #3c3c55 0%, #226 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#3c3c55), to(#226));
+  background-image: linear-gradient(to bottom, #3c3c55 0%, #226 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3c3c55', endColorstr='#ff222266', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-repeat: repeat-x;
+  border-radius: 4px;
+  margin-bottom: 0px;
+}
+
+#qop {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+#qop .form-group {
+  margin-right: 20px;
+}
+
+.outlet-wrap {
+  margin-bottom: 60px;
+}
+
+.loading-screen {
+  opacity: 0.5;
+}
+
+.pell-browser .tab-content,
+.pell-browser .nav-tabs > li > a.active {
+  background-color: #fcfcfc;
+}
+
+.pell-browser .nav-tabs > li > a.active {
+  border-top: 1px solid #e2e2e2;
+  border-right: 1px solid #e2e2e2;
+  border-left: 1px solid #e2e2e2;
+}
+
+/* playlist */
+
+.pell-browser .tab-content {
+  border-bottom: 1px solid #e2e2e2;
+  border-right: 1px solid #e2e2e2;
+  border-left: 1px solid #e2e2e2;
+}
+
+.pell-browser .tab-content li:hover {
+  background-color: #fafaff;
+}
+
+.pell-browser .tab-content ul li .btn.btn-info {
+  background: transparent;
+  border: 0px;
+  color: black;
+}
+
+.pell-browser .tab-content ul li a.btn.btn-info:hover {
+  background: #pink;
+}
+.pell-browser .tab-content ul {
+  margin: 0px;
+  padding: 8px;
+}
+
+.pell-browser .tab-content li a {
+  font-size: 18px;
+  color: #3c3c55;
+}
+
+.pell-browser .tab-content li span a {
+  font-size: 12px; 
+  display: inline-block;
+  margin-left: 17px;
+}
+
+.pell-browser .btn {
+  float: left;
+  margin-right: 7px;
+}
+
+.pell-browser .tab-content li {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.pell-browser span.bpm {
+  float: right;
+}
+
+
+.pell-browser .paging-container {
+  float: right;
+  padding: 0px;
+}
+
+.pell-browser .paging ul {
+  margin: 0px;
+  font-size: 10px;
+}
+
+.pell-browser .paging div {
+  display: none;
+}
+
+.pell-browser .pell-browser .nav-tabs {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.pell-browser .nav-tabs .badge {
+  font-size: 9px;
+  font-weight: normal;
+  background-color: brown;
+}
+
+.pell-browser .tab-content ul {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.pell-browser .tab-content ul li {
+  clear: both;
+  cursor: pointer;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+
+}
+
+.pell-detail,
+.pell-browser .tab-content ul li.selected {
+  background-color: #e9e9e9;
+}
+.pell-browser .tab-content ul li:hover {
+  background-color: #e2e2e2;
+}
+.artist-header {
+  margin-top: -70px;
+}
+
+.artist-header img {
+  border-radius: 15px;
+  box-shadow: 4px 7px 14px #AAA;
+  margin-right: 18px;
+}
+
+
+svg {
+  display: inline-block;
+  width: 400;
+  height: 80;
+}
+
+polyline {
+  stroke: black;
+  stroke-opacity: 0.8;
+  stroke-width:5;
+  fill:none;
+  stroke-linecap: round;
+}
+
+.audio-player {
+  height: 90px;
+}
+
+.audio-player .media-body {
+  height: 90px;
+}
+
+.audio-player .playback-scrubber {
+  width: 410px;
+}
+
+.audio-player .bar {
+  opacity: 0.5;
+  height: 200px;
+}
+
+.waveimage {
+  width: 100%;
+  opacity: 1.0;
+}
+
+.play-previous,
+.play-next {
+  display: none;
+}
+
+.audio-player .btn.play {
+  font-size: 42px;
+  margin-top: 20px;
+  width: 60px;
+}
+
+.audio-player h4.media-heading a  {
+  margin-top: 40px;
+  display: inline-block;
+}
+
+.pells-img {
+  background-image: url('../images/front-page.jpg');
+  width: 100%;
+  height: 600px;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+
+.gear {
+  float: right;
+  margin: 10px;
+}
+
+
+.pell-detail ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+.pell-detail ul li {
+  margin-bottom: 7px;
+}
+
+.footer-pad {
+  padding-bottom: 100px;
+}
+
+.bpm-display {
+  display: inline-block;
+  float: left;
+  background-color: #CCC;
+  padding: 4px;
+  margin-right: 1px;
+  width: 35px;
+  text-align: center;
+  border-radius: 6px;
+  vertical-align: middle;
+}
+
+.slider-container {
+  margin-left: 55px;
+  padding-top: 4px;
+}
+
+.pells-img h1 {
+  color: white;
+  margin-top: 150px;
+  font-size: 60pt;
+  max-width: 440px;
+  text-shadow: 3px 3px black;
+ }
+
+.pells-img h3 {
+  color: antiquewhite;
+  max-width: 440px;
+  text-shadow: 2px 2px black;
+}
+
+.pell-browser .paging {
+  position: relative;
+  top: 0px;
+  float:right;
+  background-color: white;
+  border: 0px;
+}

@@ -7,6 +7,7 @@
 /logs
 /app/dig-browser.js
 /dig
+/pells
 
 # dependencies
 /node_modules

@@ -11,7 +11,10 @@ module.exports = {
 
   pells: {
     limit: 10,
+    lic: 'all',
+    offset: 0,
     reqtags: 'acappella',
+    filter: 'featured'
   },
   
   instrumental: {

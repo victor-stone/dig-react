@@ -18,12 +18,17 @@ var DownloadPopup = React.createClass({
   },
 
   handleShowModal: function(){
-    var store = new Upload();
-    store.info( this.props.model.id )
-      .then( r => this.setState( {
-                      view: {showModal: true},
-                      fullUpload: r,
-                    }));
+    if( this.props.fullUpload ) {
+      this.setState( { fullUpload: this.props.fullUpload,
+                       view:      { showModal: true } } );
+    } else {
+      var store = new Upload();
+      store.info( this.props.model.id )
+        .then( r => this.setState( {
+                        view:       {showModal: true},
+                        fullUpload: r,
+                      }));
+    }
   },
 
   selectPlain: function(e) {
@@ -86,6 +91,8 @@ var DownloadPopup = React.createClass({
 
     var licenseText = licenseTextTemplate[ plainSelected ? 'plain' : 'html' ];
 
+    var dlRec = this.props.file || upload;
+
     return (
         <div className="row download-popup" ref="download-content">
           <div className="col-md-5">
@@ -106,7 +113,7 @@ var DownloadPopup = React.createClass({
           <div className="col-md-6">
             <ul className="actions actions-centered">
               <li>
-                <a className="btn btn-info btn-lg" href={upload.mediaURL} download><Glyph icon="cloud-download" x2 left/>{" Download "}<small>{upload.downloadSize}</small></a>
+                <a className="btn btn-info btn-lg" href={dlRec.mediaURL} download><Glyph icon="cloud-download" x2 left/>{" Download "}<small>{dlRec.downloadSize}</small></a>
               </li>
               <li className="license-badge">
                 <a href={upload.licenseURL}><img src={upload.licenseLogoURL} /></a> <LicenseInfoLink onShow={this.showLicense} />
