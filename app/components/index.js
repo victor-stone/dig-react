@@ -19,6 +19,7 @@ module.exports = {
   PellsHeader: require('./PellsHeader'),
   Playlist: require('./Playlist'),
   QueryOptions: require('./QueryOptions'),
+  RemixQueryOptions: require('./RemixQueryOptions'),
   SearchBox: require('./SearchBox'),
   SharePopup: require('./SharePopup'),
   TitleSetter: require('./TitleSetter'),

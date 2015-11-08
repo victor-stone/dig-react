@@ -16,6 +16,14 @@
     "name": "Victor Stone",
     "email": "assoverteakettle.org@gmail.com"
   },
+  "browser": {
+    "react": "./react-shim.js",
+    "react-dom": "./react-dom-shim.js"
+  },
+    "browserify-shim": {
+        "react": "global:React",
+        "react-dom": "global:ReactDOM"
+    },
   "contributors": [
     {
       "name": "Alex Goodwin"

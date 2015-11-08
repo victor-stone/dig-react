@@ -4,22 +4,26 @@ var MAGIC_SORT_DIGRANK = '280';
 module.exports = {
 
   default: {  
-    limit: 10,
+    limit:   10,
     digrank: MAGIC_SORT_DIGRANK,
-    oneof: 'remix,extended_mix',
+    reqtags: 'remix',
   },
 
   pells: {
-    limit: 10,
-    lic: 'all',
-    offset: 0,
+    limit:    10,
+    lic:     'all',
+    offset:  0,
     reqtags: 'acappella',
-    filter: 'featured'
+    filter:  'featured'
   },
   
   instrumental: {
     reqtags: 'instrumental,-vocals,-male_vocals,-female_vocals',
   },   
+
+  latest: {
+    digrank: '-1',
+  },
 
   recent: {
     digrank: '10000',
@@ -34,10 +38,9 @@ module.exports = {
   },
 
   games: {
-    tags: 'loops,techno',
+    tags:  'loops,techno',
     oneof: 'experimental,dubstep,electronica',
-    reqtags: 'remix',
-    type: 'any'  
+    type:  'any'  
   },
 
   film: {

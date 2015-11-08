@@ -1,11 +1,3 @@
-.pell-browser ul.pagination li a {
-  color: white;
-}
-
-.pell-browser ul.pagination li.disabled a {
-  color: #999;
-} 
-
 .navbar-brand img {
   padding-left: 10px;
   padding-right: 10px;
@@ -116,23 +108,36 @@
 }
 
 
-.pell-browser .paging-container {
+.pell-paging .paging-container {
   float: right;
   padding: 0px;
 }
 
-.pell-browser .paging ul {
+.pell-paging ul.pagination li a {
+  color: #444;
+}
+
+.pell-paging ul.pagination li.disabled a {
+  color: #999;
+} 
+
+.pell-paging .paging {
+  position: relative;
+  top: 0px;
+  
+  background-color: white;
+  border: 0px;
+}
+
+.pell-paging .paging ul {
   margin: 0px;
   font-size: 10px;
 }
 
-.pell-browser .paging div {
-  display: none;
-}
-
-.pell-browser .pell-browser .nav-tabs {
-  font-size: 16px;
-  font-weight: bold;
+.pell-paging .paging div {
+  color: #444;
+  text-align: left;
+  padding-left: 15%;
 }
 
 .pell-browser .nav-tabs .badge {
@@ -271,13 +276,6 @@ article.audio-player {
   text-shadow: 2px 2px black;
 }
 
-.pell-browser .paging {
-  position: relative;
-  top: 0px;
-  float:right;
-  background-color: white;
-  border: 0px;
-}
 .pell-detail {
   background-color: white;
   border: 2px solid #aaa;
@@ -285,6 +283,7 @@ article.audio-player {
   box-shadow: 9px 9px #eee;
   padding: 0px;
 }
+
 .pell-detail > div {
   margin: 0px;
 }

@@ -102,6 +102,36 @@ var oassign = Object.assign || function (target,...sources)
   return target; 
 };
 
+function mergeParams( oldp, ...newPs ) {
+  var target = oassign( {}, oldp );
+  var tagFields = [ 'tags', 'reqtags', 'oneof' ];
+  for( var i = 0; i < newPs.length; i++ ) {
+    var newp = newPs[i];
+    for( var k in newp ) {
+      var isRemoveParam  = k.match(/^--(.*)/);
+      if( isRemoveParam ) {
+        var realParamName = isRemoveParam[1];
+        if( tagFields.contains(realParamName) ) {
+          if( realParamName in target ) {
+            target[realParamName] = (new TagString(target[realParamName])).remove(newp[k]).toString();
+          }
+        }
+      } else {
+        if( tagFields.contains(k) ) {
+          if( target[k] ) {
+            target[k] = (new TagString(target[k])).add( newp[k]).toString();
+          } else {
+            target[k] = newp[k];
+          }
+        } else {
+          target[k] = newp[k];
+        }
+      }
+    }
+  }
+  return target;
+}
+
 // cribbed from '_'
 var debounce = function(func, wait, immediate) {
   var timeout, args, context, timestamp, result;
@@ -142,6 +172,7 @@ var debounce = function(func, wait, immediate) {
 module.exports = {
   commaize,
   oassign,
+  mergeParams,
   dasherize,
   decamlize,
   trim,

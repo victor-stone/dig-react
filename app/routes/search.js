@@ -2,7 +2,7 @@ import React from 'react';
 import rsvp  from 'rsvp';
 
 import { underscore, 
-            oassign } from '../unicorns';
+            mergeParams } from '../unicorns';
 
 import qc from '../models/query-configs';
 
@@ -117,7 +117,7 @@ function didYouMean( text )
 search.title = 'Search';
 
 search.store = function( params, queryParams ) {
-  var qparams = oassign( { search_type: 'all' }, qc.default, queryParams );
+  var qparams = mergeParams( { search_type: 'all' }, qc.default, queryParams );
 
   function makePromise() {
     var modelRequest = {

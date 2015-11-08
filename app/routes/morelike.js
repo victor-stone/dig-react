@@ -1,6 +1,6 @@
 import React            from 'react';
 import { FeaturedPage } from '../components';
-import { oassign }      from '../unicorns';
+import { mergeParams }  from '../unicorns';
 import qc               from '../models/query-configs';
 
 import TagStore         from '../stores/tags';
@@ -53,7 +53,7 @@ morelike.store = function(params,queryParams) {
                 type: 'any'
               };
 
-      var qparams = oassign( {}, qc.default, p, queryParams );
+      var qparams = mergeParams( {}, qc.default, p, queryParams );
 
       return playlist.playlist(qparams);
 

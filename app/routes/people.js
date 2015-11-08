@@ -1,7 +1,7 @@
 'use strict';
 
 import React            from 'react';
-import { oassign }      from '../unicorns';
+import { mergeParams }  from '../unicorns';
 import { ExternalLink } from '../components/ActionButtons';
 import qc               from '../models/query-configs';
 
@@ -55,7 +55,7 @@ people.store = function(params,queryParams) {
   
     people.title = 'People';
 
-    var qparams = oassign( {}, qc.default, { u: params.userid }, queryParams );
+    var qparams = mergeParams( {}, qc.default, { u: params.userid }, queryParams );
 
     var retStore = null;
 

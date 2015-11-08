@@ -3,7 +3,7 @@ import qc            from '../models/query-configs';
 import PlaylistStore from '../stores/playlist';
 import TagStore      from '../stores/tags';
 
-import { oassign,
+import { mergeParams,
          TagString } from '../unicorns';
 
 import { Glyph, 
@@ -433,7 +433,7 @@ dig.title = 'Dig Deep';
 dig.path  = '/dig';
 
 dig.store = function(params,queryParams) {
-  var qparams = oassign( {}, qc.default, { type: 'all' }, queryParams );
+  var qparams = mergeParams( {}, qc.default, { type: 'all' }, queryParams );
   return PlaylistStore.storeFromQuery(qparams);
 };
 

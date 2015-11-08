@@ -51,7 +51,6 @@ function build() {
   var commonBuilders = [ 
         bundleAppCSSFiles,
         publishAppPublicFiles,
-        publishServerLibrary,
         bundleAppJS
       ];  
 
@@ -67,6 +66,7 @@ function build() {
     lintSource()
       .then( () => mkdirs() )
       .then( () => generateComponentIndex() )
+      .then( () => publishServerLibrary() )
       .then( () => makePromises( commonBuilders ) )
       .then( () => makePromises( allBuilders ) )
       .then( () => minifyDist() )
@@ -79,6 +79,7 @@ function build() {
 
     lintSource()
       .then( () => generateComponentIndex() )
+      .then( () => publishServerLibrary() )
       .then( () => makePromises( commonBuilders ) )
       .then( () => clog('build done') )
       .catch( err );    
@@ -220,7 +221,9 @@ function bundleAppJS() {
   var dir = WEB_DIR;
   var ent = _compileTemplate('browser');
   var bnd = `${dir}js/${app}.js`;
-  var cmd = `browserify app/**/*.js -e ${ent} -t babelify --noparse=http -u http -u stream-http ${fp} -o ${bnd}`;
+  // some magic in package.json in the
+  // "browserify-shim" section
+  var cmd = `browserify -t babelify -t browserify-shim --noparse=http  -x react -x react-dom -u http -u stream-http ${fp} -o ${bnd} ${ent} `;
 
   clog('creating bundle',bnd);
   log(`spawning browser(ify) ${cmd}`);
@@ -236,14 +239,16 @@ function bundleVendorJSFiles() {
     dev: [
         'node_modules/jquery/dist/jquery.js',
         'node_modules/bootstrap/dist/js/bootstrap.js',
-        'node_modules/soundmanager2/script/soundmanager2-nodebug.js'
-        //'node_modules/react/dist/react.js'
+        'node_modules/soundmanager2/script/soundmanager2-nodebug.js',
+        'node_modules/react/dist/react.js',
+        'node_modules/react-dom/dist/react-dom.js'
         ],
     prod: [
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/bootstrap/dist/js/bootstrap.min.js',
-        'node_modules/soundmanager2/script/soundmanager2-nodebug-jsmin.js'
-        //'node_modules/react/dist/react.min.js'
+        'node_modules/soundmanager2/script/soundmanager2-nodebug-jsmin.js',
+        'node_modules/react/dist/react.min.js',
+        'node_modules/react-dom/dist/react-dom.min.js'
     ]
   };
   return bundleVendorFiles(vendorJSSources[MODE],'js');
@@ -292,7 +297,7 @@ function publishDir(files,rootd) {
 function bundleVendorFiles(arr,outext) {
   var dir = WEB_DIR + outext;
   mkdir(dir);
-  return bundleFiles(arr, dir + '/vendor.' + outext, /\/jquery\//);
+  return bundleFiles(arr, dir + '/vendor.' + outext, /\/(jquery|react)\//);
 }
 
 function bundleAppFiles(arr,outext) {

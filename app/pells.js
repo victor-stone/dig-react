@@ -18,8 +18,8 @@ env.Footer = DigFooter;
 qc.default = qc.pells;
 
 var rewriteRules = [
+  { regex: /^\/files\/([^\/]+)\/([^\/]+)/, now: '/pells?ids=$2&artist=$1' },
 ];
-
 router.addRoutes( routes, rewriteRules );
 
 module.exports = App;

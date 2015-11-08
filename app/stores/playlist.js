@@ -4,35 +4,7 @@ import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
 
 import { oassign,
-         TagString } from '../unicorns';
-
-
-function mergeParams( oldp, newp ) {
-  var target = oassign( {}, oldp );
-  var tagFields = [ 'tags', 'reqtags', 'oneof' ];
-  for( var k in newp ) {
-    var isRemoveParam  = k.match(/^--(.*)/);
-    if( isRemoveParam ) {
-      var realParamName = isRemoveParam[1];
-      if( tagFields.contains(realParamName) ) {
-        if( realParamName in target ) {
-          target[realParamName] = (new TagString(target[realParamName])).remove(newp[k]).toString();
-        }
-      }
-    } else {
-      if( tagFields.contains(k) ) {
-        if( target[k] ) {
-          target[k] = (new TagString(target[k])).add( newp[k]).toString();
-        } else {
-          target[k] = newp[k];
-        }
-      } else {
-        target[k] = newp[k];
-      }
-    }
-  }
-  return target;
-}
+         mergeParams } from '../unicorns';
 
 class Playlist extends Query {
 

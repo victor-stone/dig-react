@@ -97,6 +97,11 @@ class ACappellas extends Query {
 
   acappellas(params) {
 
+    if( params.ids ) {
+      this.selected = params.ids;
+      delete params['ids'];
+    }
+
     var args = {
       lic:    params.lic,
       limit:  params.limit,

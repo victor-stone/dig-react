@@ -1,5 +1,5 @@
 import React            from 'react';
-import { oassign }      from '../unicorns';
+import { mergeParams }  from '../unicorns';
 import qc               from '../models/query-configs';
 import Acappellas       from '../stores/acappellas';
 import { Glyph,
@@ -8,25 +8,15 @@ import { Glyph,
 import { ExternalLink } from '../components/ActionButtons';
 import AudioPlayerService from '../services/audio-player';
 
+import PlaylistUpdater from '../mixins/playlist-updater';
+
 var PellTabs = React.createClass({
 
-  getInitialState: function() {
-    var totals = this.props.store.model.totals;
+  mixins: [PlaylistUpdater],
+
+  stateFromStore: function(store) {
+    var totals = store.model.totals;
     return { totals };
-  },
-
-  componentWillMount: function() {
-    this.props.store.on('playlist',this.onUpdate);
-  },
-
-  componentWillUnmount: function() {
-    this.props.store.removeListener('playlist',this.onUpdate);
-  },
-
-  onUpdate: function() {
-    var model = this.props.store.model;
-    var totals = model.totals;
-    this.setState( {totals} );
   },
 
   onFilter: function(filter) {
@@ -71,24 +61,12 @@ var PellTabs = React.createClass({
 
 var PellListing = React.createClass({
 
-  getInitialState: function() {
-    var playlist = this.props.store.model.playlist;
-    var artist   = this.props.store.model.artist;
+  mixins: [PlaylistUpdater],
+
+  stateFromStore: function(store) {
+    var playlist = store.model.playlist;
+    var artist   = store.model.artist;
     return { playlist, artist };
-  },
-
-  componentWillMount: function() {
-    this.props.store.on('playlist',this.onUpdate);
-  },
-
-  componentWillUnmount: function() {
-    this.props.store.removeListener('playlist',this.onUpdate);
-  },
-
-  onUpdate: function() {
-    var playlist = this.props.store.model.playlist;
-    var artist   = this.props.store.model.artist;
-    this.setState( {playlist,artist} );
   },
 
   setArtist: function(artist) {
@@ -141,24 +119,14 @@ var PellListing = React.createClass({
     }
 });
 
+
 var PellHeader = React.createClass({
 
-  getInitialState: function() {
-    var artist = this.props.store.model.artist;
-    return { artist };
-  },
+  mixins: [PlaylistUpdater],
 
-  componentWillMount: function() {
-    this.props.store.on('playlist',this.onUpdate);
-  },
-
-  componentWillUnmount: function() {
-    this.props.store.removeListener('playlist',this.onUpdate);
-  },
-
-  onUpdate: function() {
-    var artist = this.props.store.model.artist;
-    this.setState( {artist} );
+  stateFromStore: function(store) {
+    var artist = store.model.artist;
+    return { artist };    
   },
 
   clearArtist: function(e) {
@@ -229,12 +197,14 @@ var pells = React.createClass({
         <div className="gear">{"filter gadget here"}</div>
         <PellHeader store={store} />
         <div className="row">
-          <div className="col-md-8 col-md-offset-1 pell-browser">
+          <div className="col-md-2 pell-paging">
+            <Paging store={store} disableBumping />
+          </div>
+          <div className="col-md-7 pell-browser">
             <PellTabs store={store} />
             <div className="tab-content">
               <PellListing store={store} />
             </div>
-            <Paging store={store} disableBumping />
           </div>
           <div className="col-md-3 pell-detail">
             <PellDetail store={store} />
@@ -251,7 +221,7 @@ pells.title = 'A Cappella Browser';
 pells.path = '/pells';
 
 pells.store = function(params,queryParams) {
-  var qparams = oassign( {}, qc.pells, queryParams );
+  var qparams = mergeParams( {}, qc.pells, queryParams );
   return Acappellas.storeFromQuery(qparams);
 };
 

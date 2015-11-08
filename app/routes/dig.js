@@ -7,6 +7,7 @@ module.exports = {
   free: require('./free'),
   games: require('./games'),
   index: require('./dig-index'),
+  latest: require('./latest'),
   licenses: require('./licenses'),
   morelike: require('./morelike'),
   nowplaying: require('./nowplaying'),

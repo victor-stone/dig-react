@@ -2,7 +2,7 @@
 
 import React            from 'react';
 import { FeaturedPage } from '../components';
-import { oassign }      from '../unicorns';
+import { mergeParams }  from '../unicorns';
 import qc               from '../models/query-configs';
 import Playlist         from '../stores/playlist';
 
@@ -19,7 +19,7 @@ var ccplus = React.createClass({
 ccplus.title = 'Music Available for Royalty-Free License';
 
 ccplus.store = function(params,queryParams) {
-  var qparams = oassign( {}, qc.default, { lic: 'ccplus' }, queryParams  );
+  var qparams = mergeParams( {}, qc.default, { lic: 'ccplus' }, queryParams  );
   return Playlist.storeFromQuery(qparams);
 };
 
