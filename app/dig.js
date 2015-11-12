@@ -14,7 +14,7 @@ env.Header          = DigHeader;
 env.Footer          = DigFooter;
 env.AppQueryOptions = RemixQueryOptions;
 
-env.bannerTopic = Topics.digBanner;
+env.bannerTopic = Topics.namedTopics.digBanner;
 
 var rewriteRules = [
   { regex: new RegExp(/^\/free_music/),                now: '/free' },
@@ -22,7 +22,7 @@ var rewriteRules = [
   { regex: new RegExp(/^\/podcast_music/),             now: '/free'},
   { regex: new RegExp(/^\/hot/),                       now: '/edpicks'},
   { regex: new RegExp(/^\/top/),                       now: '/edpicks'},
-  { regex: new RegExp(/^\/dig\?user=([0-9a-zA-Z]+)/),  now: '/people/$1'},
+  { regex: new RegExp(/^\/dig\?u=([0-9a-zA-Z]+)/),     now: '/people/$1'},
 ];
 
 router.addRoutes( routes, rewriteRules );

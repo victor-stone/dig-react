@@ -37,10 +37,12 @@ class Router extends Eventer
   }
   
   runRewrites(url) {
-    for( var i = 0; i < this.rewrites.length; i++) {
-      var rule = this.rewrites[i];
-      if( url.match(rule.regex) !== null ) {
-        return url.replace(rule.regex,rule.now);
+    if( url ) {
+      for( var i = 0; i < this.rewrites.length; i++) {
+        var rule = this.rewrites[i];
+        if( url.match(rule.regex) !== null ) {
+          return url.replace(rule.regex,rule.now);
+        }
       }
     }
     return url;
@@ -67,11 +69,13 @@ class Router extends Eventer
 
   /* in browser methods */
   navigateTo(url,stateObj) {
+    url = this.runRewrites(url);
     this.setBrowserAddressBar(url,stateObj);
     this.updateUrl();
   }
 
   setBrowserAddressBar(url,stateObj) {
+    url = this.runRewrites(url);
     if( url ) {
       window.history.pushState(stateObj || null,null,url);
       if( window.ga ) {

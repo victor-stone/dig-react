@@ -28,13 +28,15 @@ const SearchBox = React.createClass({
 
   render: function() {
 
+    var pholder = this.props.placeholder || 'genre, instrument, etc.';
+    
     return (
       <div className="form-group input-group input-group-sm">
           <input
             type="text"
             className="form-control"
             value={this.state.value}
-            placeholder="genre, instrument, etc."
+            placeholder={pholder}
             onChange={this.handleChange}
             onKeyDown={this.onKey}
             ref="input"

@@ -6,6 +6,9 @@ import { oassign, TagString } from '../unicorns';
 var QueryParamTagsRotate = oassign( {}, QueryParamTracker, {
 
   getInitialState: function() {
+    if( this.paramInitHandledEleseWhere ) {
+      return {};
+    }
     var qp          = this.props.store.model.queryParams;
     var state       = { tag: TagString.filter(qp[this.paramName],this.tagFilter).toString() };
     this.defaultTag = state.tag;

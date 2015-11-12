@@ -14,7 +14,7 @@ const PellsHeader = React.createClass({
     if( !router ) { // avoid require() recursion
       router = require('../services/router');
     }
-    router.navigateTo( '/search?searchp=' + text );
+    router.navigateTo( '/pells?searchp=' + text );
   },
 
   render: function() {
@@ -28,7 +28,7 @@ const PellsHeader = React.createClass({
                 <li><LoadingGlyph /></li>    
               </ul>
               <div role="search" className="navbar-form navbar-right">
-                <SearchBox submitSearch={this.submitSearch} />
+                <SearchBox submitSearch={this.submitSearch} placeholder="genre, title, etc." />
               </div>      
               <ul className="nav navbar-nav navbar-right">
                 <li>

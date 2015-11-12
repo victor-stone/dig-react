@@ -22,7 +22,7 @@ class ACappellas extends UploadList {
   }
 
   set selected(id) {
-    
+
     var uploadQ = {
       ids:      id,
       f:        'json',
@@ -35,6 +35,12 @@ class ACappellas extends UploadList {
             this._selected = pell;
             this.emit('selected',pell);
           });
+
+    // hack...
+    if( 'selected' in this.orgParams ) {
+      delete this.orgParams['selected'];
+    }
+    
   }
 
   /* protected */
@@ -45,6 +51,9 @@ class ACappellas extends UploadList {
   }
 
   promiseHash( hash, queryParams ) {
+    if( queryParams.selected ) {
+      this.selected = queryParams.selected;
+    }
     hash.artist = queryParams.u ? this.findUser(queryParams.u) : null;
     hash.totals = this._getTotals(queryParams);
     return hash;

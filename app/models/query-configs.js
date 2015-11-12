@@ -13,10 +13,14 @@ module.exports = {
   pells: {
     limit:   10,
     lic:     'all',
-    reqtags: 'acappella,featured',
+    reqtags: 'acappella',
     offset:  0,
   },
   
+  pellsFeatured: {
+    reqtags: 'acappella,featured',
+  },
+
   pellsCount: {
     reqtags: 'acappella'
   },

@@ -25,8 +25,9 @@ class Topics extends Query {
 
 }
 
-Topics.nameMap = {
-  digBanner: 223608
+Topics.namedTopics = {
+  digBanner: 223608,
+  pellsBanner: 225005
 };
 
 module.exports = Topics;

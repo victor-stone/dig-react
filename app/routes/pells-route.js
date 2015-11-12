@@ -1,12 +1,16 @@
 import React            from 'react';
-import { mergeParams }  from '../unicorns';
 import qc               from '../models/query-configs';
 import Acappellas       from '../stores/acappellas';
+import Query            from '../stores/query';
+
 import {  Glyph,
           DownloadPopup,
           QueryOptions,
-          Paging  }     from '../components';
-import { ExternalLink } from '../components/ActionButtons';
+          Link,
+          Paging  }       from '../components';
+import { ExternalLink }   from '../components/ActionButtons';
+import { mergeParams,
+         TagString }      from '../unicorns';
 import AudioPlayerService from '../services/audio-player';
 
 import { PlaylistUpdater, 
@@ -23,18 +27,22 @@ var PellTabs = React.createClass({
   paramName: 'reqtags',
   tagFilter: /^(featured|spoken_word|rap|melody)$/,
   paramIsClean: true,
+  paramInitHandledEleseWhere: true,
 
   stateFromStore: function(store) {
+    var tag;
     var totals = store.model.totals;
     if( this.state && this.state.tag && !totals[this.state.tag] ) {
-      for( var tag in totals ) {
+      for( tag in totals ) {
         if( totals[tag] ) {
           setTimeout( () => this.setStateAndPerform( {tag} ), NOMINAL_TIMEOUT );
           break;
         }
       }
     }
-    return { totals };
+    var tags = store.model.queryParams.reqtags;
+    tag = TagString.filter(tags,this.tagFilter).toString();
+    return { totals, tag };
   },
 
   onFilter: function(filter) {
@@ -84,11 +92,12 @@ var PellListing = React.createClass({
   paramName:         'u',
   defaultParamValue: '',
   paramIsClean:      true,
+  paramInitHandledEleseWhere: true,
 
   stateFromStore: function(store) {
     var playlist = store.model.playlist;
     var artist   = store.model.artist;
-    return { playlist, artist };
+    return { playlist, artist, u: artist && artist.id };
   },
 
   setArtist: function(artist) {
@@ -116,20 +125,22 @@ var PellListing = React.createClass({
 
     function pellLine(pell) {
 
-      var args = [ 'li', { onClick: this.selectLine(pell), key: pell.id } ];
+      var args = [ 'li', 
+                { className: 'pell', key: pell.id } ];
+
       if( pell.bpm ) {
         var e = React.createElement('span', { className: 'bpm' }, 'bpm: ', pell.bpm);
         args.push(e); 
       }
 
-      var e1 = React.createElement('span', { className: 'title' }, pell.name);
+      var e1 = React.createElement('span', { className: 'title',onClick: this.selectLine(pell) }, pell.name);
       args.push(e1);
 
       if( !artist ) {
-        var e2 = React.createElement('a', 
-                                    { href: '#', onClick: this.setArtist(pell.artist.id) }, 
+        var e2 = React.createElement(Link, 
+                                    { href: '/pells?u=' + pell.artist.id }, 
                                       pell.artist.name);
-        var e3 = React.createElement('span', null, e2 );
+        var e3 = React.createElement('span', { className: 'artist' }, e2 );
         args.push(e3);
       }
 
@@ -144,29 +155,68 @@ var PellListing = React.createClass({
     }
 });
 
+var UserSearch = React.createClass({
+
+  getInitialState: function() {
+    return { users: null };
+  },
+
+  componentWillMount: function() {
+    this.doSearch(this.props.searchTerm);
+  },
+
+  componentWillReceiveProps( nextProps ) {
+    this.doSearch( nextProps.searchTerm );
+  },
+
+  doSearch: function(text) {
+    var query = new Query();
+    query.searchUsers({
+      limit: 6, uploadmin: 1, searchp: text
+    }).then( users => this.setState({users}));
+  },
+
+  render: function() {
+
+    var users = this.state.users || [];
+    var cls   = 'user-search-results' + (users.length ? '' : ' hidden');
+
+    return (
+        <div className={cls}>
+          {users.map( u => <Link key={u.id} href={'/pells?u=' + u.id} ><Glyph icon="user"/> {u.name}</Link> )}
+        </div>
+      );
+  }
+
+});
 
 var PellHeader = React.createClass({
 
   mixins: [PlaylistUpdater],
 
   stateFromStore: function(store) {
-    return { artist: store.model.artist };    
-  },
 
-  clearArtist: function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    this.props.store.requestPeformance( 'u', null );
+    return { artist: store.model.artist,
+             searchTerm: store.model.queryParams.searchp };    
   },
 
   render: function() {
-    var artist = this.state.artist;
+    var searchTerm = this.state.searchTerm;    
+    var artist     = searchTerm ? null : this.state.artist;
+
+    var content = null;
+
+    if( searchTerm ) {
+      content = <div><h2><Link href="/pells" ><Glyph icon="chevron-circle-left" />{" clear search"}</Link> <small><Glyph icon="search" />{" search "}</small>{searchTerm}</h2><UserSearch searchTerm={searchTerm} /></div>;
+    } else if( artist ) {
+      content = <h2><Link href="/pells" ><Glyph icon="chevron-circle-left" />{" everybody"}</Link> <img src={artist.avatarURL} />{artist.name}</h2>;
+    } else {
+      content = <h1><Glyph icon="microphone" />{" Pells"}</h1>;
+    }
+
     return (
         <div className="page-header center-text">
-         {artist          
-          ? <h2><a href="#" onClick={this.clearArtist} ><Glyph icon="chevron-circle-left" />{" everybody"}</a> <img src={artist.avatarURL} />{artist.name}</h2>
-          : <h1><Glyph icon="microphone" />{" Pells"}</h1>
-        }
+        {content}
         </div>
       );
   }
@@ -175,10 +225,7 @@ var PellHeader = React.createClass({
 
 var PellDetail = React.createClass({
 
-  getInitialState: function() {
-    var model = this.props.store.selected;
-    return { model };
-  },
+  mixins: [PlaylistUpdater],
 
   componentWillMount: function() {
     this.props.store.on('selected',this.onSelected);
@@ -188,19 +235,21 @@ var PellDetail = React.createClass({
     this.props.store.removeListener('selected',this.onSelected);
   },
 
+  stateFromStore: function(store) {
+    return { model: store.selected };
+  },
+
   onSelected: function(model) {
     this.setState( { model } );
   },
 
   render: function() {
 
-    var model  = this.state.model;
-    if( !model ) {
-      return null;
-    }
+    var model  = this.state.model || { files: [] };
+    var cls    = 'pell-detail' + (this.state.model ? '' : ' hidden');
 
     return (
-        <div className="pell-detail">
+        <div className={cls}>
           <h3>{model.name}</h3>
           <ul className="download-list">
             {model.files.map( file => {
@@ -248,7 +297,8 @@ pells.title = 'A Cappella Browser';
 pells.path = '/pells';
 
 pells.store = function(params,queryParams) {
-  var qparams = mergeParams( {}, qc.pells, queryParams );
+  var featured = ('searchp' in queryParams) || ('u' in queryParams) ? {} : qc.pellsFeatured;
+  var qparams = mergeParams( {}, qc.pells, queryParams, featured );
   return Acappellas.storeFromQuery(qparams);
 };
 
