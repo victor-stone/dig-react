@@ -50,7 +50,7 @@ var index = React.createClass({
           <div className="col-md-4">
             <div className="panel">
               <div className="panel-heading">
-                <h1 className="panel-title">{"For Singers: Join Us!"}</h1>
+                <h1 className="panel-title">{"For Singers, Rappers, Poets: Join Us!"}</h1>
               </div>
               <div className="panel-body">
                 {"Create an account at ccMixter, start uploading and watch what happens!"}

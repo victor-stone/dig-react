@@ -4,29 +4,34 @@ import { oassign }       from '../unicorns';
 var QueryParamValue = oassign( {}, QueryParamTracker, {
 
   getInitialState: function() {
-    if( this.paramInitHandledEleseWhere ) {
+    if( this.queryParam.avoidInitConflict ) {
       return {};
     }
-    return this.getParamState(  this.props.store.model.queryParams[this.paramName] );
+    var name = this.queryParam.name;
+    return this.getParamState(  this.props.store.model.queryParams[name] );
   },
 
   getParamValue: function(queryParams) {
-    queryParams[this.paramName] = this.state[this.paramName];
+    var name = this.queryParam.name;
+    queryParams[name] = this.state[name];
   },
 
   getParamIsDirty: function(toggle) {
-    toggle.isDirty = this.state[this.paramName] !== this.defaultParamValue;
+    var name = this.queryParam.name;
+    toggle.isDirty = this.state[name] !== this.queryParam.initValue;
   },
 
   setParamDefault: function(queryParams) {
-    var state = this.getParamState(this.defaultParamValue);
-    queryParams[this.paramName] = state[this.paramName];
+    var name = this.queryParam.name;
+    var state = this.getParamState(this.queryParam.initValue);
+    queryParams[name] = state[name];
     this.setState( state );
   },
 
   getParamState: function( withValue ) {
+    var name = this.queryParam.name;
     var state = {};
-    state[this.paramName] = withValue;
+    state[name] = withValue;
     return state;
   },
 

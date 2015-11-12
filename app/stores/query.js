@@ -14,11 +14,11 @@ class Query extends Eventer
   }
 
   query(params) {
-    return this.adapter.query(params);
+    return this.adapter.query(this._clean(params));
   }
   
   queryOne(params) {
-    return this.adapter.queryOne(params);
+    return this.adapter.queryOne(this._clean(params));
   }
   
   findUser(id) {
@@ -55,6 +55,16 @@ class Query extends Eventer
   transaction(promise) {
     this.adapter._inc();
     return promise.finally( () => this.adapter._dec() );
+  }
+
+  _clean(p) {
+    var t = {};
+    for( var k in p ) {
+      if( !(typeof p[k] === 'undefined' || (typeof p[k] === 'string' && p[k].length === 0)) ) {
+        t[k] = p[k];
+      }
+    }
+    return t;
   }
 }
 

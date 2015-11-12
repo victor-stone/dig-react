@@ -24,10 +24,6 @@ class UploadList extends Query {
     return isDirty.isDirty;
   }
 
-  requestPeformance( key, value ) {
-    this.emit( 'query-request-' + key, value );
-  }
-
   getModel(queryParams) {
     if( !this.orgParams ) {
       this.orgParams = oassign( {},  queryParams);

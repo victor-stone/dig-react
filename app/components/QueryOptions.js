@@ -2,11 +2,11 @@ import React     from 'react';
 import Glyph     from './Glyph';
 import Link      from './Link';
 import qc        from '../models/query-configs';
+import env       from '../services/env';
 
-import { oassign }       from '../unicorns';
-import PlaylistUpdater   from '../mixins/playlist-updater';
-import QueryParamEnum    from '../mixins/query-param-enum';
-import env               from '../services/env';
+import { oassign }        from '../unicorns';
+import { PlaylistUpdater,
+         QueryParamEnum } from '../mixins';
 
 var LicenseInfoPopup = React.createClass({
 
@@ -25,14 +25,16 @@ const LicenseFilter = React.createClass({
 
   mixins: [QueryParamEnum],
 
-  paramName: 'lic',
-  defaultParamValue: qc.default.lic,
+  queryParam: {
+    name: 'lic',
+    initValue: qc.default.lic,
+  },
 
   render: function() {
 
     return (
       <div>
-        <select id="lic" ref={this.paramName} value={this.state.lic} onChange={this.performQuery} className="form-control" >
+        <select id="lic" ref={this.queryParam.name} value={this.state[this.queryParam.name]} onChange={this.performQuery} className="form-control" >
           <option value="all">{"all licenses"}</option>
           <option value="open">{"free for commercial use"}</option>
           <option value="ccplus">{"royalty free license"}</option>
@@ -47,14 +49,16 @@ const LimitFilter = React.createClass({
 
   mixins: [QueryParamEnum],
 
-  paramName: 'limit',
-  defaultParamValue: qc.default.limit,
-  
+  queryParam: {
+    name: 'limit',
+    initValue: qc.default.limit,
+  },
+
   render: function() {
 
     return (
         <label className="form-control">{"display "}
-          <select id="limit" ref={this.paramName} value={this.state.limit} onChange={this.performQuery} className="form-control" >
+          <select id="limit" ref={this.queryParam.name} value={this.state[this.queryParam.name]} onChange={this.performQuery} className="form-control" >
             <option>{"10"}</option>
             <option>{"20"}</option>
             <option>{"40"}</option>
@@ -69,12 +73,14 @@ const SortFilter = React.createClass({
 
   mixins: [QueryParamEnum],
 
-  paramName: 'digrank',
-  defaultParamValue: qc.magicSort.digrank,
+  queryParam: {
+    name: 'digrank',
+    initValue: qc.default.digrank,
+  },
   
   render: function() {
     return (
-        <select id="sort" ref={this.paramName} value={this.state.digrank} onChange={this.performQuery} className="form-control" >
+        <select id="sort" ref={this.queryParam.name} value={this.state[this.queryParam.name]} onChange={this.performQuery} className="form-control" >
           <option value={qc.magicSort.digrank}>{"magic sort"}</option>
           <option value={qc.recent.digrank}>{"recent"}</option>
           <option value={qc.alltime.digrank}>{"all time"}</option>

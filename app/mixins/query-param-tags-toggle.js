@@ -7,9 +7,13 @@ import { oassign,
 var QueryParamTagsToggle = oassign( {}, QueryParamTracker, {
 
   getInitialState: function() {
+    if( this.queryParam.avoidInitConflict ) {
+      return {};
+    }
+    var name           = this.queryParam.name;
     var qp             = this.props.store.model.queryParams;
-    var tags           = qp[this.paramName];
-    var state          = { toggle: TagString.contains(tags,this.tagsValue) };
+    var tags           = qp[name];
+    var state          = { toggle: TagString.contains(tags,this.queryParam.model) };
     this.defaultToggle = state.toggle;
     return state ;    
   },
@@ -29,14 +33,15 @@ var QueryParamTagsToggle = oassign( {}, QueryParamTracker, {
   },
 
   _assignToQueryParams: function(queryParams,toggle) {
-    var tags = new TagString(queryParams[this.paramName]);
+    var name = this.queryParam.name;
+    var tags = new TagString(queryParams[name]);
+    var val  = this.queryParam.model;
     if( toggle ) {
-      tags = tags.add(this.tagsValue);
+      tags = tags.add(val);
     } else {
-      tags = tags.remove(this.tagsValue);
+      tags = tags.remove(val);
     }
-    queryParams[this.paramName] = tags.toString();
-
+    queryParams[name] = tags.toString();
   },
 
   performQuery: function() {

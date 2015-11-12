@@ -6,11 +6,13 @@ import { oassign, TagString } from '../unicorns';
 var QueryParamTagsRotate = oassign( {}, QueryParamTracker, {
 
   getInitialState: function() {
-    if( this.paramInitHandledEleseWhere ) {
+    if( this.queryParam.avoidInitConflict ) {
       return {};
     }
+    var name        = this.queryParam.name;
+    var filter      = this.queryParam.filter;
     var qp          = this.props.store.model.queryParams;
-    var state       = { tag: TagString.filter(qp[this.paramName],this.tagFilter).toString() };
+    var state       = { tag: TagString.filter(qp[name],filter).toString() };
     this.defaultTag = state.tag;
     return state ;    
   },
@@ -33,11 +35,13 @@ var QueryParamTagsRotate = oassign( {}, QueryParamTracker, {
   },
   
   _assignToQueryParams(queryParams,tag) {
-    var tags = new TagString(queryParams[this.paramName]);
-    var previousTags = tags.filter(this.tagFilter);
+    var name         = this.queryParam.name;
+    var filter       = this.queryParam.filter;
+    var tags         = new TagString(queryParams[name]);
+    var previousTags = tags.filter(filter);
     tags.remove(previousTags);
     tags.add(tag);
-    queryParams[this.paramName] = tags.toString();
+    queryParams[name] = tags.toString();
   },
 
 });

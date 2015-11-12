@@ -12,9 +12,8 @@ import { Glyph,
          Playlist } from '../components';
 
 import {  QueryParamTagsRotate,
-/*          QueryRequestHandler, */
           PlaylistUpdater, 
-          QueryParamValue       } from '../mixins';
+          QueryParamToggle       } from '../mixins';
 
 const DEFAULT_COL_SIZE = 3;
 
@@ -149,35 +148,23 @@ const SelectedTag = React.createClass({
 
 const MatchAnyButton = React.createClass({
 
-  mixins: [QueryParamValue,PlaylistUpdater],
+  mixins: [QueryParamToggle,PlaylistUpdater],
 
-  paramName:         'type',
-  defaultParamValue: 'all',
-  paramIsClean:      true,
-  paramInitHandledEleseWhere: true,
-
-  onMatchAny: function() {    
-    var matchAny = !this.state.matchAny;
-    var type = matchAny ? 'any' : 'all';
-    this.setStateAndPerform( { type, matchAny } );
+  queryParam: {
+    name:     'type',
+    valueON:  'any',
+    valueOFF: 'all',
+    clean:    true,
+    avoidInitConflict: true
   },
 
   stateFromStore: function(store) {
     var qp = store.model.queryParams;
-    var type = qp['type'];
-    var matchAny = type === 'any';
-    return { type, matchAny };
+    return { toggle: qp[this.queryParam.name] === this.queryParam.valueON };
   },
-
-  /*
-  onQueryRequest: function(type) {
-    var matchAny = type === 'any';
-    this.respondWithState( { type, matchAny } );
-  },
-  */
 
   render: function() {
-    return (<label className="btn btn-primary btn-xs"><input onChange={this.onMatchAny} checked={this.state.matchAny} type="checkbox" />{" match any"}</label>);
+    return (<label className="btn btn-primary btn-xs"><input onChange={this.performQuery} checked={this.state.toggle} type="checkbox" />{" match any"}</label>);
   },
 });
 
@@ -311,30 +298,14 @@ const RemixTagSelectionSection = React.createClass({
 
 const NoTagHits = React.createClass({
 
-  getInitialState: function() {
-    var state   = this.getStateFromStore();
-    state.numTags = 0;
-    return state;
-  },
+  mixins: [PlaylistUpdater],
 
-  componentWillMount: function() {
-    this.props.store.on('playlist', this.onParamsChanged );
-  },
-
-  componentWillUnmount: function() {
-    this.props.store.removeListener('playlist', this.onParamsChanged );
-  },
-
-  onParamsChanged: function() {
-    this.setState( this.getStateFromStore() );
-  },
-
-  getStateFromStore: function() {
-    var store        = this.props.store;
+  stateFromStore: function(store) {
     var optionsDirty = store.paramsDirty();
     var showNoHits   = !store.model.total;
     var qp           = store.model.queryParams;
-    var showMatchAny = qp.type === 'all';
+    var numTags      = (new TagString(qp.tags)).getLength();
+    var showMatchAny = qp.type === 'all' && numTags > 1;
     return { optionsDirty, showNoHits, showMatchAny };
   },
 
@@ -395,12 +366,14 @@ var dig = React.createClass({
     this.state.tagStore.removeListener('selectedTags', this.onSelectedTags );
   },
 
-  paramName:    'tags',
-  tagFilter:    /---/,
-  paramIsClean: true,
-
+  queryParam: {
+    name: 'tags',
+    filter: /----/,
+    clean: true,
+  },
+  
   onSelectedTags: function(tag) {
-    this.tagFilter = this.previousTags ? makeRegexFromTags(this.previousTags) : /---/;
+    this.queryParam.filter = this.previousTags ? makeRegexFromTags(this.previousTags) : /---/;
     this.setStateAndPerform( {tag} );
     this.previousTags = tag; // this allows removal next time around
     this.defaultTag = tag;   // this prevents a 'reset' from wiping us out

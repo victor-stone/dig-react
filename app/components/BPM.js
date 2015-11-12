@@ -3,8 +3,8 @@ import React             from 'react';
 import { debounce,
          TagString }     from '../unicorns';
 
-import PlaylistUpdater      from '../mixins/playlist-updater';
-import QueryParamTagsRotate from '../mixins/query-param-tags-rotate';
+import { PlaylistUpdater,
+         QueryParamTagsRotate } from '../mixins';
 
 var TAG_FILTER = /^bpm_([0-9]{3})_([0-9]{3})$/;
 
@@ -56,10 +56,11 @@ const BPMSlider = React.createClass({
 
   componentDidMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      var noUiSlider = require('nouislider');
+      // var noUiSlider = require('nouislider');
+
       var slider = document.getElementById('bpmSlider');
 
-      noUiSlider.create(slider, {
+      window.noUiSlider.create(slider, {
         start: valueFromTag(this.state.tag),
         step: SLIDER_STEPS,
         connect: 'lower',
@@ -92,9 +93,11 @@ const BPMSlider = React.createClass({
     nus.destroy();
   },
 
-  tagFilter: TAG_FILTER,
-  paramName: 'tags',
-  defaultParamValue: '',
+  queryParam: {
+    filter: TAG_FILTER,
+    name: 'tags',
+    initValue: ''
+  },
 
   applyBpm: debounce( function(val) {
       var tag = tagFromValue(val);

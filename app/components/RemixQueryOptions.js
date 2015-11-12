@@ -5,16 +5,18 @@ import qc        from '../models/query-configs';
 import { LicenseFilter,
          LimitFilter,
          SortFilter,
-         ResetOptionsButton } from './QueryOptions';
-import { CloseButton }        from './ActionButtons';
-import QueryParamTagsToggle   from '../mixins/query-param-tag-toggle';
+         ResetOptionsButton }    from './QueryOptions';
+import { CloseButton }           from './ActionButtons';
+import { QueryParamTagsToggle }  from '../mixins';
 
 const InstrumentalOnlyFilter = React.createClass({
 
   mixins: [QueryParamTagsToggle],
 
-  paramName: 'reqtags',
-  tagsValue: qc.instrumental.reqtags,
+  queryParam: {
+    name: 'reqtags',
+    model: qc.instrumental.reqtags,
+  },
 
   render: function() {
     return (

@@ -15,7 +15,6 @@ import AudioPlayerService from '../services/audio-player';
 
 import { PlaylistUpdater, 
          QueryParamValue,
-         QueryRequestHandler,
          QueryParamTagsRotate } from '../mixins';
 
 const NOMINAL_TIMEOUT = 4;
@@ -24,10 +23,12 @@ var PellTabs = React.createClass({
 
   mixins: [PlaylistUpdater,QueryParamTagsRotate],
 
-  paramName: 'reqtags',
-  tagFilter: /^(featured|spoken_word|rap|melody)$/,
-  paramIsClean: true,
-  paramInitHandledEleseWhere: true,
+  queryParam: {
+    name: 'reqtags',
+    filter: /^(featured|spoken_word|rap|melody)$/,
+    clean: true,
+    avoidInitConflict: true
+  },
 
   stateFromStore: function(store) {
     var tag;
@@ -41,7 +42,7 @@ var PellTabs = React.createClass({
       }
     }
     var tags = store.model.queryParams.reqtags;
-    tag = TagString.filter(tags,this.tagFilter).toString();
+    tag = TagString.filter(tags,this.queryParam.filter).toString();
     return { totals, tag };
   },
 
@@ -87,29 +88,19 @@ var PellTabs = React.createClass({
 
 var PellListing = React.createClass({
 
-  mixins: [PlaylistUpdater,QueryParamValue,QueryRequestHandler],
+  mixins: [PlaylistUpdater,QueryParamValue],
 
-  paramName:         'u',
-  defaultParamValue: '',
-  paramIsClean:      true,
-  paramInitHandledEleseWhere: true,
+  queryParam: {
+    name: 'u',
+    initValue: '',
+    clean: true,
+    avoidInitConflict: true
+  },
 
   stateFromStore: function(store) {
     var playlist = store.model.playlist;
     var artist   = store.model.artist;
     return { playlist, artist, u: artist && artist.id };
-  },
-
-  setArtist: function(artist) {
-    return (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      this.performQuery(artist);
-    };
-  },
-
-  onQueryRequest: function(value) {
-    this.respondWithState( { u: value } );
   },
 
   selectLine: function(pell) {

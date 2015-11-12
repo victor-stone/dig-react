@@ -6,29 +6,37 @@ import { oassign }       from '../unicorns';
 var QueryParamEnum = oassign( {}, QueryParamTracker, {
 
   getInitialState: function() {
-    var qp = this.props.store.model.queryParams;
-    var state = { };
-    state[this.paramName] = qp[this.paramName] || this.defaultParamValue;
+    if( this.queryParam.avoidInitConflict ) {
+      return {};
+    }
+    var name    = this.queryParam.name;
+    var qp      = this.props.store.model.queryParams;
+    var state   = { };
+    state[name] = qp[name] || this.queryParam.initValue;
     return state ;    
   },
 
   getParamValue: function(queryParams) {
-    queryParams[this.paramName] = this.state[this.paramName];
+    var name = this.queryParam.name;
+    queryParams[name] = this.state[name];
   },
 
   getParamIsDirty: function(toggle) {
-    toggle.isDirty = this.state[this.paramName] !== this.defaultParamValue;
+    var name = this.queryParam.name;
+    toggle.isDirty = this.state[name] !== this.queryParam.initValue;
   },
 
   setParamDefault: function(queryParams) {
+    var name = this.queryParam.name;
     var state = {};
-    state[this.paramName] = queryParams[this.paramName] = this.defaultParamValue;
+    state[name] = queryParams[name] = this.queryParam.initValue;
     this.setState( state );
   },
 
   performQuery() {
+    var name = this.queryParam.name;
     var state = {};
-    state[this.paramName] = this.refs[this.paramName].value;
+    state[name] = this.refs[name].value;
     this.setStateAndPerform( state );
   },
 

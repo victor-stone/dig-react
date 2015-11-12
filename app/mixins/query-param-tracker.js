@@ -20,7 +20,8 @@ var QueryParamTracker = {
   },
 
   onParamsChanged: function() {
-    var state = this.getParamState(this.props.store.model.queryParams[this.paramName]);
+    var name = this.queryParam.name;
+    var state = this.getParamState(this.props.store.model.queryParams[name]);
     this.setState( state );
   },
 
@@ -28,7 +29,7 @@ var QueryParamTracker = {
     if( eventName === 'get') {
       this.getParamValue(value);
     } else if( eventName === 'is-dirty') {
-      if( !this.paramIsClean && !value.isDirty ) {
+      if( !this.queryParam.clean && !value.isDirty ) {
         this.getParamIsDirty(value);
       }
     } else if( eventName === 'set-default') {

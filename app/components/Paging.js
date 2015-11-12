@@ -1,8 +1,9 @@
 import React            from 'react';
 import Glyph            from './Glyph';
-import PlaylistUpdater  from '../mixins/playlist-updater';
-import BoundingMixin    from '../mixins/bounding-element';
-import QueryParamValue  from '../mixins/query-param-value';
+
+import { PlaylistUpdater,
+         BoundingElement,
+         QueryParamValue } from '../mixins';
 
 import { pagingStats, oassign } from '../unicorns';
 
@@ -54,14 +55,14 @@ var OffsetParamValue = oassign( {}, QueryParamValue, {
       // (unless it's us deliberately setting
       // the offet b/c the user is paging)
       //
-      queryParams.offset = this.settingOffset || 0;
-      this.settingOffset = 0;
+      queryParams.offset = this.userOffset || 0;
+      this.userOffset = 0;
     },
 });
 
 const Paging = React.createClass({
 
-  mixins: [BoundingMixin,PlaylistUpdater,OffsetParamValue],
+  mixins: [BoundingElement,PlaylistUpdater,OffsetParamValue],
 
   getDefaultProps: function() {
     return {
@@ -70,9 +71,11 @@ const Paging = React.createClass({
     };
   },
 
-  paramName:         'offset',
-  defaultParamValue: 0,
-  paramIsClean:      true,
+  queryParam: {
+    name: 'offset',
+    clean: true,
+    initValue: 0
+  },
 
   stateFromStore: function(store) {
     var model = store.model;
@@ -84,11 +87,11 @@ const Paging = React.createClass({
     };
   },
 
-  settingOffset: 0,
+  userOffset: 0,
 
   onNewOffset: function(offset) {
 
-    this.settingOffset = offset;
+    this.userOffset = offset;
     this.performQuery(offset);
 
     if( !router ) {
