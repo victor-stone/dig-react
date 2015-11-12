@@ -1,7 +1,7 @@
 /* global soundManager */
 import { oassign,
           debounce } from '../unicorns';
-import Eventer from './Eventer';
+import Eventer from './eventer';
 
 const NOT_FOUND         = -1;
 const EMIT_DELAY        = 50;
