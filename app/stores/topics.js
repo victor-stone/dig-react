@@ -1,10 +1,7 @@
-import Query from './query';
+import Query     from './query';
 import serialize from '../models/serialize';
-import ccmixter from '../models/ccmixter';
-
-var nameMap = {
-  banner: 223608
-};
+import ccmixter  from '../models/ccmixter';
+import rsvp      from 'rsvp';
 
 class Topics extends Query {
 
@@ -13,9 +10,10 @@ class Topics extends Query {
   }
 
   find(id) {
-    if( typeof id === 'string' ) {
-      id = nameMap[id];
+    if( !id ) {
+      return rsvp.resolve({});
     }
+
     var args = {
       f: 'json',
       dataview: 'topics',
@@ -26,5 +24,9 @@ class Topics extends Query {
   }
 
 }
+
+Topics.nameMap = {
+  digBanner: 223608
+};
 
 module.exports = Topics;

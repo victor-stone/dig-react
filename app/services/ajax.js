@@ -2,12 +2,14 @@
 
 var rsvp = require('rsvp');
 
+const MAX_ERROR_STR = 40;
+
 function resolveWithJSON(resolve, reject, url, supposedJSON) {
   try {
     resolve(JSON.parse(supposedJSON));
   } catch( e ) {
     if( supposedJSON.charAt(0) === '<' ) {
-      supposedJSON = supposedJSON.substr(0,40);                  
+      supposedJSON = supposedJSON.substr(0,MAX_ERROR_STR);                  
     }
     e.message = `Bad json from ${url}\n[${supposedJSON}...]\n${e.message}`;
     reject( e );
@@ -17,11 +19,11 @@ function resolveWithJSON(resolve, reject, url, supposedJSON) {
 function serverAjax(opts) {
   var http = require('http');
   return new rsvp.Promise( function(resolve, reject) {
-    if( opts.method == 'GET') {
+    if( opts.method === 'GET') {
       http.get(opts.url, function(res) {
         /* xeslint no-console:0 */
         //console.log( 'ajax response ',res.headers['x-json'] );
-        if( opts.dataType == 'json') {
+        if( opts.dataType === 'json') {
           if( res.headers['x-json'] ) {
             resolveWithJSON(resolve,reject,opts.url,res.headers['x-json']);
           } else {

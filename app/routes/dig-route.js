@@ -11,6 +11,12 @@ import { Glyph,
          QueryOptions,
          Playlist } from '../components';
 
+import {  QueryParamTagsRotate,
+/*          QueryRequestHandler, */
+          PlaylistUpdater, 
+          QueryParamValue       } from '../mixins';
+
+const DEFAULT_COL_SIZE = 3;
 
 const SelectableTag = React.createClass({
 
@@ -23,8 +29,8 @@ const SelectableTag = React.createClass({
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
-    return this.selected != nextProps.selected ||
-           this.selected != nextState.selected;
+    return this.selected !== nextProps.selected ||
+           this.selected !== nextState.selected;
   },
 
   onClick: function(e) {
@@ -62,10 +68,8 @@ const SelectableTagList = React.createClass({
   },
 
   onSelectedTags: function(tagString, cat) {
-    if( cat == this.props.catID ) {
-      setTimeout( () => {
-        this.setState( { selectedTags: tagString } );
-      }, 50 );      
+    if( cat === this.props.catID ) {
+      this.setState( { selectedTags: tagString } );
     }
   },
 
@@ -96,7 +100,7 @@ const TagCategoryBox = React.createClass({
     var store   = this.props.store;
     var tags    = this.props.model;
     var catID   = this.props.catID;
-    var colSize = this.props.colSize || 3;
+    var colSize = this.props.colSize || DEFAULT_COL_SIZE;
     var cls     = 'col-sm-' + colSize;
 
     return(
@@ -145,32 +149,32 @@ const SelectedTag = React.createClass({
 
 const MatchAnyButton = React.createClass({
 
-  getInitialState: function() {
-    var qp = this.props.store.model.queryParams;
-    return { matchAny: qp.type && qp.type === 'any' };
-  },
+  mixins: [QueryParamValue,PlaylistUpdater],
 
-  componentWillMount: function() {
-    this.props.store.on('playlist', this.onParamsChanged );
-  },
+  paramName:         'type',
+  defaultParamValue: 'all',
+  paramIsClean:      true,
+  paramInitHandledEleseWhere: true,
 
-  componentWillUnmount: function() {
-    this.props.store.removeListener('playlist', this.onParamsChanged );
-  },
-
-  onParamsChanged: function() {
-    var qp = this.props.store.model.queryParams;
-    this.setState( { matchAny: qp.type && qp.type === 'any' } );
-  },
-
-  onMatchAny: function() {
+  onMatchAny: function() {    
     var matchAny = !this.state.matchAny;
-    this.props.store.applyParams( 
-        { 
-          type: matchAny ? 'any' : 'all',
-          offset: 0 // do I need do this?
-         });
+    var type = matchAny ? 'any' : 'all';
+    this.setStateAndPerform( { type, matchAny } );
   },
+
+  stateFromStore: function(store) {
+    var qp = store.model.queryParams;
+    var type = qp['type'];
+    var matchAny = type === 'any';
+    return { type, matchAny };
+  },
+
+  /*
+  onQueryRequest: function(type) {
+    var matchAny = type === 'any';
+    this.respondWithState( { type, matchAny } );
+  },
+  */
 
   render: function() {
     return (<label className="btn btn-primary btn-xs"><input onChange={this.onMatchAny} checked={this.state.matchAny} type="checkbox" />{" match any"}</label>);
@@ -309,27 +313,16 @@ const NoTagHits = React.createClass({
 
   getInitialState: function() {
     var state   = this.getStateFromStore();
-    var numTags = this.props.tagStore.getSelectedTags().getLength();
-    var qp      = this.props.store.model.queryParams;
-    state.showMatchAny =  numTags > 1 && qp.type === 'all';
+    state.numTags = 0;
     return state;
   },
 
   componentWillMount: function() {
     this.props.store.on('playlist', this.onParamsChanged );
-    this.props.tagStore.on('selectedTags', this.onSelectedTags );
   },
 
   componentWillUnmount: function() {
     this.props.store.removeListener('playlist', this.onParamsChanged );
-    this.props.tagStore.removeListener('selectedTags', this.onSelectedTags );
-  },
-
-  onSelectedTags: function(tags) {
-    var numTags = tags.getLength();
-    var qp      = this.props.store.model.queryParams;
-    var showMatchAny =  numTags > 1 && qp.type === 'all';
-    this.setState( { showMatchAny } );
   },
 
   onParamsChanged: function() {
@@ -337,20 +330,23 @@ const NoTagHits = React.createClass({
   },
 
   getStateFromStore: function() {
-    var store = this.props.store;
-    var paramsDirty = store.paramsDirty();
-    var showNoHits = !store.model || !store.model.total;
-    return { paramsDirty, showNoHits };
+    var store        = this.props.store;
+    var optionsDirty = store.paramsDirty();
+    var showNoHits   = !store.model.total;
+    var qp           = store.model.queryParams;
+    var showMatchAny = qp.type === 'all';
+    return { optionsDirty, showNoHits, showMatchAny };
   },
 
   render: function() {
-    var store        = this.props.store;
-    var paramsDirty  = this.state.paramsDirty;
-    var showMatchAny = this.state.showMatchAny;
-
     if( !this.state.showNoHits ) {
       return null;
     }
+
+    var store        = this.props.store;
+    var optionsDirty = this.state.optionsDirty;
+    var showMatchAny = this.state.showMatchAny;
+
     return (
       <div className="row">
         <div className="col-md-6 col-md-offset-3 no-hit-suggestion">
@@ -363,12 +359,11 @@ const NoTagHits = React.createClass({
                 {showMatchAny
                   ?<li>
                     {"The default search is for music that matches "}<strong>{"all"}</strong>{" the tags. "}
-                    {"Try a search for "}<strong>{"any"}</strong>{" combination of them: "}
-                    <MatchAnyButton store={store} />
+                    {"Try a search for "}<strong>{"any"}</strong>{" combination of them."}
                   </li>
                   : null
                 }
-                {paramsDirty
+                {optionsDirty
                   ?<li>{"Try resetting your filters "}<QueryOptions.ResetOptionsButton store={store} /></li>
                   : null
                 }
@@ -380,10 +375,17 @@ const NoTagHits = React.createClass({
   },
 });
 
+function makeRegexFromTags(tags) {
+  var arr = TagString.toArray(tags);
+  var str = '^(' + arr.join('|') + ')$';
+  return new RegExp(str);
+}
+
 var dig = React.createClass({
 
+  mixins: [QueryParamTagsRotate],
+
   componentWillMount: function() {
-    this._myStore = this.props.store;
     var tagStore = new TagStore();    
     tagStore.on('selectedTags', this.onSelectedTags );
     this.setState({ tagStore });
@@ -393,16 +395,15 @@ var dig = React.createClass({
     this.state.tagStore.removeListener('selectedTags', this.onSelectedTags );
   },
 
-  _myStore: null,
+  paramName:    'tags',
+  tagFilter:    /---/,
+  paramIsClean: true,
 
-  onSelectedTags: function(t) {
-    var opts = { offset: 0 };
-    if( this.previousTags ) {
-      opts['--tags'] = this.previousTags.toString();
-    }
-    opts.tags = t.toString();
-    this._myStore.applyToOriginalParams( opts );
-    this.previousTags = t;
+  onSelectedTags: function(tag) {
+    this.tagFilter = this.previousTags ? makeRegexFromTags(this.previousTags) : /---/;
+    this.setStateAndPerform( {tag} );
+    this.previousTags = tag; // this allows removal next time around
+    this.defaultTag = tag;   // this prevents a 'reset' from wiping us out
   },
 
   onTagSectionUpdate: function(loading) {
@@ -413,7 +414,7 @@ var dig = React.createClass({
 
   render() {
 
-    var store    = this._myStore;
+    var store    = this.props.store;
     var tagStore = this.state.tagStore;
 
     return (

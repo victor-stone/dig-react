@@ -1,0 +1,39 @@
+.pell-paging {
+  padding: 0px;
+}
+
+.pell-paging .paging-container {
+  float: right;
+  padding: 0px;
+}
+
+.pell-paging ul.pagination li a {
+  color: #444;
+}
+
+.pell-paging ul.pagination li.disabled a {
+  color: #999;
+} 
+
+.pell-paging .paging {
+  position: relative;
+  top: 0px;
+  
+  background-color: white;
+  border: 0px;
+  padding: 0px;
+  width: 150px;
+  margin: 0px;
+}
+
+.pell-paging .paging ul {
+  margin: 0px;
+  font-size: 10px;
+}
+
+.pell-paging .paging div {
+  color: #444;
+  text-align: left;
+  padding-left: 15%;
+}
+

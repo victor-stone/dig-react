@@ -1,30 +1,16 @@
 'use strict';
 
-import ccmixter  from '../models/ccmixter';
-import serialize from '../models/serialize';
+import ccmixter         from '../models/ccmixter';
+import serialize        from '../models/serialize';
+import Eventer          from '../services/eventer';
+import queryAjaxAdapter from '../services/query-ajax-adapter';
 
-import { EventEmitter } from 'events';
-
-// this is a singleton
-import { service as queryAjaxAdapter } from '../services/query-ajax-adapter';
-
-class Query 
+class Query extends Eventer
 {
   constructor() {
+    super(...arguments);
     this.adapter = queryAjaxAdapter;
-    this._events = new EventEmitter();
-  }
-
-  on(name,cb) {
-    this._events.on(name,cb);
-  }
-
-  emit() {
-    this._events.emit.apply(this._events,arguments);
-  }
-
-  removeListener(name,cb) {
-    this._events.removeListener(name,cb);
+    this._events = new Eventer();
   }
 
   query(params) {
@@ -65,9 +51,11 @@ class Query
     }
     return countParams;    
   }
-}
 
-// singleton
-Query.service = new Query();
+  transaction(promise) {
+    this.adapter._inc();
+    return promise.finally( () => this.adapter._dec() );
+  }
+}
 
 module.exports = Query;

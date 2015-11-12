@@ -2,7 +2,6 @@ import Query            from './query';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import rsvp             from 'rsvp';
-import { Transaction }  from '../services/query-ajax-adapter';
 
 
 function _fixFeaturing(model) {
@@ -29,7 +28,7 @@ class Upload extends Query {
       sources: this.sources(id)
     };
 
-    return rsvp.hash(queries)
+    return this.transaction(rsvp.hash(queries)
 
       .then( record => {
         
@@ -45,7 +44,7 @@ class Upload extends Query {
         model.upload.artist = user;
 
         return model;
-      });
+      }));
   }
   
   trackbacks(forId) {
@@ -55,7 +54,7 @@ class Upload extends Query {
       dataview: 'trackbacks',
       sort: 'date',
       ord: 'desc',
-      limit: 25 // TODO: get this from ENV or anywhere else!!
+      limit: Upload.MAX_TRACKBACK_FETCH
     };
     return this.query(trackbacksQ).then( serialize( ccmixter.Trackback ) );
   }
@@ -94,13 +93,15 @@ class Upload extends Query {
 
 Upload.service = new Upload();
 
-Upload.findAndReturnStore = function(id) {
+Upload.MAX_TRACKBACK_FETCH = 25;
+
+Upload.storeFromQuery = function(id) {
   var uploadStore = new Upload();
-  return Transaction( uploadStore.find(id)
+  return uploadStore.find(id)
                         .then( model => {
                             uploadStore.model = model;
                             return uploadStore;
-                        }) );
+                        });
 };
 
 module.exports = Upload;

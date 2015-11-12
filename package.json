@@ -20,10 +20,10 @@
     "react": "./react-shim.js",
     "react-dom": "./react-dom-shim.js"
   },
-    "browserify-shim": {
-        "react": "global:React",
-        "react-dom": "global:ReactDOM"
-    },
+  "browserify-shim": {
+    "react": "global:React",
+    "react-dom": "global:ReactDOM"
+  },
   "contributors": [
     {
       "name": "Alex Goodwin"
@@ -44,12 +44,14 @@
     "font-awesome": "^4.4.0",
     "glob": "^5.0.15",
     "jquery": "^2.1.4",
+    "md5": "^2.0.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "soundmanager2": "^2.97.20150601"
   },
   "dependencies": {
     "express": "^4.13.3",
+    "nouislider": "leongersen/noUiSlider",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "route-recognizer": "^0.1.9",

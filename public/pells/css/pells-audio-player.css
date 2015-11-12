@@ -1,0 +1,57 @@
+svg {
+  display: inline-block;
+  width: 400;
+  height: 80;
+}
+
+polyline {
+  stroke: black;
+  stroke-opacity: 0.8;
+  stroke-width:1.5;
+  fill:none;
+  stroke-linecap: round;
+}
+
+.audio-player {
+  height: 90px;
+}
+
+.audio-player .media-body {
+  height: 90px;
+}
+
+.audio-player .playback-scrubber {
+  width: 410px;
+}
+
+.audio-player .bar {
+  opacity: 0.5;
+  height: 80px;
+}
+
+article.audio-player {
+  line-height: 34px;
+  height: 84px;
+  /* padding-bottom: 20px; */
+  margin-bottom:  12px;
+}
+.waveimage {
+  width: 100%;
+  opacity: 1.0;
+}
+
+.play-previous,
+.play-next {
+  display: none;
+}
+
+.audio-player .btn.play {
+  font-size: 42px;
+  margin-top: 20px;
+  width: 60px;
+}
+
+.audio-player h4.media-heading a  {
+  margin-top: 40px;
+  display: inline-block;
+}

@@ -1,10 +1,12 @@
 import React     from 'react';
 import Glyph     from './Glyph';
 import Link      from './Link';
+import qc        from '../models/query-configs';
 
-import { oassign }     from '../unicorns';
-import PlaylistUpdater from '../mixins/playlist-updater';
-import env             from '../services/env';
+import { oassign }       from '../unicorns';
+import PlaylistUpdater   from '../mixins/playlist-updater';
+import QueryParamEnum    from '../mixins/query-param-enum';
+import env               from '../services/env';
 
 var LicenseInfoPopup = React.createClass({
 
@@ -19,6 +21,69 @@ var LicenseInfoPopup = React.createClass({
   }
 });
 
+const LicenseFilter = React.createClass({
+
+  mixins: [QueryParamEnum],
+
+  paramName: 'lic',
+  defaultParamValue: qc.default.lic,
+
+  render: function() {
+
+    return (
+      <div>
+        <select id="lic" ref={this.paramName} value={this.state.lic} onChange={this.performQuery} className="form-control" >
+          <option value="all">{"all licenses"}</option>
+          <option value="open">{"free for commercial use"}</option>
+          <option value="ccplus">{"royalty free license"}</option>
+        </select>
+        <LicenseInfoPopup />
+      </div>
+      );
+  }
+});
+
+const LimitFilter = React.createClass({
+
+  mixins: [QueryParamEnum],
+
+  paramName: 'limit',
+  defaultParamValue: qc.default.limit,
+  
+  render: function() {
+
+    return (
+        <label className="form-control">{"display "}
+          <select id="limit" ref={this.paramName} value={this.state.limit} onChange={this.performQuery} className="form-control" >
+            <option>{"10"}</option>
+            <option>{"20"}</option>
+            <option>{"40"}</option>
+          </select>
+        </label>
+      );    
+  }
+
+});
+
+const SortFilter = React.createClass({
+
+  mixins: [QueryParamEnum],
+
+  paramName: 'digrank',
+  defaultParamValue: qc.magicSort.digrank,
+  
+  render: function() {
+    return (
+        <select id="sort" ref={this.paramName} value={this.state.digrank} onChange={this.performQuery} className="form-control" >
+          <option value={qc.magicSort.digrank}>{"magic sort"}</option>
+          <option value={qc.recent.digrank}>{"recent"}</option>
+          <option value={qc.alltime.digrank}>{"all time"}</option>
+        </select>
+      );
+  }
+
+});
+
 const ResetOptionsButton = React.createClass({
 
   mixins: [PlaylistUpdater],
@@ -29,7 +94,7 @@ const ResetOptionsButton = React.createClass({
 
   onReset: function() {
     if( this.state.dirty ) {
-      this.props.store.applyOriginalParams();
+      this.props.store.performClean();
     }
   },
 
@@ -67,16 +132,16 @@ const QueryOptions = React.createClass({
     }
     
     var showP       = this.state.showOptions;
-    var popup       = showP ? this.genOptions() : null;
+    var popup       = this.genOptions(showP);
     var cls         = 'hidden-xs hidden-sm filter-box' + (showP ? ' open' : '' );
     var buttonColor = this.state.dirty ? { color: 'yellow' } : {};
+    var cls2        = showP ? '' : 'hidden';
+    var cls3        = 'btn btn-primary' + (showP ? ' hidden' : '');
 
     return (
       <div className={cls}>
-        {showP 
-          ? popup 
-          : <button className="btn btn-primary" style={buttonColor} onClick={this.handleShowOptions} ><Glyph icon="gear" />{" filters"}</button>
-        }
+        <div className={cls2}>{popup}</div>
+        <button className={cls3} style={buttonColor} onClick={this.handleShowOptions} ><Glyph icon="gear" />{" filters"}</button>
       </div>
     );
   }
@@ -85,5 +150,8 @@ const QueryOptions = React.createClass({
 
 QueryOptions.ResetOptionsButton = ResetOptionsButton;
 QueryOptions.LicenseInfoPopup   = LicenseInfoPopup;
+QueryOptions.LicenseFilter      = LicenseFilter;
+QueryOptions.LimitFilter        = LimitFilter;
+QueryOptions.SortFilter         = SortFilter;
 
 module.exports = QueryOptions;

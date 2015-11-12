@@ -1,6 +1,7 @@
-import Class from './class';
 import pagingStats from './paging-stats';
 import TagString from './tag-string';
+
+const NOT_FOUND = -1;
 
 if (!Array.isArray) {
   Array.isArray = function(arg) {
@@ -9,7 +10,7 @@ if (!Array.isArray) {
 }
 
 if( typeof Array.prototype.includes === 'undefined' ) {
-  Array.prototype.includes = function(v) { return this.indexOf(v) !== -1; };
+  Array.prototype.includes = function(v) { return this.indexOf(v) !== NOT_FOUND; };
 }
 
 if( typeof Array.prototype.contains === 'undefined' ) {
@@ -19,7 +20,7 @@ if( typeof Array.prototype.contains === 'undefined' ) {
 if( typeof Array.prototype.findBy === 'undefined' ) {
   Array.prototype.findBy = function(key,value) {
     for( var i = 0; i < this.length; i++ ) {
-      if( this[i][key] == value ) {
+      if( this[i][key] === value ) {
         return this[i];
       }
     }
@@ -43,7 +44,7 @@ if( typeof Array.prototype.filter === 'undefined' ) {
 if( typeof Array.prototype.rejectBy === 'undefined' ) {
   Array.prototype.rejectBy = function(key,value) {
     return this.filter( function(obj) {
-      return obj[key] != value;
+      return obj[key] !== value;
     });
   };
 }
@@ -179,7 +180,6 @@ module.exports = {
   w,
   underscore,
   debounce,
-  Class,
   pagingStats,
   TagString
 };

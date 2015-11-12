@@ -6,6 +6,7 @@ import DownloadPopup      from './DownloadPopup';
 import { PlayButton }     from './AudioPlayer';
 import QueryOptions       from './QueryOptions';
 import AudioPlayerService from '../services/audio-player';
+import PlaylistUpdater    from '../mixins/playlist-updater';
 
 var SongLink = React.createClass({
 
@@ -47,29 +48,12 @@ var PlaylistItem = React.createClass({
 
 var NotALotHere = React.createClass({
 
-  getInitialState: function() {
-    var showNotALot = this.getShowNotALot();
-    return { showNotALot };
-  },
+  mixins: [PlaylistUpdater],
 
-  componentWillMount: function() {
-    var store = this.props.store;
-    store.on('playlist',this.updateState);
-  },
-
-  componentWillUnmount: function() {
-    var store = this.props.store;
-    store.removeListener('playlist',this.updateState);
-  },
-
-  getShowNotALot: function() {
-    var store = this.props.store;
-    return store.model.total < store.model.queryParams.limit && store.paramsDirty();
-  },
-
-  updateState: function() {
-    var showNotALot = this.getShowNotALot();
-    this.setState( { showNotALot } );
+  stateFromStore: function(store) {
+    var model = store.model;
+    var showNotALot = model.total < model.queryParams.limit && store.paramsDirty();
+    return { showNotALot };    
   },
 
   render: function() {
@@ -100,45 +84,29 @@ var NotALotHere = React.createClass({
 
 var Playlist = React.createClass({
 
+  mixins: [PlaylistUpdater],
+
   getDefaultProps: function() {
     return { skipUser: false };
   },
-
-  componentWillMount: function() {
-    var store = this.props.store;
-    store.on('playlist',this.gotPlaylist);
-    store.on('playlist-loading',this.gotPlaylistLoading);
-  },
-
-  componentWillUnmount: function() {
-    var store = this.props.store;
-    store.removeListener('playlist',this.gotPlaylist);
-    store.removeListener('playlist-loading',this.gotPlaylistLoading);
-  },
-
-  gotPlaylist: function() {
-    var state = { loading: false };
-    setTimeout( () => this.setState(state), 50 );
-  },
-
-  gotPlaylistLoading: function() {
-    var state = { loading: true };
-    setTimeout( () => this.setState(state), 50 );
+ 
+  stateFromStore: function(store) {
+    return { model: store.model };
   },
 
   onPlay: function() {
-    AudioPlayerService.setPlaylist( this.props.store.model.playlist );
+    AudioPlayerService.setPlaylist( this.state.model.playlist );
   },
 
   render: function() {
 
-    var model = this.props.store.model;
+    var model = this.state.model;
 
     var playlistItems = model.playlist.map( upload =>
-      <PlaylistItem key={upload.id} 
-                    upload={upload} 
-                    skipUser={this.props.skipUser} 
-                    onPlay={this.onPlay}
+      <PlaylistItem key      = {upload.id} 
+                    upload   = {upload} 
+                    skipUser = {this.props.skipUser} 
+                    onPlay   = {this.onPlay}
       />
     );
 

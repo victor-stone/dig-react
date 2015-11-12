@@ -87,7 +87,7 @@ class DateStore extends EventEmiiter {
 class AppStore extends EventEmiiter {
   constructor() {
     super(...arguments);
-    this._apps = [ 'dig' ]; 
+    this._apps = [ 'dig','pells' ]; 
     this._selected = 0;
   }
 
@@ -529,7 +529,7 @@ var LogFilter = React.createClass({
 
   doFilter: function() {
     this.props.store.applyFilter();
-  }
+  },
 
   val: function(k) {
     var v = null;

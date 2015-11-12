@@ -2,7 +2,16 @@
 var express     = require('express');
 var serveStatic = require('serve-static')
 var fs          = require('fs');
+var md5         = require('md5');
+var argv        = require('minimist')(process.argv.slice(2));
+
 var getLogMap   = require('./log-map');
+
+var portMD5 = '3b9be7e15b46c42911f39a4a9e861022';
+if( md5(argv.port+'') !== portMD5 ) {
+  console.log('invalid port number');
+  exit(1);
+}
 
 var LOG_DIR = __dirname + '/../logs/';
 
@@ -12,7 +21,7 @@ app.use(serveStatic( __dirname + '/public/'));
 
 app.get('/logs/:date/:app/:type', getlog);
 
-var port = 4080;
+var port = argv.port;
 
 app.listen(port);
 console.log(`Listening on port ${port}...`);

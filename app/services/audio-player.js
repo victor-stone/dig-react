@@ -1,34 +1,33 @@
 /* global soundManager */
-import { EventEmitter } from 'events';
 import { oassign,
           debounce } from '../unicorns';
-import util from 'util';
+import Eventer from './Eventer';
 
+const NOT_FOUND         = -1;
+const EMIT_DELAY        = 50;
+const PLAYBACK_DEBOUNCE = 50;
+const FOWARD = 1;
+const BACK   = -1;
 
-function Media(args) {
-  if( !(this instanceof Media) ) {
-    return new Media(args);
+class Media extends Eventer
+{
+  constructor(args) {
+    super();
+    oassign(this,args,{
+      isPlaying:  false,
+      isPaused: false,
+      positionProperties: {
+        position: -1,
+        duration: -1,
+        bytesLoaded: -1,
+        bytesTotal: -1,
+      },      
+      _sound: null,
+    });
   }
-  EventEmitter.call(this);
-  oassign(this,args);
-}
 
-util.inherits(Media,EventEmitter);
 
-oassign(Media.prototype,{
-
-  isPlaying:  false,
-  isPaused: false,
-  positionProperties: {
-    position: -1,
-    duration: -1,
-    bytesLoaded: -1,
-    bytesTotal: -1,
-  },
-  
-  _sound: null,
-
-  sound: function() {
+  sound() {
     if( this._sound ) {
       return this._sound;
     }
@@ -42,32 +41,32 @@ oassign(Media.prototype,{
     var sound = soundManager.createSound({
       id:  url,
       url: url,
-      onplay: function() {
+      onplay() {
         me.setIsPlaying(true);
       },
-      onstop: function() {
+      onstop() {
         me.setIsPlaying(false);
       },
-      onpause: function() {
+      onpause() {
         me.setIsPaused(true);
       },
-      onresume: function() {
+      onresume() {
         me.setIsPaused(false);
       },
-      onfinish: function() {
+      onfinish() {
         me.setIsPlaying(false);
         me.safeEmit('finish',me);
       },
 
-      whileloading: debounce(me.setPositionProperties.bind(me), 50),
-      whileplaying: debounce(me.setPositionProperties.bind(me), 50),
+      whileloading: debounce(me.setPositionProperties.bind(me), PLAYBACK_DEBOUNCE),
+      whileplaying: debounce(me.setPositionProperties.bind(me), PLAYBACK_DEBOUNCE),
     });
 
     this._sound = sound;
     return sound;
-  },
+  }
 
-  setPositionProperties: function() {
+  setPositionProperties() {
     var sound = this._sound;
     oassign(this.positionProperties,{
           bytesLoaded: sound.bytesLoaded,
@@ -76,151 +75,147 @@ oassign(Media.prototype,{
           duration: sound.duration
         });
     this.safeEmit('position',this.positionProperties,this);
-  },
+  }
 
-  stop: function() {
+  stop() {
     var sound = this.sound();
     if (sound) {
       sound.stop();
     }
-  },
+  }
 
-  play: function() {
+  play() {
     var sound = this.sound();
     if (sound) {
       sound.play();
     }
-  },
+  }
 
-  togglePlay: function() {
+  togglePlay() {
     if (this.isPlaying) {
       this.stop();
     } else {
       this.play();
     }
-  },
+  }
   
-  togglePause: function() {
+  togglePause() {
     var sound = this.sound();
     if( sound ) {
       sound.togglePause();
     }
-  },
+  }
   
-  setPosition: function(position) {
+  setPosition(position) {
     return this.sound().setPosition(position);
-  },
+  }
 
-  setPositionPercentage: function(percentage) {
+  setPositionPercentage(percentage) {
     var duration = this.positionProperties.duration;
     return this.setPosition(duration * percentage);
-  },
+  }
 
-  setIsPlaying: function(flag) {
+  setIsPlaying(flag) {
     this.isPlaying = flag;
     this.safeEmit( flag ? 'play' : 'stop', this );
     this.safeEmit( 'controls', this );
-  },
+  }
 
-  setIsPaused: function(flag) {
+  setIsPaused(flag) {
     this.isPaused = flag;
     this.safeEmit( 'controls', this );
-  },
+  }
 
-  safeEmit: function() {
+  safeEmit() {
     // throw the event over to the main window thread
-    setTimeout( () => this.emit.apply(this,arguments), 50 );    
+    setTimeout( () => this.emit.apply(this,arguments), EMIT_DELAY );    
   }
 
-});
-
-function AudioPlayer() {
-  if( !(this instanceof AudioPlayer) ) {
-    return new AudioPlayer();
-  }
-  EventEmitter.call(this);
 }
 
-util.inherits(AudioPlayer,EventEmitter);
-
-
-oassign( AudioPlayer.prototype,
+class AudioPlayer extends Eventer
 {
-  /**
-    nowPlaying is an instance of Media - wrapper for underlying implementation
-    of sound player.
+  constructor() {
+    super();
+    /**
+      nowPlaying is an instance of Media - wrapper for underlying implementation
+      of sound player.
+      
+      If whatever you pass to the play() method has a 'mediaTags' hash of bindings
+      then those bindings with show up on the nowPlaying object.
+    */
+    this.nowPlaying = null;
     
-    If whatever you pass to the play() method has a 'mediaTags' hash of bindings
-    then those bindings with show up on the nowPlaying object.
-  */
-  nowPlaying: null,
-  
-  /**
-    playlist is an array of models. the .media property may not be
-    present on these items.
-  */
-  playlist: null,
+    /**
+      playlist is an array of models. the .media property may not be
+      present on these items.
+    */
+    this.playlist = null;
 
-  /**
-    store this here for now
-  */
-  wantWavImg: false,
+    /**
+      store this here for now
+    */
+    this.wantWavImg = false;
+
+    this._mediaCache = {};
+
+  }
   
-  play: function(playable) {
+  play(playable) {
     this._delegate(playable,'play');
-  },
+  }
 
-  stop: function(playable) {
+  stop(playable) {
     this._delegate(playable,'stop');
-  },
+  }
     
-  togglePlay: function(playable) {
+  togglePlay(playable) {
     this._delegate(playable,'togglePlay');
-  },
+  }
 
-  togglePause: function(playable) {
+  togglePause(playable) {
     this._delegate(playable,'togglePause');
-  },
+  }
 
-  playNext: function() {
-    this._advance(1);
-  },
+  playNext() {
+    this._advance(FOWARD);
+  }
 
-  playPrevious: function() {
-    this._advance(-1);
-  },
+  playPrevious() {
+    this._advance(BACK);
+  }
 
-  hasNext: function() {
+  hasNext() {
     var index = this._nowPlayingIndex();
-    return index > -1 && index < this.playlist.length - 1;
-  },
+    return index > NOT_FOUND && index < this.playlist.length - 1;
+  }
   
-  hasPrev: function() {
+  hasPrev() {
     return this._nowPlayingIndex() > 0;
-  },
+  }
   
-  setPlaylist: function(playlist) {
+  setPlaylist(playlist) {
     this.playlist = playlist;
     this.emit('playlist', playlist);
-  },
+  }
 
-  bindToNowPlaying: function(model) {
+  bindToNowPlaying(model) {
     var np = this.nowPlaying;
     if( np && model && model.mediaURL === np.url ) {
       model.media = np;
       return true;
     }
     return false;
-  },      
+  }
 
-  _delegate: function(playable,method) {
+  _delegate(playable,method) {
     var media = this._media(playable) || this.nowPlaying;
     if( media ) {
       media[method]();
     }
-  },
+  }
   
-  _updatePlaylist: function() {
+  _updatePlaylist() {
     if( this.nowPlaying && this.playlist ) {
       if( !this.playlist.findBy('mediaURL',this.nowPlaying.url ) ) {
         // user hit 'play' on a song not in this playlist
@@ -228,22 +223,22 @@ oassign( AudioPlayer.prototype,
         this.playlist = null;
       }
     }
-  }, // .observes('nowPlaying'),
+  }
   
-  _advance: function(dir) {
+  _advance(dir) {
     this.play( this.playlist[this._nowPlayingIndex() + dir ] );
-  },
+  }
   
-  _nowPlayingIndex: function() {
-    var index = -1;
+  _nowPlayingIndex() {
+    var index = NOT_FOUND;
     var pl = this.playlist;
     if( pl && this.nowPlaying ) {
       index = pl.indexOf( pl.findBy('mediaURL',this.nowPlaying.url) );
     }
     return index;
-  },
+  }
   
-  _onPlay: function(media) {
+  _onPlay(media) {
     var np = this.nowPlaying;
     if( np && np !== media ) {
       np.stop();
@@ -252,18 +247,16 @@ oassign( AudioPlayer.prototype,
     this._updatePlaylist();
     media.once('finish',this._onFinish.bind(this));
     this.emit('nowPlaying',media);
-  },
+  }
   
-  _onFinish: function(media) {
+  _onFinish(media) {
     media.stop();
     if( this.hasNext() ) {
       this.playNext();
     }
-  },
+  }
 
-  _mediaCache: {},
-
-  _media: function(playable) {
+  _media(playable) {
     
     if( !playable ) {
       return;
@@ -285,7 +278,7 @@ oassign( AudioPlayer.prototype,
       media = cache[url];
     } else {  
       var args = oassign( { url: url },  playable.mediaTags );
-      media = Media(args);
+      media = new Media(args);
       media.on('play',this._onPlay.bind(this));
       cache[url] = media;
     }
@@ -294,6 +287,6 @@ oassign( AudioPlayer.prototype,
 
     return media;
   }
-});
+}
 
-module.exports = AudioPlayer();
+module.exports = new AudioPlayer();

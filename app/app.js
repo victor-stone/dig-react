@@ -1,8 +1,8 @@
-import React             from 'react';
-import { service as 
-           ajaxAdapter } from './services/query-ajax-adapter';
-import router            from './services/router';
-import env               from './services/env';
+/* global $ */
+import React       from 'react';
+import ajaxAdapter from './services/query-ajax-adapter';
+import router      from './services/router';
+import env         from './services/env';
 import { Banner,
          TitleSetter,
          AudioPlayer }   from './components';
@@ -28,11 +28,11 @@ const App = React.createClass({
   },
 
   componentDidMount: function() {
-    this.scrollToHash();
+    this.postUpdate();
   },
 
   componentDidUpdate: function() {
-    this.scrollToHash();
+    this.postUpdate();
   },
 
   componentWillUnmount: function() {
@@ -47,13 +47,16 @@ const App = React.createClass({
   },
 
   onLoading: function(loading) {
-    this.setState( { loading } ); 
+    $('.outlet-wrap').toggleClass('loading-screen fade',loading);
+  },
+
+  postUpdate() {
+    if( !global.IS_SERVER_REQUEST ) {
+      this.scrollToHash();
+    }
   },
 
   scrollToHash: function() {
-    if( global.IS_SERVER_REQUEST ) {
-      return;
-    }
 
     var hash = this.state.hash;
     if( !hash ) {
@@ -61,7 +64,6 @@ const App = React.createClass({
     }
 
     try {  
-      /* global $ */
       hash = hash.replace(/#/,'');
       var anchor = $('a[name="'+hash+'"]');
       var offset = 0; 
@@ -79,7 +81,6 @@ const App = React.createClass({
 
   render: function() {
 
-    var cls = 'outlet-wrap' + (this.state.loading ? ' loading-screen fade' : '');
     var title = this.state.component && this.state.component.title;
 
     return (
@@ -88,7 +89,7 @@ const App = React.createClass({
           <TitleSetter title={title} />
           <Banner />
           <env.Header />
-          <div className={cls}>
+          <div className="outlet-wrap">
             {this.state.component
               ? React.createElement(this.state.component,
                 {

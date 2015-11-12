@@ -21,7 +21,7 @@ var PlaylistUpdater = {
   },
 
   componentWillReceiveProps: function( props ) {
-    if( this.props.store != props.store ) {
+    if( this.props.store !== props.store ) {
       if( this.props.store ) {
         this.props.store.removeListener('playlist',this.onPlaylistUpdate);
       }
@@ -31,7 +31,7 @@ var PlaylistUpdater = {
   },
 
   onPlaylistUpdate: function() {
-    this.setState( this.stateFromStore(this.props.store) );
+      this.setState( this.stateFromStore(this.props.store) );
   },
 
   storeSupportsOptions: function() {

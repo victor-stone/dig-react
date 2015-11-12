@@ -6,6 +6,8 @@ import ajax  from '../services/ajax';
 
 import AudioPlayerService from '../services/audio-player';
 
+const ONE_HUNDRED = 100;
+
 const WavImage = React.createClass({
 
   getInitialState: function() {
@@ -93,7 +95,7 @@ const PlaybackScrubber = React.createClass({
     var loaded = this.state.position.bytesLoaded;
     var val = 0;
     if( loaded > 0  ) {
-      val = 100 * (loaded /  this.state.position.bytesTotal);
+      val = ONE_HUNDRED * (loaded /  this.state.position.bytesTotal);
     }
     return val + '';
     
@@ -104,7 +106,7 @@ const PlaybackScrubber = React.createClass({
     var position = this.state.position.position;
     var val = 0;
     if( position > 0 ) {
-      val = 100 * (position / this.state.position.duration);
+      val = ONE_HUNDRED * (position / this.state.position.duration);
     }
     return (val + '');      
 

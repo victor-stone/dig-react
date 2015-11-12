@@ -3,7 +3,9 @@ import env    from './services/env';
 import routes from './routes/pells';
 import App    from './app';
 import qc     from './models/query-configs';
+
 import {
+          PellQueryOptions,
           PellsHeader,
           DigFooter
         } from './components';
@@ -12,8 +14,9 @@ import AudioPlayerService from './services/audio-player';
 
 AudioPlayerService.wantWavImg = true;
 
-env.Header = PellsHeader;
-env.Footer = DigFooter;
+env.Header          = PellsHeader;
+env.Footer          = DigFooter;
+env.AppQueryOptions = PellQueryOptions;
 
 qc.default = qc.pells;
 

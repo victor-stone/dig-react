@@ -16,7 +16,6 @@ import { AddTrackbackPopup as AddTrackbackPopupButton,
 
 import DownloadPopup   from '../components/DownloadPopup';
 import { PlayButton }  from '../components/AudioPlayer';
-import { Transaction } from '../services/query-ajax-adapter';
 
 var Actions = React.createClass({
 
@@ -120,12 +119,11 @@ var LicenseSection = React.createClass({
 });
 
 
-
 var TracbackList = React.createClass({
 
   render: function() {
     var trackbacks = this.props.model || [];
-    var tooManyTBs = trackbacks.length >= 25; // see stores/upload.js#trackbacks
+    var tooManyTBs = trackbacks.length >= UploadStore.MAX_TRACKBACK_FETCH;
 
     function formatTB(tb) {
       return( 
@@ -251,11 +249,11 @@ upload.title = 'Files';
 upload.path = '/files/:userid/:uploadid';
 
 upload.store = function(params/*,queryParams*/) {
-  return Transaction( UploadStore.findAndReturnStore(params.uploadid).then( store =>
+  return UploadStore.storeFromQuery(params.uploadid).then( store =>
             { 
                 upload.title = store.model.upload.name;
                 return store;
-            }) );
+            });
 };
 
 module.exports = upload;

@@ -42,6 +42,8 @@ import Model          from './model';
 import LicenseUtils   from './licenses';
 import { TagString }  from '../unicorns';
 
+const NOT_FOUND = -1;
+
 class File extends Model {
 
   constructor() {
@@ -211,9 +213,8 @@ class Upload extends UploadBasic {
     this.getBpm = function() {
       if( this.upload_extra ) {
         var bpm = this.upload_extra.bpm;
-        if( (bpm + '').match(/[^0-9]/) === null ) {
-          return bpm;
-        }
+        bpm = (bpm + '').match(/^[0-9]+/);
+        return (bpm && bpm[0]) || '';
       }
     };
 
@@ -340,7 +341,7 @@ class Detail extends Upload {
           // hello O(n)
           sources.forEach( f => {
             var name = f.artist.name;
-            if( unique.indexOf(name) === -1 ) {
+            if( unique.indexOf(name) === NOT_FOUND ) {
               unique.push(name);
             }
           });

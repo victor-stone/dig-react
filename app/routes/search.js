@@ -12,10 +12,9 @@ import {  Link,
           Playlist, 
           Paging } from '../components';
 
-import { service as tagStore }   from '../stores/tags';
-import { service as queryStore } from '../stores/query';
-import { Transaction }           from '../services/query-ajax-adapter';
-import PlaylistStore             from '../stores/playlist';
+import TagStore       from '../stores/tags';
+import QueryStore     from '../stores/query';
+import PlaylistStore  from '../stores/playlist';
 
 var DidYouMeanSection = React.createClass({
 
@@ -70,6 +69,7 @@ var search = React.createClass({
         <DidYouMeanSection model={store.didYouMean} />
         <Paging store={store} />
         <Playlist store={store} />
+        <Playlist.NotALotHere store={store} />
       </div>
     );
   },
@@ -81,6 +81,9 @@ function didYouMean( text )
   if( !text ) {
     return rsvp.resolve([]);
   }
+  
+  var tagStore   = new TagStore();
+  var queryStore = new QueryStore();
   
   var didYouMean = { 
 
@@ -130,7 +133,7 @@ search.store = function( params, queryParams ) {
     });
   }
 
-  return Transaction( makePromise() );
+  return makePromise();
 };
 
 module.exports = search;

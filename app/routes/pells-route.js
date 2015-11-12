@@ -2,20 +2,38 @@ import React            from 'react';
 import { mergeParams }  from '../unicorns';
 import qc               from '../models/query-configs';
 import Acappellas       from '../stores/acappellas';
-import { Glyph,
+import {  Glyph,
           DownloadPopup,
+          QueryOptions,
           Paging  }     from '../components';
 import { ExternalLink } from '../components/ActionButtons';
 import AudioPlayerService from '../services/audio-player';
 
-import PlaylistUpdater from '../mixins/playlist-updater';
+import { PlaylistUpdater, 
+         QueryParamValue,
+         QueryRequestHandler,
+         QueryParamTagsRotate } from '../mixins';
+
+const NOMINAL_TIMEOUT = 4;
 
 var PellTabs = React.createClass({
 
-  mixins: [PlaylistUpdater],
+  mixins: [PlaylistUpdater,QueryParamTagsRotate],
+
+  paramName: 'reqtags',
+  tagFilter: /^(featured|spoken_word|rap|melody)$/,
+  paramIsClean: true,
 
   stateFromStore: function(store) {
     var totals = store.model.totals;
+    if( this.state && this.state.tag && !totals[this.state.tag] ) {
+      for( var tag in totals ) {
+        if( totals[tag] ) {
+          setTimeout( () => this.setStateAndPerform( {tag} ), NOMINAL_TIMEOUT );
+          break;
+        }
+      }
+    }
     return { totals };
   },
 
@@ -23,13 +41,13 @@ var PellTabs = React.createClass({
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
-      var offset = 0;
-      this.props.store.applyParams({filter,offset});
+      this.performQuery(filter === 'all' ? '' : filter);
     };
   },
 
   checkActive: function(filter) {
-    return filter == this.props.store.model.params.filter ? 'active' : '';
+    var tag = this.state.tag || 'all';
+    return filter === tag ? 'active' : '';
   },
 
   render: function() {
@@ -61,7 +79,11 @@ var PellTabs = React.createClass({
 
 var PellListing = React.createClass({
 
-  mixins: [PlaylistUpdater],
+  mixins: [PlaylistUpdater,QueryParamValue,QueryRequestHandler],
+
+  paramName:         'u',
+  defaultParamValue: '',
+  paramIsClean:      true,
 
   stateFromStore: function(store) {
     var playlist = store.model.playlist;
@@ -73,9 +95,12 @@ var PellListing = React.createClass({
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
-      var offset = 0;
-      this.props.store.applyParams({artist,offset});
+      this.performQuery(artist);
     };
+  },
+
+  onQueryRequest: function(value) {
+    this.respondWithState( { u: value } );
   },
 
   selectLine: function(pell) {
@@ -125,14 +150,13 @@ var PellHeader = React.createClass({
   mixins: [PlaylistUpdater],
 
   stateFromStore: function(store) {
-    var artist = store.model.artist;
-    return { artist };    
+    return { artist: store.model.artist };    
   },
 
   clearArtist: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.props.store.applyParams({artist:null,filter:'featured'});
+    this.props.store.requestPeformance( 'u', null );
   },
 
   render: function() {
@@ -176,25 +200,28 @@ var PellDetail = React.createClass({
     }
 
     return (
-        <div>
+        <div className="pell-detail">
           <h3>{model.name}</h3>
           <ul className="download-list">
             {model.files.map( file => {
               return <li key={file.id}><DownloadPopup fullUpload={model} file={file} /> <span className="ext">{file.extension}</span> <span className="nic">{file.nicName}</span></li>;
             })}
           </ul>
-          <ExternalLink href={model.url} text="@ccMixter" />
+          <ExternalLink className="ccm-link" href={model.url} text="@ccMixter" />
         </div>
       );
   }
 });
 
 var pells = React.createClass({
+
   render() {
     var store = this.props.store;
     return (
       <div className="container pells-page">
-        <div className="gear">{"filter gadget here"}</div>
+        <div className="gear">
+          <QueryOptions store={store} />
+        </div>
         <PellHeader store={store} />
         <div className="row">
           <div className="col-md-2 pell-paging">
@@ -206,7 +233,7 @@ var pells = React.createClass({
               <PellListing store={store} />
             </div>
           </div>
-          <div className="col-md-3 pell-detail">
+          <div className="col-md-3">
             <PellDetail store={store} />
           </div>
         </div>

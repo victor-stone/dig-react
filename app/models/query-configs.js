@@ -7,16 +7,20 @@ module.exports = {
     limit:   10,
     digrank: MAGIC_SORT_DIGRANK,
     reqtags: 'remix',
+    lic:     'all'
   },
 
   pells: {
-    limit:    10,
+    limit:   10,
     lic:     'all',
+    reqtags: 'acappella,featured',
     offset:  0,
-    reqtags: 'acappella',
-    filter:  'featured'
   },
   
+  pellsCount: {
+    reqtags: 'acappella'
+  },
+
   instrumental: {
     reqtags: 'instrumental,-vocals,-male_vocals,-female_vocals',
   },   
@@ -38,8 +42,7 @@ module.exports = {
   },
 
   games: {
-    tags:  'loops,techno',
-    oneof: 'experimental,dubstep,electronica',
+    tags: '-blues,chill,experimental,dubstep,electronica,minimalist,electro,8_bit,atmospheric,soundscape,psychedelic,psybient,weirdbient,illbient,glitch,techno,loops',
     type:  'any'  
   },
 

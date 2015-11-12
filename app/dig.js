@@ -2,16 +2,19 @@ import router from './services/router';
 import env    from './services/env';
 import routes from './routes/dig';
 import App    from './app';
-import RQO    from './components/RemixQueryOptions';
+import Topics from './stores/topics';
 
 import {
+          RemixQueryOptions,
           DigHeader,
           DigFooter
         } from './components';
 
 env.Header          = DigHeader;
 env.Footer          = DigFooter;
-env.AppQueryOptions = RQO;
+env.AppQueryOptions = RemixQueryOptions;
+
+env.bannerTopic = Topics.digBanner;
 
 var rewriteRules = [
   { regex: new RegExp(/^\/free_music/),                now: '/free' },

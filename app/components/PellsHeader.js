@@ -1,6 +1,6 @@
-import React     from 'react';
-import Link      from './Link';
-import SearchBox from './SearchBox';
+import React        from 'react';
+import Link         from './Link';
+import SearchBox    from './SearchBox';
 import LoadingGlyph from './LoadingGlyph';
 import NavbarHeader from './NavbarHeader';
 

@@ -45,6 +45,8 @@
         var tags = TagString.combine(tags1, 'hip_hop,remix'); // 'foo,bar,hip_hop,remix'
 */
 
+const NOT_FOUND = -1;
+
 var defaultOpts = {
     ignore:  /^(\*|all)$/,
     invalid: /[^-a-zA-Z0-9_]/,
@@ -72,7 +74,7 @@ var TagString = function(opts)
 };
 
 function contains(arr,obj) {
-  return arr.indexOf(obj) !== -1;
+  return arr.indexOf(obj) !== NOT_FOUND;
 }
 
 function removeObject(arr,obj) {
@@ -193,7 +195,7 @@ TagString.prototype.removeAll = function() {
 TagString.prototype.clear = TagString.prototype.removeAll;
         
 TagString.prototype.isEmpty = function() {
-  return this._tagsArray.length == 0;
+  return this._tagsArray.length === 0;
 };
 
 TagString.prototype.toggle = function(tag,flag) {
@@ -207,12 +209,12 @@ TagString.prototype.toggle = function(tag,flag) {
         
 TagString.prototype.contains = function(tagsOrFunction) {
   if( typeof tagsOrFunction === 'function' ) {
-    return find(this._tagsArray, tagsOrFunction);
+    return find(this._tagsArray, tagsOrFunction) !== false;
   }
   var them = TagString.toArray(tagsOrFunction,this);
-  return find( them, tag => this._tagsArray.contains(tag) );
-
+  return find( them, tag => this._tagsArray.contains(tag) ) !== false;
 };
+
         
 TagString.prototype.intersection = function(other) {
   var opts = this.copyOptions();
@@ -259,7 +261,17 @@ TagString.prototype.map = function(callback,context) {
   return this._tagsArray.map(callback,context || this);
 };
     
-        
+TagString.prototype.filter = function(rgx) {
+  var ts = new TagString();
+  for( var i = 0; i < this._tagsArray.length; i++ ) {
+    var t = this._tagsArray[i];
+    if( t.match(rgx) ) {
+      ts._tagsArray.push(t);
+    }
+  }
+  return ts;
+};
+
 TagString.create = function(opts) {
   return new TagString(opts);
 };
@@ -283,6 +295,11 @@ TagString.contains = function(source,tag,opts) {
 TagString.forEach = function(source,callback,context,opts) {
   opts = merge( { source: source }, opts || { } );
   return TagString.create( opts ).forEach(callback,context);
+};
+
+TagString.filter = function(source,filter,opts) {
+  opts = merge( { source: source }, opts || { } );
+  return TagString.create( opts ).filter(filter);
 };
 
 TagString.toArray = function(source,useropts) {

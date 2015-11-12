@@ -1,6 +1,7 @@
 import React    from 'react';
 import Topics   from '../stores/topics';
 import { trim } from '../unicorns';
+import env      from '../services/env';
 
 const Banner = React.createClass({
 
@@ -11,7 +12,7 @@ const Banner = React.createClass({
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
       var store = new Topics();
-      store.find('banner')
+      store.find( env.bannerTopic )
         .then( topic => {
           var hasText = topic.text && (trim(topic.text).length > 0);
           if( hasText ) {

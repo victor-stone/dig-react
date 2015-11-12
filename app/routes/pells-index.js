@@ -73,7 +73,7 @@ index.path = '/';
 
 index.store = function() {
   var query = new Query();
-  return query.count( qc.pells ).then( (c) => {
+  return query.count( qc.pellsCount ).then( (c) => {
     query.model = c;
     return query;
   });

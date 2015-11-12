@@ -1,6 +1,8 @@
 import React     from 'react';
 import Glyph from './Glyph';
 
+const RETURN_KEY = 13;
+
 const SearchBox = React.createClass({
 
  getInitialState: function() {
@@ -14,7 +16,7 @@ const SearchBox = React.createClass({
   },
 
   onKey: function(e) {
-    if( e.keyCode === 13 ) {
+    if( e.keyCode === RETURN_KEY ) {
       this.submitSearch();
     }
   },

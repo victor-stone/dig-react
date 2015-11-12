@@ -8,7 +8,7 @@ import qc               from '../models/query-configs';
 import { Playlist, Paging } from '../components';
 
 import PlaylistStore         from '../stores/playlist';
-import { service as query } from '../stores/query';
+import Query                 from '../stores/query';
 
 const PeopleHeader = React.createClass({
 
@@ -41,6 +41,7 @@ var people = React.createClass({
         <PeopleHeader model={store.artist} />
         <Paging store={store} />
         <Playlist store={store} skipUser />
+        <Playlist.NotALotHere store={store} />
       </div>
     );
   },
@@ -61,6 +62,7 @@ people.store = function(params,queryParams) {
 
     function getArtistDetail( store ) {
       retStore = store;
+      var query = new Query();
       return query.findUser(params.userid);
     }
     

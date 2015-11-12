@@ -6,7 +6,6 @@ import qc               from '../models/query-configs';
 import TagStore         from '../stores/tags';
 import UploadStore      from '../stores/upload';
 import Playlist         from '../stores/playlist';
-import { Transaction }  from '../services/query-ajax-adapter';
 
 var morelike = React.createClass({
 
@@ -32,7 +31,7 @@ morelike.store = function(params,queryParams) {
   var _tags;
   var trackTitle;
 
-  return Transaction( tagStore.remixGenres().then( function(tags)  {
+  return tagStore.remixGenres().then( function(tags)  {
       
       _tags = tags;
 
@@ -63,7 +62,7 @@ morelike.store = function(params,queryParams) {
         model.playlist = model.playlist.rejectBy('id',Number(id));
 
         return playlist;
-    }));  
+    });  
 };
 
 module.exports = morelike;

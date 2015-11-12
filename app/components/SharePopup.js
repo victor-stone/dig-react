@@ -15,7 +15,7 @@ const SharePopup = React.createClass({
   handleShowModal: function(e){
     e.stopPropagation();
     e.preventDefault();
-    setTimeout( () => this.setState( { view: {showModal: true} } ), 10 );
+    this.setState( { view: {showModal: true} } );
   },
 
   modelLink: function() {

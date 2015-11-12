@@ -1,88 +1,12 @@
-import React    from 'react';
-import ReactDOM from 'react-dom';
-import Glyph    from './Glyph';
+import React            from 'react';
+import Glyph            from './Glyph';
+import PlaylistUpdater  from '../mixins/playlist-updater';
+import BoundingMixin    from '../mixins/bounding-element';
+import QueryParamValue  from '../mixins/query-param-value';
 
-import { pagingStats } from '../unicorns';
+import { pagingStats, oassign } from '../unicorns';
 
 var router = null;
-
-/* global $ */
-
-var BoundingMixin = {
-
-  componentDidMount: function() {
-    if( !global.IS_SERVER_REQUEST && !this.props.disableBumping ) {
-      var $e = $(ReactDOM.findDOMNode(this));
-      if( $e.is(':visible') ) {
-        if( this.props.keepAbove ) {
-          this.setupBump( $e, $(this.props.keepAbove), true );
-        }
-        if( this.props.keepBelow ) {
-          this.setupBump( $e, $(this.props.keepBelow), false );
-        }
-        window.addEventListener('resize', this.handleResize);
-      }
-    }
-  },
-
-  componentWillUnmount: function() {
-    if( !global.IS_SERVER_REQUEST && !this.props.disableBumping ) {
-      window.removeEventListener('resize', this.handleResize);
-      var $e = $(ReactDOM.findDOMNode(this));
-      ['a', 'b'].forEach( k => {
-        var f = 'keep-between-'+k;
-        if( $e.data(f) ) {
-          $(window).off('scroll',$e.data(f));
-          $e.data(f,null);
-        }
-      });
-    }
-  },
-
-  handleResize: function() {
-    var $e = $(ReactDOM.findDOMNode(this));
-    ['a', 'b'].forEach( k => {
-      var f = 'keep-between-'+k;
-      if( $e.data(f) ) {
-        $e.data(f)();
-      }
-    });
-  },
-
-  setupBump: function($e,$bumper,isKeepAbove) {
-    
-    if( !$e.is(':visible') ) {
-      return;
-    }
-    
-    var eHeight      = $e.outerHeight() + 3;      
-    var propName     = 'keep-between-' + (isKeepAbove ? 'a' : 'b');
-    
-    $e.data( propName, function() {
-      // we have to do this stuff in the event handler
-      // because DOM
-      var bumperHeight = $bumper.outerHeight() + 3;
-      var bumperTop    = $bumper.offset().top;
-      var top          = Number($e.css('top').replace(/[^-\d\.]/g, ''));
-      var bumperPos    = bumperTop - $(window).scrollTop();
-      
-      if( isKeepAbove ) {
-        if( top + eHeight > bumperPos) {
-          $e.css( { top: (bumperPos-eHeight) + 'px' } );
-        }
-      } else { 
-        if( top < bumperPos + bumperHeight ) {
-          $e.css( { top: (bumperPos + bumperHeight) + 'px' } );
-        }
-      }
-    });  
-
-    $(window).scroll( $e.data(propName) );
-
-    $e.data(propName)();
-  },
-
-};
 
 const PagerLink = React.createClass({
 
@@ -122,9 +46,22 @@ const PagerLink = React.createClass({
 });
 
 
+var OffsetParamValue = oassign( {}, QueryParamValue, {
+
+    getParamValue: function(queryParams) {
+      // 'get' only happens when the query changes
+      // so we always want an offset of 0
+      // (unless it's us deliberately setting
+      // the offet b/c the user is paging)
+      //
+      queryParams.offset = this.settingOffset || 0;
+      this.settingOffset = 0;
+    },
+});
+
 const Paging = React.createClass({
 
-  mixins: [BoundingMixin],
+  mixins: [BoundingMixin,PlaylistUpdater,OffsetParamValue],
 
   getDefaultProps: function() {
     return {
@@ -133,40 +70,27 @@ const Paging = React.createClass({
     };
   },
 
-  componentWillMount: function() {
-    var store = this.props.store;
-    var state = this.stateFromStore();
-    store.on('playlist',this.onPlaylist);
-    this.setState(state);
-  },
-  
-  componentDidUpdate: function() {
-    this.handleResize();
-  },
+  paramName:         'offset',
+  defaultParamValue: 0,
+  paramIsClean:      true,
 
-  componentWillUnmount: function() {
-    this.props.store.removeListener('playlist',this.onPlaylist);
-  },
-
-  stateFromStore: function() {
-    var model = this.props.store.model;
+  stateFromStore: function(store) {
+    var model = store.model;
     return {
-        offset: model.queryParams.offset,
+        /*offset: model.queryParams.offset, */ 
         limit:  model.queryParams.limit,
         length: model.playlist.length,
         total:  model.total      
     };
   },
 
-  onPlaylist: function() {
-    var state  = this.stateFromStore();
-    setTimeout( () => this.setState(state), 50 );
-  },
+  settingOffset: 0,
 
   onNewOffset: function(offset) {
-    // Trigger a new query()
-    this.props.store.applyParams( { offset: offset } );
-    // for now ...
+
+    this.settingOffset = offset;
+    this.performQuery(offset);
+
     if( !router ) {
       router = require('../services/router');
     }

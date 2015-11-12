@@ -1,7 +1,6 @@
-import React     from 'react';
-import Glyph     from './Glyph';
-import { service as 
-           ajaxAdapter } from '../services/query-ajax-adapter';
+import React       from 'react';
+import Glyph       from './Glyph';
+import ajaxAdapter from '../services/query-ajax-adapter';
 
 const LoadingGlyph = React.createClass({
 

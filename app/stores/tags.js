@@ -148,6 +148,4 @@ class Tags extends Query {
 
 }
 
-Tags.service = new Tags();
-
 module.exports = Tags;
