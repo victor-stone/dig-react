@@ -54,7 +54,7 @@ morelike.store = function(params,queryParams) {
 
       var qparams = mergeParams( {}, qc.default, p, queryParams );
 
-      return playlist.playlist(qparams);
+      return playlist.getModel(qparams);
 
     }).then( function( model ) {
 

@@ -44,6 +44,7 @@ class UploadList extends Query {
       this.model = model;
       model.queryParams = oassign( {}, queryParams );
       this.emit('playlist', model );
+      return model;
     });
   }
 
