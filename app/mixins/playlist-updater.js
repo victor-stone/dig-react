@@ -26,7 +26,7 @@ var PlaylistUpdater = {
         this.props.store.removeListener('playlist',this.onPlaylistUpdate);
       }
       props.store.on('playlist',this.onPlaylistUpdate);
-      this.setState( this.stateFromStore(props.store) );
+      this.setState( this.stateFromStore(props.store,true) );
     }
   },
 

@@ -235,7 +235,13 @@ var PellDetail = React.createClass({
     this.props.store.removeListener('selected',this.onSelected);
   },
 
-  stateFromStore: function(store) {
+  stateFromStore: function(store, isNewStore) {
+    if( isNewStore ) {
+      if( this.props.store ) {
+        this.props.store.removeListener('selected',this.onSelected);
+      }
+      store.on('selected',this.onSelected);
+    }
     return { model: store.selected };
   },
 
