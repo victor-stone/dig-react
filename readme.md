@@ -1,5 +1,7 @@
 
 
+This project builds dig.ccmixter.org and pells.ccmixter.org
+
 build and run requires node >= 4
 
 we're building with command line tools (for now)
@@ -17,8 +19,10 @@ npm i uglify -g
 build:
 
 ```
-node build
+./build --<appname>
 ```
+
+where <appname> is either 'dig' or 'pells'
 
 options:
 ```
@@ -31,7 +35,7 @@ options:
 example:
 
 ```
-node build -vp
+./build --dig -vp
 ```
 
 run:
@@ -61,10 +65,12 @@ examples:
 Access logs are written to ./logs. To browse the logs start:
 
 ```
-  node logger
+  node logger --port:<magic-port-number>
 ```
 
-Then browse to http://localhost:4080 
+Then browse to http://localhost:<magic-port-number>
+
+The port is encoded so people can't snoop it. The port number is encoded in an MD5 in logger/index.js
 
 
 
