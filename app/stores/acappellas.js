@@ -2,49 +2,26 @@ import UploadList       from './upload-list';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import rsvp             from 'rsvp';
-import { oassign }      from '../unicorns';
 
 var MAX_CACHE_KEYS = 50;
 
-class ACappellas extends UploadList {
-
+class TotalsCache {
   constructor() {
-    super(...arguments);
-
-    this.filters     = [ 'featured', 'spoken_word', 'melody', 'rap' ];
     this._totals     = {};
-    this._keys_count = 0;
+    this._keys_count = 0;    
+    this._filters    = [ 'featured', 'spoken_word', 'melody', 'rap' ];
+    this._skip       = [ 'offset', 'limit', 'dataview', 'reqtags', '_', 'f' ];
+
   }
 
-  get selected() {
-    throw new Error('selected property depricated');
-  }
+  getTotals(params,store) {
 
-  set selected(id) {
-    throw new Error('selected property depricated:' + id);
-  }
-
-  /* protected */
-
-  fetch(queryParams) {
-    queryParams.dataview = 'default'; // links_by doesn't have bpm
-    return this.query(queryParams).then( serialize( ccmixter.ACappella ) );
-  }
-
-  promiseHash( hash, queryParams ) {
-    hash.artist = queryParams.u ? this.findUser(queryParams.u) : null;
-    hash.totals = this._getTotals(queryParams);
-    return hash;
-  }
-
-
-  /* private */
-
-  _getTotals(params) {
-
-    var p = oassign( {}, params );
-
-    p.reqtags = null; 
+    var p = {};
+    Object.keys(params).sort().forEach( k => {
+      if( !this._skip.contains(k) && params[k] ) {
+        p[k] = params[k];
+      }
+    });
 
     var paramsKey = JSON.stringify(p);
 
@@ -55,12 +32,12 @@ class ACappellas extends UploadList {
     p.reqtags = 'acappella';
 
     var counts = { 
-        all: this.count(p),
+        all: store.count(p),
       };
 
-    this.filters.forEach( f => {
+    this._filters.forEach( f => {
       p.reqtags = 'acappella,' + f;
-      counts[f] = this.count(p);
+      counts[f] = store.count(p);
     });
 
     return rsvp.hash(counts)
@@ -73,6 +50,31 @@ class ACappellas extends UploadList {
               this._totals[ paramsKey ] = r;
               return r;
             });
+  }
+}
+
+TotalsCache._service = null;
+
+TotalsCache.getTotals = function(params,store) {
+  if( !TotalsCache._service ) {
+    TotalsCache._service = new TotalsCache();
+  }
+  return TotalsCache._service.getTotals(params,store);
+};
+
+class ACappellas extends UploadList {
+
+  /* protected */
+
+  fetch(queryParams) {
+    queryParams.dataview = 'default'; // links_by doesn't have bpm
+    return this.query(queryParams).then( serialize( ccmixter.ACappella ) );
+  }
+
+  promiseHash( hash, queryParams ) {
+    hash.artist = queryParams.u ? this.findUser(queryParams.u) : null;
+    hash.totals = TotalsCache.getTotals(queryParams,this);
+    return hash;
   }
 
 }
