@@ -13,6 +13,7 @@ var QueryParamEnum = oassign( {}, QueryParamTracker, {
     var qp      = this.props.store.model.queryParams;
     var state   = { };
     state[name] = qp[name] || this.queryParam.initValue;
+    this.queryParam.initValue = state[name];
     return state ;    
   },
 
