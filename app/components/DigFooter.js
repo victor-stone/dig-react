@@ -8,7 +8,7 @@ class Footer extends React.Component {
 
   render() {
       return (
-      <div className="container-fluid footer">
+      <div className="container-fluid footer footer-pad">
         <div className="row">
           <div className="col-md-3">
             <h1>{"Here"}</h1>

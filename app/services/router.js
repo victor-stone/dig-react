@@ -1,9 +1,9 @@
 
 import RouteRecognizer  from 'route-recognizer';
-import Eventer     from './eventer';
-
-// temp
-import rsvp from 'rsvp';
+import querystring      from 'querystring';
+import rsvp             from 'rsvp';
+import Eventer          from './eventer';
+import { oassign }      from '../unicorns';
 
 class Router extends Eventer
 {
@@ -72,6 +72,12 @@ class Router extends Eventer
     url = this.runRewrites(url);
     this.setBrowserAddressBar(url,stateObj);
     this.updateUrl();
+  }
+
+  navigatePlus(queryParams) {
+    var q  = querystring.parse(document.location.search.replace(/^\?/,''));
+    var qp = querystring.stringify(oassign( {}, q, queryParams));
+    this.navigateTo( '?' + qp );
   }
 
   setBrowserAddressBar(url,stateObj) {

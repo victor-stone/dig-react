@@ -14,33 +14,14 @@ class ACappellas extends UploadList {
     this.filters     = [ 'featured', 'spoken_word', 'melody', 'rap' ];
     this._totals     = {};
     this._keys_count = 0;
-    this._selected   = null;
   }
 
   get selected() {
-    return this._selected;
+    throw new Error('selected property depricated');
   }
 
   set selected(id) {
-
-    var uploadQ = {
-      ids:      id,
-      f:        'json',
-      dataview: 'default'
-    };    
-
-    this.queryOne(uploadQ)
-          .then( serialize( ccmixter.Detail ) )
-          .then( pell => {
-            this._selected = pell;
-            this.emit('selected',pell);
-          });
-
-    // hack...
-    if( 'selected' in this.orgParams ) {
-      delete this.orgParams['selected'];
-    }
-    
+    throw new Error('selected property depricated:' + id);
   }
 
   /* protected */
@@ -51,9 +32,6 @@ class ACappellas extends UploadList {
   }
 
   promiseHash( hash, queryParams ) {
-    if( queryParams.selected ) {
-      this.selected = queryParams.selected;
-    }
     hash.artist = queryParams.u ? this.findUser(queryParams.u) : null;
     hash.totals = this._getTotals(queryParams);
     return hash;

@@ -1,6 +1,6 @@
 'use strict';
 
-var rsvp = require('rsvp');
+import rsvp from 'rsvp';
 
 const MAX_ERROR_STR = 40;
 

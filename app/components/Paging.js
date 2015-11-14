@@ -1,13 +1,12 @@
 import React            from 'react';
 import Glyph            from './Glyph';
+import serviceLookup    from '../services';
 
 import { PlaylistUpdater,
          BoundingElement,
          QueryParamValue } from '../mixins';
 
 import { pagingStats, oassign } from '../unicorns';
-
-var router = null;
 
 const PagerLink = React.createClass({
 
@@ -94,9 +93,7 @@ const Paging = React.createClass({
     this.userOffset = offset;
     this.performQuery(offset);
 
-    if( !router ) {
-      router = require('../services/router');
-    }
+    var router = serviceLookup('router');
     router.setBrowserAddressBar('?offset='+offset);
   },
   

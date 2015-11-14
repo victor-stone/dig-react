@@ -13,11 +13,12 @@ import { mergeParams,
          TagString }      from '../unicorns';
 import AudioPlayerService from '../services/audio-player';
 
-import { PlaylistUpdater, 
+import { PlaylistUpdater,
+         NowPlayingTracker, 
          QueryParamValue,
          QueryParamTagsRotate } from '../mixins';
 
-const NOMINAL_TIMEOUT = 4;
+const NOMINAL_TIMEOUT = 40;
 
 var PellTabs = React.createClass({
 
@@ -34,12 +35,7 @@ var PellTabs = React.createClass({
     var tag;
     var totals = store.model.totals;
     if( this.state && this.state.tag && !totals[this.state.tag] ) {
-      for( tag in totals ) {
-        if( totals[tag] ) {
-          setTimeout( () => this.setStateAndPerform( {tag} ), NOMINAL_TIMEOUT );
-          break;
-        }
-      }
+      setTimeout( () => this.setStateAndPerform( {tag:''} ), NOMINAL_TIMEOUT );
     }
     var tags = store.model.queryParams.reqtags;
     tag = TagString.filter(tags,this.queryParam.filter).toString();
@@ -68,7 +64,7 @@ var PellTabs = React.createClass({
           ? <li className={this.checkActive('featured')} ><a href="#" onClick={this.onFilter('featured')}>{"featured "}<span className="badge">{totals.featured}</span></a></li>
           : null
         }
-        <li className={this.checkActive('all')}><a href="#" onClick={this.onFilter('all')}>{"all "}<span className="badge">{totals.all}</span></a></li>
+        <li className={this.checkActive('all')}><a href="#" id="allpellstab" onClick={this.onFilter('all')}>{"all "}<span className="badge">{totals.all}</span></a></li>
         {totals.spoken_word 
           ? <li className={this.checkActive('spoken_word')}><a href="#" onClick={this.onFilter('spoken_word')}>{"spoken "}<span className="badge">{totals.spoken_word}</span></a></li>
           : null
@@ -100,14 +96,15 @@ var PellListing = React.createClass({
   stateFromStore: function(store) {
     var playlist = store.model.playlist;
     var artist   = store.model.artist;
-    return { playlist, artist, u: artist && artist.id };
+    var u        = artist && artist.id;
+    this.queryParam.initValue = u; // hack to prevent from being cleared
+    return { playlist, artist, u };
   },
 
   selectLine: function(pell) {
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
-      this.props.store.selected = pell.id;
       AudioPlayerService.togglePlay(pell);
     };
   },
@@ -146,10 +143,10 @@ var PellListing = React.createClass({
     }
 });
 
-var UserSearch = React.createClass({
+var PellsUserSearch = React.createClass({
 
   getInitialState: function() {
-    return { users: null };
+    return { users: [] };
   },
 
   componentWillMount: function() {
@@ -169,7 +166,7 @@ var UserSearch = React.createClass({
 
   render: function() {
 
-    var users = this.state.users || [];
+    var users = this.state.users;
     var cls   = 'user-search-results' + (users.length ? '' : ' hidden');
 
     return (
@@ -198,7 +195,7 @@ var PellHeader = React.createClass({
     var content = null;
 
     if( searchTerm ) {
-      content = <div><h2><Link href="/pells" ><Glyph icon="chevron-circle-left" />{" clear search"}</Link> <small><Glyph icon="search" />{" search "}</small>{searchTerm}</h2><UserSearch searchTerm={searchTerm} /></div>;
+      content = <div><h2><Link href="/pells" ><Glyph icon="chevron-circle-left" />{" clear search"}</Link> <small><Glyph icon="search" />{" search "}</small>{searchTerm}</h2><PellsUserSearch searchTerm={searchTerm} /></div>;
     } else if( artist ) {
       content = <h2><Link href="/pells" ><Glyph icon="chevron-circle-left" />{" everybody"}</Link> <img src={artist.avatarURL} />{artist.name}</h2>;
     } else {
@@ -216,44 +213,27 @@ var PellHeader = React.createClass({
 
 var PellDetail = React.createClass({
 
-  mixins: [PlaylistUpdater],
-
-  componentWillMount: function() {
-    this.props.store.on('selected',this.onSelected);
-  },
-
-  componentWillUnmount: function() {
-    this.props.store.removeListener('selected',this.onSelected);
-  },
-
-  stateFromStore: function(store, isNewStore) {
-    if( isNewStore ) {
-      if( this.props.store ) {
-        this.props.store.removeListener('selected',this.onSelected);
-      }
-      store.on('selected',this.onSelected);
-    }
-    return { model: store.selected };
-  },
-
-  onSelected: function(model) {
-    this.setState( { model } );
-  },
+  mixins: [NowPlayingTracker],
 
   render: function() {
 
-    var model  = this.state.model || { files: [] };
-    var cls    = 'pell-detail' + (this.state.model ? '' : ' hidden');
+    var model  = this.state.nowPlaying;
+    var cls    = 'pell-detail' + (model ? '' : ' hidden');
 
     return (
         <div className={cls}>
-          <h3>{model.name}</h3>
-          <ul className="download-list">
-            {model.files.map( file => {
-              return <li key={file.id}><DownloadPopup fullUpload={model} file={file} /> <span className="ext">{file.extension}</span> <span className="nic">{file.nicName}</span></li>;
-            })}
-          </ul>
-          <ExternalLink className="ccm-link" href={model.url} text="@ccMixter" />
+        {model
+          ?<div>
+            <h3>{model.name}</h3>
+            <ul className="download-list">
+              {model.files.map( file => {
+                return <li key={file.id}><DownloadPopup fullUpload={model} file={file} /> <span className="ext">{file.extension}</span> <span className="nic">{file.nicName}</span></li>;
+              })}
+            </ul>
+            <ExternalLink className="ccm-link" href={model.url} text="@ccMixter" />
+          </div>
+          : null
+        }
         </div>
       );
   }
@@ -265,7 +245,7 @@ var pells = React.createClass({
     var store = this.props.store;
     return (
       <div className="container pells-page">
-        <div className="gear">
+        <div className="filter-box-position">
           <QueryOptions store={store} />
         </div>
         <PellHeader store={store} />

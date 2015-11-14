@@ -5,9 +5,7 @@ import SearchBox from './SearchBox';
 import Glyph        from './Glyph';
 import LoadingGlyph from './LoadingGlyph';
 import NavbarHeader from './NavbarHeader';
-
-
-var router = null;
+import serviceLookup from '../services';
 
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">
@@ -38,9 +36,7 @@ const NavbarRight = (
 const Header = React.createClass({
 
   submitSearch: function(text) {
-    if( !router ) { // avoid require() recursion
-      router = require('../services/router');
-    }
+    var router = serviceLookup('router');
     router.navigateTo( '/search?searchp=' + text );
   },
 

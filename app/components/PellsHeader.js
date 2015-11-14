@@ -3,17 +3,15 @@ import Link         from './Link';
 import SearchBox    from './SearchBox';
 import LoadingGlyph from './LoadingGlyph';
 import NavbarHeader from './NavbarHeader';
+import services     from '../services';
 
-var router = null;
 
 const PellsHeader = React.createClass({
 
   displayName: 'PellsHeader',
 
   submitSearch: function(text) {
-    if( !router ) { // avoid require() recursion
-      router = require('../services/router');
-    }
+    var router = services('router');
     router.navigateTo( '/pells?searchp=' + text );
   },
 

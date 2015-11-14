@@ -1,9 +1,13 @@
 
-module.exports = { 
+import index from './pells-index';
+import licenses from './licenses';
+import pells from './pells-route';
+import search from './search';
 
-  index: require('./pells-index'),
-  licenses: require('./licenses'),
-  pells: require('./pells-route'),
-  search: require('./search'),
+module.exports = { 
+  index,
+  licenses,
+  pells,
+  search,
 };
 
