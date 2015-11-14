@@ -356,9 +356,13 @@ class Detail extends Upload {
     };
 
     this.getIsOpen = function() {
-      return this._hasTag('attribution,cczero');
+      return this._hasTag('attribution,cczero,share_alike');
     };
     
+    this.getIsSpecialLic = function() {
+      return this._tagMatches(/^share_alike$/); 
+    };
+
     this.getLicenseLogoURL = function() {
       return LicenseUtils.logoURLFromName( this.license_name );
     };
@@ -380,6 +384,13 @@ class Detail extends Upload {
       }
     };
     
+  }
+
+  _tagMatches(filter) {
+    if( !this._tags ) {
+      this._tags = this.getTags();
+    }
+    return this._tags.filter(filter).getLength() > 0;
   }
 
   _hasTag(tag) {

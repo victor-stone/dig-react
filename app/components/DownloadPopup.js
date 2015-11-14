@@ -81,8 +81,8 @@ var DownloadPopup = React.createClass({
 
     var upload         = this.state.fullUpload;
     var plainSelected  = this.state.plainSelected;
-    var permission     = upload.isOpen ? 'Free to use in commercial projects.' : 'For noncommercial projects only.';
     var featuring      = upload.featuring ? `Ft: ${upload.featuring}` : '';
+    var permission     = upload.isOpen ? 'Free to use in commercial projects.' : 'For noncommercial projects only.';
 
     var licenseTextTemplate = {
       plain: `${upload.name} by ${upload.artist.name} (c) ${upload.licenseYear} Licensed under a Creative Commons ${upload.licenseName} license. ${upload.url} ${featuring}`,
@@ -121,6 +121,12 @@ var DownloadPopup = React.createClass({
               <li> 
                 <p>{permission}</p>
               </li>
+              {upload.isSpecialLic
+                ? <li>
+                    <p>{"(This is an older license that "}<br />{"has "}<a href={upload.licenseURL}>special restrictions</a>{".)"}</p>
+                  </li>
+                : null
+              }
                {upload.isCCPlus ?
                   <li>
                     <a href={upload.purchaseLicenseURL} className="btn btn-info btn-lg"><img src={upload.purchaseLogoURL} className="pull-left" />{"  Buy a License "}</a>
