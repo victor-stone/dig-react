@@ -52,7 +52,6 @@ class File extends Model {
     this.urlBinding      = 'download_url';
     this.idBinding       = 'file_id';
     this.sizeBinding     = 'file_filesize';
-    this.downloadSize    = 'file_filesize';
     this.typeBinding     = 'file_extra.type';
     this.uploadBinding   = '_bindParent';
     this.mediaURLBinding = 'download_url';
@@ -88,6 +87,11 @@ class File extends Model {
       return baseURL + this.file_upload + '/' + this.file_id;
     };
 
+    this.getDownloadSize = function() {
+      var sz = this.file_filesize;
+      return sz ? sz.replace(/\(|\)|\s+/g, '') : '';
+    };
+
     /* required by audio player */
     
     this.getMediaTags = function() {
@@ -107,7 +111,6 @@ class File extends Model {
     };
   }
 
-
   _hasTag(tag) {
     var tags = this.getTags();
     if( tags ) {
@@ -115,7 +118,6 @@ class File extends Model {
     }
     return false;
   }
-
 
 }
 

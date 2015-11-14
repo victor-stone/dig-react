@@ -12,8 +12,8 @@
   margin-right: 18px;
 }
 
-.pell-browser .tab-content,
-.pell-browser .nav-tabs > li > a.active {
+.pells-page .tab-content,
+.pells-page .nav-tabs > li.active a {
   background-color: #fcfcfc;
 }
 
@@ -67,10 +67,12 @@
   white-space: nowrap;
 }
 
-.pell-browser .pell span.artist a {
-  font-size: 12px; 
+.pells-page a.artist,
+.pells-page span.artist a {
+  font-style: italic;
+  font-size: 12px;
   color: #3c3c55;
-}
+ }
 
 .pell-browser .pell .title {
   width: 70%;

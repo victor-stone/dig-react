@@ -1,9 +1,7 @@
 
 import RouteRecognizer  from 'route-recognizer';
-import querystring      from 'querystring';
 import rsvp             from 'rsvp';
 import Eventer          from './eventer';
-import { oassign }      from '../unicorns';
 
 class Router extends Eventer
 {
@@ -15,7 +13,7 @@ class Router extends Eventer
     this.rewrites = [];
 
     if( typeof window !== 'undefined' ) {
-      window.onpopstate = this.updateUrl.bind(this);
+      window.onpopstate = this.updateURL.bind(this);
     }
   }
   
@@ -28,7 +26,6 @@ class Router extends Eventer
     for( var handler in routes ) {
       var component = routes[handler];
       var path = component.path || ('/' + handler);
-      // temp code:
       if( !component.store ) {
         component.store = function() { return rsvp.resolve({}); };
       }
@@ -47,7 +44,6 @@ class Router extends Eventer
     }
     return url;
   }
-
 
   resolve(url) {
     url = this.runRewrites(url);
@@ -71,13 +67,7 @@ class Router extends Eventer
   navigateTo(url,stateObj) {
     url = this.runRewrites(url);
     this.setBrowserAddressBar(url,stateObj);
-    this.updateUrl();
-  }
-
-  navigatePlus(queryParams) {
-    var q  = querystring.parse(document.location.search.replace(/^\?/,''));
-    var qp = querystring.stringify(oassign( {}, q, queryParams));
-    this.navigateTo( '?' + qp );
+    this.updateURL();
   }
 
   setBrowserAddressBar(url,stateObj) {
@@ -90,7 +80,7 @@ class Router extends Eventer
     }
   }
 
-  updateUrl() {
+  updateURL() {
     var q = document.location.search || '';
     var handlers = this.resolve(document.location.pathname + q);
     if (!handlers ) {

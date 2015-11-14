@@ -28,15 +28,6 @@
   margin-bottom: 0px;
 }
 
-#qop {
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-#qop .form-group {
-  margin-right: 20px;
-}
-
 .outlet-wrap {
   margin-bottom: 60px;
 }
@@ -58,7 +49,6 @@
   padding-bottom: 100px;
 }
 
-
 .pells-img h1 {
   color: white;
   margin-top: 150px;
@@ -71,18 +61,5 @@
   color: antiquewhite;
   max-width: 440px;
   text-shadow: 2px 2px black;
-}
-
-.modal .actions-centered > li {
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.modal .nav-tabs > li {
-  margin-bottom: 0px;
-}
-
-.modal .pell-detail .download-list button {
-  margin: 7px;
 }
 

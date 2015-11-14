@@ -215,6 +215,11 @@ var PellDetail = React.createClass({
 
   mixins: [NowPlayingTracker],
 
+  dead: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+  },
+
   render: function() {
 
     var model  = this.state.nowPlaying;
@@ -223,15 +228,28 @@ var PellDetail = React.createClass({
     return (
         <div className={cls}>
         {model
-          ?<div>
-            <h3>{model.name}</h3>
-            <ul className="download-list">
-              {model.files.map( file => {
-                return <li key={file.id}><DownloadPopup fullUpload={model} file={file} /> <span className="ext">{file.extension}</span> <span className="nic">{file.nicName}</span></li>;
-              })}
-            </ul>
-            <ExternalLink className="ccm-link" href={model.url} text="@ccMixter" />
-          </div>
+          ? <div> 
+              <ul className="nav nav-tabs">
+                <li className="active pell-detail-fake-tab" >
+                  <a href="#" onClick={this.dead}>{model.name}</a>
+                </li>
+                <li>
+                </li>
+              </ul>
+              <div className="tab-content">
+                <ul className="download-list">
+                  <li>
+                    <Link className="artist" href={'/pells?u='+model.artist.id}>{model.artist.name}</Link>
+                  </li>
+                  {model.files.map( file => {
+                    return <li className="dl-list" key={file.id}><DownloadPopup btnClass="sm-download" fullUpload={model} file={file} /> <span className="ext">{file.extension}</span> <span className="nic">{file.nicName}</span></li>;
+                  })}
+                  <li>
+                    <ExternalLink className="ccm-link pell-detail-foot" href={model.url} text="@ccMixter" />
+                  </li>
+                </ul>
+              </div>
+            </div>
           : null
         }
         </div>

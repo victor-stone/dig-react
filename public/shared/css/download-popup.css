@@ -1,0 +1,38 @@
+
+.modal .download-popup .actions {
+  padding: 0px;
+}
+
+.modal .download-popup .actions-centered li {
+  text-align: center;
+}
+
+.modal .download-popup .actions li {
+  margin-bottom: 15px;
+}
+
+.modal .download-popup .actions li p {
+    margin: 0 0 10px;
+}
+
+.modal .download-popup a.btn img {
+    margin-right: 8px;
+    margin-left: -8px;
+}
+
+.modal .download-popup .nav-tabs > li {
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
+.modal .download-popup .col-panel textarea {
+    max-width: 98%;
+    opacity: 0.3;
+    border: 0px;
+}
+
+.modal .download-popup .col-panel button.copy-to-clip {
+  margin-top: 17px;
+}
+
+

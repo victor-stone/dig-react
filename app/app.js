@@ -22,7 +22,7 @@ const App = React.createClass({
       router     .on( 'navigateTo', this.onNavigate );
 
       if( !this.state.component ) {
-        router.navigateTo(); // current url
+        router.updateURL();
       }
     }
   },

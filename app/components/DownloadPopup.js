@@ -105,7 +105,7 @@ var DownloadPopup = React.createClass({
                 </ul>
                 <textarea ref="attributionText" readOnly cols="30" rows="2" value={licenseText}></textarea>
                 <div className="text-center">
-                  <button className="btn btn-sm btn-info" onClick={this.copyToClip}><Glyph icon="files-o" />{" Copy to Clipboard"}</button>
+                  <button className="btn btn-sm btn-info copy-to-clip" onClick={this.copyToClip}><Glyph icon="files-o" />{" Copy to Clipboard"}</button>
                 </div>
               </div>
             </div>
@@ -123,7 +123,7 @@ var DownloadPopup = React.createClass({
               </li>
               {upload.isSpecialLic
                 ? <li>
-                    <p>{"(This is an older license that "}<br />{"has "}<a href={upload.licenseURL}>special restrictions</a>{".)"}</p>
+                    <p>{"(This is an older license that "}<br />{"has "}<a href={upload.licenseURL}>{"special restrictions"}</a>{".)"}</p>
                   </li>
                 : null
               }
@@ -146,7 +146,7 @@ var DownloadPopup = React.createClass({
   },
 
   render: function() {
-    var cls    = 'btn btn-warning';
+    var cls    = 'btn btn-warning ' + (this.props.btnClass || '');
     var sz     = this.props.big ? 'x4' : '';
     var fixed  = this.props.fixed || false;
 
