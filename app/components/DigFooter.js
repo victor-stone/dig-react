@@ -17,6 +17,7 @@ class Footer extends React.Component {
               <li><a href="http://ccmixter.org/privacy">{"Privacy"}</a></li>
               <li><a href="http://ccmixter.org/terms">{"Terms"}</a></li>
               <li><a href="http://ccmixter.org/keep-ccmixter-open-and-free"><i className="fa fa-heart"></i>{" Donate(!)"}</a></li>
+              <li><Link href="/credits#credits">{"Credits"}</Link></li>
             </ul>
           </div>
           <div className="col-md-3">

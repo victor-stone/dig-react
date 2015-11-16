@@ -299,3 +299,18 @@ a > small:after {
   margin-right: 8px;
   margin-left: -8px;
 }
+
+.credits li {
+  margin-bottom: 12px;
+}
+.credits .label {
+  display: inline-block;
+  color: black;
+  width: 35%;
+  text-align: right;
+}
+
+.credits a {
+  text-transform: lowercase;
+  margin-right: 9px;
+}

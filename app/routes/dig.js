@@ -1,4 +1,5 @@
 import ccplus from './ccplus';
+import credits from './credits';
 import dig from './dig-route';
 import edpicks from './edpicks';
 import film from './film';
@@ -16,6 +17,7 @@ import upload from './upload';
 
 module.exports = { 
     ccplus,
+    credits,
     dig,
     edpicks,
     film,
