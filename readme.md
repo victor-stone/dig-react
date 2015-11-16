@@ -72,5 +72,5 @@ Then browse to http://localhost:<magic-port-number>
 
 The port is encoded so people can't snoop it. The port number is encoded in an MD5 in logger/index.js
 
-
+And boy do we LOVE [Browser Stack](http://browserstack.com)
 
