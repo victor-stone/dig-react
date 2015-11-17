@@ -1,6 +1,10 @@
 
 
-This project builds dig.ccmixter.org and pells.ccmixter.org
+This project builds dig.ccmixter.org and pells.ccmixter.org and some admin tools.
+
+## Build & Run
+
+### Prerequisites
 
 build and run requires node >= 4
 
@@ -16,7 +20,7 @@ npm i eslint-plugin-react -g
 npm i uglify -g
 ```
 
-build:
+### Build
 
 ```
 ./build --<appname>
@@ -32,16 +36,20 @@ options:
   -d    - development (default)
 ```
 
-example:
+example: this builds dig for production
 
 ```
 ./build --dig -vp
 ```
 
-run:
+### Run
 
 ```
 node dig
+```
+and 
+```
+node pells
 ```
 
 options:
@@ -49,7 +57,6 @@ options:
 ```
   --port=<port>    - default 3000
   --mem            - display memory usage (must run with node with --expose-gc option)
-  --sr=<path>      - install a dynamic hook for every request
   -v               - verbose print outs
 ```
 
@@ -58,9 +65,10 @@ examples:
 ```
   node dig
   node dig --port=4000
-  node --expose-gc dig -mem --port=4000
-  node dig --sr=bin/server-rules.js
+  node --expose-gc pells -mem --port=3000
 ```
+  
+## Logs
 
 Access logs are written to ./logs. To browse the logs start:
 
@@ -68,9 +76,10 @@ Access logs are written to ./logs. To browse the logs start:
   node logger --port:<magic-port-number>
 ```
 
-Then browse to http://localhost:<magic-port-number>
+Then browse to `http://localhost:<magic-port-number>`
 
 The port is encoded so people can't snoop it. The port number is encoded in an MD5 in logger/index.js
 
-And boy do we LOVE [Browser Stack](http://browserstack.com)
+### Love
 
+And boy do we LOVE [Browser Stack](http://browserstack.com)
