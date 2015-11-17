@@ -135,8 +135,6 @@ a.btn-exp:hover {
   width: 10px;
 }
 
-/* playlist */
-
 .actions {
   padding-left: 0px;
 }
@@ -145,27 +143,6 @@ a.btn-exp:hover {
 }
 .actions-centered > li {
   text-align: center;
-}
-
-.play-list .artist-name > a:hover {
-  border-bottom: 1px dashed;
-}
-
-.play-list > li {
-  margin-bottom: 2px;
-  font-size: 22px;
-}
-
-.song-title > a {
-  color: black;  
-}
-.song-title > a:hover{
-  color: #999;
-  text-decoration: none;
-}
-
-.artist-name > a:hover{
-  text-decoration: none;
 }
 
 
@@ -257,6 +234,7 @@ a.btn-exp:hover {
 .did-you-mean > a {
   margin-left: 20px;
 }
+
 /* home page */
 .dig-img {
   background-image: url('../images/home-bg.jpg');

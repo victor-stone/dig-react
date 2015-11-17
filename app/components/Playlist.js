@@ -38,7 +38,7 @@ var PlaylistItem = React.createClass({
     var skipU = this.props.skipUser;
 
     return ( 
-      <li className="clearfix text-nowrap">
+      <li className="clearfix">
         <PlayButton model={u} onPlay={this.props.onPlay}/> <DownloadPopup model={u} /> <SongLink model={u} /> <ArtistLink model={u.artist} skipUser={skipU} />
       </li>
     );
