@@ -112,7 +112,7 @@ var index = React.createClass({
 
 });
 
-index.title = 'Home';
+index.title = 'dig.ccMixter Home';
 
 index.path = '/';
 

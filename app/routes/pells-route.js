@@ -215,39 +215,72 @@ var PellDetail = React.createClass({
 
   mixins: [NowPlayingTracker],
 
-  dead: function(e) {
+  getInitialState: function() {
+    return this.onNowPlayingState();
+  },
+
+  onNowPlayingState: function() {
+    return { show: 'listing'};    
+  },
+
+  showListing: function(e) {
     e.stopPropagation();
     e.preventDefault();
+    this.setState( {show: 'listing'} );
+  },
+
+  showDetails: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState( {show: 'details'} );    
+  },
+
+  checkActive: function(mode) {
+    return( this.state.show === mode ? 'active' : '' );
+  },
+
+  renderListing: function(model) {
+    return (<ul className="download-list">
+        <li>
+          <span className="name">{model.name}</span>
+        </li>
+        <li>
+          <Link className="artist" href={'/pells?u='+model.artist.id}>{model.artist.name}</Link>
+        </li>
+        {model.files.map( file => {
+          return <li className="dl-list" key={file.id}><DownloadPopup btnClass="sm-download" fullUpload={model} file={file} /> <span className="ext">{file.extension}</span> <span className="nic">{file.nicName}</span></li>;
+        })}
+        <li>
+          <ExternalLink className="ccm-link pell-detail-foot" href={model.url} text="@ccMixter" />
+        </li>
+      </ul>);
+  },
+
+  renderDetail: function(model) {
+    return (<pre className="pell-detail-description">{model.description}</pre>);
   },
 
   render: function() {
 
     var model  = this.state.nowPlaying;
     var cls    = 'pell-detail' + (model ? '' : ' hidden');
+    var showListing = this.state.show === 'listing';
+    var element = model ? (showListing ? this.renderListing(model) : this.renderDetail(model)) : null;
 
     return (
         <div className={cls}>
         {model
           ? <div> 
               <ul className="nav nav-tabs">
-                <li className="active pell-detail-fake-tab" >
-                  <a href="#" onClick={this.dead}>{model.name}</a>
+                <li className={this.checkActive('listing')} >
+                  <a href="#"  onClick={this.showListing}><Glyph icon="folder" />{" files"}</a>
                 </li>
-                <li>
+                <li className={this.checkActive('details')} >
+                  <a href="#" onClick={this.showDetails}><Glyph icon="info-circle" />{" details"}</a>
                 </li>
               </ul>
               <div className="tab-content">
-                <ul className="download-list">
-                  <li>
-                    <Link className="artist" href={'/pells?u='+model.artist.id}>{model.artist.name}</Link>
-                  </li>
-                  {model.files.map( file => {
-                    return <li className="dl-list" key={file.id}><DownloadPopup btnClass="sm-download" fullUpload={model} file={file} /> <span className="ext">{file.extension}</span> <span className="nic">{file.nicName}</span></li>;
-                  })}
-                  <li>
-                    <ExternalLink className="ccm-link pell-detail-foot" href={model.url} text="@ccMixter" />
-                  </li>
-                </ul>
+              {element}
               </div>
             </div>
           : null

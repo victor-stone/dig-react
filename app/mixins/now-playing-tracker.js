@@ -1,5 +1,6 @@
 import AudioPlayerService from '../services/audio-player';
 import Upload from '../stores/upload';
+import { oassign } from '../unicorns';
 
 var NowPlayingTracker = {
 
@@ -26,8 +27,12 @@ var NowPlayingTracker = {
 
   modelFromNowPlaying: function(np) {
     if( np ) {
+      var userState = {};
+      if( this.onNowPlayingState ) {
+        userState = this.onNowPlayingState();
+      }
       var upload = new Upload();
-      upload.info(np.id).then( nowPlaying => this.setState( {nowPlaying} ) );
+      upload.info(np.id).then( nowPlaying => this.setState( oassign({nowPlaying},userState) ) );
     }
   },
 

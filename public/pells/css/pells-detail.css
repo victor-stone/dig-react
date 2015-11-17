@@ -5,8 +5,17 @@
   border-bottom: 1px solid #e2e2e2;
 }
 
-.pell-detail li.pell-detail-fake-tab {
-  max-width: 80%;
+.pell-detail-description {
+ max-height: 300px;
+ border: 0px;
+ white-space: pre;
+}
+
+.pell-detail .download-list li span.name {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
 }
 
 .pell-detail .download-list li.dl-list {

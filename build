@@ -3,11 +3,11 @@
 process.env.NODE_DEBUG = fs;
 var clog = console.log;
 
-var fs         = require('fs');
-var glob       = require('glob');
-var del        = require('del');
-var rsvp       = require('rsvp');
-var argv       = require('minimist')(process.argv.slice(2));
+var fs      = require('fs');
+var glob    = require('glob');
+var del     = require('del');
+var rsvp    = require('rsvp');
+var argv    = require('minimist')(process.argv.slice(2));
 var globp   = rsvp.denodeify(glob);
 
 var bt = require('./bin/build-tools');
@@ -15,7 +15,10 @@ var bt = require('./bin/build-tools');
 var MODE     = argv.mode || (argv.p ? 'prod' : 'dev');
 var buildAll = argv.all || argv.a || argv.p || false;
 var verbose  = argv.verbose || argv.v || false;
-var APP_NAME = argv.pells ? 'pells' : (argv.dig ? 'dig' : (argv.app || 'dig'));
+var APP_NAME =   argv.pells ?  'pells' : 
+                (argv.dig   ?  'dig'   : 
+                (argv.stems ?  'stems' :
+                (argv.app   || 'dig')));
 
 clog( '------------------------ Building ------------------------');
 clog( ' buiding at: ', new Date() + '');

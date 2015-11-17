@@ -1,12 +1,12 @@
 import credits from './credits';
 import licenses from './licenses';
-import index from './pells-index';
-import pells from './pells-route';
+import index from './stems-index';
+import stems from './stems-route';
 
 module.exports = { 
   credits,
   index,
   licenses,
-  pells,
+  stems,
 };
 

@@ -1,137 +1,11 @@
-/* global soundManager */
-import { oassign,
-          debounce } from '../unicorns';
-import Eventer from './eventer';
+import { oassign } from '../unicorns';
+import Eventer from '../services/eventer';
+import MP3 from './audio-formats/mp3';
+import Media from './audio-formats/media';
 
-const NOT_FOUND         = -1;
-const EMIT_DELAY        = 50;
-const PLAYBACK_DEBOUNCE = 50;
-const FOWARD = 1;
-const BACK   = -1;
-
-class Media extends Eventer
-{
-  constructor(args) {
-    super();
-    oassign(this,args,{
-      isPlaying:  false,
-      isPaused: false,
-      positionProperties: {
-        position: -1,
-        duration: -1,
-        bytesLoaded: -1,
-        bytesTotal: -1,
-      },      
-      _sound: null,
-    });
-  }
-
-
-  sound() {
-    if( this._sound ) {
-      return this._sound;
-    }
-
-    var url = this.url;
-    if( !url ) {
-      return;
-    }
-
-    var me = this;
-    var sound = soundManager.createSound({
-      id:  url,
-      url: url,
-      onplay() {
-        me.setIsPlaying(true);
-      },
-      onstop() {
-        me.setIsPlaying(false);
-      },
-      onpause() {
-        me.setIsPaused(true);
-      },
-      onresume() {
-        me.setIsPaused(false);
-      },
-      onfinish() {
-        me.setIsPlaying(false);
-        me.safeEmit('finish',me);
-      },
-
-      whileloading: debounce(me.setPositionProperties.bind(me), PLAYBACK_DEBOUNCE),
-      whileplaying: debounce(me.setPositionProperties.bind(me), PLAYBACK_DEBOUNCE),
-    });
-
-    this._sound = sound;
-    return sound;
-  }
-
-  setPositionProperties() {
-    var sound = this._sound;
-    oassign(this.positionProperties,{
-          bytesLoaded: sound.bytesLoaded,
-          bytesTotal: sound.bytesTotal,
-          position: sound.position,
-          duration: sound.duration
-        });
-    this.safeEmit('position',this.positionProperties,this);
-  }
-
-  stop() {
-    var sound = this.sound();
-    if (sound) {
-      sound.stop();
-    }
-  }
-
-  play() {
-    var sound = this.sound();
-    if (sound) {
-      sound.play();
-    }
-  }
-
-  togglePlay() {
-    if (this.isPlaying) {
-      this.stop();
-    } else {
-      this.play();
-    }
-  }
-  
-  togglePause() {
-    var sound = this.sound();
-    if( sound ) {
-      sound.togglePause();
-    }
-  }
-  
-  setPosition(position) {
-    return this.sound().setPosition(position);
-  }
-
-  setPositionPercentage(percentage) {
-    var duration = this.positionProperties.duration;
-    return this.setPosition(duration * percentage);
-  }
-
-  setIsPlaying(flag) {
-    this.isPlaying = flag;
-    this.safeEmit( flag ? 'play' : 'stop', this );
-    this.safeEmit( 'controls', this );
-  }
-
-  setIsPaused(flag) {
-    this.isPaused = flag;
-    this.safeEmit( 'controls', this );
-  }
-
-  safeEmit() {
-    // throw the event over to the main window thread
-    setTimeout( () => this.emit.apply(this,arguments), EMIT_DELAY );    
-  }
-
-}
+const NOT_FOUND  = -1;
+const FOWARD     = 1;
+const BACK       = -1;
 
 class AudioPlayer extends Eventer
 {
@@ -278,7 +152,7 @@ class AudioPlayer extends Eventer
       media = cache[url];
     } else {  
       var args = oassign( { url: url },  playable.mediaTags );
-      media = new Media(args);
+      media = new MP3(args);
       media.on('play',this._onPlay.bind(this));
       cache[url] = media;
     }

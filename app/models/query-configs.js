@@ -25,6 +25,13 @@ module.exports = {
     reqtags: 'acappella'
   },
 
+  samples: {
+    reqtags: 'sample'
+  },
+
+  samplesCount: {
+    reqtags: 'sample'
+  },
   instrumental: {
     reqtags: 'instrumental,-vocals,-male_vocals,-female_vocals',
   },   

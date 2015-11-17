@@ -23,6 +23,7 @@ import QueryOptions from './QueryOptions';
 import RemixQueryOptions from './RemixQueryOptions';
 import SearchBox from './SearchBox';
 import SharePopup from './SharePopup';
+import StemsHeader from './StemsHeader';
 import TitleSetter from './TitleSetter';
 import TrackbackPopup from './TrackbackPopup';
 
@@ -51,6 +52,7 @@ module.exports = {
     RemixQueryOptions,
     SearchBox,
     SharePopup,
+    StemsHeader,
     TitleSetter,
     TrackbackPopup 
 };

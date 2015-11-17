@@ -386,19 +386,6 @@ a.btn-exp:hover {
     display: none;
   }
 
-  .play-list > li {
-    margin-bottom: 15px;
-  }
-
-  .play-list > li .artist-name {
-    display: block;
-    margin-left: 60px;
-  }
-
-  ul.play-list  {
-    margin-top: 18px;
-  }
-
   .no-hit-suggestion {
     display: none;
   }

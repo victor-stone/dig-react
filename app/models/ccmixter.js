@@ -201,6 +201,7 @@ class Upload extends UploadBasic {
     };
 
     this.idBinding = 'upload_id';
+    this.descriptionBinding = 'upload_description_plain';
 
     this.getMediaURL = function(target) {
       var f = this.getFileInfo(target);
