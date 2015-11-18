@@ -82,6 +82,22 @@ class File extends Model {
       return false;
     };
 
+    this.getIsZIP = function() {
+      var ffi = this.file_format_info;
+      if( (ffi) && ('format-name' in ffi) ) {
+        return ffi['format-name'].match(/zip/) !== null;
+      }
+      return false;
+    };
+
+    this.getZipContents = function() {
+      var ffi = this.file_format_info;
+      if( (ffi) && ('zipdir' in ffi) ) {
+        return ffi.zipdir.files;
+      }
+      return null;
+    };
+
     this.getWavImageURL = function() {
       var baseURL = 'http://ccmixter.org/waveimage/'; // um, hello ENV?
       return baseURL + this.file_upload + '/' + this.file_id;
@@ -276,6 +292,28 @@ class ACappella extends Upload {
   }
 }
 
+
+class SampleFile extends File {
+  constructor() {
+    super(...arguments);
+
+    this.getIsPlayableSample = function() {
+      return this.getIsMP3();
+    };
+
+  }
+}
+
+class Sample extends Upload {
+  constructor() {
+    super(...arguments);
+    this._modelSubtree = {
+      files: SampleFile,
+      artist: UploadUserBasic,
+    };
+  }
+}
+
 class UserBasic extends Model {
 
     constructor() {
@@ -440,4 +478,5 @@ module.exports = {
   Source,
   Topic,
   ACappella, 
+  Sample
 };

@@ -10,7 +10,7 @@ class Samples extends UploadList {
 
   fetch(queryParams) {
     queryParams.dataview = 'default'; // links_by doesn't have bpm
-    return this.query(queryParams).then( serialize( ccmixter.Upload ) );
+    return this.query(queryParams).then( serialize( ccmixter.Sample ) );
   }
 
 }

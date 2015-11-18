@@ -9,6 +9,7 @@ import QueryParamTagsToggle from './query-param-tags-toggle';
 import QueryParamToggle from './query-param-toggle';
 import QueryParamTracker from './query-param-tracker';
 import QueryParamValue from './query-param-value';
+import StoreEvents from './store-events';
 
 
 module.exports = {
@@ -20,6 +21,7 @@ module.exports = {
     QueryParamTagsToggle,
     QueryParamToggle,
     QueryParamTracker,
-    QueryParamValue 
+    QueryParamValue,
+    StoreEvents 
 };
 

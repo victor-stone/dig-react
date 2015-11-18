@@ -1,14 +1,9 @@
-import React from 'react';
-import qc    from '../models/query-configs';
-import Query from '../stores/query';
-
-import { commaize }     from '../unicorns';
+import React            from 'react';
 import { ExternalLink } from '../components/ActionButtons';
 import Link             from '../components/Link';
 
 var index = React.createClass({
   render: function() {
-    var numSamples = commaize(this.props.store.model);
 
     return (
       <div>
@@ -16,7 +11,7 @@ var index = React.createClass({
           <div className="row">
             <div className="col-md-8 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-12">
               <h1>{"The Premier Site for Free and Royalty Free Samples"}</h1>
-              <h3>{"Now serving "}{numSamples}{" Creative Commons samples "}</h3>
+              <h3>{"Now serving over 50,000 Creative Commons samples "}</h3>
             </div>
           </div>
         </div>      
@@ -70,13 +65,5 @@ var index = React.createClass({
 index.title = 'stems.ccMixter Home';
 
 index.path = '/';
-
-index.store = function() {
-  var query = new Query();
-  return query.count( qc.samplesCount ).then( (c) => {
-    query.model = c;
-    return query;
-  });
-};
 
 module.exports = index;

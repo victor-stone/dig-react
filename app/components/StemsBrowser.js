@@ -6,10 +6,16 @@ import { TagString } from '../unicorns';
 import Glyph from './Glyph'; 
 import Paging from './Paging'; 
 import Tags from './Tags';
+import DownloadPopup from './DownloadPopup';
+import SearchBox from './SearchBox';
 //import QueryOptions from './QueryOptions';
-import Playlist from './Playlist';
 
-import {  QueryParamTagsRotate  } from '../mixins';
+import AudioPlayer from './AudioPlayer';
+
+import {  QueryParamTagsRotate,
+          StoreEvents,
+          BoundingElement,
+          PlaylistUpdater  } from '../mixins';
 
 const MIN_TAG_PAIR = 5;
 const SORT_UP = 1;
@@ -36,7 +42,7 @@ const TagsLoading = React.createClass({
   }
 });
 
-const StemsTagSelectionSection = React.createClass({
+const StemsTagList = React.createClass({
 
   getInitialState: function() {
     return { loading: true };
@@ -54,8 +60,28 @@ const StemsTagSelectionSection = React.createClass({
             allTags.sort( function(a,b) { return a.id > b.id ? SORT_UP : SORT_DOWN; } );
             this.setState( {
               model: allTags,
+              filtered: allTags,
               loading: false });
           });
+    }
+  },
+
+  filter: function(filter, isIcon, filterCB) {
+    if( isIcon ) {
+      filterCB('');
+      filter = null;
+    }
+    if( !filter || filter.length === 0 ) {
+      this.setState( { filtered: this.state.model } );
+    } else {
+      var filtered = [];
+      var regex = new RegExp(filter);
+      this.state.model.forEach( t => {
+        if( t.id.match(regex) ) {
+          filtered.push(t);
+        }
+      });
+      this.setState( { filtered } );
     }
   },
 
@@ -65,8 +91,7 @@ const StemsTagSelectionSection = React.createClass({
       return null;
     }
 
-    var model = this.state.model;
-    var store    = this.props.store;
+    var model    = this.state.filtered;
     var tagStore = this.props.tagStore;
 
     return (
@@ -74,11 +99,9 @@ const StemsTagSelectionSection = React.createClass({
             {
               this.state.loading 
                 ? <TagsLoading />
-                : <div>
-                    <SelectedTagSection store={store} tagStore={tagStore} />
-                    <div className="tag-list-box">
-                      <Tags.SelectableTagList store={tagStore} model={model} />                    
-                    </div>
+                : <div className="stems-tags-widget">
+                    <SearchBox icon="times" submitSearch={this.filter} anyKey />
+                    <Tags.SelectableTagList store={tagStore} model={model} />
                   </div>
             }
         </div>
@@ -86,6 +109,121 @@ const StemsTagSelectionSection = React.createClass({
   }
 });
 
+const ZIPLink = React.createClass({
+  onClick: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.props.onClick(this.props.model);
+  },
+
+  render: function() {
+    var cls      = 'btn btn-info btn-lg';
+    return (<a className={cls} href="#" onClick={this.onClick}><Glyph icon="eye" /></a>);
+  },
+});
+
+const SamplesFiles = React.createClass({
+
+  onZIPClick: function(file) {
+    this.props.store.emit('inspectZIP',file);
+  },
+
+  render: function() {
+    var model = this.props.model;
+    var files = model.files;
+    return(
+        <ul className="stems-files">
+          {files.map( f => {
+            return (<li className="stem-files-line" key={f.id}>
+                      <DownloadPopup btnClass="sm-download" model={model} file={f} /> 
+                      {" "}
+                      {f.isPlayableSample
+                        ? <AudioPlayer.PlayButton model={f} />
+                        : null
+                      }
+                      {f.isZIP
+                        ? <ZIPLink model={f} onClick={this.onZIPClick} />
+                        : null
+                      }
+                      {" "}
+                      <span className="ext">{f.extension}</span>
+                      {" "}
+                      <span className="nic">{f.nicName}</span>
+                    </li>);
+            })
+          }
+        </ul>
+      );
+  }
+});
+
+const SamplesList = React.createClass({
+
+  mixins: [PlaylistUpdater],
+
+  getDefaultProps: function() {
+    return { skipUser: false };
+  },
+ 
+  stateFromStore: function(store) {
+    return { model: store.model };
+  },
+
+  render: function() {
+    var model = this.state.model;
+
+    if( !model || !model.total ) {
+      return (<div className="well"><h2>{"nothing matches that combination of tags"}</h2></div>);
+    }
+
+    return (
+        <ul className="stems-listing">
+          {model.playlist.map( (u,i) => {
+            return (<li key={i}>
+                      <span className="stem-name">{u.name}</span>
+                      {" "}
+                      <span className="stem-artist">{u.artist.name}</span>
+                      <SamplesFiles model={u} store={this.props.store} />
+                  </li>); })
+          }
+        </ul>
+      );
+    }
+});
+
+const ZIPContentViewer = React.createClass({
+
+  mixins: [BoundingElement,StoreEvents],
+
+  getDefaultProps: function() {
+    return {
+      keepAbove: '.footer',
+      keepBelow: '.page-header',
+      storeEvent: 'inspectZIP'
+    };
+  },
+
+  getInitialState: function() {
+    return { files: null };
+  },
+
+  onStoreEvent: function(file) {
+    this.setState( { file, files: file && file.zipContents } );
+  },
+
+  render: function() {
+    if( !this.state.files ) {
+      return null;
+    }
+    return (
+        <ul className="zip-contents">
+          <li className="head">{"Contents of ZIP file"}</li>
+          <li className="sub-head">{this.state.file.mediaTags.name}</li>
+          {this.state.files.map( (f,i) => <li key={i}>{f}</li> )}
+        </ul>
+      );
+  }
+});
 
 function makeRegexFromTags(tags) {
   var arr = TagString.toArray(tags);
@@ -126,13 +264,23 @@ var StemsBrowser = React.createClass({
     var tagStore = this.state.tagStore;
 
     return (
-      <div className="row stems-browser">
-        <div  className="col-md-2">
-          <StemsTagSelectionSection store={store} tagStore={tagStore} onUpdate={this.onTagSectionUpdate}/>
+      <div className="stems-browser">
+        <div className="row">
+          <div className="col-md-8 col-md-offset-2">
+              <SelectedTagSection store={store} tagStore={tagStore} />
+          </div>
         </div>
-        <div className="col-md-4">
-          <Paging store={store} ref="paging" disableBumping />
-          <Playlist store={store} />   
+        <div className="row">
+          <div  className="col-md-3">
+            <StemsTagList store={store} tagStore={tagStore} onUpdate={this.onTagSectionUpdate}/>
+          </div>
+          <div className="col-md-6 stems-listing-widget">
+            <Paging store={store} ref="paging" disableBumping />
+            <SamplesList store={store} />   
+          </div>
+          <div className="col-md-2">
+            <ZIPContentViewer store={store} />
+          </div>
         </div>
       </div>
     );
