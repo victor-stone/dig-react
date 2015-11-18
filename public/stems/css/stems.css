@@ -1,31 +1,23 @@
-.navbar-brand img {
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 3px;
-  border-radius: 10px;
-  border: 1px solid;
-  background-image: -webkit-linear-gradient(top, #111155 0%, #448 100%);
-  background-image: -o-linear-gradient(top, #111155 0%, #448 100%);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#111155), to(#448));
-  background-image: linear-gradient(to bottom, #111155 0%, #448 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff111155', endColorstr='#ff444488', GradientType=0);
+
+.navbar-inverse {
+  background-image: -webkit-linear-gradient(top, #215B22 0%, #41B541 100%);
+  background-image: -o-linear-gradient(top, #215B22 0%, #41B541 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#215B22), to(#41B541));
+  background-image: linear-gradient(to bottom, #215B22 0%, #41B541 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3c3c55', endColorstr='#ff41B541', GradientType=0);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   background-repeat: repeat-x;
-  border-radius: 4px;
+  padding-bottom: 7px;
+  border: 0px;
   margin-bottom: 0px;
 }
 
-/* .pell-browser ul.pagination li a, */
-.navbar-inverse {
-  background-image: -webkit-linear-gradient(top, #3c3c55 0%, #226 100%);
-  background-image: -o-linear-gradient(top, #3c3c55 0%, #226 100%);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#3c3c55), to(#226));
-  background-image: linear-gradient(to bottom, #3c3c55 0%, #226 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3c3c55', endColorstr='#ff222266', GradientType=0);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  background-repeat: repeat-x;
-  border-radius: 4px;
-  margin-bottom: 0px;
+.navbar-brand {
+  padding-top: 8px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #C5EF1D;
 }
 
 .outlet-wrap {
@@ -36,8 +28,11 @@
   opacity: 0.5;
 }
 
+.footer {
+  background-color: #2B772C;
+}
 
-.pells-img {
+.stems-img {
   background-image: url('../images/front-page.jpg');
   width: 100%;
   height: 600px;
@@ -45,21 +40,63 @@
   background-size: cover;
 }
 
-.footer-pad {
-  padding-bottom: 100px;
-}
-
-.pells-img h1 {
+.stems-img h1 {
   color: white;
-  margin-top: 150px;
-  font-size: 60pt;
+  margin-top: 50px;
+  font-size: 40pt;
   max-width: 440px;
   text-shadow: 3px 3px black;
  }
 
-.pells-img h3 {
+.stems-img h3 {
   color: antiquewhite;
   max-width: 440px;
   text-shadow: 2px 2px black;
 }
 
+.stems-browser .paging {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 180;
+  background-color: white;
+  border: 0px;
+  margin: 0px auto;
+}
+
+.stems-browser .paging > ul {
+  margin: 0px;
+}
+
+.stems-browser .paging > div {
+  margin: 0px;
+  padding: 0px;
+  color: black;  
+}
+
+.stems-browser ul.tags-list {
+   height: 320px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px #ddd;
+    border-radius: 8px;
+    padding: 8px;
+    width: 220px;
+}
+
+.stems-browser ul.tags-list li {
+  padding: 0 4px 0 4px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.stems-browser ul.tags-list li:hover {
+  border: 1px solid black;
+
+}
+
+.stems-browser ul.tags-list li i.fa {
+  vertical-align:middle;
+  display: inline-block;  
+}

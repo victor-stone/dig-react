@@ -138,7 +138,7 @@ const QueryOptions = React.createClass({
     }
     
     var showP       = this.state.showOptions;
-    var popup       = this.genOptions(showP);
+    var contents    = this.genOptions(showP);
     var cls         = 'hidden-xs hidden-sm filter-box' + (showP ? ' open' : '' );
     var buttonColor = this.state.dirty ? { color: 'yellow' } : {};
     var cls2        = showP ? '' : 'hidden';
@@ -146,7 +146,7 @@ const QueryOptions = React.createClass({
 
     return (
       <div className={cls}>
-        <div className={cls2}>{popup}</div>
+        <div className={cls2}>{contents}</div>
         <button className={cls3} style={buttonColor} onClick={this.handleShowOptions} ><Glyph icon="gear" />{" filters"}</button>
       </div>
     );

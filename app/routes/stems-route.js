@@ -2,14 +2,19 @@ import React            from 'react';
 import qc               from '../models/query-configs';
 import Samples  from '../stores/samples';
 import { mergeParams } from '../unicorns';
+import { StemsBrowser,
+        PageHeader } from '../components';
 
 var stems = React.createClass({
 
   render() {
-    //var store = this.props.store;
+    var store = this.props.store;
     return (
-      <div className="container stems-page">
-      <h1>{"yea, nothing here"}</h1>
+      <div>
+        <PageHeader icon="th" title="Samples" />
+        <div className="container-fluid">
+          <StemsBrowser store={store} />
+        </div>
       </div>
     );      
   },

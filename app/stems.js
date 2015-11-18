@@ -1,23 +1,23 @@
 import router from './services/router';
 import env    from './services/env';
-import routes from './routes/pells';
 import App    from './app';
 import qc     from './models/query-configs';
 import Topics from './stores/topics';
+import routes from './routes/stems';
 
 import {
-          PellQueryOptions,
-          PellsHeader,
+          StemsQueryOptions,
+          StemsHeader,
           DigFooter
         } from './components';
 
-env.Header          = PellsHeader;
+env.Header          = StemsHeader;
 env.Footer          = DigFooter;
-env.AppQueryOptions = PellQueryOptions;
+env.AppQueryOptions = StemsQueryOptions;
 
 env.bannerTopic = Topics.namedTopics.pellsBanner;
 
-qc.default = qc.pells;
+qc.default = qc.samples;
 
 var rewriteRules = [
 /*

@@ -26,7 +26,9 @@ module.exports = {
   },
 
   samples: {
-    reqtags: 'sample'
+    reqtags: 'sample',
+    limit: 10,
+    lic: 'all'
   },
 
   samplesCount: {

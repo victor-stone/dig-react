@@ -229,7 +229,7 @@ function bundleVendorJSFiles() {
     ]
   };
 
-  if( APP_NAME === 'pells' ) {
+  if( APP_NAME === 'pells' || APP_NAME === 'stems') {
     vendorJSSources.dev. push( 'node_modules/nouislider/distribute/nouislider.js');
     vendorJSSources.prod.push( 'node_modules/nouislider/distribute/nouislider.min.js');
   }
@@ -269,7 +269,7 @@ function bundleVendorCSSFiles() {
       'node_modules/font-awesome/css/font-awesome.min.css',
     ]
   };
-  if( APP_NAME === 'pells') {
+  if( APP_NAME === 'pells' || APP_NAME === 'stems') {
     vendorCSSSources.dev. push('node_modules/nouislider/distribute/nouislider.min.css');
     vendorCSSSources.prod.push('node_modules/nouislider/distribute/nouislider.min.css');
   }  

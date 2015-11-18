@@ -36,6 +36,9 @@
   opacity: 0.5;
 }
 
+.footer-pad {
+  padding-bottom: 100px;
+}
 
 .pells-img {
   background-image: url('../images/front-page.jpg');
