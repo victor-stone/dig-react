@@ -158,7 +158,7 @@ var DownloadPopup = React.createClass({
 
     return (
       <span>
-        <button className={cls} onClick={this.handleShowModal} ><Glyph fixed={fixed} sz={sz} icon="cloud-download" /></button>
+        <button className={cls} onClick={this.handleShowModal} ><Glyph fixed={fixed} sz={sz} icon="cloud-download" />{this.props.children}</button>
         {popup}
       </span>
       );

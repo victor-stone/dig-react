@@ -20,7 +20,7 @@ const RETURN_KEY = 13;
 
     icon - [string] replacement icon (default 'search')
 
-    placeHolder - [string] replacement placeholder text (default: genre, instrument, etc. )
+    placeholder - [string] replacement placeholder text (default: genre, instrument, etc. )
 
     anyKey - [boolean] call submitSearch on every keystroke (default: only on return key)
 

@@ -17,10 +17,6 @@ import {  QueryParamTagsRotate,
           BoundingElement,
           PlaylistUpdater  } from '../mixins';
 
-const MIN_TAG_PAIR = 5;
-const SORT_UP = 1;
-const SORT_DOWN = -1;
-
 const SelectedTagSection = React.createClass({
 
   render: function() {
@@ -51,13 +47,8 @@ const StemsTagList = React.createClass({
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
       var store = this.props.tagStore;
-      store.categories( store.remixCategoryNames(), 'sample', MIN_TAG_PAIR )
-        .then( cats => {
-            var allTags = [];
-            for( var k in cats ) {
-              allTags = allTags.concat(cats[k]);
-            }
-            allTags.sort( function(a,b) { return a.id > b.id ? SORT_UP : SORT_DOWN; } );
+      store.sampleCategories()
+        .then( allTags => {
             this.setState( {
               model: allTags,
               filtered: allTags,
@@ -100,7 +91,7 @@ const StemsTagList = React.createClass({
               this.state.loading 
                 ? <TagsLoading />
                 : <div className="stems-tags-widget">
-                    <SearchBox icon="times" submitSearch={this.filter} anyKey />
+                    <SearchBox icon="times" placeholder="find tag" submitSearch={this.filter} anyKey />
                     <Tags.SelectableTagList store={tagStore} model={model} />
                   </div>
             }
@@ -118,13 +109,14 @@ const ZIPLink = React.createClass({
 
   render: function() {
     var cls      = 'btn btn-info btn-lg';
-    return (<a className={cls} href="#" onClick={this.onClick}><Glyph icon="eye" /></a>);
+    return (<a className={cls} href="#" onClick={this.onClick}><Glyph icon="info" /></a>);
   },
 });
 
 const SamplesFiles = React.createClass({
 
   onZIPClick: function(file) {
+    file.upload = this.props.model;
     this.props.store.emit('inspectZIP',file);
   },
 
@@ -207,6 +199,10 @@ const ZIPContentViewer = React.createClass({
     return { files: null };
   },
 
+  componentDidUpdate: function() {
+    this.resetBump();
+  },
+
   onStoreEvent: function(file) {
     this.setState( { file, files: file && file.zipContents } );
   },
@@ -215,11 +211,17 @@ const ZIPContentViewer = React.createClass({
     if( !this.state.files ) {
       return null;
     }
+
+    var upload = this.state.file.upload;
+    var files  = this.state.files
+                  .filter( f => f.match(/(__MACOSX|\.DS_Store)/) === null )
+                  .map( f => f.replace(/\/.*\//g,'') );
+
     return (
         <ul className="zip-contents">
-          <li className="head">{"Contents of ZIP file"}</li>
-          <li className="sub-head">{this.state.file.mediaTags.name}</li>
-          {this.state.files.map( (f,i) => <li key={i}>{f}</li> )}
+          <li className="head"><Glyph icon="file-archive-o" />{" Contents of ZIP file"}</li>
+          <li className="sub-head">{upload.name}</li>
+          {files.map( (f,i) => <li key={i}>{f}</li> )}
         </ul>
       );
   }
@@ -236,7 +238,7 @@ var StemsBrowser = React.createClass({
   mixins: [QueryParamTagsRotate],
 
   componentWillMount: function() {
-    var tagStore = new TagStore();    
+    var tagStore = this.props.tagStore || new TagStore();
     tagStore.on('selectedTags', this.onSelectedTags );
     this.setState({ tagStore });
   },

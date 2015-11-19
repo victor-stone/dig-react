@@ -1,8 +1,9 @@
 import React  from 'react';
 import Glyph  from './Glyph';
+
 import {  PlaylistUpdater, 
           QueryParamToggle       } from '../mixins';
-import { TagString } from '../unicorns';
+
 
 
 const DEFAULT_COL_SIZE = 3;
@@ -45,7 +46,7 @@ const SelectableTag = React.createClass({
 const SelectableTagList = React.createClass({
 
   getInitialState: function() {
-    return { selectedTags: TagString() };
+    return { selectedTags: this.props.store.getSelectedTags(this.props.catID) };
   },
 
   componentWillMount: function() {
@@ -152,7 +153,7 @@ const MatchAnyButton = React.createClass({
 const SelectedTags = React.createClass({
 
   getInitialState: function() {
-    return { selectedTags: new TagString() };
+    return { selectedTags: this.props.tagStore.getSelectedTags() };
   },
 
   componentWillMount: function() {

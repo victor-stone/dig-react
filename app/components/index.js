@@ -18,6 +18,7 @@ import NavbarHeader from './NavbarHeader';
 import PageHeader from './PageHeader';
 import Paging from './Paging';
 import PellQueryOptions from './PellQueryOptions';
+import PellsBrowser from './PellsBrowser';
 import PellsHeader from './PellsHeader';
 import Playlist from './Playlist';
 import QueryOptions from './QueryOptions';
@@ -51,6 +52,7 @@ module.exports = {
     PageHeader,
     Paging,
     PellQueryOptions,
+    PellsBrowser,
     PellsHeader,
     Playlist,
     QueryOptions,

@@ -12,7 +12,7 @@ const StemsHeader = React.createClass({
 
   submitSearch: function(text) {
     var router = services('router');
-    router.navigateTo( '/stems?searchp=' + text );
+    router.navigateTo( '/search?searchp=' + text );
   },
 
   render: function() {

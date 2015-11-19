@@ -4,15 +4,19 @@ import serialize       from '../models/serialize';
 import rsvp            from 'rsvp';
 import { TagString }   from '../unicorns';
 
-var remixCategoryNames = ['genre', 'instr', 'mood'];
-var minRemixesForTags = 10;
+const REMIX_CATEGORY_NAMES = ['genre', 'instr', 'mood'];
 
+const MIN_REMIX_TAG_PAIR = 10;
+const MIN_SAMPLE_TAG_PAIR = 5;
+const SORT_UP = 1;
+const SORT_DOWN = -1;
 
 class Tags extends Query {
 
   constructor() {
     super(...arguments);
     this.selectedTags = {};
+    this.cache = {};
   }
 
   addSelected(tag,cat) {
@@ -102,6 +106,10 @@ class Tags extends Query {
       ord:       'asc',
       dataview: 'tags_with_cat'
     };
+    var cached = this._checkCache(q);
+    if( cached ) {
+      return rsvp.resovle(cached);
+    }
     return this.query(q).then( r =>  TagString.create( { source: r.map( t => t.tags_tag ) } ));
   }
   
@@ -116,6 +124,10 @@ class Tags extends Query {
       min:      minCount,
       dataview: 'tags'
     };
+    var cached = this._checkCache(q);
+    if( cached ) {
+      return rsvp.resovle(cached);
+    }
     return this.query(q).then( serialize( ccmixter.Tag ) );
   }
   
@@ -134,18 +146,36 @@ class Tags extends Query {
     return this.query(params).then( serialize( ccmixter.Tag ) );
   }
 
+  sampleCategories() {
+    return this.categories( REMIX_CATEGORY_NAMES, 'sample', MIN_SAMPLE_TAG_PAIR )
+      .then( cats => {
+          var allTags = [];
+          for( var k in cats ) {
+            allTags = allTags.concat(cats[k]);
+          }
+          allTags.sort( function(a,b) { return a.id > b.id ? SORT_UP : SORT_DOWN; } );
+          return allTags;
+        });
+  }
+
   remixCategories() {
-    return this.categories( remixCategoryNames, 'remix', minRemixesForTags );
+    return this.categories( REMIX_CATEGORY_NAMES, 'remix', MIN_REMIX_TAG_PAIR );
   }
-  
+
   remixCategoryNames() {
-    return remixCategoryNames;
+    return REMIX_CATEGORY_NAMES;
   }
-  
+
   remixGenres() {
     return this.forCategory('genre','remix');
   }
 
+  _checkCache(params) {
+    var keyo = {};
+    Object.keys(params).sort().forEach( k => keyo[k] = params[k] );    
+    var key = JSON.stringify(keyo);
+    return this.cache[key];
+  }
 }
 
 module.exports = Tags;

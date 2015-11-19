@@ -26,14 +26,15 @@ module.exports = {
   },
 
   samples: {
-    reqtags: 'sample',
+    oneof: 'sample,contest_source',
     limit: 10,
     lic: 'all'
   },
 
   samplesCount: {
-    reqtags: 'sample'
+    oneof: 'sample,contest_source',
   },
+  
   instrumental: {
     reqtags: 'instrumental,-vocals,-male_vocals,-female_vocals',
   },   

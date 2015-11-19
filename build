@@ -233,6 +233,12 @@ function bundleVendorJSFiles() {
     vendorJSSources.dev. push( 'node_modules/nouislider/distribute/nouislider.js');
     vendorJSSources.prod.push( 'node_modules/nouislider/distribute/nouislider.min.js');
   }
+  if( APP_NAME === 'stems') {
+    vendorJSSources.dev. push( 'vendor/flacplayer/aurora/aurora.js');
+    vendorJSSources.prod.push( 'vendor/flacplayer/aurora/aurora.min.js');
+    vendorJSSources.dev. push( 'vendor/flacplayer/flac/flac.js');
+    vendorJSSources.prod.push( 'vendor/flacplayer/flac/flac.min.js');    
+  }
 
   return bundleVendorFiles(vendorJSSources[MODE],'js');
 }
@@ -280,7 +286,7 @@ function bundleVendorCSSFiles() {
 function bundleVendorFiles(arr,outext) {
   var dir = WEB_DIR + outext;
   bt.mkdir(dir);
-  return bt.bundleFiles(arr, dir + '/vendor.' + outext, /\/(jquery|react)\//);
+  return bt.bundleFiles(arr, dir + '/vendor.' + outext, /\/(jquery|react|aurora)\//);
 }
 
 function bundleAppFiles(arr,outext) {

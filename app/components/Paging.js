@@ -73,13 +73,14 @@ const Paging = React.createClass({
   queryParam: {
     name: 'offset',
     clean: true,
-    initValue: 0
+    initValue: 0,
+    avoidInitConflict: true
   },
 
   stateFromStore: function(store) {
     var model = store.model;
     return {
-        /*offset: model.queryParams.offset, */ 
+        offset: model.queryParams.offset,
         limit:  model.queryParams.limit,
         length: model.playlist.length,
         total:  model.total      

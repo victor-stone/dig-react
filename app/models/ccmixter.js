@@ -82,6 +82,14 @@ class File extends Model {
       return false;
     };
 
+    this.getIsFLAC = function() {
+      var ffi = this.file_format_info;
+      if( (ffi) && ('format-name' in ffi) ) {
+        return ffi['format-name'].match(/flac/) !== null;
+      }
+      return false;
+    };
+
     this.getIsZIP = function() {
       var ffi = this.file_format_info;
       if( (ffi) && ('format-name' in ffi) ) {
@@ -298,7 +306,7 @@ class SampleFile extends File {
     super(...arguments);
 
     this.getIsPlayableSample = function() {
-      return this.getIsMP3();
+      return this.getIsMP3() || this.getIsFLAC();
     };
 
   }

@@ -32,7 +32,7 @@ const WavImage = React.createClass({
   },
 
   grabImage: function() {
-    if( AudioPlayerService.nowPlaying ) {
+    if( AudioPlayerService.wantWavImg && AudioPlayerService.nowPlaying ) {
       var imageURL = AudioPlayerService.nowPlaying.wavImageURL;
       if( imageURL ) {
         // todo: export full xml+svg and put in <img> tag
@@ -92,6 +92,10 @@ const PlaybackScrubber = React.createClass({
 
   loadingWidth: function() {
 
+    if( this.state.position.percentLoaded ) {
+      return this.state.position.percentLoaded + '';
+    }
+
     var loaded = this.state.position.bytesLoaded;
     var val = 0;
     if( loaded > 0  ) {
@@ -104,9 +108,10 @@ const PlaybackScrubber = React.createClass({
   positionWidth: function() {
 
     var position = this.state.position.position;
+    var duration = this.state.position.duration;
     var val = 0;
-    if( position > 0 ) {
-      val = ONE_HUNDRED * (position / this.state.position.duration);
+    if( position > 0 && duration > 0 ) {
+      val = ONE_HUNDRED * (position / duration);
     }
     return (val + '');      
 
@@ -167,18 +172,25 @@ const PlayControls = React.createClass({
     var prevClass    = 'btn play-previous ' + ( this.state.hasPrev ? '' : 'disabled' );
     var nextClass    = 'btn play-next '     + ( this.state.hasNext ? '' : 'disabled' );
     var playIcon     = (this.state.isPlaying && !this.state.isPaused) ? 'pause' : 'play';
+    var canPlaylist  = AudioPlayerService.supportPlaylist;
 
     return (
       <div className="btn-group pull-left">
-          <a href="#" onClick={this.playPrevious} className={prevClass} >
-            <Glyph icon="backward" />
-          </a>
+        {canPlaylist
+          ? <a href="#" onClick={this.playPrevious} className={prevClass} >
+              <Glyph icon="backward" />
+            </a>
+          : null
+        }
           <a href="#" onClick={this.togglePause}  className="btn play"  >
             <Glyph icon={playIcon} />
           </a>
-          <a href="#" onClick={this.playNext}     className={nextClass}>
-            <Glyph icon="forward" />
-          </a>
+        {canPlaylist
+          ? <a href="#" onClick={this.playNext}     className={nextClass}>
+              <Glyph icon="forward" />
+            </a>
+          : null
+        }
       </div>
     );
   },

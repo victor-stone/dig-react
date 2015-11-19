@@ -1,7 +1,8 @@
 import { oassign } from '../unicorns';
-import Eventer from '../services/eventer';
-import MP3 from './audio-formats/mp3';
-import Media from './audio-formats/media';
+import Eventer     from '../services/eventer';
+import MP3         from './audio-formats/mp3';
+import FLAC        from './audio-formats/flac';
+import Media       from './audio-formats/media';
 
 const NOT_FOUND  = -1;
 const FOWARD     = 1;
@@ -152,7 +153,11 @@ class AudioPlayer extends Eventer
       media = cache[url];
     } else {  
       var args = oassign( { url: url },  playable.mediaTags );
-      media = new MP3(args);
+      if( playable.isFLAC ) {
+        media = new FLAC(args);
+      } else {
+        media = new MP3(args);
+      }
       media.on('play',this._onPlay.bind(this));
       cache[url] = media;
     }

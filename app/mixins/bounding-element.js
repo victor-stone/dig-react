@@ -7,16 +7,8 @@ var BoundingMixin = {
 
   componentDidMount: function() {
     if( !global.IS_SERVER_REQUEST && !this.props.disableBumping ) {
-      var $e = $(ReactDOM.findDOMNode(this));
-      if( $e.is(':visible') ) {
-        if( this.props.keepAbove ) {
-          this.setupBump( $e, $(this.props.keepAbove), true );
-        }
-        if( this.props.keepBelow ) {
-          this.setupBump( $e, $(this.props.keepBelow), false );
-        }
-        window.addEventListener('resize', this.handleResize);
-      }
+      this.resetBump();
+      window.addEventListener('resize', this.handleResize);
     }
   },
 
@@ -42,6 +34,18 @@ var BoundingMixin = {
         $e.data(f)();
       }
     });
+  },
+
+  resetBump: function() {
+    var $e = $(ReactDOM.findDOMNode(this));
+    if( $e.is(':visible') ) {
+      if( this.props.keepAbove ) {
+        this.setupBump( $e, $(this.props.keepAbove), true );
+      }
+      if( this.props.keepBelow ) {
+        this.setupBump( $e, $(this.props.keepBelow), false );
+      }
+    }
   },
 
   setupBump: function($e,$bumper,isKeepAbove) {

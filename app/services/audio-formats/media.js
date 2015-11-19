@@ -15,6 +15,7 @@ class Media extends Eventer
         duration: -1,
         bytesLoaded: -1,
         bytesTotal: -1,
+        percentLoaded: 0,
       },      
       _sound: null,
     });

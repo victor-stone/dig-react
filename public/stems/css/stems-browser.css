@@ -46,18 +46,18 @@
     margin: 0 auto;
 }
 
-.stems-browser ul.tags-list li {
+.stems-browser ul.tags-list > li {
   padding: 0 4px 0 4px;
   margin-bottom: 3px;
   cursor: pointer;
   border: 1px solid transparent;
 }
 
-.stems-browser ul.tags-list li:hover {
+.stems-browser ul.tags-list > li:hover {
   border: 1px solid black;
 }
 
-.stems-browser ul.tags-list li i.fa {
+.stems-browser ul.tags-list > li > i.fa {
   vertical-align:middle;
   display: inline-block;  
 }
@@ -117,8 +117,8 @@
    font-size: 12px;
 }
 
-.stems-browser .stems-files > li a.btn-lg,
-.stems-browser .stems-files > li button.sm-download {
+.stems-browser .stems-files > li > a.btn-lg,
+.stems-browser .stems-files > li > span > button.sm-download {
   padding: 4px 6px;
   font-size: 14px;
 }
@@ -137,7 +137,7 @@
 
 .stems-browser .zip-contents {
   padding: 0px;
-  marign: 0px;
+  top: 100px;
   position:fixed;
 }
 
@@ -151,4 +151,10 @@
 .stems-browser .zip-contents > li.head {
   font-weight: bold;
   font-size: 16px;
+}
+
+.stems-browser .zip-contents > li.sub-head {
+  border-bottom: 1px solid #999;
+  font-size: 13px;
+  margin-bottom: 12px;
 }
