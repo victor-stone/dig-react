@@ -1,19 +1,18 @@
-import React            from 'react';
-import Query            from '../stores/query';
-
-import {  Glyph,
-          DownloadPopup,
-          Link }          from '../components';
-import { ExternalLink }   from '../components/ActionButtons';
-
+import React              from 'react';
+import Query              from '../stores/query';
+import Glyph              from './Glyph';
+import DownloadPopup      from './DownloadPopup';
+import Link               from './Link';
+import ActionButtons      from './ActionButtons';
 import { TagString }      from '../unicorns';
-
 import AudioPlayerService from '../services/audio-player';
 
 import { PlaylistUpdater,
          NowPlayingTracker, 
          QueryParamValue,
          QueryParamTagsRotate } from '../mixins';
+
+var ExternalLink = ActionButtons.ExternalLink;
 
 const NOMINAL_TIMEOUT = 40;
 
@@ -192,11 +191,34 @@ var PellHeader = React.createClass({
     var content = null;
 
     if( searchTerm ) {
-      content = <div><h2><Link href="/pells" ><Glyph icon="chevron-circle-left" />{" clear search"}</Link> <small><Glyph icon="search" />{" search "}</small>{searchTerm}</h2><PellsUserSearch searchTerm={searchTerm} /></div>;
+      content = (<div>
+                  <h2>
+                    <Link href="/pells" >
+                      <Glyph icon="chevron-circle-left" />
+                      {" clear search"}
+                    </Link> 
+                    <small>
+                      <Glyph icon="search" />
+                      {" search "}
+                    </small>
+                    {searchTerm}
+                  </h2>
+                  <PellsUserSearch searchTerm={searchTerm} />
+                </div>);
     } else if( artist ) {
-      content = <h2><Link href="/pells" ><Glyph icon="chevron-circle-left" />{" everybody"}</Link> <img src={artist.avatarURL} />{artist.name}</h2>;
+      content = (<h2>
+                  <Link href="/pells" >
+                    <Glyph icon="chevron-circle-left" />
+                    {" everybody"}
+                  </Link> 
+                  <img src={artist.avatarURL} />
+                  {artist.name}
+                </h2>);
     } else {
-      content = <h1><Glyph icon="microphone" />{" Pells"}</h1>;
+      content = (<h1>
+                  <Glyph icon="microphone" />
+                  {" Pells"}
+                </h1>);
     }
 
     return (

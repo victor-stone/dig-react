@@ -5,6 +5,7 @@ import React from 'react';
 import { Link, 
         Glyph,
         TrackbackPopup,
+        People,
         SharePopup,
         LicenseInfo }  from '../components';
 
@@ -68,10 +69,7 @@ var UploadHeader = React.createClass({
     var model = this.props.model;
     return (
       <div>
-        <Link href={'/people/' + model.artist.id}>
-          <img className="img-circle" src={model.artist.avatarURL} />
-          {model.artist.name}
-        </Link>
+        <People.Link model={model.artist} avatar />
         <Featuring featuring={model.featuring} />
       </div>
       );

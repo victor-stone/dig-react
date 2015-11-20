@@ -215,7 +215,10 @@ TagString.prototype.contains = function(tagsOrFunction) {
   return find( them, tag => this._tagsArray.contains(tag) ) !== false;
 };
 
-        
+TagString.prototype.containsOne = function(tag) {
+  return this._tagsArray.contains(tag);
+};
+
 TagString.prototype.intersection = function(other) {
   var opts = this.copyOptions();
   opts.source = getIntersect(this._tagsArray.slice(),TagString.toArray(other,opts));

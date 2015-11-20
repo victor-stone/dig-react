@@ -4,6 +4,7 @@ import serviceLookup    from '../services';
 
 import { PlaylistUpdater,
          BoundingElement,
+         StoreEvents,
          QueryParamValue } from '../mixins';
 
 import { pagingStats, oassign } from '../unicorns';
@@ -19,7 +20,6 @@ const PagerLink = React.createClass({
     var href = newProps.show ? '?offset=' + newProps.offset : '#';
     this.setState( { href } );
   },
-
 
   onClick: function(e) {
     e.preventDefault();
@@ -61,12 +61,13 @@ var OffsetParamValue = oassign( {}, QueryParamValue, {
 
 const Paging = React.createClass({
 
-  mixins: [BoundingElement,PlaylistUpdater,OffsetParamValue],
+  mixins: [BoundingElement,PlaylistUpdater,OffsetParamValue,StoreEvents],
 
   getDefaultProps: function() {
     return {
       keepAbove: '.footer',
-      keepBelow: '.page-header'
+      keepBelow: '.page-header',
+      storeEvent: 'componentUpdate'
     };
   },
 
@@ -75,6 +76,10 @@ const Paging = React.createClass({
     clean: true,
     initValue: 0,
     avoidInitConflict: true
+  },
+
+  onComponentUpdate: function() {
+    this.handleResize();
   },
 
   stateFromStore: function(store) {

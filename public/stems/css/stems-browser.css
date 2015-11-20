@@ -72,34 +72,63 @@
   display: inline-block;
   margin: 4px 6px;;
   border: 1px solid green;
-  padding: 2px 4px;
+  padding: 2px 4px 2px 4px;
   border-radius: 3px;
   color: green;
   text-decoration: none;
+  box-shadow: 1px 1px #EEE;
 }
 
 .stems-browser .selected-tags .btn-tag:hover {
+  padding: 2px 3px 2px 5px;
   text-decoration: none;
-  background-color: #FCC;
-  box-shadow: 2px 2px #999;
+  box-shadow: 1px 1px #CCC;
   color: red;  
+  border-color: red;
 }
 
 .stems-browser .selected-tags .btn-tag .fa-2x {
   font-size: 13px;
 }
 
+.stems-browser .stems-listing-widget {
+  border: 1px solid #7DCF1F;
+  border-radius: 7px ;
+  padding: 9px;
+  background-color: rgba(246, 249, 237, 0.22);
+}
+
+.stems-browser .stems-listing > li .stem-name {
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.stems-browser .stems-listing > li .stem-artist {
+  font-size: 11px;
+}
+
+.stems-browser .stems-listing > li .bpm {
+  float: right;
+  font-size: 11px;
+}
+
+.stems-browser .stems-listing > li .bpm::before{
+  content: 'bpm';
+  margin-right: 4px;
+}
+
+
 .stems-browser .stems-files {
   margin-top: 8px;
 }
 .stems-browser .stems-files > li {
-  margin-bottom: 4px;
   cursor: default;
   display: inline-block;
-  min-width: 120px;
-  margin-right: 10px;
-  background-color: #CCC;
+  background-color: #DDD;
   border-radius: 4px;
+  min-width: 120px;
+  margin-right: 14px;
+  margin-bottom: 8px;
   padding-right: 7px;
 }
 
@@ -119,21 +148,10 @@
 
 .stems-browser .stems-files > li > a.btn-lg,
 .stems-browser .stems-files > li > span > button.sm-download {
-  padding: 4px 6px;
+  padding: 4px;
   font-size: 14px;
 }
 
-.stems-browser .stem-name {
-  font-weight: bold;
-  margin-right: 15px;
-}
-
-.stems-browser .stems-listing-widget {
-      border: 1px solid #7DCF1F;
-      border-radius: 7px ;
-      padding: 9px;
-      background-color: rgba(246, 249, 237, 0.22);
-}
 
 .stems-browser .zip-contents {
   padding: 0px;

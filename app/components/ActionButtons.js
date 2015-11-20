@@ -1,5 +1,6 @@
 import React from 'react';
 import Glyph from './Glyph';
+import Link  from './Link';
 
 var CloseButton = React.createClass({
 
@@ -9,6 +10,26 @@ var CloseButton = React.createClass({
 
     return (
         <button type="button" {...this.props} className="close" aria-label="Close"><span aria-hidden="true" dangerouslySetInnerHTML={times} /></button>
+      );
+  }
+});
+
+var UploadLink = React.createClass({
+
+  getInitialState: function() {
+    return { model: this.props.model };
+  },
+
+  componentWillReceiveProps: function(props) {
+    this.setState( { model: props.model });
+  },
+
+  render: function() {
+
+    var model = this.state.model;
+    var href = '/files/' + model.artist.id + '/' + model.id;
+    return (
+        <Link href={href} {...this.props}>{model.name}</Link>
       );
   }
 });
@@ -42,6 +63,7 @@ var AddTrackbackPopup = React.createClass({
 module.exports = {
   AddTrackbackPopup,
   CloseButton,
-  ExternalLink
+  ExternalLink,
+  UploadLink
 };
 

@@ -3,11 +3,11 @@ import TagStore      from '../stores/tags';
 
 import { TagString } from '../unicorns';
 
-import Glyph from './Glyph'; 
-import Paging from './Paging'; 
-import Tags from './Tags';
+import Glyph        from './Glyph'; 
+import Paging       from './Paging'; 
+import Tags         from './Tags';
 import QueryOptions from './QueryOptions';
-import Playlist from './Playlist';
+import Playlist     from './Playlist';
 
 import {  QueryParamTagsRotate,
           PlaylistUpdater       } from '../mixins';
@@ -15,8 +15,8 @@ import {  QueryParamTagsRotate,
 const TagCategoryRow = React.createClass({
 
   render: function() {
-    var catNames   = this.props.model.categoryNames;
-    var categories = this.props.model.categories;
+    var catNames   = Object.keys(this.props.model);
+    var categories = this.props.model;
     var store      = this.props.store;
 
     return (
@@ -31,11 +31,21 @@ const TagCategoryRow = React.createClass({
 
 const SelectedTagRow = React.createClass({
 
+  getInitialState: function() {
+    return { store:    this.props.store, 
+             playlist: this.props.playlist };
+  },
+
+  componentWillReceiveProps: function(props) {
+    this.setState( { store:    props.store, 
+                     playlist: props.playlist });
+  },
+
   render: function() {
     return (
         <div className="row">
           <div className="col-md-8 col-md-offset-2 tags editable">
-            <Tags.SelectedTags {...this.props}/>
+            <Tags.SelectedTags {...this.state}/>
           </div>   
           <div className="col-md-2 whaaaaaat">
           </div>
@@ -58,25 +68,22 @@ const RemixTagSelectionSection = React.createClass({
 
   getInitialState: function() {
     return { loading: true,
-             categories: [],
-             categoryNames: [] };
+             model: {},
+            };
   },
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      var store = this.props.tagStore;
-      var names = store.remixCategoryNames();
-      store.remixCategories().then( cats => {
+      this.props.store.remixCategories().then( cats => {
         this.setState( {
-          categories: cats,
-          categoryNames: names,
+          model: cats,
           loading: false });
       });
     }
   },
 
   componentDidUpdate: function() {
-    this.props.onUpdate(this.state.loading);
+    this.props.playlist.emit('componentUpdate');
   },
 
   render: function() {
@@ -85,12 +92,9 @@ const RemixTagSelectionSection = React.createClass({
       return null;
     }
 
-    var model = {
-      categories:    this.state.categories,
-      categoryNames: this.state.categoryNames
-    };
+    var model    = this.state.model;
     var store    = this.props.store;
-    var tagStore = this.props.tagStore;
+    var playlist = this.props.playlist;
 
     return (
         <div className="page-header">
@@ -99,8 +103,8 @@ const RemixTagSelectionSection = React.createClass({
               this.state.loading 
                 ? <TagsLoading />
                 : <div>
-                    <TagCategoryRow store={tagStore} model={model} />
-                    <SelectedTagRow store={store} tagStore={tagStore} />
+                    <TagCategoryRow store={store} model={model} />
+                    <SelectedTagRow store={store} playlist={playlist} />
                   </div>
             }
           </div>
@@ -192,12 +196,6 @@ var DigDeep = React.createClass({
     this.defaultTag = tag;   // this prevents a 'reset' from wiping us out
   },
 
-  onTagSectionUpdate: function(loading) {
-    if( !loading ) {
-      this.refs['paging'].handleResize();
-    }
-  },
-
   render() {
 
     var store    = this.props.store;
@@ -205,10 +203,10 @@ var DigDeep = React.createClass({
 
     return (
       <div>
-        <RemixTagSelectionSection store={store} tagStore={tagStore} onUpdate={this.onTagSectionUpdate}/>
+        <RemixTagSelectionSection store={tagStore} playlist={store} />
         <Paging store={store} ref="paging"/>
         <Playlist store={store} />   
-        <NoTagHits store={store} tagStore={tagStore} />     
+        <NoTagHits store={store}  />     
       </div>
     );
   }

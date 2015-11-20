@@ -13,6 +13,12 @@ class Playlist extends UploadList {
   fetch(queryParams) {
     return this.query(queryParams).then( serialize(ccmixter.Upload) );
   }
+
+  promiseHash( hash, queryParams ) {
+    hash.artist = queryParams.u ? this.findUser(queryParams.u) : null;
+    return hash;
+  }
+
 }
 
 // performs the query but returns the store

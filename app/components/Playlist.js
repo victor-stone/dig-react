@@ -3,6 +3,7 @@
 import React              from 'react';
 import Link               from './Link';
 import DownloadPopup      from './DownloadPopup';
+import People             from './People';
 import { PlayButton }     from './AudioPlayer';
 import QueryOptions       from './QueryOptions';
 import AudioPlayerService from '../services/audio-player';
@@ -26,7 +27,7 @@ var ArtistLink = React.createClass({
     if( this.props.skipUser ) {
       return null;
     }
-    return (<span className="artist-name light-color"><Link href={'/people/' + artist.id}>{artist.name}</Link></span>);  
+    return (<span className="artist-name light-color"><People.Link model={artist} /></span>);  
   }
 
 });

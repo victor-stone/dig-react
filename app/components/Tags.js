@@ -2,9 +2,8 @@ import React  from 'react';
 import Glyph  from './Glyph';
 
 import {  PlaylistUpdater, 
+          SelectedTagsTracker,
           QueryParamToggle       } from '../mixins';
-
-
 
 const DEFAULT_COL_SIZE = 3;
 
@@ -18,17 +17,15 @@ const SelectableTag = React.createClass({
     this.setState( { selected: props.selected } );
   },
 
-  shouldComponentUpdate: function(nextProps, nextState) {
-    return this.selected !== nextProps.selected ||
-           this.selected !== nextState.selected;
-  },
-
   onClick: function(e) {
     e.stopPropagation();
     e.preventDefault();
+    
     var selected = !this.state.selected;
     var catID    = this.props.catID;
-    this.props.store.toggleSelected(this.props.model.id, selected, catID);
+    var tag      = this.props.model.id;
+
+    this.props.store.toggleSelected(tag, selected, catID);
   },
 
   render: function() {
@@ -36,40 +33,21 @@ const SelectableTag = React.createClass({
     var icon = this.state.selected ? 'check-square-o' : 'square-o';
 
     return (
-        <li onClick={this.onClick}><Glyph icon={icon} /> {tag.id} <span className="light-color">{"("}{tag.count}{")"}</span></li>
+        <li onClick={this.onClick}>
+          <Glyph icon={icon} />
+          {" "}
+          {tag.id} 
+          {" "}
+          <span className="light-color">{"("}{tag.count}{")"}</span>
+        </li>
       );
   }
 
 });
 
-
 const SelectableTagList = React.createClass({
 
-  getInitialState: function() {
-    return { selectedTags: this.props.store.getSelectedTags(this.props.catID) };
-  },
-
-  componentWillMount: function() {
-    if( this.props.catID ) {
-      this.props.store.on('selectedCatTags', this.onSelectedTags );
-    } else {
-      this.props.store.on('selectedTags', this.onSelectedTags );
-    }
-  },
-
-  componentWillUnmount: function() {
-    if( this.props.catID ) {
-      this.props.store.removeListener('selectedCatTags', this.onSelectedTags );
-    } else {
-      this.props.store.removeListener('selectedTags', this.onSelectedTags );
-    }
-  },
-
-  onSelectedTags: function(tagString, cat) {
-    if( !this.props.catID || cat === this.props.catID ) {
-      this.setState( { selectedTags: tagString } );
-    }
-  },
+  mixins: [SelectedTagsTracker],
 
   render: function() {
     var tags    = this.props.model;
@@ -79,7 +57,12 @@ const SelectableTagList = React.createClass({
 
     return (
       <ul className="tags-list">{tags.map( tag => 
-          <SelectableTag key={tag.id} catID={catID} selected={selTags.contains(tag.id)} model={tag} store={store} />
+          <SelectableTag  key={tag.id} 
+                          catID={catID} 
+                          selected={selTags.containsOne(tag.id)} 
+                          model={tag} 
+                          store={store} 
+          />
       )}</ul>
     );
   }
@@ -122,8 +105,42 @@ const SelectedTag = React.createClass({
   render: function() {
 
     return (
-        <a href="#" onClick={this.remove} className="btn-exp btn-tag"><Glyph x2 icon="times-circle" />{" "}<span>{this.props.name}</span></a>
+        <a href="#" onClick={this.remove} className="btn-exp btn-tag">
+          <Glyph x2 icon="times-circle" />
+          {" "}
+          <span>{this.props.name}</span>
+        </a>
       );                                         
+  },
+
+});
+
+const SelectedTags = React.createClass({
+
+  mixins: [SelectedTagsTracker],
+
+  clear: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.props.store.clearSelected();
+  },
+
+  render: function() {
+    var tags       = this.state.selectedTags;
+    var store      = this.props.store;
+    var matchAnyOK = tags.getLength() > 1;
+
+    return( 
+        <div>{tags.toArray().map( (t,i) => <SelectedTag key={i} name={t} store={store} /> )}
+          {tags.getLength()
+             ? <a  href="#" onClick={this.clear} className="btn btn-xs btn-danger">
+                <Glyph icon="trash" />{" clear"}</a>
+              : null
+          }
+          {' '}
+          {matchAnyOK ? <MatchAnyButton store={this.props.playlist} /> : null}
+      </div>
+      );
   },
 
 });
@@ -146,56 +163,15 @@ const MatchAnyButton = React.createClass({
   },
 
   render: function() {
-    return (<label className="btn btn-primary btn-xs"><input onChange={this.performQuery} checked={this.state.toggle} type="checkbox" />{" match any"}</label>);
+    return (  <label className="btn btn-primary btn-xs">
+                <input onChange={this.performQuery} 
+                       checked={this.state.toggle} 
+                       type="checkbox"
+                />
+                {" match any"}
+              </label>
+            );
   },
-});
-
-const SelectedTags = React.createClass({
-
-  getInitialState: function() {
-    return { selectedTags: this.props.tagStore.getSelectedTags() };
-  },
-
-  componentWillMount: function() {
-    var store = this.props.tagStore;
-    store.on('selectedTags', this.onSelectedTags );
-  },
-
-  componentWillUnmount: function() {
-    var store = this.props.tagStore;
-    store.removeListener('selectedTags', this.onSelectedTags );
-  },
-
-  onSelectedTags: function(selectedTags) {
-    this.setState( { selectedTags } );
-  },
-
-  clear: function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    var store = this.props.tagStore;
-    store.clearSelected();
-  },
-
-  render: function() {
-    var tags       = this.state.selectedTags;
-    var store      = this.props.store;
-    var tagStore   = this.props.tagStore;
-    var matchAnyOK = tags.getLength() > 1;
-
-    return( 
-        <div>{tags.toArray().map( (t,i) => <SelectedTag key={i} name={t} store={tagStore} /> )}
-          {tags.getLength()
-             ? <a  href="#" onClick={this.clear} className="btn btn-xs btn-danger">
-                <Glyph icon="trash" />{" clear"}</a>
-              : null
-          }
-          {' '}
-          {matchAnyOK ? <MatchAnyButton store={store} /> : null}
-      </div>
-      );
-  },
-
 });
 
 module.exports = {

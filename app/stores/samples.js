@@ -13,6 +13,10 @@ class Samples extends UploadList {
     return this.query(queryParams).then( serialize( ccmixter.Sample ) );
   }
 
+  promiseHash( hash, queryParams ) {
+    hash.artist = queryParams.u ? this.findUser(queryParams.u) : null;
+    return hash;
+  }
 }
 
 Samples.storeFromQuery = function(params) {

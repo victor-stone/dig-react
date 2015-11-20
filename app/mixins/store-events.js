@@ -2,9 +2,9 @@
 /*
   Implementors must implement 
 
-    onStoreEvent(...) /
+    on<EventName>(...) { }
 
-  arguments depends on event.
+  name and arguments depends on event.
 
   Event name(s) can be setup in 
 
@@ -12,19 +12,28 @@
       return { storeEvent: 'selectedTags' };
     }
 
-  For multiple events (er, practical??) 
+    onSelectedTags: function() {}
+
+  OR: 
 
     getDefaultProps: function() {
-      return { storeEvents: ['foo', 'bar'] };
+      return { storeEvents: ['foo', 'bar'] }; // <-- note the storeEvent(s)
     }
 
-  N.B. onStoreEvent will be called without really knowing
-       which event was invoke. (er, not practical )
+    onFoo: function() {}
+
+    onBar: function() {}
+  
 
 */
 var StoreEvents = {
 
   componentWillMount: function() {
+    this._storeEventHandlers = {};
+    this._getStoreEvents().forEach( event => {
+      var handlerName = 'on' + event.charAt(0).toUpperCase() + event.substr(1);
+      this._storeEventHandlers[event] = this[handlerName];
+    });
     this._subscribeToStoreEvents(this.props.store);
   },
 
@@ -42,20 +51,17 @@ var StoreEvents = {
   },
 
   _subscribeToStoreEvents: function(store) {
-    this._getStoreEvents().forEach( event => store.on(event,this.onStoreEvent) );
+    this._getStoreEvents().forEach( event => store.on(event,this._storeEventHandlers[event]));
   },
 
   _unsubscribeFromStoreEvents: function(store) {
-    this._getStoreEvents().forEach( event => store.removeListener(event,this.onStoreEvent) );
+    this._getStoreEvents().forEach( event => store.removeListener(event,this._storeEventHandlers[event]) );
   },
 
   _getStoreEvents: function() {
     if( this.props.storeEvent ) {
       return [ this.props.storeEvent ];
     } else {
-      if( !this.props.storeEvents.isArray() ) {
-        return [ this.props.storeEvents ];
-      }
       return this.props.storeEvents;
     }
   },

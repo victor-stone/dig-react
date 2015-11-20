@@ -1,35 +1,12 @@
-'use strict';
-
 import React            from 'react';
 import { mergeParams }  from '../unicorns';
-import { ExternalLink } from '../components/ActionButtons';
 import qc               from '../models/query-configs';
+import PlaylistStore    from '../stores/playlist';
 
-import { Playlist, Paging } from '../components';
+import {  Playlist, 
+          People,
+          Paging   }  from '../components';
 
-import PlaylistStore         from '../stores/playlist';
-import Query                 from '../stores/query';
-
-const PeopleHeader = React.createClass({
-
-  render: function() {
-    var model = this.props.model;
-
-    var homelink = model.homepage 
-            ? <ExternalLink className="btn btn-info" href={model.homepage} text="homepage" />
-            : null;
-
-    return (
-        <div className="page-header">
-          <h1 className="center-text"><img className="img-circle" src={model.avatarURL} /> {model.name}</h1>
-          <div className="center-text">
-            <ExternalLink className="btn btn-info" href={model.url} text="@ccMixter" /> {homelink}
-          </div>
-        </div>
-      );
-    },
-
-});
 
 var people = React.createClass({
 
@@ -38,7 +15,7 @@ var people = React.createClass({
 
     return  (
       <div>
-        <PeopleHeader model={store.artist} />
+        <People.Header model={store.model.artist} />
         <Paging store={store} />
         <Playlist store={store} skipUser />
         <Playlist.NotALotHere store={store} />
@@ -53,28 +30,12 @@ people.path = '/people/:userid';
 people.title = 'People';
 
 people.store = function(params,queryParams) {
-  
-    people.title = 'People';
-
-    var qparams = mergeParams( {}, qc.default, { u: params.userid }, queryParams );
-
-    var retStore = null;
-
-    function getArtistDetail( store ) {
-      retStore = store;
-      var query = new Query();
-      return query.findUser(params.userid);
-    }
-    
-    function returnArtistDetail( model ) {
-      people.title = model.name;
-      retStore.artist = model;
-      return retStore;
-    }
-    
-    return PlaylistStore.storeFromQuery(qparams)
-          .then( getArtistDetail )
-          .then( returnArtistDetail );
+  var qparams = mergeParams( {}, qc.default, { u: params.userid }, queryParams );
+  return PlaylistStore.storeFromQuery(qparams)
+          .then( store => {
+            people.title = store.model.artist.name;
+            return store;
+          });
 };
 
 module.exports = people;

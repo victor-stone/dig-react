@@ -27,13 +27,15 @@ var BoundingMixin = {
   },
 
   handleResize: function() {
-    var $e = $(ReactDOM.findDOMNode(this));
-    ['a', 'b'].forEach( k => {
-      var f = 'keep-between-'+k;
-      if( $e.data(f) ) {
-        $e.data(f)();
-      }
-    });
+    if( !global.IS_SERVER_REQUEST && !this.props.disableBumping ) {
+      var $e = $(ReactDOM.findDOMNode(this));
+      ['a', 'b'].forEach( k => {
+        var f = 'keep-between-'+k;
+        if( $e.data(f) ) {
+          $e.data(f)();
+        }
+      });
+    }
   },
 
   resetBump: function() {

@@ -20,6 +20,7 @@ import Paging from './Paging';
 import PellQueryOptions from './PellQueryOptions';
 import PellsBrowser from './PellsBrowser';
 import PellsHeader from './PellsHeader';
+import People from './People';
 import Playlist from './Playlist';
 import QueryOptions from './QueryOptions';
 import RemixQueryOptions from './RemixQueryOptions';
@@ -27,10 +28,12 @@ import SearchBox from './SearchBox';
 import SharePopup from './SharePopup';
 import StemsBrowser from './StemsBrowser';
 import StemsHeader from './StemsHeader';
+import StemsList from './StemsList';
 import StemsQueryOptions from './StemsQueryOptions';
 import Tags from './Tags';
 import TitleSetter from './TitleSetter';
 import TrackbackPopup from './TrackbackPopup';
+import ZIPContentViewer from './ZIPContentViewer';
 
 
 module.exports = {
@@ -54,6 +57,7 @@ module.exports = {
     PellQueryOptions,
     PellsBrowser,
     PellsHeader,
+    People,
     Playlist,
     QueryOptions,
     RemixQueryOptions,
@@ -61,9 +65,11 @@ module.exports = {
     SharePopup,
     StemsBrowser,
     StemsHeader,
+    StemsList,
     StemsQueryOptions,
     Tags,
     TitleSetter,
-    TrackbackPopup 
+    TrackbackPopup,
+    ZIPContentViewer 
 };
 
