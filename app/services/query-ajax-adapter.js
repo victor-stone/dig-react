@@ -45,16 +45,8 @@ class QueryAjaxAdapter extends Eventer
       return r;
     }
 
-    function _error(r, status, err) {
-      /*eslint no-console:0 */
-      if( r.responseText && r.responseText.match(/^<pre>/) ) {
-        //something went south at ccMixter and there's a mysql error.
-        console.error(r.responseText);
-      }  else if( err ) {
-        console.error(url, status, err.toString());
-        throw err;
-      }
-      return isSingleton ? 0 : [ ];
+    function _error(err) {
+      throw err;
     }
 
     this._inc();

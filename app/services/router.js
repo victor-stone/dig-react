@@ -5,6 +5,8 @@ import rsvp             from 'rsvp';
 import Eventer          from './eventer';
 import env              from './env';
 
+const RANDOM_TIMEOUT = 1050;
+
 class Router extends Eventer
 {
   constructor() {
@@ -25,6 +27,10 @@ class Router extends Eventer
     this.routes = routes;
     this.rewrites = rewrites || [];
     // baby steps: nothing nested for now
+
+    if( !('error' in this.routes) ) {
+      this.routes.error = require('../routes/error');
+    }
 
     for( var handler in routes ) {
       var component = routes[handler];
@@ -105,9 +111,10 @@ class Router extends Eventer
             params: handler.params,
             queryParams: handler.queryParams,
             hash } );
-      }).catch( function(err) {
-        console.log( err + '', err.stack );
-        window.alert('Wups, could not show you that');
+      }).catch( err => {
+        env.set( { err } );
+        setTimeout( () => this.navigateTo('/error'), RANDOM_TIMEOUT );
+        console.log( err );
       });
   }
 

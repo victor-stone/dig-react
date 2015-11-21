@@ -15,7 +15,7 @@ class Playlist extends UploadList {
     return this.query(queryParams)
               .then( serialize(ccmixter.Upload) )
               .catch( e => {
-                var str = querystring.stringify(queryParams);
+                var str = decodeURIComponent(querystring.stringify(queryParams));
                 throw new Error( `error during fetch of ${str} original: ${e.toString()}`);
               });
   }

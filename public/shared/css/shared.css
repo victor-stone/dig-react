@@ -313,3 +313,8 @@ a > small:after {
   text-transform: lowercase;
   margin-right: 9px;
 }
+
+.well.error-page {
+  width: 50%;
+  margin: 30px auto;
+}
