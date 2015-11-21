@@ -65,20 +65,23 @@ module.exports = function(ctx) {
     return true;
   }
 
-  if( !google404s(req,res) ) {
-    return false;
+  var ret = true;
+
+    if( !google404s(req,res) ) {
+      return false;
+    }
+
+  try {
+    if( !isValidRequest(req,res) ) {
+      return false;
+    }
+  } catch(e) {
+    res._handled = true;
+    ret = true;
+    console.log('exception in server rules: ', e );
   }
 
-  if( !isValidRequest(req,res) ) {
-    return false;
-  }
-
-  if( !just_one ) {
-    // ctx.sysLog.write( { req: util.inspect(req) } );
-    just_one = true;
-  }
-
-  return true;
+  return ret;
 };
 
 function dumpCleanReq(req) {
