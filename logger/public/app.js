@@ -87,7 +87,7 @@ class DateStore extends EventEmiiter {
 class AppStore extends EventEmiiter {
   constructor() {
     super(...arguments);
-    this._apps = [ 'dig','pells' ]; 
+    this._apps = [ 'dig','pells', 'stems' ]; 
     this._selected = 0;
   }
 

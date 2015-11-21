@@ -10,7 +10,8 @@ var env = require('./services/env');
 env.set( { 
     debugMode: {debugMode},
     browser: false,
-    server: true
+    server: true,
+    appName: '{app}'
   });
 
 var server = new Server( router, webDir, AppModule, logPrefix );

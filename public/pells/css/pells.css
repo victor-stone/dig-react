@@ -1,3 +1,5 @@
+/* pells-css */
+
 .navbar-brand img {
   padding-left: 10px;
   padding-right: 10px;
@@ -44,21 +46,48 @@
   background-size: cover;
 }
 
-.footer-pad {
-  padding-bottom: 100px;
-}
-
 .pells-img h1 {
   color: white;
-  margin-top: 150px;
+  margin-top: 120px;
   font-size: 60pt;
   max-width: 440px;
-  text-shadow: 3px 3px black;
+  text-shadow: 1px 1px black;
+  font-weight: 300;
  }
 
 .pells-img h3 {
   color: antiquewhite;
   max-width: 440px;
-  text-shadow: 2px 2px black;
+  text-shadow: 1px 1px black;
+  font-weight: 300;
+}
+
+.gso-links.panel-group  div.panel-body {
+  min-height: 160px;
+}
+
+.gso-links .panel-title {
+  width: 48%;
+}
+
+.gso-links.panel-group {
+  padding-top: 34px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.footer-pad {
+  padding-bottom: 100px;
+}
+
+.footer h1 {
+  margin-left: 0;
+}
+.footer ul {
+  padding-left: 0px;
+}
+
+.footer div.col-md-3 {
+  text-align: center;
 }
 

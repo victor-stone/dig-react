@@ -5,7 +5,7 @@ import routes from './routes/stems';
 
 import {
           StemsHeader as Header,
-          DigFooter as Footer
+          StemsFooter as Footer
         } from './components';
 
 var rewriteRules = [
@@ -20,7 +20,6 @@ env.set( {
   rewriteRules,
   supportPlaylist: false,
   supportWavImg: false,
-  appName: 'stems.ccMixter',
   // bannerTopic: 'pellsBanner',
 });
 

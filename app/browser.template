@@ -9,7 +9,8 @@ var env = require('./services/env');
 env.set( { 
     debugMode: {debugMode},
     browser: true,
-    server: false
+    server: false,
+    appName: '{app}'
   });
 
 var app = require('./{app}');

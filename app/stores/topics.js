@@ -37,7 +37,7 @@ Topics.namedTopics = {
 
 Topics.storeFromTopicName = function( name ) {
   var topics = new Topics();
-  return topics.find( Topics.namedTopics[name] )
+  return topics.find( name )
           .then( () => { return topics; } );
 };
 

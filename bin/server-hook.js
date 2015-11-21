@@ -1,50 +1,90 @@
 'use strict';
 
-var Reloader = require('./reloader');
+var validationTests = [
 
-var log = function() {}; //console.log;
+  function(req,res) {
+    var catchCrawler = req.url.match(/offset=([0-9]+)/);
+    if( catchCrawler !== null ) {
+        if( Number(catchCrawler[1]) > 30000 ) {
+          res._handled = true;
+          res.statusCode = 500;
+          res.end();
+          return false;
+        }
+    }
+    return true;    
+  },
+
+  function(req,res) {
+    var userAgent = req.headers['user-agent'];
+    if( userAgent.match(/\u0044\u0061\u006c\u0076/) ) {
+      res._handled = true;
+      res.statusCode = 500;
+      res.end();
+      return false;
+    }
+    return true;    
+  }
+
+];
+
+function isValidRequest(req,res) {
+
+  for( var i = 0; i < validationTests.length; i++ ) {
+    if( !validationTests[i](req,res) ) {
+      return false;
+    }  
+  }
+  return true;
+}
+
+function google404s(req,res) {
+
+  var url = req.url;
+
+  if( url.match(/^\/files\/[^\/]*\/true$/) !== null || 
+      url.match(/^\/people\/[0-9]+$/) !== null ||
+      url.match(/^\/files\/[0-9]+\/[0-9]+$/) !== null ) {
+    res.statusCode = 404;
+    res._handled = true;
+    res.end('404 Not found');
+    return false;
+  }
+
+  return true;
+}
+
+function skipThese(req,res) {
+  return req.url.match(/(.js|.css|.html|.png|.eot|.otf|.ttf|.woff|.woff2|woff2\?v\=4.4\.0|.svg|.jpg|.jpeg|.ico)$/) !== null;
+}
 
 class ServerHook {
   constructor(sysLog, appLog) {
-    this.hooks = {};
     this.sysLog = sysLog;
     this.appLog = appLog;
-    this.reloader = new Reloader();
-  }
-
-  installHook(filename) {
-    log( 'Installing hook', filename);
-    if( filename ) {
-      this.hooks[filename] = true;
-    }
   }
 
   validateRequest(req,res) {
-    var filenames = Object.keys(this.hooks);
-    log( 'searching through hooks', filenames);
-    for( var i = 0; i < filenames.length; i++ ) {
-      var filename = filenames[i];
-      log( 'reloading request ', filename);
-      var hook = this.hooks[filename] = this.reloader.reload(filename);
-      if( hook ) {
-        log( 'got hook function isFunction:', typeof hook === 'function' );
-        try {
-          if( !hook( { req, res, sysLog: this.sysLog, appLog:this.appLog } ) ) {
-            log( 'hook return false');
-            return false;
-          }
+    if( skipThese(req,res) ) {
+      return true;
+    }
+
+    var ret = true;
+
+    try {
+      if( !google404s(req,res) ) {
+          return false;
         }
-        catch(e) { 
-          this.sysLog.write( { serverHook: filename, exception: e } );
-          this.reloader.invalidate(filename);
-          // we can't tell if the req is valid so we 
-          // let it pass
-        }
-      } else {
-        log( 'did not get a hook back, seems to be invalid')
+      if( !isValidRequest(req,res) ) {
+        return false;
       }
-    };
-    return true;
+    } catch(e) {
+      res._handled = true;
+      ret = true;
+      this.sysLog(req,res,e);
+    }
+
+    return ret;
   }
 }
 

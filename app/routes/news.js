@@ -14,7 +14,7 @@ news.title = 'News';
 news.store = function(params/*,queryParams*/) {
   return Topics.storeFromTopicName(params.topic)
             .then( store => {
-              news.title = store.model.title;
+              news.title = store.model.name;
               return store;
             });
 };

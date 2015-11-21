@@ -3,12 +3,10 @@ import env    from './services/env';
 import routes from './routes/pells';
 import App    from './app';
 
-
 import {
           PellsHeader as Header,
-          DigFooter as Footer
+          PellsFooter  as Footer
         } from './components';
-
 
 var rewriteRules = [
   { regex: /^\/files\/([^\/]+)\/([^\/]+)/, now: '/pells?selected=$2&u=$1' },
@@ -22,6 +20,5 @@ env.set( {
   supportPlaylist: false,
   supportWavImg: true,
 });
-
 
 module.exports = function() { return <App header={Header} footer={Footer} />; };

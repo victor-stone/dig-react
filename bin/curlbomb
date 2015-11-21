@@ -1,7 +1,0 @@
-#!/bin/bash
-
-for i in {1..400}
-do
-  echo "curlbomb $i"
-  curl -s http://localhost:3000/free > /dev/null 2>&1
-done

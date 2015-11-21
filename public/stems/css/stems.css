@@ -1,3 +1,4 @@
+/* stems - css */
 
 .navbar-inverse {
   background-image: -webkit-linear-gradient(top, #215B22 0%, #41B541 100%);
@@ -37,17 +38,33 @@
 }
 
 .stems-img h1 {
-  color: white;
+  color: #fff;
   margin-top: 50px;
   font-size: 40pt;
   max-width: 440px;
-  text-shadow: 3px 3px black;
- }
+  text-shadow: 1px 1px #000;
+  font-weight: 300;
+}
 
 .stems-img h3 {
-  color: antiquewhite;
+  color: #B2D52F;
   max-width: 440px;
-  text-shadow: 2px 2px black;
+  text-shadow: 1px 1px #338D34;
+  font-weight: 300;  
+}
+
+.gso-links.panel-group  div.panel-body {
+  min-height: 200px;
+}
+
+.gso-links .panel-title {
+  width: 48%;
+}
+
+.gso-links.panel-group {
+  padding-top: 34px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .query-options-box {

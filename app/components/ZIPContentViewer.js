@@ -15,7 +15,7 @@ const ZIPLink = React.createClass({
   },
 
   render: function() {
-    var cls      = 'btn btn-info btn-lg';
+    var cls      = 'btn btn-info btn-lg hidden-xs hidden-sm ';
     return (<a className={cls} href="#" onClick={this.onClick}><Glyph fixed icon="info" /></a>);
   },
 });

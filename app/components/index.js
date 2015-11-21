@@ -10,6 +10,7 @@ import DigHeader from './DigHeader';
 import DigRemixes from './DigRemixes';
 import DownloadPopup from './DownloadPopup';
 import FeaturedPage from './FeaturedPage';
+import Footer from './Footer';
 import Glyph from './Glyph';
 import LicenseInfo from './LicenseInfo';
 import Link from './Link';
@@ -19,6 +20,7 @@ import NavbarHeader from './NavbarHeader';
 import PageHeader from './PageHeader';
 import Paging from './Paging';
 import PellsBrowser from './PellsBrowser';
+import PellsFooter from './PellsFooter';
 import PellsHeader from './PellsHeader';
 import PellsQueryOptions from './PellsQueryOptions';
 import People from './People';
@@ -27,6 +29,7 @@ import RemixQueryOptions from './RemixQueryOptions';
 import SearchBox from './SearchBox';
 import SharePopup from './SharePopup';
 import StemsBrowser from './StemsBrowser';
+import StemsFooter from './StemsFooter';
 import StemsHeader from './StemsHeader';
 import StemsList from './StemsList';
 import StemsQueryOptions from './StemsQueryOptions';
@@ -48,6 +51,7 @@ module.exports = {
     DigRemixes,
     DownloadPopup,
     FeaturedPage,
+    Footer,
     Glyph,
     LicenseInfo,
     Link,
@@ -57,6 +61,7 @@ module.exports = {
     PageHeader,
     Paging,
     PellsBrowser,
+    PellsFooter,
     PellsHeader,
     PellsQueryOptions,
     People,
@@ -65,6 +70,7 @@ module.exports = {
     SearchBox,
     SharePopup,
     StemsBrowser,
+    StemsFooter,
     StemsHeader,
     StemsList,
     StemsQueryOptions,

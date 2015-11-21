@@ -12,7 +12,6 @@ var LogWriter     = require('./log-writer');
 var ServerHook    = require('./server-hook');
 var StaticRouter  = require('./static-router');
 var ReactServer   = require('./react-server-router');
-var MemoryManager = require('./memory.js')
 
 console.log( 'Server invoked with: ', argv )
 
@@ -41,16 +40,8 @@ class Server {
     bodyRegex = bodyRegex || /(<div\s+id="content">)([^<]+)?(<\/div>)/;
 
     this.reactServer  = new ReactServer( router, AppModule, pathToIndex, bodyRegex );
-
-    this.serverHook = new ServerHook( sysLog, appLog );
-    this.serverHook.installHook( argv.sr || null );
-
-    this.staticRouter = new StaticRouter();
-    
-    var MAX_MEMORY_LIMIT = 150 * (1024*1024);
-    var MAX_NON_GC_ALLOC = 200;
-    this.memManager = new MemoryManager( argv.mem, MAX_MEMORY_LIMIT, MAX_NON_GC_ALLOC );
-
+    this.serverHook   = new ServerHook( sysLog, appLog );
+    this.staticRouter = new StaticRouter();    
   }
 
   start() {
@@ -65,8 +56,6 @@ class Server {
   handleRequest( req, res ) {
 
     req.ip = req.ip || getIP(req);
-
-    this.memManager.manage();
 
     if( this.serverHook.validateRequest(req,res) ) {
 
