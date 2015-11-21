@@ -1,3 +1,4 @@
+import React  from 'react';
 import env    from './services/env';
 import routes from './routes/pells';
 import App    from './app';

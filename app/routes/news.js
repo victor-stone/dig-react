@@ -1,10 +1,10 @@
 import React          from 'react';
-import { TopicPage }  from '../components/Topic';
+import { TopicPage,
+         TopicBody }  from '../components/Topic';
 import Topics         from '../stores/topics';
 
-
 function news(props) {
-  return <TopicPage store={props.store} />;
+  return <TopicPage title={props.store.model.name}><TopicBody store={props.store} /></TopicPage>;
 }
 
 news.path = '/news/:topic';

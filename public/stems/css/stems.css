@@ -56,3 +56,17 @@
   right: 10px;
   z-index: 100;
 }
+
+.flac-tester {
+  margin: 12px;
+  padding: 0px;
+}
+
+.flac-tester > li {
+  margin-bottom: 14px;
+}
+
+.flac-tester > li > label {
+  margin-bottom: 22px;
+  font-size: 20px;
+}

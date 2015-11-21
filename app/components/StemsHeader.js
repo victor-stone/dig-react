@@ -31,7 +31,7 @@ const StemsHeader = React.createClass({
                   <Link href="/stems">{"browse"}</Link>
                 </li>
                 <li>
-                  <Link href="/news/aboutFLAC">{"about FLAC"}</Link>
+                  <Link href="/aboutFLAC">{"about FLAC"}</Link>
                 </li>
                 <li>
                   <Link href="/licenses">{"licenses"}</Link>

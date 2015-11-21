@@ -4,7 +4,7 @@ import ZIPContentViewer from './ZIPContentViewer';
 import AudioPlayer      from './AudioPlayer';
 import People           from './People';
 import ActionButtons    from './ActionButtons';
-
+import env              from '../services/env';
 import {  PlaylistUpdater  } from '../mixins';
 
 const UploadLink = ActionButtons.UploadLink;
@@ -23,11 +23,12 @@ const StemsFiles = React.createClass({
     return(
         <ul className="stems-files">
           {files.map( f => {
+            var playable = f.isMP3 || (f.isFLAC && env.supportFLAC);
             return (
               <li className="stem-files-line" key={f.id}>
                 <DownloadPopup fixed btnClass="sm-download" model={model} file={f} /> 
                 {" "}
-                {f.isPlayableSample
+                {playable
                   ? <AudioPlayer.PlayButton fixed model={f} />
                   : null
                 }

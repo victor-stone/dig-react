@@ -45,6 +45,10 @@ class FLAC extends Media
       me.soundPause();
     };
 
+    sound.on('error',function(err) {
+      me.safeEmit('error',err);
+    });
+    
     sound.on('end', function() {
         me.setIsPlaying(false);
         me.safeEmit('finish',me);

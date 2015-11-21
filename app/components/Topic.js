@@ -16,15 +16,18 @@ const TopicBody = React.createClass({
 
 const TopicPage = React.createClass({
 
+  getDefaultProps: function() {
+    return { icon: 'file-text-o' };
+  },
+
   render: function() {
-    var model = this.props.store.model;
     return (
         <div className="topic-page">
-          <PageHeader title={model.name} icon="file-text-o" />
+          <PageHeader title={this.props.title} icon={this.props.icon} />
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-6 col-md-offset-3">
-                <TopicBody store={this.props.store} />
+                {this.props.children}
               </div>
             </div>
           </div>
