@@ -100,7 +100,7 @@ const ResetOptionsButton = React.createClass({
   },
 
   render: function() {
-    var resetCls = 'btn btn-warning btn-sm' + (this.state.dirty ? '' : ' disabled');
+    var resetCls = 'reset-options btn btn-warning btn-sm' + (this.state.dirty ? '' : ' disabled');
 
     return <button onClick={this.onReset} className={resetCls}><Glyph icon="power-off" />{" reset"}</button>;
   }

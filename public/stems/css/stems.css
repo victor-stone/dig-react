@@ -50,3 +50,9 @@
   text-shadow: 2px 2px black;
 }
 
+.query-options-box {
+  width: 230px;
+  position: absolute;
+  right: 10px;
+  z-index: 100;
+}

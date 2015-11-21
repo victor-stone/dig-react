@@ -8,6 +8,7 @@ var validationTests = [
     var catchCrawler = req.url.match(/offset=([0-9]+)/);
     if( catchCrawler !== null ) {
         if( Number(catchCrawler[1]) > 30000 ) {
+          res._handled = true;
           return false;
         }
     }
@@ -17,6 +18,7 @@ var validationTests = [
   function(req,res) {
     var userAgent = req.headers['user-agent'];
     if( req.url.match(/^\/dig/) && userAgent.match(/\u0044\u0061\u006c\u0076/) ) {
+      res._handled = true;
       return false;
     }
     return true;    

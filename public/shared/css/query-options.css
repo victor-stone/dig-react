@@ -107,3 +107,6 @@
 }
 
 
+.query-options-box.open ul.query-options .btn.reset-options {
+  margin-bottom: 10px;
+}

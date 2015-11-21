@@ -5,8 +5,8 @@ import AB     from '../ActionButtons';
 import PlayControls     from './PlayControls';
 import PlaylistButton   from './PlaylistButton';
 import PlaybackScrubber from './PlaybackScrubber';
-
-import AudioService from '../../services/audio-player';
+import PlayButton       from './PlayButton';
+import AudioService     from '../../services/audio-player';
 
 var UploadLink = AB.UploadLink;
 
@@ -98,6 +98,8 @@ const AudioPlayer = React.createClass({
       );
   },
 });
+
+AudioPlayer.PlayButton = PlayButton;
 
 module.exports = AudioPlayer;
 

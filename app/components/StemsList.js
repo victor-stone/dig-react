@@ -19,6 +19,7 @@ const StemsFiles = React.createClass({
   render: function() {
     var model = this.props.model;
     var files = model.files;
+    
     return(
         <ul className="stems-files">
           {files.map( f => {

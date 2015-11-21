@@ -8,7 +8,7 @@ function set(opts) {
 function assert( truthyTest, msg ) {
   if( env.debugMode ) {
     if( !truthyTest ) {
-      console.log('ASSERT FAILED', msg);
+      console.error('ASSERT FAILED', msg);
     }
   }
 }

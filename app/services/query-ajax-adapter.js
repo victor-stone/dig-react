@@ -50,7 +50,7 @@ class QueryAjaxAdapter extends Eventer
       if( r.responseText && r.responseText.match(/^<pre>/) ) {
         //something went south at ccMixter and there's a mysql error.
         console.error(r.responseText);
-      }  else if( status && err ) {
+      }  else if( err ) {
         console.error(url, status, err.toString());
         throw err;
       }

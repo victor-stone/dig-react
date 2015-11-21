@@ -1,6 +1,7 @@
 import UploadList  from './upload-list';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
+import querystring from 'querystring';
 
 class Playlist extends UploadList {
 
@@ -11,7 +12,12 @@ class Playlist extends UploadList {
   /* protected */
 
   fetch(queryParams) {
-    return this.query(queryParams).then( serialize(ccmixter.Upload) );
+    return this.query(queryParams)
+              .then( serialize(ccmixter.Upload) )
+              .catch( e => {
+                var str = querystring.stringify(queryParams);
+                throw new Error( `error during fetch of ${str} original: ${e.toString()}`);
+              });
   }
 
   promiseHash( hash, queryParams ) {

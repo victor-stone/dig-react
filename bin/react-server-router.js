@@ -19,7 +19,7 @@ class ReactServerRouter {
 
     if( !handlers ) {
       
-      console.log( '404:', url, req.headers['referer'] || '' );
+      //console.log( '404:', url, req.headers['referer'] || '' );
       res.statusCode = 404;
       res.end('Not Found');
       successCallback(url,req,res);
