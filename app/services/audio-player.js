@@ -27,11 +27,6 @@ class AudioPlayer extends Eventer
     */
     this.playlist = null;
 
-    /**
-      store this here for now
-    */
-    this.wantWavImg = false;
-
     this._mediaCache = {};
 
   }

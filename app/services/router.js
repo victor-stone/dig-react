@@ -1,7 +1,9 @@
+/* eslint no-console:0 */
 
 import RouteRecognizer  from 'route-recognizer';
 import rsvp             from 'rsvp';
 import Eventer          from './eventer';
+import env              from './env';
 
 class Router extends Eventer
 {
@@ -9,7 +11,8 @@ class Router extends Eventer
     super(...arguments);
 
     this.recognizer = new RouteRecognizer();
-    this.routes = [];
+
+    this.routes = null;
     this.rewrites = [];
 
     if( typeof window !== 'undefined' ) {
@@ -46,6 +49,7 @@ class Router extends Eventer
   }
 
   resolve(url) {
+    this._ensureRoutes();
     url = this.runRewrites(url);
     var results = this.recognizer.recognize(url);
     if( results ) {
@@ -102,11 +106,18 @@ class Router extends Eventer
             queryParams: handler.queryParams,
             hash } );
       }).catch( function(err) {
-        /* eslint no-console:0 */
         console.log( err + '', err.stack );
-        /* xeslint no-console:2 */
         window.alert('Wups, could not show you that');
       });
+  }
+
+  _ensureRoutes() {
+    if( this.routes !== null ) {
+      return;
+    }
+    if( env.routes ) {
+      this.addRoutes( env.routes, env.rewriteRules );
+    }
   }
 
 }

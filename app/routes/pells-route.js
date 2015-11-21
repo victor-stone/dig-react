@@ -3,7 +3,9 @@ import qc               from '../models/query-configs';
 import Acappellas       from '../stores/acappellas';
 
 import {  QueryOptions,
+          PellsQueryOptions,
           Paging  }       from '../components';
+
 import { mergeParams }    from '../unicorns';
 
 import {
@@ -18,9 +20,9 @@ var pells = React.createClass({
     var store = this.props.store;
     return (
       <div className="container pells-page">
-        <div className="filter-box-position">
-          <QueryOptions store={store} />
-        </div>
+        <QueryOptions.QueryOptions store={store}>
+          <PellsQueryOptions store={store} />
+        </QueryOptions.QueryOptions>
         <PellHeader store={store} />
         <div className="row">
           <div className="col-md-2 pell-paging">

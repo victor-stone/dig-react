@@ -3,7 +3,7 @@ import { mergeParams }  from '../unicorns';
 import qc               from '../models/query-configs';
 import PlaylistStore    from '../stores/playlist';
 
-import {  Playlist, 
+import {  DigRemixes as Playlist, 
           People,
           Paging   }  from '../components';
 

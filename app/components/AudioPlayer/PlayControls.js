@@ -2,6 +2,7 @@ import React        from 'react';
 import Glyph        from '../Glyph';
 import { oassign }  from '../../unicorns';
 import AudioService from '../../services/audio-player';
+import env          from '../../services/env';
 
 const PlayControls = React.createClass({
 
@@ -36,7 +37,7 @@ const PlayControls = React.createClass({
     var prevClass    = 'btn play-previous ' + ( this.state.hasPrev ? '' : 'disabled' );
     var nextClass    = 'btn play-next '     + ( this.state.hasNext ? '' : 'disabled' );
     var playIcon     = (this.state.isPlaying && !this.state.isPaused) ? 'pause' : 'play';
-    var canPlaylist  = AudioService.supportPlaylist;
+    var canPlaylist  = env.supportPlaylist;
 
     return (
       <div className="btn-group pull-left">

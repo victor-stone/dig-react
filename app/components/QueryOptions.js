@@ -2,24 +2,19 @@ import React     from 'react';
 import Glyph     from './Glyph';
 import Link      from './Link';
 import qc        from '../models/query-configs';
-import env       from '../services/env';
 
-import { oassign }        from '../unicorns';
+import { CloseButton }    from './ActionButtons';
+
 import { PlaylistUpdater,
          QueryParamEnum } from '../mixins';
-
-var LicenseInfoPopup = React.createClass({
 
   // unfortunately popup is broken from this <ul>
   // not sure why, can't care
   // TODO: care
 
-  render: function() {
-    return(
-        <Link href="/licenses"><Glyph icon="question-circle" /></Link>
-      );
-  }
-});
+function LicenseInfoPopup() {
+  return <Link href="/licenses"><Glyph icon="question-circle" /></Link>;
+}
 
 const LicenseFilter = React.createClass({
 
@@ -112,6 +107,10 @@ const ResetOptionsButton = React.createClass({
 
 });
 
+function OptionsWrap(props) {
+  return <ul className="query-options-elements">{props.children}</ul>;
+}
+
 const QueryOptions = React.createClass({
 
   mixins: [PlaylistUpdater],
@@ -119,11 +118,6 @@ const QueryOptions = React.createClass({
   handleShowOptions: function(){
     var showOptions = !this.state.showOptions;
     this.setState( { showOptions } );
-  },
-
-  genOptions: function() {
-    var props = oassign( { handleShowOptions: this.handleShowOptions }, this.props);
-    return React.createElement( env.AppQueryOptions, props );
   },
 
   stateFromStore: function(store) {
@@ -138,15 +132,23 @@ const QueryOptions = React.createClass({
     }
     
     var showP       = this.state.showOptions;
-    var contents    = this.genOptions(showP);
-    var cls         = 'hidden-xs hidden-sm filter-box' + (showP ? ' open' : '' );
     var buttonColor = this.state.dirty ? { color: 'yellow' } : {};
-    var cls2        = showP ? '' : 'hidden';
+    var cls         = 'hidden-xs hidden-sm query-options-box' + (showP ? ' open' : '' );
+    var cls2        = 'query-options ' + (showP ? 'open' : 'hidden');
     var cls3        = 'btn btn-primary' + (showP ? ' hidden' : '');
 
     return (
       <div className={cls}>
-        <div className={cls2}>{contents}</div>
+        <ul className={cls2}>
+          <li className="btn-primary title" onClick={this.handleShowOptions} >
+            <Glyph icon="gear" />{" filters"}
+            <CloseButton onClick={this.handleShowOptions} />
+          </li>
+          <li>{this.props.children}</li>
+          <li>
+            <ResetOptionsButton store={this.props.store} />
+          </li>
+        </ul>
         <button className={cls3} style={buttonColor} onClick={this.handleShowOptions} ><Glyph icon="gear" />{" filters"}</button>
       </div>
     );
@@ -154,10 +156,12 @@ const QueryOptions = React.createClass({
 
 });
 
-QueryOptions.ResetOptionsButton = ResetOptionsButton;
-QueryOptions.LicenseInfoPopup   = LicenseInfoPopup;
-QueryOptions.LicenseFilter      = LicenseFilter;
-QueryOptions.LimitFilter        = LimitFilter;
-QueryOptions.SortFilter         = SortFilter;
-
-module.exports = QueryOptions;
+module.exports = {
+  QueryOptions,
+  ResetOptionsButton,
+  LicenseInfoPopup,
+  LicenseFilter,
+  LimitFilter,
+  OptionsWrap,
+  SortFilter
+};

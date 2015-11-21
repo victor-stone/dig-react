@@ -1,6 +1,7 @@
 import React        from 'react';
 import ajax         from '../../services/ajax';
 import AudioService from '../../services/audio-player';
+import env          from '../../services/env';
 
 
 const WavImage = React.createClass({
@@ -11,13 +12,13 @@ const WavImage = React.createClass({
   },
 
   componentWillMount: function() {
-    if( !global.IS_SERVER_REQUEST && AudioService.wantWavImg ) {
+    if( !global.IS_SERVER_REQUEST && env.supportWavImg ) {
       AudioService.on('nowPlaying',this.onNowPlaying);
     }
   },
 
   componentWillUnmount: function() {
-    if( !global.IS_SERVER_REQUEST  && AudioService.wantWavImg ) {
+    if( !global.IS_SERVER_REQUEST  && env.supportWavImg ) {
       AudioService.removeListener('nowPlaying',this.onNowPlaying);
     }
   },
@@ -27,7 +28,7 @@ const WavImage = React.createClass({
   },
 
   grabImage: function() {
-    if( AudioService.wantWavImg && AudioService.nowPlaying ) {
+    if( env.supportWavImg && AudioService.nowPlaying ) {
       var imageURL = AudioService.nowPlaying.wavImageURL;
       if( imageURL ) {
         // todo: export full xml+svg and put in <img> tag

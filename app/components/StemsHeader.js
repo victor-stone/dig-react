@@ -22,15 +22,16 @@ const StemsHeader = React.createClass({
           <div className="container-fluid">
             <NavbarHeader title="stems.ccMixter" />
             <div className="collapse navbar-collapse" id="dig-collapse">
-              <ul className="nav navbar-nav">
-                <li><LoadingGlyph /></li>    
-              </ul>
               <div role="search" className="navbar-form navbar-right">
-                <SearchBox submitSearch={this.submitSearch} placeholder="genre, title, etc." />
+                <SearchBox submitSearch={this.submitSearch} placeholder="genre, instrument, etc." />
               </div>      
               <ul className="nav navbar-nav navbar-right">
+                <li><Link href="#"><LoadingGlyph /></Link></li>
                 <li>
                   <Link href="/stems">{"browse"}</Link>
+                </li>
+                <li>
+                  <Link href="/news/aboutFLAC">{"about FLAC"}</Link>
                 </li>
                 <li>
                   <Link href="/licenses">{"licenses"}</Link>

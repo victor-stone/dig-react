@@ -7,7 +7,7 @@ import Glyph        from './Glyph';
 import Paging       from './Paging'; 
 import Tags         from './Tags';
 import QueryOptions from './QueryOptions';
-import Playlist     from './Playlist';
+import DigRemixes   from './DigRemixes';
 
 import {  QueryParamTagsRotate,
           PlaylistUpdater       } from '../mixins';
@@ -205,7 +205,7 @@ var DigDeep = React.createClass({
       <div>
         <RemixTagSelectionSection store={tagStore} playlist={store} />
         <Paging store={store} ref="paging"/>
-        <Playlist store={store} />   
+        <DigRemixes store={store} />   
         <NoTagHits store={store}  />     
       </div>
     );

@@ -11,6 +11,7 @@
 .song-title > a {
   color: black;  
 }
+
 .song-title > a:hover{
   color: #999;
   text-decoration: none;

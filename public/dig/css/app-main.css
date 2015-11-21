@@ -3,20 +3,22 @@
   margin-bottom: 0px;
 }
 .navbar-collapse {
-    padding-left: 2%;
-
+  padding-left: 2%;
 }
 
 .collapse .navbar-nav .dropdown-toggle {
   color: #9d9d9d;
 }
+
 .collapse .navbar-nav > li > a {
   margin-top: 10px; 
 }
+
 .collapse .navbar-nav > li > input,
 .collapse .navbar-nav > li > div {
   margin-top: 17px;
 }
+
 .collapse .form-group {
   margin-top: 8px;
   margin-bottom: 0px
@@ -49,9 +51,6 @@ div.tags {
 .upload-page .list-group-item {
   border-color: transparent;
 }
-
-
-
 
 /* expanding buttons */
 .btn-exp {
@@ -111,6 +110,7 @@ a.btn-exp:hover {
 .editable .btn-tag {
   padding-top: 3px;
 }
+
 .editable .btn-tag i {
    color: goldenrod;
 }

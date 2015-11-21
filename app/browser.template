@@ -4,6 +4,10 @@ global.IS_SERVER_REQUEST = false;
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var env = require('./services/env');
+
+env.set( { debugMode: {debugMode} } );
+
 var app = require('./{app}');
 
 ReactDOM.render( React.createElement(app),  document.getElementById('content') );

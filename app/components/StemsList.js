@@ -2,8 +2,12 @@ import React            from 'react';
 import DownloadPopup    from './DownloadPopup';
 import ZIPContentViewer from './ZIPContentViewer';
 import AudioPlayer      from './AudioPlayer';
+import People           from './People';
+import ActionButtons    from './ActionButtons';
 
 import {  PlaylistUpdater  } from '../mixins';
+
+const UploadLink = ActionButtons.UploadLink;
 
 const StemsFiles = React.createClass({
 
@@ -68,9 +72,8 @@ const StemsList = React.createClass({
           {model.playlist.map( (u,i) => {
             return (<li key={i}>
                       {u.bpm ? <span className="bpm">{u.bpm}</span> : null}
-                      {fo ? null : <span className="stem-name">{u.name}</span>}
-                      {" "}
-                      {nn ? null : <span className="stem-artist">{u.artist.name}</span>}
+                      {fo ? null : <UploadLink model={u} className="stem-name" />}
+                      {nn ? null : <People.Link model={u.artist} className="stem-artist" />}
                       <StemsFiles model={u} store={this.props.store} />
                   </li>); })
           }

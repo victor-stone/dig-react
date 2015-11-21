@@ -8,8 +8,6 @@ import Tags             from './Tags';
 import SearchBox        from './SearchBox';
 import ZIPContentViewer from './ZIPContentViewer';
 
-//import QueryOptions from './QueryOptions';
-
 import { QueryParamTagsRotate } from '../mixins';
 
 const SelectedTagSection = React.createClass({

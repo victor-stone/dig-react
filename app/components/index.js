@@ -7,6 +7,7 @@ import BPM from './BPM';
 import DigDeep from './DigDeep';
 import DigFooter from './DigFooter';
 import DigHeader from './DigHeader';
+import DigRemixes from './DigRemixes';
 import DownloadPopup from './DownloadPopup';
 import FeaturedPage from './FeaturedPage';
 import Glyph from './Glyph';
@@ -17,11 +18,10 @@ import Modal from './Modal';
 import NavbarHeader from './NavbarHeader';
 import PageHeader from './PageHeader';
 import Paging from './Paging';
-import PellQueryOptions from './PellQueryOptions';
 import PellsBrowser from './PellsBrowser';
 import PellsHeader from './PellsHeader';
+import PellsQueryOptions from './PellsQueryOptions';
 import People from './People';
-import Playlist from './Playlist';
 import QueryOptions from './QueryOptions';
 import RemixQueryOptions from './RemixQueryOptions';
 import SearchBox from './SearchBox';
@@ -32,6 +32,7 @@ import StemsList from './StemsList';
 import StemsQueryOptions from './StemsQueryOptions';
 import Tags from './Tags';
 import TitleSetter from './TitleSetter';
+import Topic from './Topic';
 import TrackbackPopup from './TrackbackPopup';
 import ZIPContentViewer from './ZIPContentViewer';
 
@@ -44,6 +45,7 @@ module.exports = {
     DigDeep,
     DigFooter,
     DigHeader,
+    DigRemixes,
     DownloadPopup,
     FeaturedPage,
     Glyph,
@@ -54,11 +56,10 @@ module.exports = {
     NavbarHeader,
     PageHeader,
     Paging,
-    PellQueryOptions,
     PellsBrowser,
     PellsHeader,
+    PellsQueryOptions,
     People,
-    Playlist,
     QueryOptions,
     RemixQueryOptions,
     SearchBox,
@@ -69,6 +70,7 @@ module.exports = {
     StemsQueryOptions,
     Tags,
     TitleSetter,
+    Topic,
     TrackbackPopup,
     ZIPContentViewer 
 };

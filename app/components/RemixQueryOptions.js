@@ -1,12 +1,11 @@
 import React     from 'react';
-import Glyph     from './Glyph';
 import qc        from '../models/query-configs';
 
 import { LicenseFilter,
          LimitFilter,
          SortFilter,
-         ResetOptionsButton }    from './QueryOptions';
-import { CloseButton }           from './ActionButtons';
+         OptionsWrap }    from './QueryOptions';
+         
 import { QueryParamTagsToggle }  from '../mixins';
 
 const InstrumentalOnlyFilter = React.createClass({
@@ -31,27 +30,21 @@ const RemixQueryOptions = React.createClass({
     
     var store = this.props.store;
 
-    return ( <ul>
-      <li className="btn-primary title" onClick={this.props.handleShowOptions} >
-        <Glyph icon="gear" />{" filters"}
-        <CloseButton onClick={this.props.handleShowOptions} />
-      </li>
-      <li>
-        <LicenseFilter store={store} />
-      </li>
-      <li>
-        <SortFilter store={store} />
-      </li>
-      <li>
-        <InstrumentalOnlyFilter store={store} />
-      </li>
-      <li>
-        <LimitFilter store={store} />
-      </li>
-      <li>
-        <ResetOptionsButton store={store} />
-      </li>
-    </ul>
+    return ( 
+        <OptionsWrap>
+          <li>
+            <LicenseFilter store={store} />
+          </li>
+          <li>
+            <SortFilter store={store} />
+          </li>
+          <li>
+            <InstrumentalOnlyFilter store={store} />
+          </li>
+          <li>
+            <LimitFilter store={store} />
+          </li>
+      </OptionsWrap>
     );
   },
 });

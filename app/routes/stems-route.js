@@ -2,8 +2,11 @@ import React            from 'react';
 import qc               from '../models/query-configs';
 import Samples          from '../stores/samples';
 import { mergeParams }  from '../unicorns';
-import { StemsBrowser,
-        PageHeader }    from '../components';
+
+import {  StemsBrowser,
+          QueryOptions,
+          StemsQueryOptions,
+          PageHeader }    from '../components';
 
 var stems = React.createClass({
 
@@ -11,6 +14,9 @@ var stems = React.createClass({
     var store = this.props.store;
     return (
       <div>
+        <QueryOptions.QueryOptions store={store}>
+          <StemsQueryOptions store={store} />
+        </QueryOptions.QueryOptions>
         <PageHeader icon="th" title="Samples" />
         <div className="container-fluid">
           <StemsBrowser store={store} />

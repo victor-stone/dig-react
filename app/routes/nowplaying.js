@@ -1,9 +1,7 @@
-'use strict';
-
 import React            from 'react';
 import rsvp             from 'rsvp';
 import { PageHeader, 
-         Playlist }     from '../components';
+         DigRemixes as Playlist }     from '../components';
 
 import AudioPlayerService from '../services/audio-player';
 

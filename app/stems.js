@@ -1,27 +1,12 @@
-import router from './services/router';
+
 import env    from './services/env';
 import App    from './app';
-import qc     from './models/query-configs';
-//import Topics from './stores/topics';
 import routes from './routes/stems';
 
-import audio  from './services/audio-player';
-
 import {
-          StemsQueryOptions,
-          StemsHeader,
-          DigFooter
+          StemsHeader as Header,
+          DigFooter as Footer
         } from './components';
-
-env.Header          = StemsHeader;
-env.Footer          = DigFooter;
-env.AppQueryOptions = StemsQueryOptions;
-
-//env.bannerTopic = Topics.namedTopics.pellsBanner;
-
-audio.supportPlaylist = false;
-
-qc.default = qc.samples;
 
 var rewriteRules = [
 /*
@@ -29,6 +14,18 @@ var rewriteRules = [
   { regex: /^\/people\/([^\/]+)$/,         now: '/pells?u=$1' },
 */
 ];
-router.addRoutes( routes, rewriteRules );
+
+env.assert( Header );
+env.assert( Footer );
+
+env.set( {
+  Header,
+  Footer,
+  routes,
+  rewriteRules,
+  supportPlaylist: false,
+  supportWavImg: false,
+  // bannerTopic: 'pellsBanner',
+});
 
 module.exports = App;

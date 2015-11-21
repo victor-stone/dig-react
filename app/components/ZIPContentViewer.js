@@ -1,8 +1,11 @@
 import React from 'react';
 import Glyph from './Glyph'; 
+import AB    from './ActionButtons';
 
 import {  StoreEvents,
           BoundingElement  } from '../mixins';
+
+const UploadLink = AB.UploadLink;
 
 const ZIPLink = React.createClass({
   onClick: function(e) {
@@ -37,7 +40,7 @@ const ZIPContentViewer = React.createClass({
     this.resetBump();
   },
 
-  onInspectZip: function(file) {
+  onInspectZIP: function(file) {
     this.setState( { file, files: file && file.zipContents } );
   },
 
@@ -54,7 +57,7 @@ const ZIPContentViewer = React.createClass({
     return (
         <ul className="zip-contents">
           <li className="head"><Glyph icon="file-archive-o" />{" Contents of ZIP file"}</li>
-          <li className="sub-head">{upload.name}</li>
+          <li className="sub-head"><UploadLink model={upload} /></li>
           {files.map( (f,i) => <li key={i}>{f}</li> )}
         </ul>
       );

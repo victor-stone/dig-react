@@ -1,7 +1,7 @@
 'use strict';
 
 import React      from 'react';
-import Playlist   from './Playlist';
+import DigRemixes from './DigRemixes';
 import PageHeader from './PageHeader';
 import Paging     from './Paging';
 
@@ -19,8 +19,8 @@ const FeaturedPage = React.createClass({
       <div className="playlist">
         <PageHeader icon={icon} title={title} subTitle={subTitle} />
         <Paging store={store} />
-        <Playlist store={store} />
-        <Playlist.NotALotHere store={store} />
+        <DigRemixes store={store} />
+        <DigRemixes.NotALotHere store={store} />
       </div>
     );
     

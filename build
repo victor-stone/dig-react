@@ -180,6 +180,7 @@ function _compileTemplate(platform, outfile) {
   var text  = fs.readFileSync( `app/${platform}.template`, 'utf8' );
   var app   = APP_NAME;
       text  = text.replace(/\{app\}/g, app );
+      text  = text.replace(/\{debugMode\}/g, MODE == 'dev' ? 'true' : 'false' );
   var fname = outfile || `${SERVER_DIR}${platform}.js`;
 
   log('compiling to ', fname);

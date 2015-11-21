@@ -5,14 +5,26 @@ import { StemsList,
          ZIPContentViewer,
          PageHeader }    from '../components';
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+var icons = [ 'headphones', 'at', 'hand-scissors-o', 'heartbeat', 'plug',
+               'send-o', 'taxi', 'bolt', 'bicycle', 'bank', 'bed', 'heart-o',
+               'apple', 'venus-mars', 'space-shuttle'   ];
+
+function randomIcon() {
+  return icons[ getRandomInt(0,icons.length-1)];
+}               
+
 var stems = React.createClass({
 
   render() {
     var store = this.props.store;
     var upload = store.model.playlist[0];
+    var icon   = randomIcon();
     return (
       <div>
-        <PageHeader icon="music" title={upload.name} subTitle={upload.artist.name} />
+        <PageHeader icon={icon} title={upload.name} subTitle={upload.artist.name} />
         <div className="container-fluid stems-browser">
           <div className="row">
             <div className="col-md-6 col-md-offset-3 stems-listing-widget">

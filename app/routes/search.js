@@ -9,7 +9,7 @@ import qc from '../models/query-configs';
 import {  Link, 
           Glyph, 
           PageHeader, 
-          Playlist, 
+          DigRemixes as Playlist, 
           Paging } from '../components';
 
 import TagStore       from '../stores/tags';

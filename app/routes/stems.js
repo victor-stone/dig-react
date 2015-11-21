@@ -1,5 +1,6 @@
 import credits from './credits';
 import licenses from './licenses';
+import news from './news';
 import index from './stems-index';
 import people from './stems-people';
 import stems from './stems-route';
@@ -10,6 +11,7 @@ module.exports = {
   credits,
   index,
   licenses,
+  news,
   people,
   search,
   stems,
