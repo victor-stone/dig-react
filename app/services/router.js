@@ -92,7 +92,8 @@ class Router extends Eventer
 
   updateURL() {
     var q = document.location.search || '';
-    var handlers = this.resolve(document.location.pathname + q);
+    var pathname = document.location.pathname + q;
+    var handlers = this.resolve(pathname);
     if (!handlers ) {
       // ummmmm
       return window.alert('Not Found');
@@ -113,7 +114,9 @@ class Router extends Eventer
             hash } );
       }).catch( err => {
         env.set( { err } );
-        setTimeout( () => this.navigateTo('/error'), RANDOM_TIMEOUT );
+        if( pathname.match(/error/) === null ) {
+          setTimeout( () => this.navigateTo('/error'), RANDOM_TIMEOUT );
+        }
         console.log( err );
       });
   }
