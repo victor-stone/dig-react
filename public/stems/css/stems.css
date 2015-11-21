@@ -21,6 +21,14 @@
     color: #C5EF1D;
 }
 
+.featured-menu > li > a > .imgh {
+  margin-right: 20px;
+}
+
+.featured-menu > li > a > .imgh img {
+  border-radius: 12px;
+}
+
 .loading-screen {
   opacity: 0.5;
 }

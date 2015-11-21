@@ -39,12 +39,12 @@ const StemsHeader = React.createClass({
                 </li>
       <li>
         <a  href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{"featured "}<Glyph icon="chevron-down" /></a>
-        <ul className="dropdown-menu">
-          <li><Link href="/people/djvadim"><Glyph fixed icon="th-large" />{" dj vadim"}</Link></li>
-          <li><Link href="/people/buckyjonson"><Glyph fixed icon="th-large" /> {"bucky jonson"}</Link></li>
-          <li><Link href="/news/152947"><Glyph fixed icon="th-large" />{" _ghost collective"}</Link></li>
-          <li><Link href="/people/stateshirt"><Glyph fixed icon="th-large" /> {"state shirt"}</Link></li>
-          <li><Link href="/news/38184"><Glyph fixed icon="th-large" /> {" trifonic"}</Link></li>
+        <ul className="dropdown-menu featured-menu">
+          <li><Link href="/people/djvadim"><span className="imgh"><img src="/images/vadim.png" /></span>{" dj vadim"}</Link></li>
+          <li><Link href="/people/buckyjonson"><span className="imgh"><img src="/images/bucky.png" /></span>{" bucky jonson"}</Link></li>
+          <li><Link href="/news/152947"><span className="imgh"><img src="/images/ghostk.jpg" /></span>{" Ghost_k"}</Link></li>
+          <li><Link href="/people/stateshirt"><span className="imgh"><img src="/images/statesh.jpg" /></span>{" state shirt"}</Link></li>
+          <li><Link href="/news/38184"><span className="imgh"><img src="/images/trifonic.jpg" /></span>{" trifonic"}</Link></li>
         </ul>            
       </li>
               </ul>
