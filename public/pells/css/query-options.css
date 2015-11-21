@@ -4,16 +4,5 @@
   margin: 10px;
   position: absolute;
   right: 10px;
-}
-
-.filter-box {
-  position:relative;
-  right: 0;
-  top: 0;
   z-index: 100;
 }
-
-.filter-box li {
-  margin-bottom: 18px;
-}
-

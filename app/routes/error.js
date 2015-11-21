@@ -9,6 +9,9 @@ const ErrorPage = React.createClass({
   },
 
   mailLink: function() {
+    if( global.IS_SERVER_REQUEST ) {
+      return '';
+    }
     var err = env.err;
     var ua = (navigator && navigator.userAgent) || '(your browser here...)';
     var body = `I'm sharing this error:\n\n${err}\n\nthat I got while using this browser:\n\n${ua}\n\nSigned,\nA cool, thoughtful web citizen\n\n`;

@@ -5,6 +5,14 @@ var AppModule   = require('./{app}.js');
 var logPrefix   = '{app}';
 var webDir      = __dirname + '/web';
 
+var env = require('./services/env');
+
+env.set( { 
+    debugMode: {debugMode},
+    browser: false,
+    server: true
+  });
+
 var server = new Server( router, webDir, AppModule, logPrefix );
 
 server.start();
