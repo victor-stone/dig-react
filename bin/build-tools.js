@@ -24,9 +24,9 @@ function rename( from, to ) {
   return frename( from, to );
 }
 
-function bundleFiles(arr,destination,sortpri) {
+function bundleFiles(arr,destination,sortpri,sep) {
   var fd = null;
-
+  sep = sep || '';
   clog( 'creating bundle ', destination  );
   log( ' => ', arr );
   
@@ -41,7 +41,7 @@ function bundleFiles(arr,destination,sortpri) {
         var data = Object.keys(hash)
                          .sort( (a,b) => a.match(sortpri) !== null ? -1 : 1 )
                          .map( k => hash[k] )
-                         .join( `\n/* ccmbuildjoint */\n` );
+                         .join( `\n${sep}/* ccmbuildjoint */\n` );
         fs.write(fd,data);
         fs.close(fd);
       });

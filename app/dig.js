@@ -3,7 +3,6 @@ import routes from './routes/dig';
 import App    from './app';
 
 import {
-          RemixQueryOptions as AppQueryOptions,
           DigHeader as Header,
           DigFooter as Footer
         } from './components';
@@ -18,9 +17,6 @@ var rewriteRules = [
 ];
 
 env.set({
-  Header,
-  Footer,
-  AppQueryOptions,
   routes,
   rewriteRules,
   supportPlaylist: true,
@@ -28,4 +24,4 @@ env.set({
   bannerTopic: 'digBanner'
 });
 
-module.exports = App;
+module.exports = function() { return <App header={Header} footer={Footer} />; };

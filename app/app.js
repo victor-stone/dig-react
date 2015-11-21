@@ -2,7 +2,6 @@
 import React       from 'react';
 import ajaxAdapter from './services/query-ajax-adapter';
 import router      from './services/router';
-import env         from './services/env';
 import { Banner,
          TitleSetter,
          AudioPlayer }   from './components';
@@ -82,13 +81,14 @@ const App = React.createClass({
   render: function() {
 
     var title = this.state.component && this.state.component.title;
-
+    var header = React.createElement(this.props.header);
+    var footer = React.createElement(this.props.footer);
     return (
       <div>
         <div id="wrap">
           <TitleSetter title={title} />
           <Banner />
-          <env.Header />
+          {header}
           <div className="outlet-wrap">
             {this.state.component
               ? React.createElement(this.state.component,
@@ -101,7 +101,7 @@ const App = React.createClass({
             }
           </div>
         </div>
-        <env.Footer />
+        {footer}
         <AudioPlayer />
       </div>
     );

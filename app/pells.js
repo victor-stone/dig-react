@@ -15,8 +15,6 @@ var rewriteRules = [
 ];
 
 env.set( {
-  Header,
-  Footer,
   routes,
   rewriteRules,
   bannerTopic: 'pellsBanner',
@@ -25,4 +23,4 @@ env.set( {
 });
 
 
-module.exports = App;
+module.exports = function() { return <App header={Header} footer={Footer} />; };

@@ -287,7 +287,8 @@ function bundleVendorCSSFiles() {
 function bundleVendorFiles(arr,outext) {
   var dir = WEB_DIR + outext;
   bt.mkdir(dir);
-  return bt.bundleFiles(arr, dir + '/vendor.' + outext, /\/(jquery|react|aurora)\//);
+  var sep = outext === 'js' ? ';' : '';
+  return bt.bundleFiles(arr, dir + '/vendor.' + outext, /\/(jquery|react|aurora)\//, sep);
 }
 
 function bundleAppFiles(arr,outext) {

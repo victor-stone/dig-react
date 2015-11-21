@@ -1,4 +1,4 @@
-
+import React  from 'react';
 import env    from './services/env';
 import App    from './app';
 import routes from './routes/stems';
@@ -15,17 +15,13 @@ var rewriteRules = [
 */
 ];
 
-env.assert( Header );
-env.assert( Footer );
-
 env.set( {
-  Header,
-  Footer,
   routes,
   rewriteRules,
   supportPlaylist: false,
   supportWavImg: false,
+  appName: 'stems.ccMixter',
   // bannerTopic: 'pellsBanner',
 });
 
-module.exports = App;
+module.exports = function() { return <App header={Header} footer={Footer} />; };
