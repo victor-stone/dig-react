@@ -117,7 +117,7 @@ class Router extends Eventer
         if( pathname.match(/error/) === null ) {
           setTimeout( () => this.navigateTo('/error'), RANDOM_TIMEOUT );
         }
-        console.log( err );
+        console.log( err, pathname );
       });
   }
 

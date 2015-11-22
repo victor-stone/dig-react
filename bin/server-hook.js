@@ -69,8 +69,6 @@ class ServerHook {
       return true;
     }
 
-    var ret = true;
-
     try {
       if( !google404s(req,res) ) {
           return false;
@@ -80,11 +78,11 @@ class ServerHook {
       }
     } catch(e) {
       res._handled = true;
-      ret = true;
-      this.sysLog(req,res,e);
+      this.sysLog.logRequest(req,res,e);
+      return false;
     }
 
-    return ret;
+    return true;
   }
 }
 

@@ -69,12 +69,10 @@ class Server {
       } 
       
     } else {
-      //console.log( 'status: ', res.statusCode);
       if( !res._handled ) {
         res.statusCode = 500;
         res.end('500 Server error');
       }
-      sysLog.logRequest(req,res)
     }
   }
 }
@@ -94,7 +92,7 @@ function reactError(url,req,res,exception) {
   res.statusCode = 404;
   res.end('not found');
   if( exception ) {
-    console.log( exception );
+    console.log( exception, url );
   }
   sysLog.logRequest(req,res,exception);
 }
