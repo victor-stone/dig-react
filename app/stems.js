@@ -23,4 +23,4 @@ env.set( {
   // bannerTopic: 'pellsBanner',
 });
 
-module.exports = function() { return <App header={Header} footer={Footer} />; };
+module.exports = function(props) { return <App {...props} header={Header} footer={Footer} />; };

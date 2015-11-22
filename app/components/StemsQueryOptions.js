@@ -2,12 +2,13 @@ import React     from 'react';
 
 import { LicenseFilter,
          LimitFilter,
+         QueryOptions,
          OptionsWrap } from './QueryOptions';
          
 import { BPMDisplay,
-         BPMSlider }          from './BPM'; 
+         BPMSlider   } from './BPM'; 
 
-var StemsQueryOptions = React.createClass({
+var _StemsQueryOptions = React.createClass({
 
   render: function() {
 
@@ -32,4 +33,10 @@ var StemsQueryOptions = React.createClass({
   },
 });
   
+function StemsQueryOptions(props) {
+  return (<QueryOptions store={props.store}>
+            <_StemsQueryOptions store={props.store} />
+          </QueryOptions>);
+}
+
 module.exports = StemsQueryOptions;

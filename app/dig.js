@@ -11,6 +11,7 @@ import {
 var rewriteRules = [
   { regex: new RegExp(/^\/free_music/),                now: '/free' },
   { regex: new RegExp(/^\/music_for_film_and_video/),  now: '/film' },
+  { regex: new RegExp(/^\/video/),                     now: '/film' },
   { regex: new RegExp(/^\/podcast_music/),             now: '/free'},
   { regex: new RegExp(/^\/hot/),                       now: '/edpicks'},
   { regex: new RegExp(/^\/top/),                       now: '/edpicks'},
@@ -25,4 +26,5 @@ env.set({
   bannerTopic: 'digBanner'
 });
 
-module.exports = function() { return <App header={Header} footer={Footer} />; };
+
+module.exports = function(props) { return <App {...props} header={Header} footer={Footer} />; };

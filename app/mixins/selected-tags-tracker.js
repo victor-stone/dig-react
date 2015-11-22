@@ -1,14 +1,13 @@
 
-
-
 var SelectedTagsTracker = {
 
   getInitialState: function() {
-    return this.tagsFromStore(this.props.store);
+    this._tagStore = this.props.store.tags || this.props.store;
+    return this.tagsFromStore(this._tagStore);
   },
 
   componentWillMount: function() {
-    this._subSelectedTags(this.props.store);
+    this._subSelectedTags(this._tagStore);
   },
 
   componentWillUnmount: function() {
@@ -16,10 +15,12 @@ var SelectedTagsTracker = {
   },
 
   componentWillReceiveProps: function(newProps) {
-    if( this.props.store !== newProps.store ) {
-      this.setState( this.tagsFromStore(newProps.store) );
+    var newStore = newProps.store.tags || newProps.store;
+    if( this._tagStore !== newStore ) {
+      this._tagStore = newProps;
+      this.setState( this.tagsFromStore(newStore) );
       this._unsubSelectedTags();
-      this._subSelectedTags(newProps.store);
+      this._subSelectedTags(newStore);
     }
   },
 
@@ -34,7 +35,7 @@ var SelectedTagsTracker = {
   },
 
   _unsubSelectedTags: function() {
-    var store = this.props.store;
+    var store = this._tagStore;
     if( this.props.catID ) {
       store.removeListener('selectedCatTags', this.onSelectedTags );
     } else {

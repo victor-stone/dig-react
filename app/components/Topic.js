@@ -6,6 +6,7 @@ const TopicBody = React.createClass({
   render: function() {
     var model = this.props.store.model;
     var html = model.html.replace(/(<img.*src=")(\/mixter-files)/g,'$1http://ccmixter.org$2');
+    html = html.replace(/http:\/\/ccmixter.org\/files\//g,'/files/');
     /*eslint "react/no-danger":0 */
     var body    = { __html: html};
     return (

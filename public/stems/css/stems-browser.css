@@ -155,6 +155,14 @@
   font-size: 14px;
 }
 
+.stems-browser li.hi-hi {
+  font-weight: bold;
+  background-color: #EFE;
+}
+
+.stems-browser li.lo-hi {
+  opacity: 0.8;
+}
 
 .stems-browser .zip-contents {
   padding: 0px;

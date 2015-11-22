@@ -11,6 +11,12 @@ class Env {
     return this[name];
   }
 
+  log() {
+    if( this.debugMode ) {
+      console.log(...arguments);
+    }
+  }
+
   assert( truthyTest, msg ) {
     if( this.debugMode ) {
       if( !truthyTest ) {

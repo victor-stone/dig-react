@@ -28,6 +28,17 @@ if( typeof Array.prototype.findBy === 'undefined' ) {
   };
 }
 
+if( typeof Array.prototype.find === 'undefined' ) {
+  Array.prototype.find = function(cb) {
+    for( var i = 0; i < this.length; i++ ) {
+      if( cb(this[i]) ) {
+        return this[i];
+      }
+    }
+    return null;
+  };
+}
+
 if( typeof Array.prototype.filter === 'undefined' ) {
   Array.prototype.filter = function(cb) {
     var results = [];

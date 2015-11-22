@@ -1,10 +1,10 @@
 import React            from 'react';
 import qc               from '../models/query-configs';
 import Samples          from '../stores/samples';
-import { mergeParams }  from '../unicorns';
 
+import { mergeParams 
+                     }  from '../unicorns';
 import {  StemsBrowser,
-          QueryOptions,
           StemsQueryOptions,
           PageHeader }    from '../components';
 
@@ -12,11 +12,11 @@ var stems = React.createClass({
 
   render() {
     var store = this.props.store;
+
+    
     return (
       <div>
-        <QueryOptions.QueryOptions store={store}>
-          <StemsQueryOptions store={store} />
-        </QueryOptions.QueryOptions>
+        <StemsQueryOptions {...this.props} />
         <PageHeader icon="th" title="Samples" />
         <div className="container-fluid">
           <StemsBrowser store={store} />

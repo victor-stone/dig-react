@@ -40,8 +40,31 @@ const ZIPContentViewer = React.createClass({
     this.resetBump();
   },
 
-  onInspectZIP: function(file) {
-    this.setState( { file, files: file && file.zipContents } );
+  onInspectZIP: function(file,tagStore) {
+    if( tagStore ) {
+      if( this.state.tagStore ) {
+          if( this.state.tagStore !== tagStore ) {
+            this._unsub(this.state.tagStore);
+          }
+      }
+      this._sub(tagStore);
+    }
+    this.setState( { file, 
+                     tagStore,
+                     selectedTags: tagStore && tagStore.getSelectedTags(),
+                     files: file && file.zipContents } );
+  },
+
+  onSelectedTags: function(tags) {
+    this.setState( { selectedTags: tags } );
+  },
+
+  _sub: function(store) {
+    store.on('selectedTags',this.onSelectedTags);
+  },
+
+  _unsub: function(store) {
+    store.removeListener('selectedTags',this.onSelectedTags);
   },
 
   render: function() {
@@ -53,12 +76,15 @@ const ZIPContentViewer = React.createClass({
     var files  = this.state.files
                   .filter( f => f.match(/(__MACOSX|\.DS_Store)/) === null )
                   .map( f => f.replace(/\/.*\//g,'') );
-
+    var tags   = this.state.selectedTags;
     return (
         <ul className="zip-contents">
           <li className="head"><Glyph icon="file-archive-o" />{" Contents of ZIP file"}</li>
           <li className="sub-head"><UploadLink model={upload} /></li>
-          {files.map( (f,i) => <li key={i}>{f}</li> )}
+          {files.map( (f,i) => {
+            var cls = tags && tags.anyInString(f.toLowerCase()) ? 'hi-hi' : '';
+            return( <li className={cls} key={i}>{f}</li> );
+          })}
         </ul>
       );
   }

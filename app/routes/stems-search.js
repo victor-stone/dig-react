@@ -4,20 +4,21 @@ import Samples          from '../stores/samples';
 import Tags             from '../stores/tags';
 import { mergeParams,
          TagString }    from '../unicorns';
-import { StemsBrowser,
-        PageHeader }    from '../components';
+import {  StemsBrowser,
+          StemsQueryOptions,
+          PageHeader }    from '../components';
 
 var stemsSearch = React.createClass({
 
   render() {
     var store    = this.props.store;
-    var tagStore = store.tagStore;
-    var search   = tagStore.getSelectedTags().toString();
+    var search   = store.tags.getSelectedTags().toString();
     return (
       <div>
+        <StemsQueryOptions store={store} />
         <PageHeader icon="search" subTitle="Search" title={search}/>
         <div className="container-fluid">
-          <StemsBrowser store={store} tagStore={tagStore} />
+          <StemsBrowser store={store} />
         </div>
       </div>
     );      
@@ -50,7 +51,7 @@ stemsSearch.store = function(params,queryParams) {
       var qparams = mergeParams( {}, qc.samples, { tags: tags.toString() } );
       return Samples.storeFromQuery(qparams);
     }).then( store => {
-       store.tagStore = tagStore;
+       store.tags = tagStore;
        return store;
     });
 };

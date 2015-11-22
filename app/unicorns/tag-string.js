@@ -231,6 +231,15 @@ TagString.prototype.diff = function(returnTagsOnlyInThisOne) {
   return new TagString(opts);  
 };
 
+TagString.prototype.anyInString = function(stringToSearch) {
+  for( var i = 0; i < this._tagsArray.length; i++ ) {
+    if( stringToSearch.includes(this._tagsArray[i]) ) {
+      return this._tagsArray[i];
+    }
+  }
+  return null;
+};
+
 TagString.prototype.copyOptions = function() {
   return {
     ignore: this.ignore,
