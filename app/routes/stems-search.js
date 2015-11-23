@@ -1,7 +1,6 @@
 import React            from 'react';
 import qc               from '../models/query-configs';
 import Samples          from '../stores/samples';
-import Tags             from '../stores/tags';
 import { mergeParams,
          TagString }    from '../unicorns';
 import {  StemsBrowser,
@@ -44,16 +43,13 @@ function addSearchStringAsSelectedTags(tagStore,tagModels,search) {
 }
 
 stemsSearch.store = function(params,queryParams) {
-  var tagStore = new Tags();
-  return tagStore.sampleCategories()
+  var store = new Samples();
+  return store.tags.sampleCategories()
     .then( tagModels => {
-      var tags = addSearchStringAsSelectedTags(tagStore,tagModels,queryParams.searchp);
+      var tags = addSearchStringAsSelectedTags(store.tags,tagModels,queryParams.searchp);
       var qparams = mergeParams( {}, qc.samples, { tags: tags.toString() } );
-      return Samples.storeFromQuery(qparams);
-    }).then( store => {
-       store.tags = tagStore;
-       return store;
-    });
+      return store.getModel(qparams);
+    }).then( () => store );
 };
 
 module.exports = stemsSearch;

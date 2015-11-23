@@ -10,66 +10,34 @@ import {  PlaylistUpdater,
 
 const UploadLink = ActionButtons.UploadLink;
 
-const StemFile = React.createClass({
-
-  getInitialState: function() {
-    return { cls: this.props.cls };
-  },
-
-  componentWillReceiveProps: function(props) {
-    this.setState( { cls: props.cls } );
-  },
-
-  render: function() {
-      var f        = this.props.file;
-      var playable = f.isMP3 || (f.isFLAC && env.supportFLAC);
-
-      return (
-        <li className={'stem-files-line ' + this.state.cls} >
-          <DownloadPopup fixed btnClass="sm-download" model={this.props.model} file={f} /> 
-          {" "}
-          {playable
-            ? <AudioPlayer.PlayButton fixed model={f} />
-            : null
-          }
-          {f.isZIP
-            ? <ZIPContentViewer.ZIPLink model={f} onClick={this.props.onZIPClick} />
-            : null
-          }
-          {" "}
-          <span className="ext">{f.extension}</span>
-          {" "}
-          <span className="nic">{f.nicName}</span>
-        </li>);
-  }
-});
-
 const StemsFiles = React.createClass({
 
   getInitialState: function() {
 
-    return { selectedTags: this.props.tags,
-              highlights: this.highlights(this.props.tags) };
+    return { selectedTags: this.props.tags };
   },
 
   componentWillReceiveProps: function(props) {
-    this.setState( { selectedTags: props.tags,
-                     highlights: this.highlights(props.tags) } );
+    this.setState( { selectedTags: props.tags } );
   },
 
   highlights(tags) {
-    var files = this.store.model.files;
-    if( files.length === 1 || !tags || tags.isEmpty() ) {
+    var highlights = {};
+    var files = this.props.model.files;
+    if( !tags || tags.isEmpty() ) {
       return {};
     }
-    var highlights = {};
+    if( files.length === 1 ) {
+      highlights[files[0].id] = 'hi-hi';
+      return highlights;
+    }
+    
     var atLeastOneHit = false;
     files.forEach( f => {
-      var found = (f.nicName && tags.anyInString(f.nicName.toLowerCase())) ||
-                  (f.zipContents && f.zipContents
-                                       .map( s => s.toLowerCase())
-                                       .find( tags.anyInString.bind(tags) ));
-      atLeastOneHit |= found;
+      var found = (f.nicName && tags.anyInString(f.nicName)) ||
+                  (f.zipContents && tags.anyInArray(f.zipContents) );
+
+      atLeastOneHit = atLeastOneHit || (found !== null);
       highlights[f.id] = found ? 'hi-hi' : 'lo-hi';
     });
 
@@ -87,19 +55,36 @@ const StemsFiles = React.createClass({
     this.props.store.emit('inspectZIP',file,this.props.store.tags);
   },
 
+  oneFile: function(f,cls,model) {
+      var playable = f.isMP3 || (f.isFLAC && env.supportFLAC);
+
+      return (
+        <li key={f.id} className={'stem-files-line ' + cls} >
+          <DownloadPopup fixed btnClass="sm-download" model={model} file={f} /> 
+          {" "}
+          {playable
+            ? <AudioPlayer.PlayButton fixed model={f} />
+            : null
+          }
+          {f.isZIP
+            ? <ZIPContentViewer.ZIPLink model={f} onClick={this.onZIPClick} />
+            : null
+          }
+          {" "}
+          <span className="ext">{f.extension}</span>
+          {" "}
+          <span className="nic">{f.nicName}</span>
+        </li>);
+  },
+
   render: function() {
     var model = this.props.model;
     var files = model.files;
+    var highs = this.highlights(this.state.selectedTags);
 
     return(
         <ul className="stems-files">
-          {files.map( f => <StemFile key={f.id} 
-                                     model={model} 
-                                     cls={this.state.highlights[f.id]}
-                                     file={f} 
-                                     onZIPClick={this.onZIPClick} 
-                           />)
-          }
+          {files.map( f => this.oneFile(f,highs[f.id]||'',model) )}
         </ul>
       );
   }

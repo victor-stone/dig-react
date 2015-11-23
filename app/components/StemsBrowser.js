@@ -23,9 +23,6 @@ var StemsBrowser = React.createClass({
 
   componentWillMount: function() {
     var store = this.props.store;
-    if( !store.tags ) {
-      store.tags = new TagStore();
-    }
     this._sub(store.tags);
     this.setState({ store });
   },
@@ -42,7 +39,7 @@ var StemsBrowser = React.createClass({
   },
 
   componentWillUnmount: function() {
-    this._unsub(this.store.tags);
+    this._unsub(this.state.store.tags);
   },
 
   _sub: function(tagstore) {

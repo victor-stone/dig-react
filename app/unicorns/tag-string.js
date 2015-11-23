@@ -232,12 +232,14 @@ TagString.prototype.diff = function(returnTagsOnlyInThisOne) {
 };
 
 TagString.prototype.anyInString = function(stringToSearch) {
-  for( var i = 0; i < this._tagsArray.length; i++ ) {
-    if( stringToSearch.includes(this._tagsArray[i]) ) {
-      return this._tagsArray[i];
-    }
-  }
-  return null;
+  var str = stringToSearch.toLowerCase();
+  return this._tagsArray.find( tag => str.includes(tag) );
+};
+
+TagString.prototype.anyInArray = function(arrayOfStringsToSearch) {
+  return arrayOfStringsToSearch
+            .map( s => s.toLowerCase() )
+            .find( this.anyInString.bind(this) );
 };
 
 TagString.prototype.copyOptions = function() {

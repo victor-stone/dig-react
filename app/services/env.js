@@ -1,7 +1,12 @@
 /* eslint no-console:0 */
 import { oassign } from '../unicorns';
+import Eventer from './eventer';
 
-class Env {
+class Env extends Eventer {
+
+  constructor() {
+    super(...arguments);
+  }
 
   set(opts) {
     oassign(this,opts);
@@ -15,6 +20,12 @@ class Env {
     if( this.debugMode ) {
       console.log(...arguments);
     }
+  }
+
+  error(e) {
+    this.error = e;
+    this.log('caught error',e);
+    this.emit('error',e);
   }
 
   assert( truthyTest, msg ) {

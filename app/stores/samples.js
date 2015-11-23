@@ -1,11 +1,16 @@
 import UploadList       from './upload-list';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
+import Tags             from './Tags';
 //import rsvp             from 'rsvp';
 
 
 class Samples extends UploadList {
 
+  constructor() {
+    super(...arguments);
+    this.tags = new Tags();
+  }
   /* protected */
 
   fetch(queryParams) {

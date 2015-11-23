@@ -9,6 +9,7 @@ import DigFooter from './DigFooter';
 import DigHeader from './DigHeader';
 import DigRemixes from './DigRemixes';
 import DownloadPopup from './DownloadPopup';
+import ErrorDisplay from './ErrorDisplay';
 import FeaturedPage from './FeaturedPage';
 import Footer from './Footer';
 import Glyph from './Glyph';
@@ -51,6 +52,7 @@ module.exports = {
     DigHeader,
     DigRemixes,
     DownloadPopup,
+    ErrorDisplay,
     FeaturedPage,
     Footer,
     Glyph,

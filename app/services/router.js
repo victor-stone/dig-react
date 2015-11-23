@@ -1,11 +1,7 @@
-/* eslint no-console:0 */
-
 import RouteRecognizer  from 'route-recognizer';
 import rsvp             from 'rsvp';
 import Eventer          from './eventer';
 import env              from './env';
-
-const RANDOM_TIMEOUT = 1050;
 
 class Router extends Eventer
 {
@@ -112,12 +108,8 @@ class Router extends Eventer
             params: handler.params,
             queryParams: handler.queryParams,
             hash } );
-      }).catch( err => {
-        env.set( { err } );
-        if( pathname.match(/error/) === null ) {
-          setTimeout( () => this.navigateTo('/error'), RANDOM_TIMEOUT );
-        }
-        console.log( err, pathname );
+      }).catch( error => {
+        env.error( error );
       });
   }
 

@@ -12,8 +12,6 @@ var stems = React.createClass({
 
   render() {
     var store = this.props.store;
-
-    
     return (
       <div>
         <StemsQueryOptions {...this.props} />

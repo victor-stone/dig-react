@@ -4,6 +4,7 @@ import ajaxAdapter from './services/query-ajax-adapter';
 import router      from './services/router';
 import { Banner,
          TitleSetter,
+         ErrorDisplay,
          AudioPlayer }   from './components';
 
 const App = React.createClass({
@@ -89,6 +90,7 @@ const App = React.createClass({
           <TitleSetter title={title} />
           <Banner />
           {header}
+          <ErrorDisplay />
           <div className="outlet-wrap">
             {this.state.component
               ? React.createElement(this.state.component,

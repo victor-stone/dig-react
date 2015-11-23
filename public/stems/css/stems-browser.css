@@ -157,17 +157,21 @@
 
 .stems-browser li.hi-hi {
   font-weight: bold;
-  background-color: #EFE;
 }
 
 .stems-browser li.lo-hi {
-  opacity: 0.8;
 }
 
 .stems-browser .zip-contents {
   padding: 0px;
   top: 100px;
   position:fixed;
+}
+
+.stems-browser .zip-contents > li.hi-hi {
+  background-color: white;
+  font-weight:normal;
+  border: 1px solid  green;
 }
 
 .stems-browser .zip-contents > li {

@@ -11,12 +11,15 @@ const MIN_SAMPLE_TAG_PAIR = 5;
 const SORT_UP = 1;
 const SORT_DOWN = -1;
 
+var _tagsCache = {
+
+};
+
 class Tags extends Query {
 
   constructor() {
     super(...arguments);
     this.selectedTags = {};
-    this.cache = {};
   }
 
   addSelected(tag,cat) {
@@ -128,7 +131,12 @@ class Tags extends Query {
     if( cached ) {
       return rsvp.resovle(cached);
     }
-    return this.query(q).then( serialize( ccmixter.Tag ) );
+    return this.query(q).then( (tags) => {
+      var models = serialize( tags, ccmixter.Tag ) ;
+      this._putCache(q,models);
+      return models;
+    });
+       
   }
   
   // returns a hash with each category name as a property
@@ -170,11 +178,18 @@ class Tags extends Query {
     return this.forCategory('genre','remix');
   }
 
-  _checkCache(params) {
+  _makeCacheKey(params) {
     var keyo = {};
     Object.keys(params).sort().forEach( k => keyo[k] = params[k] );    
-    var key = JSON.stringify(keyo);
-    return this.cache[key];
+    return JSON.stringify(keyo);
+  }
+
+  _checkCache(params) {
+    return _tagsCache[ this._makeCacheKey(params) ];
+  }
+
+  _putCache(params,tags) {
+    _tagsCache[ this._makeCacheKey[params] ] = tags;
   }
 }
 
