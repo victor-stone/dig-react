@@ -25,14 +25,14 @@ class Query extends Eventer
     var qparams = {
       u: id,
       dataview: 'user_basic',
-      f: 'json'
+      f: 'js'
     };
     return this.queryOne(qparams).then( serialize( ccmixter.User ) );
   }
 
   searchUsers(params) {
     params.dataview ='user_basic';
-    params.f = 'json';
+    params.f = 'js';
     return this.query(params).then( serialize( ccmixter.UserBasic ) );
   }
   

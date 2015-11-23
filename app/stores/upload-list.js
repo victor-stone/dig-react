@@ -29,7 +29,7 @@ class UploadList extends Query {
       this.orgParams = oassign( {},  queryParams);
     }
     queryParams.dataview = 'links_by';
-    queryParams.f        = 'json';
+    queryParams.f        = 'js';
     queryParams.offset   = queryParams.offset || 0;
     var hash = {
       playlist: this.fetch(queryParams),

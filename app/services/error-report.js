@@ -20,7 +20,7 @@ class ErrorReport
 
     var opts = {
       url:      url + q,
-      dataType: 'json',
+      dataType: 'js',
       method:   'GET',
       cache:    false
     };

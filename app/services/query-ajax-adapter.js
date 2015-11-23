@@ -1,6 +1,7 @@
-import querystring      from 'querystring';
+import querystring from 'querystring';
 import Eventer     from './eventer';
-import ajax             from './ajax';
+import ajax        from './ajax';
+import env         from './env';
 
 var queryHost ='http://ccmixter.org/api/query?';
 //var queryHost ='http://ccm/api/query?';
@@ -35,7 +36,7 @@ class QueryAjaxAdapter extends Eventer
       url:      url,
       dataType: 'json',
       method:   'GET',
-      cache:    false
+      cache:    !env.debugMode
     };
 
     function _success(r) {

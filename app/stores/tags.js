@@ -102,7 +102,7 @@ class Tags extends Query {
   // return a TagString object
   forCategory(category,pairWith) {
     var q = {   
-      f:         'json', 
+      f:         'js', 
       category:  category,
       pair:      pairWith,
       sort:      'name',
@@ -119,7 +119,7 @@ class Tags extends Query {
   // return an array of Tag models
   category(category,pairWith,minCount) {
     var q = {   
-      f:        'json', 
+      f:        'js', 
       category: category,
       pair:     pairWith,
       sort:     'name',
@@ -150,7 +150,7 @@ class Tags extends Query {
   
   searchTags(params) {
     params.dataview = 'tags';
-    params.f = 'json';
+    params.f = 'js';
     return this.query(params).then( serialize( ccmixter.Tag ) );
   }
 

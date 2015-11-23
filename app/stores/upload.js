@@ -50,7 +50,7 @@ class Upload extends Query {
   trackbacks(forId) {
     var trackbacksQ = {
       trackbacksof: forId,
-      f: 'json',
+      f: 'js',
       dataview: 'trackbacks',
       sort: 'date',
       ord: 'desc',
@@ -62,7 +62,7 @@ class Upload extends Query {
   remixes(forId) {
     var remixesQ = {
       remixes: forId,
-      f: 'json',
+      f: 'js',
       dataview: 'links_u',
       sort: 'date',
       ord: 'desc'
@@ -73,7 +73,7 @@ class Upload extends Query {
   sources(forId) {
     var sourcesQ = {
       sources: forId,
-      f: 'json',
+      f: 'js',
       dataview: 'links_u',
       datasource: 'uploads'
     };
@@ -83,7 +83,7 @@ class Upload extends Query {
   info(id) {
     var uploadQ = {
       ids: id,
-      f: 'json',
+      f: 'js',
       dataview: 'default'
     };    
     return this.queryOne(uploadQ).then( serialize( ccmixter.Detail ) );

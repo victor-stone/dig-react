@@ -18,7 +18,7 @@ class Topics extends Query {
     id = Number(id) || Topics.namedTopics[id];
     
     var args = {
-      f: 'json',
+      f: 'js',
       dataview: 'topics',
       ids: id
     };
