@@ -1,7 +1,7 @@
 import UploadList       from './upload-list';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
-import Tags             from './Tags';
+import Tags             from './tags';
 //import rsvp             from 'rsvp';
 
 
