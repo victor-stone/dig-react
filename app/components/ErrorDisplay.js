@@ -9,13 +9,17 @@ const ErrorDisplay = React.createClass({
   },
 
   componentWillMount: function() {
-    env.on('error', this.doReport);
+    if( !global.IS_SERVER_REQUEST ) {
+      env.on('error', this.doReport);
+    }
   },
   
   componentWillUnmount: function() {
-    env.removeListener('error', this.doReport);
+    if( !global.IS_SERVER_REQUEST ) {
+      env.removeListener('error', this.doReport);
+    }
   },
-  
+
   doReport: function(error) {
     this.setState( {error}, () => {
       var errorReport = new ErrorReport(error);
