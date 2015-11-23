@@ -78,6 +78,9 @@ function isInternal(req,res,sysLog) {
   req.url = pieces.pathname;
   sysLog.logRequest(req,res,new EWrap(pieces.query.err,pieces.query.stack));
   req._handled = true;
+  res.setHeader('Access-Control-Allow-Origin', '*'); 
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.setHeader( 'Content-Type', 'application/json' );
   res.statusCode = 200;
   res.end('["ok"]');
