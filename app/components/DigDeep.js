@@ -1,16 +1,12 @@
 import React         from 'react';
 import TagStore      from '../stores/tags';
-
 import { TagString } from '../unicorns';
+import Glyph         from './Glyph'; 
+import Paging        from './Paging'; 
+import Tags          from './Tags';
+import DigRemixes    from './DigRemixes';
 
-import Glyph        from './Glyph'; 
-import Paging       from './Paging'; 
-import Tags         from './Tags';
-import QueryOptions from './QueryOptions';
-import DigRemixes   from './DigRemixes';
-
-import {  QueryParamTagsRotate,
-          PlaylistUpdater       } from '../mixins';
+import {  QueryParamTagsRotate  } from '../mixins';
 
 const TagCategoryRow = React.createClass({
 
@@ -113,55 +109,6 @@ const RemixTagSelectionSection = React.createClass({
   }
 });
 
-const NoTagHits = React.createClass({
-
-  mixins: [PlaylistUpdater],
-
-  stateFromStore: function(store) {
-    var optionsDirty = store.paramsDirty();
-    var showNoHits   = !store.model.total;
-    var qp           = store.model.queryParams;
-    var numTags      = (new TagString(qp.tags)).getLength();
-    var showMatchAny = qp.type === 'all' && numTags > 1;
-    return { optionsDirty, showNoHits, showMatchAny };
-  },
-
-  render: function() {
-    if( !this.state.showNoHits ) {
-      return null;
-    }
-
-    var store        = this.props.store;
-    var optionsDirty = this.state.optionsDirty;
-    var showMatchAny = this.state.showMatchAny;
-
-    return (
-      <div className="row">
-        <div className="col-md-6 col-md-offset-3 no-hit-suggestion">
-          <div className="jumbotron empty-query">
-            <h3>{"wups, no matches for that combination of tags..."}</h3>
-              <ul>
-                <li>
-                  {"Try removing tags by clicking on the tags marked "}<Glyph icon="times-circle" />
-                </li>
-                {showMatchAny
-                  ?<li>
-                    {"The default search is for music that matches "}<strong>{"all"}</strong>{" the tags. "}
-                    {"Try a search for "}<strong>{"any"}</strong>{" combination of them."}
-                  </li>
-                  : null
-                }
-                {optionsDirty
-                  ?<li>{"Try resetting your filters "}<QueryOptions.ResetOptionsButton store={store} /></li>
-                  : null
-                }
-              </ul>
-          </div>
-        </div>
-      </div>
-      );
-  },
-});
 
 function makeRegexFromTags(tags) {
   var arr = TagString.toArray(tags);
@@ -206,7 +153,7 @@ var DigDeep = React.createClass({
         <RemixTagSelectionSection store={tagStore} playlist={store} />
         <Paging store={store} ref="paging"/>
         <DigRemixes store={store} />   
-        <NoTagHits store={store}  />     
+        <Tags.NoTagHits store={store}  />     
       </div>
     );
   }

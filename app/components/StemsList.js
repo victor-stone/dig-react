@@ -3,12 +3,11 @@ import DownloadPopup    from './DownloadPopup';
 import ZIPContentViewer from './ZIPContentViewer';
 import AudioPlayer      from './AudioPlayer';
 import People           from './People';
-import ActionButtons    from './ActionButtons';
 import env              from '../services/env';
+import { NoTagHits }    from './Tags';
+
 import {  PlaylistUpdater,
           SelectedTagsTracker  } from '../mixins';
-
-const UploadLink = ActionButtons.UploadLink;
 
 const StemsFiles = React.createClass({
 
@@ -57,10 +56,11 @@ const StemsFiles = React.createClass({
 
   oneFile: function(f,cls,model) {
       var playable = f.isMP3 || (f.isFLAC && env.supportFLAC);
+      cls = `stem-files-line ${cls}`;
 
       return (
-        <li key={f.id} className={'stem-files-line ' + cls} >
-          <DownloadPopup fixed btnClass="sm-download" model={model} file={f} /> 
+        <li key={f.id} className={cls} >
+          <DownloadPopup fixed btnClass="sm-download" model={model} file={f} />
           {" "}
           {playable
             ? <AudioPlayer.PlayButton fixed model={f} />
@@ -106,7 +106,7 @@ const StemsList = React.createClass({
     var model = this.state.store.model;
 
     if( !model || !model.total ) {
-      return (<div className="well"><h2>{"wups - nothing matches that combination of tags"}</h2></div>);
+      return (<NoTagHits store={this.state.store} />);
     }
     var fo = this.props.filesOnly;
     var nn = fo || this.props.namesOnly;
@@ -119,7 +119,7 @@ const StemsList = React.createClass({
           {model.playlist.map( (u,i) => {
             return (<li key={i}>
                       {u.bpm ? <span className="bpm">{u.bpm}</span> : null}
-                      {fo ? null : <UploadLink model={u} className="stem-name" />}
+                      {fo ? null : <span className="stem-name">{u.name}</span>}
                       {nn ? null : <People.Link model={u.artist} className="stem-artist" />}
                       <StemsFiles model={u} store={store} tags={tags} />
                   </li>); })

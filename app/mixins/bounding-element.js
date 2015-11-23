@@ -56,12 +56,12 @@ var BoundingMixin = {
       return;
     }
     
-    var eHeight      = $e.outerHeight() + HEIGHT_PADDING;      
-    var propName     = 'keep-between-' + (isKeepAbove ? 'a' : 'b');
+    var propName = 'keep-between-' + (isKeepAbove ? 'a' : 'b');
     
     $e.data( propName, function() {
       // we have to do this stuff in the event handler
       // because DOM
+      var eHeight      = $e.outerHeight() + HEIGHT_PADDING;      
       var bumperHeight = $bumper.outerHeight() + HEIGHT_PADDING;
       var bumperTop    = $bumper.offset().top;
       var top          = Number($e.css('top').replace(/[^-\d\.]/g, ''));

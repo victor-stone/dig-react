@@ -1,5 +1,6 @@
-import React from 'react';
-import env   from '../services/env';
+import React       from 'react';
+import env         from '../services/env';
+import ErrorReport from '../services/error-report';
 
 const ErrorDisplay = React.createClass({
 
@@ -8,34 +9,49 @@ const ErrorDisplay = React.createClass({
   },
 
   componentWillMount: function() {
-    env.on('error', (error) => this.setState( { error } ) );
+    env.on('error', error => this.doReport(error) );
   },
   
-  mailLink: function() {
-    if( global.IS_SERVER_REQUEST ) {
-      return '';
-    }
-    var err = this.state.error;
-    var ua = (navigator && navigator.userAgent) || '(your browser here...)';
-    var body = `I'm sharing this error:\n\n${err}\n\nthat I got while using this browser:\n\n${ua}\n\nSigned,\nA cool, thoughtful web citizen\n\n`;
-
-    return 'mailto://?to=mixter@artistechmedia.com&subject=' + 
-          'Ouch at the website' +
-          '&body=' + encodeURIComponent(body);
+  doReport: function(error) {
+    this.setState( {error}, () => {
+      var errorReport = new ErrorReport(error);
+      errorReport.report()
+        .then(  () => this.setState( {reported:true} ) )
+        .catch( e => this.setState( {err2: e } ));      
+    });
   },
 
   render: function() {
     if( !this.state.error ) {
       return null;
     }
-    var details = env.debugMode ? this.state.error.stack : '';
-    var href = this.mailLink();
+    if( !this.state.err2 && !this.state.reported ) {
+      return null;
+    }
+    var details = '';
+
+    if( env.debugMode ) {
+      details += this.state.error.stack || '';
+      if( this.state.err2 ) {
+        details += `\n----\n` + this.state.err2.stack || '';
+      }
+    } 
+
     return (
         <div className="well error-page">
           <h2>{"oh dude"}</h2>
           <p>{"looks like you hit a thingy with the watchamacallit"}</p>
-          <p>{"OK - if you wouldn't mind: click on the button to notify us, it would be really, really great and then the next time you try this it'll work awesome!"}</p>
-          <p><a className="btn btn-warning btn-lg" onClick={this.clear} href={href} >{"OK email us!"}</a></p>
+          {this.state.reported
+            ? <p>{"This problem has been reported to the sysadmins. We'll get right on it!"}</p>
+            : null
+          }
+          {this.state.err2
+            ? <p>{`Unfortunately we can't seem to reach the servers to report 
+                   the error. `}</p>
+            : null
+          }
+
+          <p><a className="btn btn-warning btn-lg" onClick={this.clear} href="/" >{"Restart the site..."}</a></p>
           <code>
             {details}
           </code>

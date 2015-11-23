@@ -29,7 +29,7 @@ stems.title = 'Samples Browser';
 
 stems.store = function(params,queryParams) {
   var qparams = mergeParams( {}, qc.samples, queryParams );
-  return Samples.storeFromQuery(qparams);
+  return Samples.storeFromQuery(qparams,qc.samples);
 };
 
 module.exports = stems;

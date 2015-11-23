@@ -19,6 +19,7 @@ var appLog = null;
 var sysLog = null;
 
 var port   = argv.port || 3000;
+var logv   = (argv.log && argv.log.split(/,/)) || [];
 
 global.verbose = argv.v;
 
@@ -62,17 +63,12 @@ class Server {
       var file = url.parse(req.url,true).pathname;
       
       if( this.staticRouter.resolve( this.distDir + file, res ) ) {
-        log( 'static router took ', req.url );
-        sysLog.logRequest(req,res)
+        if( logv.indexOf('statics') !== -1 ) {
+          sysLog.logRequest(req,res)
+        }
       } else {
         this.reactServer.resolve( req.url, req, res, reactError, reactSuccess );
       } 
-      
-    } else {
-      if( !res._handled ) {
-        res.statusCode = 500;
-        res.end('500 Server error');
-      }
     }
   }
 }

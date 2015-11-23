@@ -1,5 +1,7 @@
-import React  from 'react';
-import Glyph  from './Glyph';
+import React         from 'react';
+import Glyph         from './Glyph';
+import { TagString } from '../unicorns';
+import QueryOptions  from './QueryOptions';
 
 import {  PlaylistUpdater, 
           SelectedTagsTracker,
@@ -174,11 +176,62 @@ const MatchAnyButton = React.createClass({
   },
 });
 
+const NoTagHits = React.createClass({
+
+  mixins: [PlaylistUpdater],
+
+  stateFromStore: function(store) {
+    var optionsDirty = store.paramsDirty();
+    var showNoHits   = !store.model.total;
+    var qp           = store.model.queryParams;
+    var numTags      = (new TagString(qp.tags)).getLength();
+    var showMatchAny = qp.type === 'all' && numTags > 1;
+    return { optionsDirty, showNoHits, showMatchAny };
+  },
+
+  render: function() {
+    if( !this.state.showNoHits ) {
+      return null;
+    }
+
+    var store        = this.props.store;
+    var optionsDirty = this.state.optionsDirty;
+    var showMatchAny = this.state.showMatchAny;
+
+    return (
+      <div className="row">
+        <div className="col-md-6 col-md-offset-3 no-hit-suggestion">
+          <div className="jumbotron empty-query">
+            <h3>{"wups, no matches for that combination of tags..."}</h3>
+              <ul>
+                <li>
+                  {"Try removing tags by clicking on the tags marked "}<Glyph icon="times-circle" />
+                </li>
+                {showMatchAny
+                  ?<li>
+                    {"The default search is for music that matches "}<strong>{"all"}</strong>{" the tags. "}
+                    {"Try a search for "}<strong>{"any"}</strong>{" combination of them."}
+                  </li>
+                  : null
+                }
+                {optionsDirty
+                  ?<li>{"Try resetting your filters "}<QueryOptions.ResetOptionsButton store={store} /></li>
+                  : null
+                }
+              </ul>
+          </div>
+        </div>
+      </div>
+      );
+  },
+});
+
 module.exports = {
   SelectableTag,
   SelectableTagList,
   SelectedTag,
   SelectedTags,
   TagCategoryBox,
+  NoTagHits,
   MatchAnyButton,
 };

@@ -2,6 +2,11 @@ import UploadList  from './upload-list';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
 import querystring from 'querystring';
+import rsvp        from 'rsvp';
+
+var userCache = {
+
+};
 
 class Playlist extends UploadList {
 
@@ -14,17 +19,34 @@ class Playlist extends UploadList {
   fetch(queryParams) {
     return this.query(queryParams)
               .then( serialize(ccmixter.Upload) )
-              .catch( e => {
+              .then( model => { 
+                if(model.artist) { 
+                  this._putUser(model.artist,queryParams.u);
+                }
+                return model;
+              }).catch( e => {
                 var str = decodeURIComponent(querystring.stringify(queryParams));
                 throw new Error( `error during fetch of ${str} original: ${e.toString()}`);
               });
   }
 
   promiseHash( hash, queryParams ) {
-    hash.artist = queryParams.u ? this.findUser(queryParams.u) : null;
+    hash.artist = queryParams.u ? this._getUser(queryParams.u) : null;
     return hash;
   }
 
+  /* private */
+
+  _getUser(u) {
+    if( userCache[u] ) {
+      return rsvp.resolve(userCache[u]);
+    }
+    return this.findUser(u);
+  }
+
+  _putUser(model,u) {
+    userCache[u] = model;
+  }
 }
 
 // performs the query but returns the store

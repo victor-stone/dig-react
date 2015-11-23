@@ -1,5 +1,7 @@
 'use strict';
 
+var url = require('url');
+
 var validationTests = [
 
   function(req,res) {
@@ -58,6 +60,30 @@ function skipThese(req,res) {
   return req.url.match(/(.js|.css|.html|.png|.eot|.otf|.ttf|.woff|.woff2|woff2\?v\=4.4\.0|.svg|.jpg|.jpeg|.ico)$/) !== null;
 }
 
+class EWrap {
+  constructor(e,stack) {
+    this.e = e;
+    this.stack = stack;
+  }
+  toString() {
+    return this.e;
+  }
+}
+
+function isInternal(req,res,sysLog) {
+  var pieces = url.parse(req.url,true);
+  if( pieces.pathname !== '/api/report' ) {
+    return false;
+  }
+  req.url = pieces.pathname;
+  sysLog.logRequest(req,res,new EWrap(pieces.query.err,pieces.query.stack));
+  req._handled = true;
+  res.setHeader( 'Content-Type', 'application/json' );
+  res.statusCode = 200;
+  res.end('["ok"]');
+  return true;
+}
+
 class ServerHook {
   constructor(sysLog, appLog) {
     this.sysLog = sysLog;
@@ -65,17 +91,35 @@ class ServerHook {
   }
 
   validateRequest(req,res) {
+    if( !this._validateRequest(req,res) ) {
+      if( !res._handled ) {
+        res.statusCode = 500;
+        res.end('500 Server error');
+      }
+      return false;      
+    }
+    return true;
+  }
+
+  _validateRequest(req,res) {
     if( skipThese(req,res) ) {
       return true;
     }
 
     try {
+
+      if( isInternal(req,res,this.sysLog) ) {
+        return false;
+      }
+
       if( !google404s(req,res) ) {
           return false;
         }
+
       if( !isValidRequest(req,res) ) {
         return false;
       }
+
     } catch(e) {
       res._handled = true;
       this.sysLog.logRequest(req,res,e);

@@ -2,15 +2,21 @@ import UploadList       from './upload-list';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import Tags             from './tags';
-//import rsvp             from 'rsvp';
-
 
 class Samples extends UploadList {
 
   constructor() {
     super(...arguments);
-    this.tags = new Tags();
+    this._tags = null;
   }
+
+  get tags() {
+    if( !this._tags ) {
+      this._tags = new Tags();
+    }
+    return this._tags;
+  }
+
   /* protected */
 
   fetch(queryParams) {
@@ -19,14 +25,19 @@ class Samples extends UploadList {
   }
 
   promiseHash( hash, queryParams ) {
+    if( queryParams.tags && (!tags || !tags.getSelectedTags()) ) {
+      var tags = this.tags;
+      tags.addSelected(queryParams.tags);
+    }
     hash.artist = queryParams.u ? this.findUser(queryParams.u) : null;
     return hash;
   }
 }
 
-Samples.storeFromQuery = function(params) {
-  var pells = new Samples();
-  return pells.getModel(params).then( () => pells );  
+Samples.storeFromQuery = function(params,defaults) {
+  var samples = new Samples();
+  samples.orgParams = defaults;
+  return samples.getModel(params).then( () => samples );  
 };
 
 module.exports = Samples;

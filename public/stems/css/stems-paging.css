@@ -1,0 +1,29 @@
+/* stems browser css */
+
+.stems-browser .paging {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 180;
+  background-color: rgba(245, 253, 216, 0);
+  border: 0px;
+  margin: 0px auto;
+}
+
+.stems-browser .paging > ul {
+  margin: 0px;
+}
+
+.stems-browser .pagination > li > a {
+  color: green;
+}
+
+.stems-browser .pagination >  .disabled  > a {
+  color: #777;
+} 
+.stems-browser .paging > div {
+  margin: 0px;
+  padding: 0px;
+  color: black;  
+}
+

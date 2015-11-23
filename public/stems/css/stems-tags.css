@@ -1,0 +1,70 @@
+/* stems tags css */
+
+.stems-browser .stems-tags-widget {
+  margin-left: 25px;
+  margin-bottom: 80px;
+  padding: 15px 5px;
+}
+
+.stems-browser .stems-tags-widget .input-group {
+  width: 220px;
+  margin-bottom: 0px;
+  margin: 4 auto; 
+}
+
+.stems-browser ul.tags-list {
+   height: 360px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px;
+    width: 220px;
+    background-color: white;
+    margin: 0 auto;
+}
+
+.stems-browser ul.tags-list > li {
+  padding: 0 4px 0 4px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.stems-browser ul.tags-list > li:hover {
+  border: 1px solid black;
+}
+
+.stems-browser ul.tags-list > li > i.fa {
+  vertical-align:middle;
+  display: inline-block;  
+}
+
+.stems-browser .selected-tags {
+  margin: 15px;
+  padding: 8px;
+  /* min-height: 50px; */
+}
+
+.stems-browser .selected-tags .btn-tag {
+  display: inline-block;
+  margin: 4px 6px;;
+  border: 1px solid green;
+  padding: 2px 4px 2px 4px;
+  border-radius: 3px;
+  color: green;
+  text-decoration: none;
+  box-shadow: 1px 1px #EEE;
+}
+
+.stems-browser .selected-tags .btn-tag:hover {
+  padding: 2px 3px 2px 5px;
+  text-decoration: none;
+  box-shadow: 1px 1px #CCC;
+  color: red;  
+  border-color: red;
+}
+
+.stems-browser .selected-tags .btn-tag .fa-2x {
+  font-size: 13px;
+}
+
