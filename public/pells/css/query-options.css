@@ -1,8 +1,12 @@
 /* pells query options */
 
 .query-options-box {
-  margin: 10px;
+  margin: 40px;
   position: absolute;
   right: 10px;
   z-index: 100;
+}
+
+.query-options-box.open {
+  margin: 40px;
 }

@@ -10,11 +10,13 @@ class ErrorReport
 
   report() {
   
-    var url = env.debugMode 
+    var url = /*env.debugMode 
                 ? 'http://localhost:3000/api/report'
-                : 'http://' + env.appName + '.ccmixter.org/api/report';
+                : */ 'http://' + env.appName + '.ccmixter.org/api/report';
 
-    var q = `?err=${this.err+''}&stack=${this.err.stack}`;
+    var eq = encodeURIComponent(this.err+'');
+    var es = encodeURIComponent(this.err.stack);
+    var q = `?err=${eq}&stack=${es}`;
 
     var opts = {
       url:      url + q,

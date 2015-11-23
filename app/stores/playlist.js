@@ -25,8 +25,8 @@ class Playlist extends UploadList {
                 }
                 return model;
               }).catch( e => {
-                var str = decodeURIComponent(querystring.stringify(queryParams));
-                throw new Error( `error during fetch of ${str} original: ${e.toString()}`);
+                var str = /*decodeURIComponent*/(querystring.stringify(queryParams));
+                throw new Error( `${str} original: ${e.toString()}-${e.stack}`);
               });
   }
 

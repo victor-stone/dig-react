@@ -18,6 +18,10 @@
   background-color: #fcfcfc;
 }
 
+.pell-browser {
+  margin-bottom: 40px;
+}
+
 .pell-browser .nav-tabs > li > a.active {
   border-top: 1px solid #e2e2e2;
   border-right: 1px solid #e2e2e2;
