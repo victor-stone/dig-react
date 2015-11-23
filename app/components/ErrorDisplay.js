@@ -9,7 +9,11 @@ const ErrorDisplay = React.createClass({
   },
 
   componentWillMount: function() {
-    env.on('error', error => this.doReport(error) );
+    env.on('error', this.doReport);
+  },
+  
+  componentWillUnmount: function() {
+    env.removeListener('error', this.doReport);
   },
   
   doReport: function(error) {
