@@ -12,7 +12,7 @@ class ErrorReport
   
     var url = env.debugMode 
                 ? 'http://localhost:3000/api/report'
-                : 'http://' + env.appName + '/api/report';
+                : 'http://' + env.appName + '.ccmixter.org/api/report';
 
     var q = `?err=${this.err+''}&stack=${this.err.stack}`;
 
