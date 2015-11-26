@@ -120,6 +120,9 @@ function didYouMean( text )
 search.title = 'Search';
 
 search.store = function( params, queryParams ) {
+  if( queryParams.searchp ) {
+    queryParams.searchp = queryParams.searchp.replace(/[^a-zA-Z0-9 _()\*\.]/,'');
+  }
   var qparams = mergeParams( { search_type: 'all' }, qc.default, queryParams );
 
   function makePromise() {

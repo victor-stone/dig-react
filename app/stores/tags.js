@@ -128,15 +128,15 @@ class Tags extends Query {
       dataview: 'tags'
     };
     var cached = this._checkCache(q);
-    if( cached ) {
-      return rsvp.resovle(cached);
+    if( cached.models ) {
+      return rsvp.resolve(cached.models);
     }
-    return this.query(q).then( (tags) => {
-      var models = serialize( tags, ccmixter.Tag ) ;
-      this._putCache(q,models);
-      return models;
-    });
-       
+    return this.query(q)
+            .then( serialize( ccmixter.Tag ) )
+            .then( models => {
+              this._putCache(cached.key,models);
+              return models;
+            });
   }
   
   // returns a hash with each category name as a property
@@ -185,11 +185,12 @@ class Tags extends Query {
   }
 
   _checkCache(params) {
-    return _tagsCache[ this._makeCacheKey(params) ];
+    var key = this._makeCacheKey(params);
+    return { models: _tagsCache[ key ], key };
   }
 
-  _putCache(params,tags) {
-    _tagsCache[ this._makeCacheKey[params] ] = tags;
+  _putCache(key,tags) {
+    _tagsCache[ key ] = tags;
   }
 }
 

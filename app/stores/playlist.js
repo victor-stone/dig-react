@@ -14,17 +14,20 @@ class Playlist extends UploadList {
     super(...arguments);
   }
 
+  getModel(queryParams) {
+    return super.getModel(queryParams).then( model => {
+        if(model.artist) { 
+          this._putUser(model.artist,queryParams.u);
+        }
+        return model;
+    });
+  }
   /* protected */
 
   fetch(queryParams) {
     return this.query(queryParams)
               .then( serialize(ccmixter.Upload) )
-              .then( model => { 
-                if(model.artist) { 
-                  this._putUser(model.artist,queryParams.u);
-                }
-                return model;
-              }).catch( e => {
+              .catch( e => {
                 var str = /*decodeURIComponent*/(querystring.stringify(queryParams));
                 throw new Error( `${str} original: ${e.toString()}-${e.stack}`);
               });
