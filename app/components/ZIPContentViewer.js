@@ -1,6 +1,7 @@
-import React from 'react';
-import Glyph from './Glyph'; 
-import AB    from './ActionButtons';
+import React  from 'react';
+import Glyph  from './Glyph'; 
+import AB     from './ActionButtons';
+import events from '../models/events';
 
 import {  StoreEvents,
           BoundingElement  } from '../mixins';
@@ -28,7 +29,7 @@ const ZIPContentViewer = React.createClass({
     return {
       keepAbove: '.footer',
       keepBelow: '.page-header',
-      storeEvent: 'inspectZIP'
+      storeEvent: events.INSPECT_ZIP
     };
   },
 
@@ -40,18 +41,14 @@ const ZIPContentViewer = React.createClass({
     this.resetBump();
   },
 
-  onInspectZIP: function(file,tagStore) {
-    if( tagStore ) {
-      if( this.state.tagStore ) {
-          if( this.state.tagStore !== tagStore ) {
-            this._unsub(this.state.tagStore);
-          }
-      }
-      this._sub(tagStore);
+  onInspectZip: function(file,store) {
+    if( this.state.store ) {
+      this._unsub(this.state.store);
     }
+    this._sub(store);
     this.setState( { file, 
-                     tagStore,
-                     selectedTags: tagStore && tagStore.getSelectedTags(),
+                     store,
+                     selectedTags: store.tags.getSelectedTags(),
                      files: file && file.zipContents } );
   },
 
@@ -60,11 +57,11 @@ const ZIPContentViewer = React.createClass({
   },
 
   _sub: function(store) {
-    store.on('selectedTags',this.onSelectedTags);
+    store.tags.on( events.TAGS_CHANGED, this.onSelectedTags);
   },
 
   _unsub: function(store) {
-    store.removeListener('selectedTags',this.onSelectedTags);
+    store.tags.removeListener( events.TAGS_CHANGED, this.onSelectedTags);
   },
 
   render: function() {

@@ -4,9 +4,10 @@ import { ActionButtons,
          Glyph,
          Topic       } from '../components';
 
-import env   from '../services/env';
-import FLAC  from '../services/audio-formats/flac';
-import Audio from '../services/audio-player';
+import env    from '../services/env';
+import FLAC   from '../services/audio-formats/flac';
+import Audio  from '../services/audio-player';
+import events from '../../models/events';
 
 var ExternalLink = ActionButtons.ExternalLink;
 
@@ -48,9 +49,9 @@ const FLACTest = React.createClass({
 
   componentWillUnmount: function() {
     if( this.state.flac ) {
-      this.state.flac.removeListener('controls',this.onControls);
-      this.state.flac.removeListener('position',this.onPosition);
-      this.state.flac.removeListener('finish',  this.onFinish);
+      this.state.flac.removeListener(events.CONTROLS,this.onControls);
+      this.state.flac.removeListener(events.POSITION,this.onPosition);
+      this.state.flac.removeListener(events.FINISH,  this.onFinish);
       this.state.flac.soundStop();
     }
   },
@@ -59,10 +60,10 @@ const FLACTest = React.createClass({
 
     try {
       var flac = new FLAC( { url: FLAC_URL } );
-      flac.on('controls',this.onControls);
-      flac.on('position',this.onPosition);
-      flac.on('finish',this.onFinish);
-      flac.on('error', e => this.setState( {exception: e }) );
+      flac.on( events.CONTROLS,  this.onControls);
+      flac.on( events.POSITION,  this.onPosition);
+      flac.on( events.FINISH,    this.onFinish);
+      flac.on( events.ERROR,     e => this.setState( {exception: e }) );
       flac.play();
       this.setState( {
         flac,

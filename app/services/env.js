@@ -28,10 +28,14 @@ class Env extends Eventer {
     this.emit('error',e);
   }
 
-  assert( truthyTest, msg ) {
+  assert( truthyTest, msg, doThrow ) {
     if( this.debugMode ) {
       if( !truthyTest ) {
-        console.error('ASSERT FAILED', msg);
+        if( doThrow ) {
+          throw new Error(msg);
+        } else {
+          console.error('ASSERT FAILED', msg);
+        }
       }
     }
   }

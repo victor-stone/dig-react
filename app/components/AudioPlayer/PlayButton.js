@@ -1,5 +1,6 @@
 import React  from 'react';
 import Glyph  from '../Glyph';
+import events from '../../models/events';
 
 import AudioService from '../../services/audio-player';
 
@@ -18,13 +19,13 @@ var PlayButton = React.createClass({
 
   componentWillMount: function() {
     if( this.state.media ) {
-      this.state.media.on( 'controls', this.onControls );
+      this.state.media.on( events.CONTROLS, this.onControls );
     }
   },
 
   componentWillUnmount: function() {
     if( this.state.media ) {
-      this.state.media.removeListener( 'controls', this.onControls );
+      this.state.media.removeListener( events.CONTROLS, this.onControls );
     }
   },
 

@@ -3,18 +3,22 @@ var MAGIC_SORT_DIGRANK = '280';
 
 module.exports = {
 
-  default: {  
+  remixes: {  
     limit:   10,
     digrank: MAGIC_SORT_DIGRANK,
     reqtags: 'remix',
-    lic:     'all'
   },
 
   pells: {
     limit:   10,
     lic:     'all',
     reqtags: 'acappella',
-    offset:  0,
+  },
+  
+  samples: {
+    limit: 10,
+    oneof: 'sample,contest_source',
+    lic: 'all'
   },
   
   pellsFeatured: {
@@ -23,12 +27,6 @@ module.exports = {
 
   pellsCount: {
     reqtags: 'acappella'
-  },
-
-  samples: {
-    oneof: 'sample,contest_source',
-    limit: 10,
-    lic: 'all'
   },
 
   samplesCount: {

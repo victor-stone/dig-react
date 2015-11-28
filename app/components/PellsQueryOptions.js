@@ -7,16 +7,26 @@ import { LicenseFilter,
 import { BPMDisplay,
          BPMSlider }          from './BPM'; 
 
-import { QueryParamToggle }   from '../mixins';
+import { QueryParamTracker,
+         DirtyParamTracker }   from '../mixins';
 
 const UnmixedOnlyFilter = React.createClass({
 
-  mixins: [QueryParamToggle],
+  mixins: [QueryParamTracker, DirtyParamTracker],
 
-  queryParam: {
-    name: 'remixmax',
-    valueON: '0',
-    valueOFF: undefined
+  stateFromParams: function(queryParams) {
+    var toggle = queryParams.remixmax === '0';
+    return { toggle };
+  },
+
+  onAreParamsDirty: function(queryParams,defaults,isDirty) {
+    if( !isDirty.isDirty) {
+      isDirty.isDirty = queryParams.remixmax === '0';
+    }
+  },
+
+  performQuery: function() {
+    this.props.store.applyHardParams( { remixmax: !this.state.toggle ? '0' : '' });
   },
 
   render: function() {

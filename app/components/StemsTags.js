@@ -5,20 +5,10 @@ import SearchBox        from './SearchBox';
 
 const SelectedTagSection = React.createClass({
 
-  getInitialState: function() {
-    return { store:    this.props.store, 
-             playlist: this.props.playlist };
-  },
-
-  componentWillReceiveProps: function(props) {
-    this.setState( { store:    props.store, 
-                     playlist: props.playlist });
-  },
-
   render: function() {
     return (
         <div className="selected-tags">
-          <Tags.SelectedTags {...this.state}/>
+          <Tags.SelectedTags {...this.props}/>
         </div>
       );
   },

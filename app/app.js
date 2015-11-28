@@ -2,6 +2,7 @@
 import React       from 'react';
 import ajaxAdapter from './services/query-ajax-adapter';
 import router      from './services/router';
+import events      from './models/events';
 import { Banner,
          TitleSetter,
          ErrorDisplay,
@@ -18,8 +19,8 @@ const App = React.createClass({
       this.setState(this.props);
     } else {
 
-      ajaxAdapter.on( 'loading',    this.onLoading );
-      router     .on( 'navigateTo', this.onNavigate );
+      ajaxAdapter.on( events.LOADING,     this.onLoading );
+      router     .on( events.NAVIGATE_TO, this.onNavigateTo );
 
       if( !this.state.component ) {
         router.updateURL();
@@ -37,12 +38,12 @@ const App = React.createClass({
 
   componentWillUnmount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      ajaxAdapter.removeListener( 'loading',    this.onLoading );
-      router     .removeListener( 'navigateTo', this.onNavigate );
+      ajaxAdapter.removeListener( events.LOADING,     this.onLoading );
+      router     .removeListener( events.NAVIGATE_TO, this.onNavigateTo );
     }
   },
 
-  onNavigate: function(specs) {
+  onNavigateTo: function(specs) {
     this.setState( specs );
   },
 

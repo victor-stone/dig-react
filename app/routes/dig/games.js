@@ -17,8 +17,9 @@ var games = React.createClass({
 games.title = 'Music for Video Games';
 
 games.store = function(params,queryParams) {
-  var qparams = mergeParams( {}, qc.default, qc.recent, qc.instrumental, qc.games, queryParams );
-  return Playlist.storeFromQuery(qparams);
+  var opts = mergeParams( { lic: 'all' }, qc.instrumental, qc.remixes );
+  var qparams = mergeParams( {}, qc.recent, opts, qc.games, queryParams );
+  return Playlist.storeFromQuery(qparams,opts);
 };
 
 

@@ -1,6 +1,7 @@
 import React       from 'react';
 import Glyph       from './Glyph';
 import ajaxAdapter from '../services/query-ajax-adapter';
+import events      from '../models/events';
 
 const LoadingGlyph = React.createClass({
 
@@ -10,13 +11,13 @@ const LoadingGlyph = React.createClass({
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      ajaxAdapter.on( 'loading', this.onLoading );
+      ajaxAdapter.on( events.LOADING, this.onLoading );
     }
   },
 
   componentWillUnmount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      ajaxAdapter.removeListener( 'loading', this.onLoading );
+      ajaxAdapter.removeListener( events.LOADING, this.onLoading );
     }
   },
 

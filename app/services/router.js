@@ -2,6 +2,8 @@ import RouteRecognizer  from 'route-recognizer';
 import rsvp             from 'rsvp';
 import Eventer          from './eventer';
 import env              from './env';
+import events           from '../models/events';
+import querystring      from 'querystring';
 
 class Router extends Eventer
 {
@@ -12,6 +14,7 @@ class Router extends Eventer
 
     this.routes = null;
     this.rewrites = [];
+    this.currentRoute = {};
 
     if( typeof window !== 'undefined' ) {
       window.onpopstate = this.updateURL.bind(this);
@@ -30,11 +33,13 @@ class Router extends Eventer
 
     for( var handler in routes ) {
       var component = routes[handler];
-      var path = component.path || ('/' + handler);
+      if( !component.path ) {
+        component.path = '/' + handler;
+      }
       if( !component.store ) {
         component.store = function() { return rsvp.resolve({}); };
       }
-      this.recognizer.add( [ { path, handler } ] );
+      this.recognizer.add( [ { path: component.path, handler } ] );
     }
   }
   
@@ -98,19 +103,51 @@ class Router extends Eventer
       throw new Error('wups - don\'t do nested route handlers yet');
     }
     var handler = handlers[0];
-    var hash = document.location.hash || '';
-    handler.component.store(handler.params, handler.queryParams)
-      .then( store => {
-          this.emit('navigateTo', {
-            name: handler.component.displayName, 
-            component: handler.component,
-            store,
-            params: handler.params,
-            queryParams: handler.queryParams,
-            hash } );
-      }).catch( error => {
-        env.error( error );
-      });
+
+    if( q && 
+        this.currentRoute.component &&
+        document.location.pathname === this.currentRoute.component.path &&
+        this.currentRoute.store.getModel ) {
+
+          var store = this.currentRoute.store;
+          var qp = querystring.parse(q.substr(1));
+          store.getModel(qp).then( model => {
+            store.emit( events.PARAMS_CHANGED, model.queryParams );
+          });
+
+    } else {
+
+      handler.component.store(handler.params, handler.queryParams)
+        .then( store => {
+            if( this.currentRoute.store && this.currentRoute.store.removeListener ) {
+              this.currentRoute.store.removeListener( events.PARAMS_CHANGED, this.paramChanged.bind(this) );
+            }
+            this.currentRoute = {
+              component: handler.component,
+              store
+            };
+            if( store.on ) {
+              store.on( events.PARAMS_CHANGED, this.paramChanged.bind(this) );
+            }
+            this.emit( events.NAVIGATE_TO, {
+              store,
+              name:        handler.component.displayName, 
+              component:   handler.component,
+              params:      handler.params,
+              queryParams: handler.queryParams,
+              hash:        document.location.hash || ''
+            });
+        }).catch( error => {
+          env.error( error );
+        });
+    }
+  }
+
+  paramChanged(queryParams,store) {
+    if( store ) {
+      var str = store.queryString;
+      this.setBrowserAddressBar( '?' + str );
+    }
   }
 
   _ensureRoutes() {

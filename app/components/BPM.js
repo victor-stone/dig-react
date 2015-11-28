@@ -1,10 +1,8 @@
 /* globals $ */
-import React             from 'react';
-import { debounce,
-         TagString }     from '../unicorns';
-
-import { PlaylistUpdater,
-         QueryParamTagsRotate } from '../mixins';
+import React                  from 'react';
+import { debounce }           from '../unicorns';
+import { QueryParamsTracker,
+         DirtyParamTracker }  from '../mixins';
 
 var TAG_FILTER = /^bpm_([0-9]{3})_([0-9]{3})$/;
 
@@ -30,11 +28,15 @@ function genPips() {
 }
 
 function tagsToBPMtag(tags) {
-  return TagString.filter(tags,TAG_FILTER).toString();
+  return tags.filter(TAG_FILTER);
 }
 
 function valueFromTag(tag) {
   return Number(tag.replace(TAG_FILTER, '$1'));
+}
+
+function valueFromTags(tags) {
+  return valueFromTag( tags.filter(TAG_FILTER).toString() );
 }
 
 function tagFromValue(val) {
@@ -52,7 +54,7 @@ function tagFromValue(val) {
 
 const BPMSlider = React.createClass({
 
-  mixins: [QueryParamTagsRotate],
+  mixins: [QueryParamsTracker, DirtyParamTracker],
 
   componentDidMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
@@ -80,28 +82,40 @@ const BPMSlider = React.createClass({
     }
   },
 
-  componentDidUpdate: function(prevProps,prevState) {
-    if( this.state.tag !== prevState.tag ) {
+  componentDidUpdate: function() {
+    if( !global.IS_SERVER_REQUEST ) {
       var nus = document.getElementById('bpmSlider').noUiSlider;
-      nus.set( valueFromTag(this.state.tag) );
+      nus.set( this.state.bpm );
     }
   },
 
   componentWillUnmount: function() {
-    var nus = document.getElementById('bpmSlider').noUiSlider;
-    nus.off('slide');
-    nus.destroy();
+    if( !global.IS_SERVER_REQUEST ) {
+      var nus = document.getElementById('bpmSlider').noUiSlider;
+      nus.off('slide');
+      nus.destroy();
+    }
   },
 
-  queryParam: {
-    filter: TAG_FILTER,
-    name: 'tags',
-    initValue: ''
+  onAreParamsDirty: function(queryParams,defaults,isDirty) {
+    if( !isDirty.isDirty ) {
+      isDirty.isDirty = queryParams.tags.filter(TAG_FILTER).getLength();
+    }
+  },
+
+  stateFromParams: function(queryParams) {
+    return { bpm: valueFromTags(queryParams.reqtags) };
   },
 
   applyBpm: debounce( function(val) {
-      var tag = tagFromValue(val);
-      this.performQuery(tag);
+      
+      var old_tag = tagFromValue(this.state.bpm);
+      var new_tag = tagFromValue(val);
+      var qptags  = this.props.store.queryParams.reqtags;
+      var reqtags = qptags.replace(old_tag,new_tag).toString();
+
+      this.applyHardParams( { reqtags } );
+
     }, DEBOUNCE_APPLY_BPM ),
 
   onSlide: function(val) {
@@ -109,17 +123,18 @@ const BPMSlider = React.createClass({
   },
 
   render: function() {
-    return <div className="bpm-slider-container"><div id="bpmSlider"></div></div>;
+    var bpm = valueFromTags(this.state.bpm);
+    return <div className="bpm-slider-container"><input name="bpm" type="hidden" value={bpm} /><div id="bpmSlider"></div></div>;
   }
 
 });
 
 var BPMDisplay = React.createClass({
 
-  mixins: [PlaylistUpdater],
+  mixins: [QueryParamsTracker],
 
   stateFromStore: function(store) {
-    var bpm = tagsToBPMtag(store.model.queryParams.tags);
+    var bpm = tagsToBPMtag(store.model.queryParams.reqtags);
     return { bpm };
   },
 

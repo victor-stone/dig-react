@@ -1,46 +1,40 @@
-'use strict';
+import events from '../models/events';
 
 var QueryParamTracker = {
 
+  getInitialState: function() {
+    return this.stateFromParams(this.props.store.queryParams);
+  },
+
   componentWillMount: function() {
-    this.props.store.on('query-params',this.onParamRequest);
+    this.props.store.on( events.PARAMS_CHANGED, this.onParamsChanged );
   },
 
   componentWillUnmount: function() {
-    this.props.store.removeListener('query-params',this.onParamRequest);
+    this.props.store.removeListener( events.PARAMS_CHANGED, this.onParamsChanged );
   },
 
   componentWillReceiveProps: function( props ) {
     if( this.props.store !== props.store ) {
       if( this.props.store ) {
-        this.props.store.removeListener('query-params',this.onParamRequest);
+        this.props.store.removeListener( events.PARAMS_CHANGED, this.onParamsChanged );
       }
-      props.store.on('query-params',this.onParamRequest);
+      props.store.on( events.PARAMS_CHANGED, this.onParamsChanged );
     }
   },
 
-  onParamsChanged: function() {
-    var name = this.queryParam.name;
-    var state = this.getParamState(this.props.store.model.queryParams[name]);
-    this.setState( state );
+  onParamsChanged: function(queryParams) {
+    this.setState( this.stateFromParams(queryParams) );
   },
 
-  onParamRequest: function(eventName,value) {
-    if( eventName === 'get') {
-      this.getParamValue(value);
-    } else if( eventName === 'is-dirty') {
-      if( !this.queryParam.clean && !value.isDirty ) {
-        this.getParamIsDirty(value);
-      }
-    } else if( eventName === 'set-default') {
-      this.setParamDefault(value);
-    }
+  applySoftParams: function(opts) {
+    this.props.store.applySoftParams(opts);
   },
 
-  setStateAndPerform: function(state) {
-    var store = this.props.store;
-    this.setState( state, store.perform.bind(store) );
-  }
+  applyHardParams: function(opts) {
+    this.props.store.applySoftParams(opts);
+  },
+  
 };
 
 module.exports = QueryParamTracker;

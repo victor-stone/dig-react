@@ -17,8 +17,9 @@ var film = React.createClass({
 film.title = 'Instrumental Music for Film and Video';
 
 film.store = function(params,queryParams) {
-  var qparams = mergeParams( {}, qc.default, qc.instrumental, qc.film, queryParams );
-  return Playlist.storeFromQuery(qparams);
+  var opts    = mergeParams( { lic: 'all' }, qc.remixes, qc.film, qc.instrumental );
+  var qparams = mergeParams( {}, opts, queryParams );
+  return Playlist.storeFromQuery(qparams,opts);
 };
 
 module.exports = film;

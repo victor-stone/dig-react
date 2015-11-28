@@ -2,6 +2,7 @@ import querystring from 'querystring';
 import Eventer     from './eventer';
 import ajax        from './ajax';
 import env         from './env';
+import events      from '../models/events';
 
 var queryHost ='http://ccmixter.org/api/query?';
 //var queryHost ='http://ccm/api/query?';
@@ -16,7 +17,7 @@ class QueryAjaxAdapter extends Eventer
 
   _inc() {
       if( !this._count ) {
-        this.emit('loading', true  );
+        this.emit( events.LOADING, true  );
       }
       ++this._count;
   }
@@ -24,7 +25,7 @@ class QueryAjaxAdapter extends Eventer
   _dec() {
       --this._count;
       if( !this._count ) {
-        this.emit('loading', false );
+        this.emit( events.LOADING, false );
       }
     }
 

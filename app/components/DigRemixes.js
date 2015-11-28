@@ -6,7 +6,7 @@ import { PlayButton }     from './AudioPlayer';
 import { QueryOptions }   from './QueryOptions';
 import RemixQueryOptions  from './RemixQueryOptions';
 import AudioPlayerService from '../services/audio-player';
-import PlaylistUpdater    from '../mixins/playlist-updater';
+import { ModelTracker }   from '../mixins';
 
 var SongLink = React.createClass({
 
@@ -48,7 +48,7 @@ var PlaylistItem = React.createClass({
 
 var NotALotHere = React.createClass({
 
-  mixins: [PlaylistUpdater],
+  mixins: [ModelTracker],
 
   stateFromStore: function(store) {
     var model = store.model;
@@ -84,7 +84,7 @@ var NotALotHere = React.createClass({
 
 var Playlist = React.createClass({
 
-  mixins: [PlaylistUpdater],
+  mixins: [ModelTracker],
 
   getDefaultProps: function() {
     return { skipUser: false };

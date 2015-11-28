@@ -4,45 +4,45 @@ import Glyph              from './Glyph';
 import DownloadPopup      from './DownloadPopup';
 import Link               from './Link';
 import ActionButtons      from './ActionButtons';
-import { TagString }      from '../unicorns';
 import AudioPlayerService from '../services/audio-player';
 
-import { PlaylistUpdater,
+import { ModelTracker,
          NowPlayingTracker, 
-         QueryParamValue,
-         QueryParamTagsRotate } from '../mixins';
+         QueryParamTracker } from '../mixins';
 
 var ExternalLink = ActionButtons.ExternalLink;
 
-const NOMINAL_TIMEOUT = 40;
+//const NOMINAL_TIMEOUT = 40;
 
 var PellTabs = React.createClass({
 
-  mixins: [PlaylistUpdater,QueryParamTagsRotate],
+  mixins: [ModelTracker,QueryParamTracker],
 
-  queryParam: {
-    name: 'reqtags',
-    filter: /^(featured|spoken_word|rap|melody)$/,
-    clean: true,
-    avoidInitConflict: true
-  },
+  filter: /^(featured|spoken_word|rap|melody)$/,
 
   stateFromStore: function(store) {
-    var tag;
     var totals = store.model.totals;
+    /*
     if( this.state && this.state.tag && !totals[this.state.tag] ) {
       setTimeout( () => this.setStateAndPerform( {tag:''} ), NOMINAL_TIMEOUT );
     }
-    var tags = store.model.queryParams.reqtags;
-    tag = TagString.filter(tags,this.queryParam.filter).toString();
-    return { totals, tag };
+    */
+    return { totals };
+  },
+
+  stateFromParams: function(queryParams) {
+    var tag = queryParams.reqtags.fiter(this.filter).toString();
+    return { tag };
   },
 
   onFilter: function(filter) {
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
-      this.performQuery(filter === 'all' ? '' : filter);
+      var tag     = filter === 'all' ? '' : filter;
+      var qptags  = this.props.store.queryParams.reqtags;
+      var reqtags = qptags.replace( this.state.tag, tag );
+      this.applyHardParams( { reqtags } );
     };
   },
 
@@ -80,21 +80,10 @@ var PellTabs = React.createClass({
 
 var PellListing = React.createClass({
 
-  mixins: [PlaylistUpdater,QueryParamValue],
-
-  queryParam: {
-    name: 'u',
-    initValue: '',
-    clean: true,
-    avoidInitConflict: true
-  },
+  mixins: [ModelTracker],
 
   stateFromStore: function(store) {
-    var playlist = store.model.playlist;
-    var artist   = store.model.artist;
-    var u        = artist && artist.id;
-    this.queryParam.initValue = u; // hack to prevent from being cleared
-    return { playlist, artist, u };
+    return { model: store.model };
   },
 
   selectLine: function(pell) {
@@ -131,8 +120,8 @@ var PellListing = React.createClass({
       return React.createElement.apply(React,args);
     }
 
-    var playlist = this.state.playlist;
-    var artist   = this.state.artist;
+    var playlist = this.state.model.playlist;
+    var artist   = this.state.model.artist;
     var lines    = playlist.map(pellLine.bind(this));
 
     return React.createElement( 'ul', null, lines );
@@ -176,7 +165,7 @@ var PellsUserSearch = React.createClass({
 
 var PellHeader = React.createClass({
 
-  mixins: [PlaylistUpdater],
+  mixins: [ModelTracker],
 
   stateFromStore: function(store) {
 
@@ -281,10 +270,10 @@ var PellDetail = React.createClass({
 
   render: function() {
 
-    var model  = this.state.nowPlaying;
-    var cls    = 'pell-detail' + (model ? '' : ' hidden');
+    var model       = this.state.nowPlaying;
+    var cls         = 'pell-detail' + (model ? '' : ' hidden');
     var showListing = this.state.show === 'listing';
-    var element = model ? (showListing ? this.renderListing(model) : this.renderDetail(model)) : null;
+    var element     = model ? (showListing ? this.renderListing(model) : this.renderDetail(model)) : null;
 
     return (
         <div className={cls}>

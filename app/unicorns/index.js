@@ -76,6 +76,13 @@ function underscore(str) {
   return w(trim(str)).join('_');
 }
 
+function camelize(str) {
+  return str.toLowerCase()
+            .split('_')
+            .map( s => s.charAt(0).toUpperCase() + s.substr(1) )
+            .join('');
+}
+
 function commaize(value) {
   if( value === 0 || value === '0' ) {
       return '0';
@@ -183,6 +190,7 @@ var debounce = function(func, wait, immediate) {
 
 module.exports = {
   commaize,
+  camelize,
   oassign,
   mergeParams,
   dasherize,

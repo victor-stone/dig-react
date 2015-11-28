@@ -21,7 +21,8 @@ tags.title = 'Tags';
 tags.path = '/tags/:tags';
 
 tags.store = function(params,queryParams) {
-  var qparams = mergeParams( {}, qc.default, { tags: params.tags }, queryParams );
+  var opts    = mergeParams( {}, qc.remixes );
+  var qparams = mergeParams( {}, opts, { tags: params.tags }, queryParams );
   return Playlist.storeFromQuery(qparams);
 };
 

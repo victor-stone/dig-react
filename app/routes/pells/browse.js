@@ -49,9 +49,12 @@ pells.title = 'A Cappella Browser';
 pells.path = '/pells';
 
 pells.store = function(params,queryParams) {
+  
   var featured = ('searchp' in queryParams) || ('u' in queryParams) ? {} : qc.pellsFeatured;
-  var qparams = mergeParams( {}, qc.pells, queryParams, featured );
-  return Acappellas.storeFromQuery(qparams);
+  var opts     = mergeParams( {}, qc.pells, featured );
+  var qparams  = mergeParams( {}, opts, featured );
+
+  return Acappellas.storeFromQuery(qparams, opts);
 };
 
 module.exports = pells;

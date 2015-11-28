@@ -5,8 +5,11 @@ import qc        from '../models/query-configs';
 
 import { CloseButton }    from './ActionButtons';
 
-import { PlaylistUpdater,
-         QueryParamEnum } from '../mixins';
+import { ModelTracker,
+          DirtyParamTracker,
+          QueryParamTracker 
+        } from '../mixins';
+
 
   // unfortunately popup is broken from this <ul>
   // not sure why, can't care
@@ -18,18 +21,28 @@ function LicenseInfoPopup() {
 
 const LicenseFilter = React.createClass({
 
-  mixins: [QueryParamEnum],
+  mixins: [QueryParamTracker,DirtyParamTracker],
 
-  queryParam: {
-    name: 'lic',
-    initValue: qc.default.lic,
+  stateFromParams: function(queryParams) {
+    return { lic: queryParams.lic };
+  },
+
+  onAreParamsDirty: function(queryParams,defaults,isDirty) {
+    if( !isDirty.isDirty) {
+      isDirty.isDirty = queryParams.lic !== defaults.lic;
+    }
+  },
+
+  performQuery: function() {
+    var lic = this.refs['lic'].value;
+    this.props.store.applyHardParams( { lic } );
   },
 
   render: function() {
 
     return (
       <div>
-        <select id="lic" ref={this.queryParam.name} value={this.state[this.queryParam.name]} onChange={this.performQuery} className="form-control" >
+        <select id="lic" ref="lic" value={this.state.lic} onChange={this.performQuery} className="form-control" >
           <option value="all">{"all licenses"}</option>
           <option value="open">{"free for commercial use"}</option>
           <option value="ccplus">{"royalty free license"}</option>
@@ -40,20 +53,24 @@ const LicenseFilter = React.createClass({
   }
 });
 
-const LimitFilter = React.createClass({
+const LimitFilter = React.createClass({ 
 
-  mixins: [QueryParamEnum],
+  mixins: [QueryParamTracker],
 
-  queryParam: {
-    name: 'limit',
-    initValue: qc.default.limit,
+  stateFromParams: function(queryParams) {
+    return { limit: queryParams.limit };
+  },
+
+  performQuery: function() {
+    var limit = this.refs['limit'].value;
+    this.props.store.applyHardParams( { limit } );
   },
 
   render: function() {
 
     return (
         <label className="form-control">{"display "}
-          <select id="limit" ref={this.queryParam.name} value={this.state[this.queryParam.name]} onChange={this.performQuery} className="form-control" >
+          <select ref="limit" id="limit" value={this.state.digrank} onChange={this.performQuery} className="form-control" >
             <option>{"10"}</option>
             <option>{"20"}</option>
             <option>{"40"}</option>
@@ -64,18 +81,22 @@ const LimitFilter = React.createClass({
 
 });
 
-const SortFilter = React.createClass({
+const SortFilter = React.createClass({ 
 
-  mixins: [QueryParamEnum],
+  mixins: [QueryParamTracker],
 
-  queryParam: {
-    name: 'digrank',
-    initValue: qc.default.digrank,
+  stateFromParams: function(queryParams) {
+    return { digrank: queryParams.digrank};
+  },
+
+  performQuery: function() {
+    var digrank = this.refs['sort'].value;
+    this.props.store.applySoftParams( { digrank } );
   },
   
   render: function() {
     return (
-        <select id="sort" ref={this.queryParam.name} value={this.state[this.queryParam.name]} onChange={this.performQuery} className="form-control" >
+        <select ref="sort" id="sort" value={this.state.digrank} onChange={this.performQuery} className="form-control" >
           <option value={qc.magicSort.digrank}>{"magic sort"}</option>
           <option value={qc.recent.digrank}>{"recent"}</option>
           <option value={qc.alltime.digrank}>{"all time"}</option>
@@ -87,7 +108,7 @@ const SortFilter = React.createClass({
 
 const ResetOptionsButton = React.createClass({
 
-  mixins: [PlaylistUpdater],
+  mixins: [ModelTracker],
 
   stateFromStore: function(store) {
     return { dirty: store.paramsDirty() };
@@ -95,7 +116,7 @@ const ResetOptionsButton = React.createClass({
 
   onReset: function() {
     if( this.state.dirty ) {
-      this.props.store.performClean();
+      this.props.store.applyDefaults();
     }
   },
 
@@ -113,7 +134,7 @@ function OptionsWrap(props) {
 
 const QueryOptions = React.createClass({
 
-  mixins: [PlaylistUpdater],
+  mixins: [ModelTracker],
 
   handleShowOptions: function(){
     var showOptions = !this.state.showOptions;
@@ -121,13 +142,13 @@ const QueryOptions = React.createClass({
   },
 
   stateFromStore: function(store) {
-    var dirty = this.storeSupportsOptions() && store.paramsDirty();
+    var dirty = store.supportsOptions() && store.paramsDirty();
     return { dirty };
   },
 
   render: function() {
 
-    if( !this.storeSupportsOptions() ) {
+    if( !this.props.store.supportsOptions() ) {
       return null;
     }
     

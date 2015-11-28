@@ -1,6 +1,7 @@
 import React  from 'react';
 import People from '../People';
 import AB     from '../ActionButtons';
+import events from '../../models/events';
 
 import PlayControls     from './PlayControls';
 import PlaylistButton   from './PlaylistButton';
@@ -32,24 +33,24 @@ const AudioPlayer = React.createClass({
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      AudioService.on('nowPlaying',this.onNowPlaying);
+      AudioService.on( events.NOW_PLAYING ,this.onNowPlaying);
     }
   },
 
   componentWillUnmount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      AudioService.removeListener('nowPlaying',this.onNowPlaying);
+      AudioService.removeListener( events.NOW_PLAYING ,this.onNowPlaying);
     }
   },
 
   onNowPlaying: function(nowPlaying) {
     if( this.state.nowPlaying ) {
-      this.state.nowPlaying.removeListener( 'controls', this.onControls );
-      this.state.nowPlaying.removeListener( 'position',  this.onPosition );
+      this.state.nowPlaying.removeListener( events.CONTROLS, this.onControls );
+      this.state.nowPlaying.removeListener( events.POSITION,  this.onPosition );
     }
     if( nowPlaying ) {
-      nowPlaying.on( 'controls', this.onControls );
-      nowPlaying.on( 'position',  this.onPosition );
+      nowPlaying.on( events.CONTROLS, this.onControls );
+      nowPlaying.on( events.POSITION,  this.onPosition );
     }
 
     this.setState( { nowPlaying } );

@@ -1,3 +1,4 @@
+import events from '../models/events';
 
 /*
   Implementors must implement 
@@ -13,31 +14,28 @@ var PlaylistUpdater = {
   },
 
   componentWillMount: function() {
-    this.props.store.on('playlist',this.onPlaylistUpdate);
+    this.props.store.on( events.MODEL_UPDATED, this.onModelUpdate );
   },
 
   componentWillUnmount: function() {
-    this.props.store.removeListener('playlist',this.onPlaylistUpdate);
+    this.props.store.removeListener( events.MODEL_UPDATED, this.onModelUpdate );
   },
 
   componentWillReceiveProps: function( props ) {
     if( this.props.store !== props.store ) {
       if( this.props.store ) {
-        this.props.store.removeListener('playlist',this.onPlaylistUpdate);
+        this.props.store.removeListener( events.MODEL_UPDATED, this.onModelUpdate );
       }
-      props.store.on('playlist',this.onPlaylistUpdate);
+      props.store.on( events.MODEL_UPDATED, this.onModelUpdate );
       this.setState( this.stateFromStore(props.store) );
     }
   },
 
-  onPlaylistUpdate: function() {
-      this.setState( this.stateFromStore(this.props.store) );
+  onModelUpdate: function() {
+    this.setState( this.stateFromStore(this.props.store) );
   },
-
-  storeSupportsOptions: function() {
-    return typeof this.props.store.paramsDirty === 'function';
-  }
 };
 
 
 module.exports = PlaylistUpdater;
+

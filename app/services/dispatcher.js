@@ -1,6 +1,6 @@
-import EventEmitter from './EventEmitter';
+import Eventer from './eventer';
 
-class Dispatcher extends EventEmitter {
+class Dispatcher extends Eventer {
 
 }
 

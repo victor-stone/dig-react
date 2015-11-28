@@ -5,20 +5,13 @@ import AudioPlayer      from './AudioPlayer';
 import People           from './People';
 import env              from '../services/env';
 import { NoTagHits }    from './Tags';
-
-import {  PlaylistUpdater,
+import events           from '../models/events';
+import {  ModelTracker,
           SelectedTagsTracker  } from '../mixins';
 
 const StemsFiles = React.createClass({
 
-  getInitialState: function() {
-
-    return { selectedTags: this.props.tags };
-  },
-
-  componentWillReceiveProps: function(props) {
-    this.setState( { selectedTags: props.tags } );
-  },
+  mixins: [SelectedTagsTracker],
 
   highlights(tags) {
     var highlights = {};
@@ -51,7 +44,7 @@ const StemsFiles = React.createClass({
     // the exsiting 'upload' property
     // is bare-bones so let's fill it out
     file.upload = this.props.model;
-    this.props.store.emit('inspectZIP',file,this.props.store.tags);
+    this.props.store.emit(events.INSPECT_ZIP,file,this.props.store.tags);
   },
 
   oneFile: function(f,cls,model) {
@@ -92,7 +85,7 @@ const StemsFiles = React.createClass({
 
 const StemsList = React.createClass({
 
-  mixins: [PlaylistUpdater,SelectedTagsTracker],
+  mixins: [ModelTracker,SelectedTagsTracker],
 
   getDefaultProps: function() {
     return { skipUser: false };

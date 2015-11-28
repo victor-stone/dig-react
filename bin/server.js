@@ -115,7 +115,7 @@ process.on('SIGINT', function() {
 });
 
 process.on('uncaughtException', function(err) {
-  console.log(err);
+  console.log(err, err.stack.split('\n'));
   if( sysLog ) {
     sysLog.write( { msg: 'uncaughtException', 
                     exception: err + '', 

@@ -1,6 +1,7 @@
 import Query           from './query';
 import ccmixter        from '../models/ccmixter';
 import serialize       from '../models/serialize';
+import events          from '../models/events';
 import rsvp            from 'rsvp';
 import { TagString }   from '../unicorns';
 
@@ -20,6 +21,10 @@ class Tags extends Query {
   constructor() {
     super(...arguments);
     this.selectedTags = {};
+  }
+
+  setSelected(tags) {
+    this.selectedTags[this._ensureSelectedCat()].clear().add(tags);
   }
 
   addSelected(tag,cat) {
@@ -80,13 +85,13 @@ class Tags extends Query {
   _emitSelectedTags(cat,doAll) {
     var tags = this.getSelectedTags(cat);
     if( cat ) {
-      this.emit('selectedCatTags',tags,cat);      
+      this.emit( events.TAGS_CHANGED, tags, cat );      
     }
     if( doAll ) {
       if( cat ) {
         tags = this.getSelectedTags();
       }
-      this.emit( 'selectedTags', tags );
+      this.emit( events.TAGS_CHANGED, tags, 'all' );
     }
   }
 

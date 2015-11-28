@@ -30,8 +30,9 @@ people.path = '/people/:userid';
 people.title = 'People';
 
 people.store = function(params,queryParams) {
-  var qparams = mergeParams( {}, qc.default, { u: params.userid }, queryParams );
-  return PlaylistStore.storeFromQuery(qparams)
+  var opts = mergeParams( {}, qc.remixes );
+  var qparams = mergeParams( {}, opts, { u: params.userid }, queryParams );
+  return PlaylistStore.storeFromQuery(qparams,opts)
           .then( store => {
             people.title = store.model.artist.name;
             return store;

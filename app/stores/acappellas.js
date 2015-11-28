@@ -64,23 +64,20 @@ TotalsCache.getTotals = function(params,store) {
 
 class ACappellas extends UploadList {
 
-  /* protected */
-
   fetch(queryParams) {
     queryParams.dataview = 'default'; // links_by doesn't have bpm
     return this.query(queryParams).then( serialize( ccmixter.ACappella ) );
   }
 
   promiseHash( hash, queryParams ) {
-    hash.artist = queryParams.u ? this.findUser(queryParams.u) : null;
     hash.totals = TotalsCache.getTotals(queryParams,this);
     return hash;
   }
 
 }
 
-ACappellas.storeFromQuery = function(params) {
-  var pells = new ACappellas();
+ACappellas.storeFromQuery = function(params,defaults) {
+  var pells = new ACappellas(defaults);
   return pells.getModel(params).then( () => pells );  
 };
 

@@ -3,9 +3,9 @@ import Glyph         from './Glyph';
 import { TagString } from '../unicorns';
 import QueryOptions  from './QueryOptions';
 
-import {  PlaylistUpdater, 
-          SelectedTagsTracker,
-          QueryParamToggle       } from '../mixins';
+import {  ModelTracker, 
+          QueryParamTracker,
+          SelectedTagsTracker   } from '../mixins';
 
 const DEFAULT_COL_SIZE = 3;
 
@@ -149,19 +149,17 @@ const SelectedTags = React.createClass({
 
 const MatchAnyButton = React.createClass({
 
-  mixins: [QueryParamToggle,PlaylistUpdater],
-
-  queryParam: {
-    name:     'type',
-    valueON:  'any',
-    valueOFF: 'all',
-    clean:    true,
-    avoidInitConflict: true
-  },
+  mixins: [QueryParamTracker,ModelTracker],
 
   stateFromStore: function(store) {
     var qp = store.model.queryParams;
-    return { toggle: qp[this.queryParam.name] === this.queryParam.valueON };
+    return { toggle: qp.type === 'any' };
+  },
+
+  performQuery: function() {
+    // yes, we reverse it here
+    var type = this.state.toggle ? 'all' : 'any';
+    this.props.store.applyHardParams( { type } );
   },
 
   render: function() {
@@ -178,7 +176,7 @@ const MatchAnyButton = React.createClass({
 
 const NoTagHits = React.createClass({
 
-  mixins: [PlaylistUpdater],
+  mixins: [ModelTracker],
 
   stateFromStore: function(store) {
     var optionsDirty = store.paramsDirty();

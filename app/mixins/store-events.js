@@ -1,4 +1,4 @@
-
+import { camelize } from '../unicorns';
 /*
   Implementors must implement 
 
@@ -31,7 +31,7 @@ var StoreEvents = {
   componentWillMount: function() {
     this._storeEventHandlers = {};
     this._getStoreEvents().forEach( event => {
-      var handlerName = 'on' + event.charAt(0).toUpperCase() + event.substr(1);
+      var handlerName = 'on' + camelize(event);
       this._storeEventHandlers[event] = this[handlerName];
     });
     this._subscribeToStoreEvents(this.props.store);

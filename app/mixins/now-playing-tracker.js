@@ -1,6 +1,7 @@
-import AudioPlayerService from '../services/audio-player';
-import Upload from '../stores/upload';
-import { oassign } from '../unicorns';
+import AudioService from '../services/audio-player';
+import Upload       from '../stores/upload';
+import { oassign }  from '../unicorns';
+import events       from '../models/events';
 
 var NowPlayingTracker = {
 
@@ -10,14 +11,14 @@ var NowPlayingTracker = {
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      AudioPlayerService.on('nowPlaying',this.onNowPlaying);
-      this.modelFromNowPlaying( AudioPlayerService.nowPlaying );
+      AudioService.on( events.NOW_PLAYING, this.onNowPlaying);
+      this.modelFromNowPlaying( AudioService.nowPlaying );
     }
   },
 
   componentWillUnmount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      AudioPlayerService.removeListener('nowPlaying',this.onNowPlaying);
+      AudioService.removeListener( events.NOW_PLAYING, this.onNowPlaying);
     }
   },
 

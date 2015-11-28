@@ -1,15 +1,15 @@
+import licenses from '../licenses';
+import nowplaying from '../nowplaying';
+import credits from '../credits';
+
 import ccplus from './ccplus';
-import credits from './credits';
-import dig from './dig-route';
+import dig from './dig-deep';
 import edpicks from './edpicks';
 import film from './film';
 import free from './free';
 import games from './games';
-import index from './dig-index';
+import index from './home';
 import latest from './latest';
-import licenses from './licenses';
-import morelike from './morelike';
-import nowplaying from './nowplaying';
 import people from './people';
 import search from './search';
 import tags from './tags';
@@ -26,7 +26,6 @@ module.exports = {
     index,
     latest,
     licenses,
-    morelike,
     nowplaying,
     people,
     search,

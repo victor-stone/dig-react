@@ -123,11 +123,13 @@ search.store = function( params, queryParams ) {
   if( queryParams.searchp ) {
     queryParams.searchp = queryParams.searchp.replace(/[^a-zA-Z0-9 _()\*\.]/,'');
   }
-  var qparams = mergeParams( { search_type: 'all' }, qc.default, queryParams );
+
+  var opts    = mergeParams( { search_type: 'all' }, qc.remixes );
+  var qparams = mergeParams( {}, opts, queryParams );
 
   function makePromise() {
     var modelRequest = {
-      store: PlaylistStore.storeFromQuery(qparams),
+      store: PlaylistStore.storeFromQuery(qparams,opts),
       didYouMean: didYouMean(queryParams.searchp)
     };
     return rsvp.hash(modelRequest).then( model => {

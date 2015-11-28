@@ -215,6 +215,8 @@ TagString.prototype.contains = function(tagsOrFunction) {
   return find( them, tag => this._tagsArray.contains(tag) ) !== false;
 };
 
+TagString.prototype.includes = TagString.prototype.contains;
+
 TagString.prototype.containsOne = function(tag) {
   return this._tagsArray.contains(tag);
 };
@@ -229,6 +231,17 @@ TagString.prototype.diff = function(returnTagsOnlyInThisOne) {
   var opts = this.copyOptions();
   opts.source = getDiff(this._tagsArray.slice(),TagString.toArray(returnTagsOnlyInThisOne,opts));
   return new TagString(opts);  
+};
+
+TagString.prototype.isEqual = function(tags) {
+  var other = new TagString(tags);
+  if( !this._tagsArray.length || other._tagsArray.length !== this._tagsArray ) {
+    return false;
+  }
+  if( this._tagsArray.length === 1 ) {
+    return other._tagsArray[0] === this._tagsArray[0];
+  }
+  return other._tagsArray.sort().join(',') === this._tagsArray.sort().join(',');
 };
 
 TagString.prototype.anyInString = function(stringToSearch) {

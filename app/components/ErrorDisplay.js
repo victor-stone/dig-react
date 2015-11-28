@@ -1,6 +1,7 @@
 import React       from 'react';
 import env         from '../services/env';
 import ErrorReport from '../services/error-report';
+import events      from '../models/events';
 
 const ErrorDisplay = React.createClass({
 
@@ -10,13 +11,13 @@ const ErrorDisplay = React.createClass({
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      env.on('error', this.doReport);
+      env.on( events.ERROR, this.doReport);
     }
   },
   
   componentWillUnmount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      env.removeListener('error', this.doReport);
+      env.removeListener(events.ERROR, this.doReport);
     }
   },
 

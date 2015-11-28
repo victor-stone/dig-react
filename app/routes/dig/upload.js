@@ -3,7 +3,6 @@
 import React from 'react';
 
 import { Link, 
-        Glyph,
         TrackbackPopup,
         People,
         SharePopup,
@@ -105,9 +104,6 @@ var LicenseSection = React.createClass({
           <LicenseInfo.LicenseInfoPopup />
         </li>
         <ccPlusLink model={model} />
-        <li>
-          <Link href={'/morelike/' + model.id} className="btn btn-success"><Glyph icon="exchange" />{" More Like This"}</Link>
-        </li>
         <li>
           <ExternalLink className="btn btn-success" href={model.url} text="@ccMixter" />
         </li>

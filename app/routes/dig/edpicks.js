@@ -2,7 +2,7 @@
 
 import React            from 'react';
 import { FeaturedPage } from '../components';
-import { mergeParams }      from '../unicorns';
+import { mergeParams }  from '../unicorns';
 import qc               from '../models/query-configs';
 import Playlist         from '../stores/playlist';
 
@@ -18,8 +18,9 @@ var edpicks = React.createClass({
 edpicks.title = 'Editors Picks';
 
 edpicks.store = function(params,queryParams) {
-  var qparams = mergeParams( {}, qc.default, { tags: 'editorial_pick' }, qc.recent, queryParams );
-  return Playlist.storeFromQuery(qparams);
+  var opts    = mergeParams( { reqtags: 'editorial_pick' }, qc.remixes );
+  var qparams = mergeParams( {}, opts, qc.recent, queryParams );
+  return Playlist.storeFromQuery(qparams,opts);
 };
 
 module.exports = edpicks;

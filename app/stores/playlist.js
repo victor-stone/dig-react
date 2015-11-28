@@ -1,55 +1,14 @@
 import UploadList  from './upload-list';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
-import querystring from 'querystring';
-import rsvp        from 'rsvp';
 
-var userCache = {
-
-};
 
 class Playlist extends UploadList {
 
-  constructor() {
-    super(...arguments);
-  }
-
-  getModel(queryParams) {
-    return super.getModel(queryParams).then( model => {
-        if(model.artist) { 
-          this._putUser(model.artist,queryParams.u);
-        }
-        return model;
-    });
-  }
-  /* protected */
-
   fetch(queryParams) {
-    return this.query(queryParams)
-              .then( serialize(ccmixter.Upload) )
-              .catch( e => {
-                var str = /*decodeURIComponent*/(querystring.stringify(queryParams));
-                throw new Error( `${str} original: ${e.toString()}-${e.stack}`);
-              });
+    return this.query(queryParams).then( serialize(ccmixter.Upload) );
   }
 
-  promiseHash( hash, queryParams ) {
-    hash.artist = queryParams.u ? this._getUser(queryParams.u) : null;
-    return hash;
-  }
-
-  /* private */
-
-  _getUser(u) {
-    if( userCache[u] ) {
-      return rsvp.resolve(userCache[u]);
-    }
-    return this.findUser(u);
-  }
-
-  _putUser(model,u) {
-    userCache[u] = model;
-  }
 }
 
 // performs the query but returns the store
@@ -58,8 +17,8 @@ class Playlist extends UploadList {
 //
 // very handy for routing
 //
-Playlist.storeFromQuery = function(params) {
-  var pl = new Playlist();
+Playlist.storeFromQuery = function(params,defaults) {
+  var pl = new Playlist(defaults);
   return pl.getModel(params).then( () => pl );  
 };
 

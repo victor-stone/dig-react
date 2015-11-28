@@ -1,13 +1,12 @@
 import React            from 'react';
 import Glyph            from './Glyph';
-import serviceLookup    from '../services';
+import events           from '../models/events';
 
-import { PlaylistUpdater,
+import { ModelTracker,
          BoundingElement,
-         StoreEvents,
-         QueryParamValue } from '../mixins';
+         StoreEvents } from '../mixins';
 
-import { pagingStats, oassign } from '../unicorns';
+import { pagingStats } from '../unicorns';
 
 const PagerLink = React.createClass({
 
@@ -46,36 +45,16 @@ const PagerLink = React.createClass({
 });
 
 
-var OffsetParamValue = oassign( {}, QueryParamValue, {
-
-    getParamValue: function(queryParams) {
-      // 'get' only happens when the query changes
-      // so we always want an offset of 0
-      // (unless it's us deliberately setting
-      // the offet b/c the user is paging)
-      //
-      queryParams.offset = this.userOffset || 0;
-      this.userOffset = 0;
-    },
-});
-
 const Paging = React.createClass({
 
-  mixins: [BoundingElement,PlaylistUpdater,OffsetParamValue,StoreEvents],
+  mixins: [BoundingElement,ModelTracker,StoreEvents],
 
   getDefaultProps: function() {
     return {
       keepAbove: '.footer',
       keepBelow: '.page-header',
-      storeEvent: 'componentUpdate'
+      storeEvent: events.COMPONENT_UPDATE,
     };
-  },
-
-  queryParam: {
-    name: 'offset',
-    clean: true,
-    initValue: 0,
-    avoidInitConflict: true
   },
 
   onComponentUpdate: function() {
@@ -92,15 +71,8 @@ const Paging = React.createClass({
     };
   },
 
-  userOffset: 0,
-
   onNewOffset: function(offset) {
-
-    this.userOffset = offset;
-    this.performQuery(offset);
-
-    var router = serviceLookup('router');
-    router.setBrowserAddressBar('?offset='+offset);
+    this.props.store.paginate(offset);
   },
   
   render: function() {

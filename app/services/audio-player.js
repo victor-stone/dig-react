@@ -3,6 +3,7 @@ import Eventer     from '../services/eventer';
 import MP3         from './audio-formats/mp3';
 import FLAC        from './audio-formats/flac';
 import Media       from './audio-formats/media';
+import events      from '../models/events';
 
 const NOT_FOUND  = -1;
 const FOWARD     = 1;
@@ -66,7 +67,7 @@ class AudioPlayer extends Eventer
   
   setPlaylist(playlist) {
     this.playlist = playlist;
-    this.emit('playlist', playlist);
+    this.emit( events.PLAYLIST, playlist);
   }
 
   bindToNowPlaying(model) {
@@ -116,7 +117,7 @@ class AudioPlayer extends Eventer
     this.nowPlaying = media;
     this._updatePlaylist();
     media.once('finish',this._onFinish.bind(this));
-    this.emit('nowPlaying',media);
+    this.emit( events.NOW_PLAYING, media );
   }
   
   _onFinish(media) {

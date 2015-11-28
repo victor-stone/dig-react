@@ -2,7 +2,7 @@ import React        from 'react';
 import ajax         from '../../services/ajax';
 import AudioService from '../../services/audio-player';
 import env          from '../../services/env';
-
+import events       from '../../models/events';
 
 const WavImage = React.createClass({
 
@@ -13,13 +13,13 @@ const WavImage = React.createClass({
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST && env.supportWavImg ) {
-      AudioService.on('nowPlaying',this.onNowPlaying);
+      AudioService.on( events.NOW_PLAYING, this.onNowPlaying);
     }
   },
 
   componentWillUnmount: function() {
     if( !global.IS_SERVER_REQUEST  && env.supportWavImg ) {
-      AudioService.removeListener('nowPlaying',this.onNowPlaying);
+      AudioService.removeListener( events.NOW_PLAYING, this.onNowPlaying);
     }
   },
 

@@ -1,6 +1,7 @@
 import React  from 'react';
 import Glyph  from '../Glyph';
 import Link   from '../Link';
+import events from '../../models/events';
 
 import AudioService from '../../services/audio-player';
 
@@ -12,13 +13,13 @@ const PlaylistButton = React.createClass({
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      AudioService.on('playlist',this.onPlaylist);      
+      AudioService.on( events.PLAYLIST, this.onPlaylist);      
     }
   },
 
   componentWillUnmount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      AudioService.removeListener('playlist',this.onPlaylist);      
+      AudioService.removeListener( events.PLAYLIST, this.onPlaylist);      
     }
   },
 
