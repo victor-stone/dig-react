@@ -7,6 +7,7 @@ module.exports = {
     limit:   10,
     digrank: MAGIC_SORT_DIGRANK,
     reqtags: 'remix',
+    lic:     'all',
   },
 
   pells: {

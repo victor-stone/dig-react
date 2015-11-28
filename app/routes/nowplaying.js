@@ -15,6 +15,10 @@ class NowPlayingStore {
     };
   }
 
+  supportsOptions() {
+    return false;
+  }
+  
   on() {}
   removeListener() {}
 

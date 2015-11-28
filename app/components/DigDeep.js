@@ -3,6 +3,7 @@ import Glyph         from './Glyph';
 import Paging        from './Paging'; 
 import Tags          from './Tags';
 import DigRemixes    from './DigRemixes';
+import { TagString } from '../unicorns';
 import events        from '../models/events';
 
 const TagCategoryRow = React.createClass({
@@ -56,7 +57,8 @@ const RemixTagSelectionSection = React.createClass({
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      this.props.store.remixCategories().then( cats => {
+      this.props.store.tags.on(events.TAGS_SET,this.onTagsSet);
+      this.props.store.tags.remixCategories().then( cats => {
         this.setState( {
           model: cats,
           loading: false });
@@ -66,6 +68,27 @@ const RemixTagSelectionSection = React.createClass({
 
   componentDidUpdate: function() {
     this.props.store.emit( events.COMPONENT_UPDATE );
+  },
+
+  componentWillUnmount: function() {
+    if( !global.IS_SERVER_REQUEST ) {
+      this.props.store.tags.removeListener(events.TAGS_SET,this.onTagsSet);
+    }    
+  },
+  
+  onTagsSet: function(tagsin) {
+    var tags  = new TagString(tagsin).toArray();
+    var store = this.props.store.tags;
+    var cats  = this.state.model;
+    store.clearSelected();
+    tags.forEach( tag => {
+      for( var cat in cats ) {
+        if( cats.findBy('id',tag) !== null ) {
+          store.addSelected(tag,cat);
+          break;
+        }
+      }
+    });
   },
 
   render: function() {

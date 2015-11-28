@@ -235,7 +235,7 @@ TagString.prototype.diff = function(returnTagsOnlyInThisOne) {
 
 TagString.prototype.isEqual = function(tags) {
   var other = new TagString(tags);
-  if( !this._tagsArray.length || other._tagsArray.length !== this._tagsArray ) {
+  if( !this._tagsArray.length || other._tagsArray.length !== this._tagsArray.length ) {
     return false;
   }
   if( this._tagsArray.length === 1 ) {

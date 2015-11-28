@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Glyph } from '../components';
+import { Link, Glyph } from '../../components';
 
 
 const homePage = (

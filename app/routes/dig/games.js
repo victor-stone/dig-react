@@ -1,8 +1,8 @@
 import React            from 'react';
-import { FeaturedPage } from '../components';
-import { mergeParams }  from '../unicorns';
-import qc               from '../models/query-configs';
-import Playlist         from '../stores/playlist';
+import { FeaturedPage } from '../../components';
+import { mergeParams }  from '../../unicorns';
+import qc               from '../../models/query-configs';
+import Playlist         from '../../stores/playlist';
 
 var games = React.createClass({
 
@@ -17,8 +17,8 @@ var games = React.createClass({
 games.title = 'Music for Video Games';
 
 games.store = function(params,queryParams) {
-  var opts = mergeParams( { lic: 'all' }, qc.instrumental, qc.remixes );
-  var qparams = mergeParams( {}, qc.recent, opts, qc.games, queryParams );
+  var opts    = mergeParams( {}, qc.remixes, qc.instrumental );
+  var qparams = mergeParams( {}, opts, qc.recent, qc.games, queryParams );
   return Playlist.storeFromQuery(qparams,opts);
 };
 

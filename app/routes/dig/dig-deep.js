@@ -1,9 +1,9 @@
 import React         from 'react';
-import { DigDeep }   from '../components';
-import qc            from '../models/query-configs';
-import PlaylistStore from '../stores/playlist';
+import { DigDeep }   from '../../components';
+import qc            from '../../models/query-configs';
+import PlaylistStore from '../../stores/playlist';
 
-import { mergeParams } from '../unicorns';
+import { mergeParams } from '../../unicorns';
 
 
 var dig = React.createClass({

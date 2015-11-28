@@ -70,7 +70,7 @@ const LimitFilter = React.createClass({
 
     return (
         <label className="form-control">{"display "}
-          <select ref="limit" id="limit" value={this.state.digrank} onChange={this.performQuery} className="form-control" >
+          <select ref="limit" id="limit" value={this.state.limit} onChange={this.performQuery} className="form-control" >
             <option>{"10"}</option>
             <option>{"20"}</option>
             <option>{"40"}</option>

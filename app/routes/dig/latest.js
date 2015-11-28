@@ -1,8 +1,8 @@
 import React            from 'react';
-import { FeaturedPage } from '../components';
-import { mergeParams }  from '../unicorns';
-import qc               from '../models/query-configs';
-import Playlist         from '../stores/playlist';
+import { FeaturedPage } from '../../components';
+import { mergeParams }  from '../../unicorns';
+import qc               from '../../models/query-configs';
+import Playlist         from '../../stores/playlist';
 
 var latest = React.createClass({
 
@@ -19,8 +19,9 @@ latest.path = '/new';
 latest.title = 'New';
 
 latest.store = function(params,queryParams) {
-  var qparams = mergeParams( {}, qc.remixes, qc.latest, queryParams );
-  return Playlist.storeFromQuery( qparams, {} );
+  var opts    = mergeParams( {}, qc.remixes );
+  var qparams = mergeParams( {}, opts, qc.latest, queryParams );
+  return Playlist.storeFromQuery( qparams, opts );
 };
 
 module.exports = latest;

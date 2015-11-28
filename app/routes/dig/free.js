@@ -1,8 +1,8 @@
 import React            from 'react';
-import { FeaturedPage } from '../components';
-import { mergeParams }  from '../unicorns';
-import qc               from '../models/query-configs';
-import Playlist         from '../stores/playlist';
+import { FeaturedPage } from '../../components';
+import { mergeParams }  from '../../unicorns';
+import qc               from '../../models/query-configs';
+import Playlist         from '../../stores/playlist';
 
 var free = React.createClass({
 
@@ -17,7 +17,7 @@ var free = React.createClass({
 free.title = 'Free for Commercial Use';
 
 free.store = function(params,queryParams) {
-  var opts    = mergeParams( { lic: 'open' }, qc.remixes );
+  var opts    = mergeParams( {}, qc.remixes, { lic: 'open' } );
   var qparams = mergeParams( {}, opts, queryParams );    
   return Playlist.storeFromQuery(qparams,opts);
 };

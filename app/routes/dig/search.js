@@ -2,19 +2,19 @@ import React from 'react';
 import rsvp  from 'rsvp';
 
 import { underscore, 
-            mergeParams } from '../unicorns';
+            mergeParams } from '../../unicorns';
 
-import qc from '../models/query-configs';
+import qc from '../../models/query-configs';
 
 import {  Link, 
           Glyph, 
           PageHeader, 
           DigRemixes as Playlist, 
-          Paging } from '../components';
+          Paging } from '../../components';
 
-import TagStore       from '../stores/tags';
-import QueryStore     from '../stores/query';
-import PlaylistStore  from '../stores/playlist';
+import TagStore       from '../../stores/tags';
+import QueryStore     from '../../stores/query';
+import PlaylistStore  from '../../stores/playlist';
 
 var DidYouMeanSection = React.createClass({
 

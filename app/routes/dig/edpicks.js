@@ -1,10 +1,10 @@
 'use strict';
 
 import React            from 'react';
-import { FeaturedPage } from '../components';
-import { mergeParams }  from '../unicorns';
-import qc               from '../models/query-configs';
-import Playlist         from '../stores/playlist';
+import { FeaturedPage } from '../../components';
+import { mergeParams }  from '../../unicorns';
+import qc               from '../../models/query-configs';
+import Playlist         from '../../stores/playlist';
 
 var edpicks = React.createClass({
 

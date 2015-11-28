@@ -11,18 +11,36 @@ class UploadList extends Query {
   constructor(defaultParams) {
     super(...arguments);
     this.model         = {};
-    this.defaultParams = defaultParams || { lic: 'all' };
+    this.defaultParams = defaultParams || {};
     this._tags         = null;
   }
 
   get queryString() {
     var copy = {};
-    var qp = this.model.queryParams;
+    var qp   = this.model.queryParams;
+    var defs = this.defaultParams;
     var skip = [ 'f', 'dataview'];
+    var tags = [ 'tags', 'reqtags' ];
     for( var k in qp ) {
       if( !skip.includes(k) ) {
-        if( k !== 'offset' || qp[k] !== 0 ) {
-          copy[k] = qp[k];
+        if( k === 'offset' ) {
+          if( qp.offset !== 0 ) {
+            copy.offset = qp.offset;
+          }
+        } else {
+          if( k in defs ) {
+            if( tags.includes(k) ) {
+              if( !(new TagString(defs[k])).isEqual(qp[k]) ) {
+                copy[k] = qp[k];
+              }
+            } else {
+              if( qp[k] !== defs[k] ) {
+                copy[k] = qp[k];
+              }
+            }
+          } else {
+            copy[k] = qp[k];
+          }
         }
       }
     }
@@ -40,13 +58,9 @@ class UploadList extends Query {
     if( !this._tags ) {
       this._tags = new Tags();
       this._tags.setSelected(this.model.queryParams.tags);
-      //this._tags.on( event.TAGS_CHANGED, this._onTagsChanged.bind(this) );
+      this._tags.on( events.TAGS_CHANGED, this.applyTags.bind(this) );
     }
     return this._tags;
-  }
-
-  _onTagsChanged(tags) {
-    this.applyHardParams( { tags: tags.toString() } );
   }
 
   applySoftParams(queryParams) {
@@ -58,34 +72,35 @@ class UploadList extends Query {
     return this._applySoftParams(this._qp({offset}));
   }
 
-  _applySoftParams(queryParams) {
-    return this.fetch(queryParams).then( playlist => {
-      this.model.playlist = playlist;
-      this.emit( events.MODEL_UPDATED );
-      return this.model;
-    });
+  applyTags(tags) {
+    if( !this.ignoreTagEvents ) {
+      var qp = this.model.queryParams;
+      qp.tags = tags.toString(); // in case it's a TagString
+      return this.getModel(qp);
+    }
   }
 
+  applyURIQuery(qp) {
+    if( this._tags && qp.tags ) {
+      this.ignoreTagEvents = true;
+      this._tags.setSelected(qp.tags);
+      this.ignoreTagEvents = false;
+    }
+    return this.applyHardParams(qp);    
+  }
+  
   applyHardParams(queryParams) {
     queryParams.offset = 0;
     return this.getModel(this._qp(queryParams));
   }
 
   supportsOptions() {
-    return !!this.defaultParams;
-  }
-
-  _qp(queryParams) {
-    oassign( this.model.queryParams, queryParams);
-    var qp     = oassign( {}, this.model.queryParams );
-    qp.tags    = new TagString(qp.tags);
-    qp.reqtags = new TagString(qp.reqtags);
-    this.emit( events.PARAMS_CHANGED, qp, this );
-    return this.model.queryParams;
+    return true;
   }
 
   applyDefaults() {
-    this.getModel( this.defaultParams );
+    this.defaultParams.offset = 0;
+    return this.getModel(this._qp(this.defaultParams));
   }
 
   paramsDirty() {
@@ -125,8 +140,30 @@ class UploadList extends Query {
 
   }
 
+  /* protected */
+
   promiseHash( hash /*, queryParams */) {
     return hash;
+  }
+
+  /* private */
+
+  _qp(queryParams) {
+    var qp = this.model.queryParams;
+    oassign( qp, queryParams);
+    var qpt     = oassign( {}, qp );
+    qpt.tags    = new TagString(qp.tags);
+    qpt.reqtags = new TagString(qp.reqtags);
+    this.emit( events.PARAMS_CHANGED, qpt, this );
+    return qp;
+  }
+
+  _applySoftParams(queryParams) {
+    return this.fetch(queryParams).then( playlist => {
+      this.model.playlist = playlist;
+      this.emit( events.MODEL_UPDATED );
+      return this.model;
+    });
   }
 
 }

@@ -7,6 +7,8 @@ import { TagString }   from '../unicorns';
 
 const REMIX_CATEGORY_NAMES = ['genre', 'instr', 'mood'];
 
+const DEFAULT_CAT = '*';
+
 const MIN_REMIX_TAG_PAIR = 10;
 const MIN_SAMPLE_TAG_PAIR = 5;
 const SORT_UP = 1;
@@ -22,9 +24,9 @@ class Tags extends Query {
     super(...arguments);
     this.selectedTags = {};
   }
-
+  
   setSelected(tags) {
-    this.selectedTags[this._ensureSelectedCat()].clear().add(tags);
+    this.emit( events.TAGS_SET, tags );
   }
 
   addSelected(tag,cat) {
@@ -60,7 +62,7 @@ class Tags extends Query {
 
   _ensureSelectedCat(cat) {
     if( !cat ) {
-      cat = '*';
+      cat = DEFAULT_CAT;
     }
     if( !(cat in this.selectedTags ) ) {
       this.selectedTags[cat] = TagString();
@@ -91,7 +93,7 @@ class Tags extends Query {
       if( cat ) {
         tags = this.getSelectedTags();
       }
-      this.emit( events.TAGS_CHANGED, tags, 'all' );
+      this.emit( events.TAGS_CHANGED, tags );
     }
   }
 
@@ -101,7 +103,7 @@ class Tags extends Query {
         return cat;
       }
     }
-    return '*';
+    return DEFAULT_CAT;
   }
 
   // return a TagString object
@@ -191,7 +193,7 @@ class Tags extends Query {
 
   _checkCache(params) {
     var key = this._makeCacheKey(params);
-    return { models: _tagsCache[ key ], key };
+    return { models: _tagsCache[ key ], key, category: params.category };
   }
 
   _putCache(key,tags) {

@@ -107,13 +107,13 @@ class Router extends Eventer
     if( q && 
         this.currentRoute.component &&
         document.location.pathname === this.currentRoute.component.path &&
-        this.currentRoute.store.getModel ) {
+        this.currentRoute.store.applyHardParams ) {
 
           var store = this.currentRoute.store;
           var qp = querystring.parse(q.substr(1));
-          store.getModel(qp).then( model => {
-            store.emit( events.PARAMS_CHANGED, model.queryParams );
-          });
+          this.ignoreParamEvents = true;
+          store.applyURIQuery(qp);
+          this.ignoreParamEvents = false;
 
     } else {
 
@@ -144,9 +144,11 @@ class Router extends Eventer
   }
 
   paramChanged(queryParams,store) {
-    if( store ) {
+    if( !this.ignoreParamEvents ) {
       var str = store.queryString;
-      this.setBrowserAddressBar( '?' + str );
+      if( str.length > 0 ) {
+        this.setBrowserAddressBar( '?' + str );
+      }
     }
   }
 

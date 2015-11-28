@@ -12,6 +12,7 @@ var Events = {
   PARAMS_CHANGED:   'params_changed',
   ARE_PARAMS_DIRTY: 'are_params_dirty',
   TAGS_CHANGED:     'tags_changed',
+  TAGS_SET:         'tags_set',
   MODEL_UPDATED:    'model_updated',
   COMPONENT_UPDATE: 'component_update',
   INSPECT_ZIP:      'inspect_zip',

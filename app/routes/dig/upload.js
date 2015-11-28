@@ -6,16 +6,16 @@ import { Link,
         TrackbackPopup,
         People,
         SharePopup,
-        LicenseInfo }  from '../components';
+        LicenseInfo }  from '../../components';
 
-import UploadStore from '../stores/upload';
+import UploadStore from '../../stores/upload';
 
 import { AddTrackbackPopup as AddTrackbackPopupButton,
          ExternalLink
- } from '../components/ActionButtons';
+ } from '../../components/ActionButtons';
 
-import DownloadPopup   from '../components/DownloadPopup';
-import { PlayButton }  from '../components/AudioPlayer';
+import DownloadPopup   from '../../components/DownloadPopup';
+import { PlayButton }  from '../../components/AudioPlayer';
 
 var Actions = React.createClass({
 

@@ -27,7 +27,7 @@ const SelectableTag = React.createClass({
     var catID    = this.props.catID;
     var tag      = this.props.model.id;
 
-    this.props.store.toggleSelected(tag, selected, catID);
+    this.props.store.tags.toggleSelected(tag, selected, catID);
   },
 
   render: function() {
@@ -101,7 +101,7 @@ const SelectedTag = React.createClass({
   remove: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.props.store.removeSelected(this.props.name);
+    this.props.store.tags.removeSelected(this.props.name);
   },
 
   render: function() {
@@ -124,7 +124,7 @@ const SelectedTags = React.createClass({
   clear: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.props.store.clearSelected();
+    this.props.store.tags.clearSelected();
   },
 
   render: function() {
@@ -140,7 +140,7 @@ const SelectedTags = React.createClass({
               : null
           }
           {' '}
-          {matchAnyOK ? <MatchAnyButton store={this.props.playlist} /> : null}
+          {matchAnyOK ? <MatchAnyButton store={store} /> : null}
       </div>
       );
   },
@@ -149,11 +149,10 @@ const SelectedTags = React.createClass({
 
 const MatchAnyButton = React.createClass({
 
-  mixins: [QueryParamTracker,ModelTracker],
+  mixins: [QueryParamTracker],
 
-  stateFromStore: function(store) {
-    var qp = store.model.queryParams;
-    return { toggle: qp.type === 'any' };
+  stateFromParams: function(queryParams) {
+    return { toggle: queryParams.type === 'any' };
   },
 
   performQuery: function() {

@@ -17,9 +17,9 @@ var SelectedTagsTracker = {
   componentWillReceiveProps: function( props ) {
     if( this.props.store !== props.store ) {
       if( this.props.store ) {
-        this.props.store.tags.removeListener( events.TAGS_CHANGED, this.onParamsChanged );
+        this.props.store.tags.removeListener( events.TAGS_CHANGED, this.onSelectedTags );
       }
-      props.store.tags.on( events.TAGS_CHANGED, this.onParamsChanged );
+      props.store.tags.on( events.TAGS_CHANGED, this.onSelectedTags );
     }
   },
 

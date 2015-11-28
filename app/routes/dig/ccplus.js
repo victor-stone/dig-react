@@ -1,10 +1,10 @@
 'use strict';
 
 import React            from 'react';
-import { FeaturedPage } from '../components';
-import { mergeParams }  from '../unicorns';
-import qc               from '../models/query-configs';
-import Playlist         from '../stores/playlist';
+import { FeaturedPage } from '../../components';
+import { mergeParams }  from '../../unicorns';
+import qc               from '../../models/query-configs';
+import Playlist         from '../../stores/playlist';
 
 var ccplus = React.createClass({
 
@@ -19,7 +19,7 @@ var ccplus = React.createClass({
 ccplus.title = 'Music Available for Royalty-Free License';
 
 ccplus.store = function(params,queryParams) {
-  var opts = mergeParams( { lic: 'ccplus' }, qc.remixes );
+  var opts = mergeParams( {}, qc.remixes, { lic: 'ccplus' } );
   var qparams = mergeParams( {}, opts, queryParams  );
   return Playlist.storeFromQuery(qparams,opts);
 };

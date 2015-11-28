@@ -10,7 +10,6 @@ class Query extends Eventer
   constructor() {
     super(...arguments);
     this.adapter = queryAjaxAdapter;
-    this._events = new Eventer();
   }
 
   query(params) {
