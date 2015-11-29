@@ -44,7 +44,7 @@ const StemsFiles = React.createClass({
     // the exsiting 'upload' property
     // is bare-bones so let's fill it out
     file.upload = this.props.model;
-    this.props.store.emit(events.INSPECT_ZIP,file,this.props.store.tags);
+    this.props.store.emit(events.INSPECT_ZIP,file,this.props.store);
   },
 
   oneFile: function(f,cls,model) {

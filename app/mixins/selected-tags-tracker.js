@@ -1,34 +1,43 @@
-import events from '../models/events';
+import events        from '../models/events';
+import { TagString } from '../unicorns';
 
 var SelectedTagsTracker = {
 
   getInitialState: function() {
-    return { selectedTags: this.props.store.tags.getSelectedTags() };
+    return this._tagsFromParams( this.props.store.model.queryParams );
   },
 
   componentWillMount: function() {
-    this.props.store.tags.on( events.TAGS_CHANGED, this.onSelectedTags );
+    this.props.store.on( events.PARAMS_CHANGED, this.onSelectedTags );
   },
 
   componentWillUnmount: function() {
-    this.props.store.tags.removeListener( events.TAGS_CHANGED, this.onSelectedTags );
+    this.props.store.removeListener( events.PARAMS_CHANGED, this.onSelectedTags );
   },
 
   componentWillReceiveProps: function( props ) {
     if( this.props.store !== props.store ) {
       if( this.props.store ) {
-        this.props.store.tags.removeListener( events.TAGS_CHANGED, this.onSelectedTags );
+        this.props.store.removeListener( events.PARAMS_CHANGED, this.onSelectedTags );
       }
-      props.store.tags.on( events.TAGS_CHANGED, this.onSelectedTags );
+      props.store.on( events.PARAMS_CHANGED, this.onSelectedTags );
     }
   },
 
-  onSelectedTags: function(tagString, cat) {
-    if( !this.props.catID || cat === this.props.catID ) {
-      this.setState( { selectedTags: tagString } );
-    }
+  onSelectedTags: function(queryParams) {
+    this.setState( this._tagsFromParams(queryParams) );
   },
 
+  _tagsFromParams: function(queryParams) {
+    if( queryParams.tags ) {
+      if( this.props.catID ) {
+        return { selectedTags: this.filterTagsByCat(queryParams.tags) };
+      } else {
+        return { selectedTags: new TagString(queryParams.tags) };
+      }
+    }
+    return { selectedTags: new TagString() };
+  }
 };
 
 

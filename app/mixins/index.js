@@ -4,12 +4,7 @@ import BoundingElement from './bounding-element';
 import DirtyParamTracker from './dirty-param-tracker';
 import ModelTracker from './model-tracker';
 import NowPlayingTracker from './now-playing-tracker';
-import QueryParamEnum from './query-param-enum';
-import QueryParamTagsRotate from './query-param-tags-rotate';
-import QueryParamTagsToggle from './query-param-tags-toggle';
-import QueryParamToggle from './query-param-toggle';
 import QueryParamTracker from './query-param-tracker';
-import QueryParamValue from './query-param-value';
 import SelectedTagsTracker from './selected-tags-tracker';
 import StoreEvents from './store-events';
 
@@ -19,12 +14,7 @@ module.exports = {
     DirtyParamTracker,
     ModelTracker,
     NowPlayingTracker,
-    QueryParamEnum,
-    QueryParamTagsRotate,
-    QueryParamTagsToggle,
-    QueryParamToggle,
     QueryParamTracker,
-    QueryParamValue,
     SelectedTagsTracker,
     StoreEvents 
 };

@@ -30,7 +30,7 @@ class UploadList extends Query {
         } else {
           if( k in defs ) {
             if( tags.includes(k) ) {
-              if( !(new TagString(defs[k])).isEqual(qp[k]) ) {
+              if( qp[k] && !(new TagString(defs[k])).isEqual(qp[k]) ) {
                 copy[k] = qp[k];
               }
             } else {
@@ -39,7 +39,9 @@ class UploadList extends Query {
               }
             }
           } else {
-            copy[k] = qp[k];
+            if( qp[k] ) {
+              copy[k] = qp[k];
+            }
           }
         }
       }
@@ -57,8 +59,6 @@ class UploadList extends Query {
   get tags() {
     if( !this._tags ) {
       this._tags = new Tags();
-      this._tags.setSelected(this.model.queryParams.tags);
-      this._tags.on( events.TAGS_CHANGED, this.applyTags.bind(this) );
     }
     return this._tags;
   }
@@ -73,22 +73,14 @@ class UploadList extends Query {
   }
 
   applyTags(tags) {
-    if( !this.ignoreTagEvents ) {
-      var qp = this.model.queryParams;
-      qp.tags = tags.toString(); // in case it's a TagString
-      return this.getModel(qp);
-    }
+    var qp = { tags: tags.toString() };
+    return this.applyHardParams(qp);    
   }
 
   applyURIQuery(qp) {
-    if( this._tags && qp.tags ) {
-      this.ignoreTagEvents = true;
-      this._tags.setSelected(qp.tags);
-      this.ignoreTagEvents = false;
-    }
     return this.applyHardParams(qp);    
   }
-  
+
   applyHardParams(queryParams) {
     queryParams.offset = 0;
     return this.getModel(this._qp(queryParams));

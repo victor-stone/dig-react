@@ -1,7 +1,6 @@
 import Query           from './query';
 import ccmixter        from '../models/ccmixter';
 import serialize       from '../models/serialize';
-import events          from '../models/events';
 import rsvp            from 'rsvp';
 import { TagString }   from '../unicorns';
 
@@ -23,87 +22,7 @@ class Tags extends Query {
   constructor() {
     super(...arguments);
     this.selectedTags = {};
-  }
-  
-  setSelected(tags) {
-    this.emit( events.TAGS_SET, tags );
-  }
-
-  addSelected(tag,cat) {
-    cat = this._ensureSelectedCat(cat);
-    this.selectedTags[cat].add(tag);
-    this._emitSelectedTags(cat,true);
-  }
-
-  removeSelected(tag,cat) {
-    if( !cat ) {
-      cat = this._findCatFromTag(tag);
-      if( !cat ) {
-        return;
-      }
-    }
-    this.selectedTags[cat].remove(tag);
-    this._emitSelectedTags(cat,true);
-  }
-
-  toggleSelected(tag,flag,cat) {
-    cat = this._ensureSelectedCat(cat);
-    this.selectedTags[cat].toggle(tag,flag);
-    this._emitSelectedTags(cat,true);
-  }
-
-  clearSelected() {
-    for( var cat in this.selectedTags ) {      
-      this.selectedTags[cat].clear();
-      this._emitSelectedTags(cat,false);
-    }
-    this._emitSelectedTags(null,true);
-  }
-
-  _ensureSelectedCat(cat) {
-    if( !cat ) {
-      cat = DEFAULT_CAT;
-    }
-    if( !(cat in this.selectedTags ) ) {
-      this.selectedTags[cat] = TagString();
-    }
-    return cat;
-  }
-
-  getSelectedTags(cat) {
-    if( cat ) {
-      if( cat in this.selectedTags ) {
-        return this.selectedTags[cat];
-      }
-      return new TagString();
-    }
-    var allTags = TagString();
-    for( var cat2 in this.selectedTags ) {
-      allTags.add( this.selectedTags[cat2] );
-    }
-    return allTags;
-  }
-
-  _emitSelectedTags(cat,doAll) {
-    var tags = this.getSelectedTags(cat);
-    if( cat ) {
-      this.emit( events.TAGS_CHANGED, tags, cat );      
-    }
-    if( doAll ) {
-      if( cat ) {
-        tags = this.getSelectedTags();
-      }
-      this.emit( events.TAGS_CHANGED, tags );
-    }
-  }
-
-  _findCatFromTag(tag) {
-    for( var cat in this.selectedTags ) {
-      if( this.selectedTags[cat].contains(tag) ) {
-        return cat;
-      }
-    }
-    return DEFAULT_CAT;
+    this.selectedTags[DEFAULT_CAT] = new TagString();
   }
 
   // return a TagString object

@@ -24,10 +24,10 @@ const SelectableTag = React.createClass({
     e.preventDefault();
     
     var selected = !this.state.selected;
-    var catID    = this.props.catID;
     var tag      = this.props.model.id;
+    var tags     = new TagString(this.props.store.model.queryParams.tags);
 
-    this.props.store.tags.toggleSelected(tag, selected, catID);
+    this.props.store.applyTags( tags.toggle(tag,selected) );
   },
 
   render: function() {
@@ -50,6 +50,13 @@ const SelectableTag = React.createClass({
 const SelectableTagList = React.createClass({
 
   mixins: [SelectedTagsTracker],
+
+  filterTagsByCat: function( tags ) {
+    if( !this.cattags ) {
+      this.cattags = new TagString(this.props.model.map( t => t.id ));
+    }
+    return this.cattags.intersection(tags);
+  },
 
   render: function() {
     var tags    = this.props.model;
@@ -89,7 +96,10 @@ const TagCategoryBox = React.createClass({
     return(
       <div className={cls}>
           <h4 className="center-text">{name}</h4>
-          <SelectableTagList model={tags} key={catID} catID={catID} store={store} />
+          <SelectableTagList model={tags} 
+                             key={catID} 
+                             catID={catID} 
+                             store={store} />
       </div>
     );
   }
@@ -101,7 +111,8 @@ const SelectedTag = React.createClass({
   remove: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.props.store.tags.removeSelected(this.props.name);
+    var tags = new TagString(this.props.store.queryParams.tags);
+    this.props.store.applyTags( tags.remove(this.props.name) );
   },
 
   render: function() {
@@ -124,7 +135,7 @@ const SelectedTags = React.createClass({
   clear: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.props.store.tags.clearSelected();
+    this.props.store.applyTags( '' );
   },
 
   render: function() {

@@ -111,16 +111,17 @@ class Router extends Eventer
 
           var store = this.currentRoute.store;
           var qp = querystring.parse(q.substr(1));
-          this.ignoreParamEvents = true;
+          this.ignoreEvents = true;
           store.applyURIQuery(qp);
-          this.ignoreParamEvents = false;
+          this.ignoreEvents = false;
 
     } else {
 
       handler.component.store(handler.params, handler.queryParams)
         .then( store => {
-            if( this.currentRoute.store && this.currentRoute.store.removeListener ) {
-              this.currentRoute.store.removeListener( events.PARAMS_CHANGED, this.paramChanged.bind(this) );
+            var prevStore = this.currentRoute.store;
+            if( prevStore && prevStore.removeListener ) {
+              prevStore.removeListener( events.PARAMS_CHANGED, this.paramChanged.bind(this) );
             }
             this.currentRoute = {
               component: handler.component,
@@ -144,12 +145,15 @@ class Router extends Eventer
   }
 
   paramChanged(queryParams,store) {
-    if( !this.ignoreParamEvents ) {
+    if( !this.ignoreEvents ) {
       var str = store.queryString;
-      if( str.length > 0 ) {
-        this.setBrowserAddressBar( '?' + str );
+      if( str.length === 0 ) {
+        str = this.currentRoute.component.path;
+      } else {
+        str = '?' + str;
       }
-    }
+      this.setBrowserAddressBar( str );
+    }    
   }
 
   _ensureRoutes() {

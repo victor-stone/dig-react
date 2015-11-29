@@ -5,6 +5,7 @@ import events from '../models/events';
 
 import {  StoreEvents,
           BoundingElement  } from '../mixins';
+import { TagString }         from '../unicorns';
 
 const UploadLink = AB.UploadLink;
 
@@ -46,22 +47,24 @@ const ZIPContentViewer = React.createClass({
       this._unsub(this.state.store);
     }
     this._sub(store);
+    var tags = new TagString(store.model.queryParams.tags);
     this.setState( { file, 
                      store,
-                     selectedTags: store.tags.getSelectedTags(),
+                     selectedTags: tags,
                      files: file && file.zipContents } );
   },
 
-  onSelectedTags: function(tags) {
+  onSelectedTags: function(queryParams) {
+    var tags = new TagString(queryParams.tags);
     this.setState( { selectedTags: tags } );
   },
 
   _sub: function(store) {
-    store.tags.on( events.TAGS_CHANGED, this.onSelectedTags);
+    store.on( events.PARAMS_CHANGED, this.onSelectedTags);
   },
 
   _unsub: function(store) {
-    store.tags.removeListener( events.TAGS_CHANGED, this.onSelectedTags);
+    store.removeListener( events.PARAMS_CHANGED, this.onSelectedTags);
   },
 
   render: function() {
