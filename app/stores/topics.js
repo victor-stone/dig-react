@@ -32,6 +32,7 @@ class Topics extends Query {
 Topics.namedTopics = {
   digBanner: 223608,
   pellsBanner: 225005,
+  stemsBanner: 225957,
   aboutFLAC: 225798,
 };
 

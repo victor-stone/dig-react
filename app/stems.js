@@ -18,9 +18,9 @@ var rewriteRules = [
 env.set( {
   routes,
   rewriteRules,
+  bannerTopic: 'stemsBanner',
   supportPlaylist: false,
   supportWavImg: false,
-  // bannerTopic: 'pellsBanner',
 });
 
 module.exports = function(props) { return <App {...props} header={Header} footer={Footer} />; };
