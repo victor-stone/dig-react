@@ -1,12 +1,12 @@
 import React            from 'react';
-import qc               from '../models/query-configs';
-import Samples          from '../stores/samples';
+import qc               from '../../models/query-configs';
+import Samples          from '../../stores/samples';
 
 import { mergeParams 
-                     }  from '../unicorns';
+                     }  from '../../unicorns';
 import {  StemsBrowser,
           StemsQueryOptions,
-          PageHeader }    from '../components';
+          PageHeader }    from '../../components';
 
 var stems = React.createClass({
 

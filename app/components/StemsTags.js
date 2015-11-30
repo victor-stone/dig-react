@@ -3,26 +3,22 @@ import Glyph            from './Glyph';
 import Tags             from './Tags';
 import SearchBox        from './SearchBox';
 
-const SelectedTagSection = React.createClass({
+function SelectedTagSection(props) {
+  return (
+      <div className="selected-tags">
+        <Tags.SelectedTags {...props}/>
+      </div>
+    );
+}
 
-  render: function() {
-    return (
-        <div className="selected-tags">
-          <Tags.SelectedTags {...this.props}/>
-        </div>
-      );
-  },
-
-});
-
-const TagsLoading = React.createClass({
-
-  render: function() {
-    return(
-      <div className="tags-loading center-text">{"Loading Tags "}<Glyph icon="spinner" pulse /></div>
-      );
-  }
-});
+function TagsLoading() {
+  return(
+    <div className="tags-loading center-text">
+      {"Loading Tags "}
+      <Glyph icon="spinner" pulse />
+    </div>
+  );
+}
 
 const StemsTagList = React.createClass({
 
@@ -32,7 +28,7 @@ const StemsTagList = React.createClass({
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      this.props.store.sampleCategories()
+      this.props.store.tags.sampleCategories()
         .then( allTags => {
             this.setState( {
               model: allTags,

@@ -8,7 +8,6 @@ class Samples extends UploadList {
     queryParams.dataview = 'default'; // links_by doesn't have bpm
     return this.query(queryParams).then( serialize( ccmixter.Sample ) );
   }
-
 }
 
 Samples.storeFromQuery = function(params,defaults) {

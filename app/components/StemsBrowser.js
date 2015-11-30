@@ -5,11 +5,8 @@ import ZIPContentViewer from './ZIPContentViewer';
 import { SelectedTagSection,
        StemsTagList } from './StemsTags';
 
-var StemsBrowser = React.createClass({
-
-  render() {
-
-    var store = this.state.store;
+function StemsBrowser(props) {
+    var store = props.store;
 
     return (
       <div className="stems-browser">
@@ -23,7 +20,7 @@ var StemsBrowser = React.createClass({
             <StemsTagList store={store} />
           </div>
           <div className="col-md-6 stems-listing-widget">
-            <Paging store={store} ref="paging" disableBumping />
+            <Paging store={store} disableBumping />
             <StemsList store={store} />   
           </div>
           <div className="col-md-2">
@@ -32,9 +29,7 @@ var StemsBrowser = React.createClass({
         </div>
       </div>
     );
-  }
-
-});
+}
 
 module.exports = StemsBrowser;
 

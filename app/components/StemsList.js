@@ -5,13 +5,22 @@ import AudioPlayer      from './AudioPlayer';
 import People           from './People';
 import env              from '../services/env';
 import { NoTagHits }    from './Tags';
+import { TagString }    from '../unicorns';
 import events           from '../models/events';
 import {  ModelTracker,
+          QueryParamTracker,
           SelectedTagsTracker  } from '../mixins';
 
 const StemsFiles = React.createClass({
 
-  mixins: [SelectedTagsTracker],
+  mixins: [SelectedTagsTracker, QueryParamTracker],
+
+  stateFromParams: function(queryParams) {
+    if( queryParams.searchp ) {
+      return { searchTerms: new TagString(queryParams.searchp.replace(/\s/g,',')) };
+    }
+    return {};
+  },
 
   highlights(tags) {
     var highlights = {};
@@ -73,7 +82,7 @@ const StemsFiles = React.createClass({
   render: function() {
     var model = this.props.model;
     var files = model.files;
-    var highs = this.highlights(this.state.selectedTags);
+    var highs = this.highlights(this.state.searchTerms || this.state.selectedTags);
 
     return(
         <ul className="stems-files">

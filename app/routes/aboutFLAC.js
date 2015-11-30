@@ -7,7 +7,7 @@ import { ActionButtons,
 import env    from '../services/env';
 import FLAC   from '../services/audio-formats/flac';
 import Audio  from '../services/audio-player';
-import events from '../../models/events';
+import events from '../models/events';
 
 var ExternalLink = ActionButtons.ExternalLink;
 

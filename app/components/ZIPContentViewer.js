@@ -47,7 +47,10 @@ const ZIPContentViewer = React.createClass({
       this._unsub(this.state.store);
     }
     this._sub(store);
-    var tags = new TagString(store.model.queryParams.tags);
+    var qp = store.model.queryParams;    
+    var tags = qp.searchp 
+                ? new TagString(qp.searchp.replace(/\s/g,','))
+                : new TagString(store.model.queryParams.tags);
     this.setState( { file, 
                      store,
                      selectedTags: tags,

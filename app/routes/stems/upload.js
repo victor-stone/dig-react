@@ -1,9 +1,9 @@
 import React            from 'react';
-import Samples          from '../stores/samples';
-import { mergeParams }  from '../unicorns';
+import Samples          from '../../stores/samples';
+import { mergeParams }  from '../../unicorns';
 import { StemsList,
          ZIPContentViewer,
-         PageHeader }    from '../components';
+         PageHeader }    from '../../components';
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;

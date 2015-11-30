@@ -1,6 +1,6 @@
 import React            from 'react';
-import { ExternalLink } from '../components/ActionButtons';
-import Link             from '../components/Link';
+import { ExternalLink } from '../../components/ActionButtons';
+import Link             from '../../components/Link';
 
 var index = React.createClass({
   render: function() {

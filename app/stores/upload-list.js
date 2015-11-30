@@ -21,7 +21,7 @@ class UploadList extends Query {
     var qp   = this.model.queryParams;
     var defs = this.defaultParams;
     var skip = [ 'f', 'dataview'];
-    var tags = [ 'tags', 'reqtags' ];
+    var tags = [ 'tags', 'reqtags', 'oneof' ];
     for( var k in qp ) {
       if( !skip.includes(k) ) {
         if( k === 'offset' ) {
@@ -97,12 +97,8 @@ class UploadList extends Query {
   }
 
   paramsDirty() {
-    var qp   = oassign( {}, this.model.queryParams );
-    qp.reqtags = new TagString(qp.reqtags);
-    qp.tags    = new TagString(qp.tags);
-    var def  = oassign( {}, this.defaultParams );
-    def.reqtags = new TagString(def.reqtags);
-    def.tags    = new TagString(def.tags);
+    var qp      = this._expandQP(this.model.queryParams);
+    var def     = this._expandQP(this.defaultParams);
     var isDirty = { isDirty: false };
     this.emit( events.ARE_PARAMS_DIRTY, qp, def, isDirty );
     return isDirty.isDirty;
@@ -140,6 +136,13 @@ class UploadList extends Query {
   }
 
   /* private */
+
+  _expandQP(queryParams) {
+    var qp   = oassign( {}, queryParams );
+    qp.reqtags = new TagString(qp.reqtags);
+    qp.tags    = new TagString(qp.tags);
+    return qp;
+  }
 
   _qp(queryParams) {
     var qp = this.model.queryParams;

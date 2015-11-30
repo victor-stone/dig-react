@@ -1,11 +1,11 @@
 import React            from 'react';
-import Samples          from '../stores/samples';
-import qc               from '../models/query-configs';
-import { mergeParams }  from '../unicorns';
+import Samples          from '../../stores/samples';
+import qc               from '../../models/query-configs';
+import { mergeParams }  from '../../unicorns';
 import { StemsList,
          ZIPContentViewer,
          Paging,
-         People }    from '../components';
+         People }    from '../../components';
 
 var stemsPeople = React.createClass({
 
