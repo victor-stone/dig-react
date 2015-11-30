@@ -2,7 +2,7 @@ import querystring from 'querystring';
 import rsvp        from 'rsvp';
 import Query       from './query';
 import events      from '../models/events';
-import Tags        from './Tags';
+import Tags        from './tags';
 
 import { oassign,
          TagString }   from '../unicorns';
