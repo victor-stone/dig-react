@@ -116,6 +116,14 @@ class File extends Model {
       return sz ? sz.replace(/\(|\)|\s+/g, '') : '';
     };
 
+    this.getPlayTime = function() {
+      var ffi = this.file_format_info;
+      if( (ffi) && ('ps' in ffi) ) {
+        return ffi.ps;
+      }
+      return null;
+    };
+
     /* required by audio player */
     
     this.getMediaTags = function() {

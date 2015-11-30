@@ -22,7 +22,7 @@ var index = React.createClass({
                 <h1 className="panel-title">{"For Remixers and Producers"}</h1>
               </div>
               <div className="panel-body">
-                {"Find that perfect samples for your audio project, download into your DAW and get mixing!"}
+                {"Find exquisite samples for your audio project, download into your DAW and get mixing!"}
               </div>
               <div className="panel-footer center-text">
                 <Link href="/stems" className="btn btn-default">{"Go!"}</Link>

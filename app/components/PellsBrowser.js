@@ -167,8 +167,26 @@ var PellDetail = React.createClass({
           <Link className="artist" href={'/people/'+model.artist.id}>{model.artist.name}</Link>
         </li>
         {model.files.map( file => {
-          return <li className="dl-list" key={file.id}><DownloadPopup btnClass="sm-download" fullUpload={model} file={file} /> <span className="ext">{file.extension}</span> <span className="nic">{file.nicName}</span></li>;
+          return (<li className="dl-list" 
+                      key={file.id}>
+                      <DownloadPopup btnClass="sm-download" 
+                                     fullUpload={model} 
+                                     file={file} 
+                      /> 
+                      {" "}
+                      <span className="ext">{file.extension}</span> 
+                      {" "}
+                      {file.playTime 
+                        ? <span className="playtime">{file.playTime}</span>
+                        : null
+                      }                      
+                      {" "}
+                      <span className="nic">{file.nicName}</span>
+                  </li>);
         })}
+        <li>
+          
+        </li>
         <li>
           <ExternalLink className="ccm-link pell-detail-foot" href={model.url} text="@ccMixter" />
         </li>
