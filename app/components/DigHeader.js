@@ -16,7 +16,7 @@ const NavbarRight = (
         <Link href="/licenses">{"licenses"}</Link>
       </li>
       <li className="hidden-xs hidden-sm">
-        <Link href="/dig">{"dig deep "}<Glyph icon="tags" /></Link>
+        <Link href="/dig">{"tag search "}<Glyph icon="tags" /></Link>
       </li>
       <li>
         <a  href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{"featured "}<Glyph icon="chevron-down" /></a>
