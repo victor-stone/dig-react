@@ -1,49 +1,49 @@
 import React              from 'react';
-import Query              from '../stores/query';
 import Glyph              from './Glyph';
 import DownloadPopup      from './DownloadPopup';
 import Link               from './Link';
 import ActionButtons      from './ActionButtons';
+import PellsQueryOptions  from './PellsQueryOptions';
+import Paging             from './Paging';
 import AudioPlayerService from '../services/audio-player';
-
+import { TagString }      from '../unicorns'; 
 import { ModelTracker,
-         NowPlayingTracker, 
-         QueryParamTracker } from '../mixins';
+         NowPlayingTracker } from '../mixins';
 
 var ExternalLink = ActionButtons.ExternalLink;
 
 //const NOMINAL_TIMEOUT = 40;
+const PELLS_FILTER    = /^(featured|spoken_word|rap|melody)$/;
 
-var PellTabs = React.createClass({
+var PellsTabs = React.createClass({
 
-  mixins: [ModelTracker,QueryParamTracker],
-
-  filter: /^(featured|spoken_word|rap|melody)$/,
+  mixins: [ModelTracker],
 
   stateFromStore: function(store) {
     var totals = store.model.totals;
+    var tags   = store.model.queryParams.reqtags;
+    var tag    = (new TagString(tags)).filter(PELLS_FILTER).toString();
     /*
-    if( this.state && this.state.tag && !totals[this.state.tag] ) {
-      setTimeout( () => this.setStateAndPerform( {tag:''} ), NOMINAL_TIMEOUT );
+    if( tag && !totals[tag] ) {
+      setTimeout( () => this.applyFilter('all'), NOMINAL_TIMEOUT );
     }
     */
-    return { totals };
-  },
-
-  stateFromParams: function(queryParams) {
-    var tag = queryParams.reqtags.fiter(this.filter).toString();
-    return { tag };
+    return { totals, tag };
   },
 
   onFilter: function(filter) {
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
-      var tag     = filter === 'all' ? '' : filter;
-      var qptags  = this.props.store.queryParams.reqtags;
-      var reqtags = qptags.replace( this.state.tag, tag );
-      this.applyHardParams( { reqtags } );
+      this.applyFilter(filter);
     };
+  },
+
+  applyFilter: function(filter) {
+    var tag     = filter === 'all' ? '' : filter;
+    var qptags  = this.props.store.queryParams.reqtags;
+    var reqtags = qptags.replace( this.state.tag, tag ).toString();
+    this.props.store.applyHardParams( { reqtags } );    
   },
 
   checkActive: function(filter) {
@@ -78,7 +78,7 @@ var PellTabs = React.createClass({
   }
 });
 
-var PellListing = React.createClass({
+var PellsListing = React.createClass({
 
   mixins: [ModelTracker],
 
@@ -111,7 +111,7 @@ var PellListing = React.createClass({
 
       if( !artist ) {
         var e2 = React.createElement(Link, 
-                                    { href: '/pells?u=' + pell.artist.id }, 
+                                    { href: '/people/' + pell.artist.id }, 
                                       pell.artist.name);
         var e3 = React.createElement('span', { className: 'artist' }, e2 );
         args.push(e3);
@@ -128,96 +128,7 @@ var PellListing = React.createClass({
     }
 });
 
-var PellsUserSearch = React.createClass({
 
-  getInitialState: function() {
-    return { users: [] };
-  },
-
-  componentWillMount: function() {
-    this.doSearch(this.props.searchTerm);
-  },
-
-  componentWillReceiveProps( nextProps ) {
-    this.doSearch( nextProps.searchTerm );
-  },
-
-  doSearch: function(text) {
-    var query = new Query();
-    query.searchUsers({
-      limit: 6, uploadmin: 1, searchp: text
-    }).then( users => this.setState({users}));
-  },
-
-  render: function() {
-
-    var users = this.state.users;
-    var cls   = 'user-search-results' + (users.length ? '' : ' hidden');
-
-    return (
-        <div className={cls}>
-          {users.map( u => <Link key={u.id} href={'/pells?u=' + u.id} ><Glyph icon="user"/> {u.name}</Link> )}
-        </div>
-      );
-  }
-
-});
-
-var PellHeader = React.createClass({
-
-  mixins: [ModelTracker],
-
-  stateFromStore: function(store) {
-
-    return { artist: store.model.artist,
-             searchTerm: store.model.queryParams.searchp };    
-  },
-
-  render: function() {
-    var searchTerm = this.state.searchTerm;    
-    var artist     = searchTerm ? null : this.state.artist;
-
-    var content = null;
-
-    if( searchTerm ) {
-      content = (<div>
-                  <h2>
-                    <Link href="/pells" >
-                      <Glyph icon="chevron-circle-left" />
-                      {" clear search"}
-                    </Link> 
-                    <small>
-                      <Glyph icon="search" />
-                      {" search "}
-                    </small>
-                    {searchTerm}
-                  </h2>
-                  <PellsUserSearch searchTerm={searchTerm} />
-                </div>);
-    } else if( artist ) {
-      content = (<h2>
-                  <Link href="/pells" >
-                    <Glyph icon="chevron-circle-left" />
-                    {" everybody"}
-                  </Link> 
-                  <img src={artist.avatarURL} />
-                  {artist.name}
-                </h2>);
-    } else {
-      content = (<h1>
-                  <Glyph icon="microphone" />
-                  {" Pells"}
-                </h1>);
-    }
-
-    return (
-        <div className="page-header center-text">
-        {content}
-        </div>
-      );
-  }
-
-});
 
 var PellDetail = React.createClass({
 
@@ -253,7 +164,7 @@ var PellDetail = React.createClass({
           <span className="name">{model.name}</span>
         </li>
         <li>
-          <Link className="artist" href={'/pells?u='+model.artist.id}>{model.artist.name}</Link>
+          <Link className="artist" href={'/people/'+model.artist.id}>{model.artist.name}</Link>
         </li>
         {model.files.map( file => {
           return <li className="dl-list" key={file.id}><DownloadPopup btnClass="sm-download" fullUpload={model} file={file} /> <span className="ext">{file.extension}</span> <span className="nic">{file.nicName}</span></li>;
@@ -298,12 +209,34 @@ var PellDetail = React.createClass({
   }
 });
 
+function PellsBrowser(props) {
+  var store = props.store;
+  return (
+    <div className="container pells-page">
+      <PellsQueryOptions store={store} />
+      <div className="row">
+        <div className="col-md-2 pell-paging">
+          <Paging store={store} disableBumping />
+        </div>
+        <div className="col-md-7 pell-browser">
+          <PellsTabs store={store} />
+          <div className="tab-content">
+            <PellsListing store={store} />
+          </div>
+        </div>
+        <div className="col-md-3">
+          <PellDetail store={store} />
+        </div>
+      </div>
+    </div>
+  );      
+}
+
 
 module.exports = {
   PellDetail,
-  PellHeader,
-  PellsUserSearch,
-  PellListing,
-  PellTabs
+  PellsListing,
+  PellsTabs,
+  PellsBrowser
 };
 

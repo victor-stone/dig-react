@@ -1,11 +1,8 @@
 import querystring from 'querystring';
 import Eventer     from './eventer';
 import ajax        from './ajax';
-import env         from './env';
 import events      from '../models/events';
-
-var queryHost ='http://ccmixter.org/api/query?';
-//var queryHost ='http://ccm/api/query?';
+import env         from './env';
 
 class QueryAjaxAdapter extends Eventer
 {
@@ -13,6 +10,7 @@ class QueryAjaxAdapter extends Eventer
     super(...arguments);
     this.ajax   = ajax;
     this._count = 0;
+    this.queryHost = env.queryHost || 'http://ccmixter.org/api/query?';
   }
 
   _inc() {
@@ -31,13 +29,13 @@ class QueryAjaxAdapter extends Eventer
 
   _query(qString,isSingleton) {
   
-    var url = queryHost + qString;
+    var url = this.queryHost + qString;
 
     var opts = {
       url:      url,
       dataType: 'json',
       method:   'GET',
-      cache:    !env.debugMode
+      cache:    (typeof env.cacheRequests === 'undefined') ? env.cacheRequests : true
     };
 
     function _success(r) {

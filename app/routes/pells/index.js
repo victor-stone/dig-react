@@ -1,13 +1,17 @@
 import credits from '../credits';
 import licenses from '../licenses';
 
-import index from './home';
-import pells from './browse';
+import index  from './home';
+import pells  from './browse';
+import people from './people';
+import search from './search';
 
 module.exports = { 
   credits,
   index,
   licenses,
   pells,
+  people,
+  search,
 };
 

@@ -112,8 +112,9 @@ class Router extends Eventer
           var store = this.currentRoute.store;
           var qp = querystring.parse(q.substr(1));
           this.ignoreEvents = true;
-          store.applyURIQuery(qp);
-          this.ignoreEvents = false;
+          store.applyURIQuery(qp).finally( () => {
+            this.ignoreEvents = false;
+          });
 
     } else {
 

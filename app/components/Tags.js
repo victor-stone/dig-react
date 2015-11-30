@@ -99,7 +99,8 @@ const TagCategoryBox = React.createClass({
           <SelectableTagList model={tags} 
                              key={catID} 
                              catID={catID} 
-                             store={store} />
+                             store={store} 
+          />
       </div>
     );
   }

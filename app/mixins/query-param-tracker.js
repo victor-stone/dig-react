@@ -32,7 +32,7 @@ var QueryParamTracker = {
   },
 
   applyHardParams: function(opts) {
-    this.props.store.applySoftParams(opts);
+    this.props.store.applyHardParams(opts);
   },
   
 };

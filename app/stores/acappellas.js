@@ -2,16 +2,18 @@ import UploadList       from './upload-list';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import rsvp             from 'rsvp';
+import { TagString }    from '../unicorns';
 
-var MAX_CACHE_KEYS = 50;
+const MAX_CACHE_KEYS = 50;
+
+const PELL_FILTERS      = [ 'featured', 'spoken_word', 'melody', 'rap' ];
+const PELL_FILTER_REGEX = new RegExp('^(' + PELL_FILTERS.join('|') + ')$'); 
 
 class TotalsCache {
   constructor() {
     this._totals     = {};
     this._keys_count = 0;    
-    this._filters    = [ 'featured', 'spoken_word', 'melody', 'rap' ];
     this._skip       = [ 'offset', 'limit', 'dataview', 'reqtags', '_', 'f' ];
-
   }
 
   getTotals(params,store) {
@@ -23,21 +25,27 @@ class TotalsCache {
       }
     });
 
+    var reqtags = new TagString(params.reqtags);
+    reqtags.remove( reqtags.filter(PELL_FILTER_REGEX) );
+
+    p.reqtags = reqtags.toString();
+
     var paramsKey = JSON.stringify(p);
 
     if( paramsKey in this._totals ) {
       return rsvp.resolve(this._totals[paramsKey]);
     }
 
-    p.reqtags = 'acappella';
+    p.reqtags = reqtags.toString();
 
     var counts = { 
         all: store.count(p),
       };
 
-    this._filters.forEach( f => {
-      p.reqtags = 'acappella,' + f;
+    PELL_FILTERS.forEach( f => {
+      p.reqtags = reqtags.add(f).toString();
       counts[f] = store.count(p);
+      reqtags.remove(f);
     });
 
     return rsvp.hash(counts)
@@ -63,6 +71,21 @@ TotalsCache.getTotals = function(params,store) {
 };
 
 class ACappellas extends UploadList {
+
+  getModel( queryParams ) {
+    var tags   = new TagString(queryParams.reqtags);
+    var filter = tags.filter( PELL_FILTER_REGEX );
+    if( filter.getLength() > 0 ) {
+      var tag = filter.toString();
+      return TotalsCache.getTotals(queryParams,this).then( totals => {
+        if( !totals[tag] ) {
+          queryParams.reqtags = tags.remove(filter).toString();
+        }
+        return super.getModel(queryParams);
+      });
+    }
+    return super.getModel(queryParams);
+  }
 
   fetch(queryParams) {
     queryParams.dataview = 'default'; // links_by doesn't have bpm

@@ -14,6 +14,7 @@ module.exports = {
     limit:   10,
     lic:     'all',
     reqtags: 'acappella',
+    remixmax: 10000
   },
   
   samples: {

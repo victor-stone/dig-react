@@ -9,8 +9,7 @@ import {
         } from './components';
 
 var rewriteRules = [
-  { regex: /^\/files\/([^\/]+)\/([^\/]+)/, now: '/pells?selected=$2&u=$1' },
-  { regex: /^\/people\/([^\/]+)$/,         now: '/pells?u=$1' },
+  { regex: /^\/files\/([^\/]+)\/([^\/]+)/, now: '/people/$1' },
 ];
 
 env.set( {

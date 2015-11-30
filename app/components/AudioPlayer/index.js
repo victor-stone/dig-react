@@ -88,7 +88,7 @@ const AudioPlayer = React.createClass({
             <div className="media-body clearfix">
               <PlaylistButton   media={nowPlaying} />
               <PlaybackScrubber media={nowPlaying} position={position} />
-              <UploadLink model={nowPlaying} />
+              <UploadLink className="upload-link" model={nowPlaying} />
               {" "}
               <People.Link model={nowPlaying.artist} className="user light-color" />
             </div>

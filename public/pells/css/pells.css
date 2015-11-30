@@ -91,3 +91,17 @@
   text-align: center;
 }
 
+.audio-player a.upload-link {
+  font-size: 20px;
+  margin-top: 30px;
+  margin-right: 15px;
+  max-width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.audio-player a.user {
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 30px;
+}

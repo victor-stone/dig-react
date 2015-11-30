@@ -12,7 +12,7 @@ const PellsHeader = React.createClass({
 
   submitSearch: function(text) {
     var router = services('router');
-    router.navigateTo( '/pells?searchp=' + text );
+    router.navigateTo( '/search?searchp=' + text );
   },
 
   render: function() {

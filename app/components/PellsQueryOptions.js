@@ -1,6 +1,7 @@
 import React     from 'react';
 
 import { LicenseFilter,
+         QueryOptions,
          LimitFilter,
          OptionsWrap } from './QueryOptions';
 
@@ -26,7 +27,7 @@ const UnmixedOnlyFilter = React.createClass({
   },
 
   performQuery: function() {
-    this.props.store.applyHardParams( { remixmax: !this.state.toggle ? '0' : '' });
+    this.applyHardParams( { remixmax: !this.state.toggle ? '0' : '' });
   },
 
   render: function() {
@@ -36,32 +37,36 @@ const UnmixedOnlyFilter = React.createClass({
   }
 });
 
-var PellQueryOptions = React.createClass({
+function PellsQueryOptionsItems(props) {
+  var store = props.store;
 
-  render: function() {
+  return ( 
+    <OptionsWrap >
+      <li>
+        <LicenseFilter store={store} />
+      </li>
+      <li>
+        <BPMDisplay store={store} />
+      </li>
+      <li>
+        <BPMSlider store={store} />
+      </li>
+      <li>
+        <UnmixedOnlyFilter store={store} />
+      </li>
+      <li>
+        <LimitFilter store={store} />
+      </li>
+    </OptionsWrap>
+  );
+}
 
-    var store = this.props.store;
+function PellsQueryOptions(props) {
+  return (
+        <QueryOptions store={props.store}>
+          <PellsQueryOptionsItems store={props.store} />
+        </QueryOptions>
+      );
+}
 
-    return ( 
-      <OptionsWrap >
-        <li>
-          <LicenseFilter store={store} />
-        </li>
-        <li>
-          <BPMDisplay store={store} />
-        </li>
-        <li>
-          <BPMSlider store={store} />
-        </li>
-        <li>
-          <UnmixedOnlyFilter store={store} />
-        </li>
-        <li>
-          <LimitFilter store={store} />
-        </li>
-      </OptionsWrap>
-    );
-  },
-});
-  
-module.exports = PellQueryOptions;
+module.exports = PellsQueryOptions;

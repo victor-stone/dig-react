@@ -1,10 +1,10 @@
 import React from 'react';
-import qc    from '../models/query-configs';
-import Query from '../stores/query';
+import qc    from '../../models/query-configs';
+import Query from '../../stores/query';
 
-import { commaize }     from '../unicorns';
-import { ExternalLink } from '../components/ActionButtons';
-import Link             from '../components/Link';
+import { commaize }     from '../../unicorns';
+import { ExternalLink } from '../../components/ActionButtons';
+import Link             from '../../components/Link';
 
 var index = React.createClass({
   render: function() {

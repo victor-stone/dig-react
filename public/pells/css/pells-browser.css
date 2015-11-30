@@ -93,7 +93,7 @@
   background-color: #e2e2e2;
 }
 
-.pells-page .user-search-results a {
+.page-header .user-search-results a {
   display: inline-block;
   margin-left: 18px;
   color: #999;
@@ -102,7 +102,7 @@
   border-radius: 3px;
 }
 
-.pells-page .user-search-results a:hover {
+.page-header .user-search-results a:hover {
   background-color: #777;
   color: white;
   text-decoration: none;

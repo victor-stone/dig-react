@@ -1,10 +1,11 @@
 import querystring from 'querystring';
 import rsvp        from 'rsvp';
 import Query       from './query';
-import { oassign,
-       TagString } from '../unicorns';
 import events      from '../models/events';
 import Tags        from './Tags';
+
+import { oassign,
+         TagString }   from '../unicorns';
 
 class UploadList extends Query {
 
