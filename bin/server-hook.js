@@ -5,6 +5,16 @@ var url = require('url');
 var validationTests = [
 
   function(req,res) {
+    if( req.ip === '195.34.243.217' ) {
+        res._handled = true;
+        res.statusCode = 500;
+        res.end();
+        return false;      
+    }
+    return true;
+  },
+
+  function(req,res) {
     var catchCrawler = req.url.match(/offset=([0-9]+)/);
     if( catchCrawler !== null ) {
         if( Number(catchCrawler[1]) > 30000 ) {
