@@ -40,7 +40,7 @@ var ExternalLink = React.createClass({
     var subname = this.props.subname || '';
     var text    = this.props.text;
     return(        
-        <a {...this.props} target="_blank"><Glyph icon="external-link" /> <span className="light-color">{subname}</span> {text}</a> 
+        <a {...this.props} target="_blank"><span className="light-color">{subname}</span>{" "}{text}{" "}<Glyph icon="external-link" /></a> 
       );
   }
 });

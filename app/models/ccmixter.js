@@ -327,6 +327,9 @@ class Sample extends Upload {
       files: SampleFile,
       artist: UploadUserBasic,
     };
+    this.getUserTags = function() {
+      return TagString( this.upload_extra.usertags );
+    };    
   }
 }
 

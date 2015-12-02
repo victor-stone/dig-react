@@ -13,13 +13,12 @@ module.exports = {
   pells: {
     limit:   10,
     lic:     'all',
-    reqtags: 'acappella',
-    remixmax: 10000
+    reqtags: 'acappella'
   },
   
   samples: {
     limit: 10,
-    oneof: 'sample,contest_source',
+    reqtags: 'sample',
     lic: 'all'
   },
   

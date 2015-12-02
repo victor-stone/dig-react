@@ -7,82 +7,67 @@ var BoundingMixin = {
 
   componentDidMount: function() {
     if( !global.IS_SERVER_REQUEST && !this.props.disableBumping ) {
-      this.resetBump();
-      window.addEventListener('resize', this.handleResize);
+      $(window).on('scroll', this.onWinScroll);
+      //this.resetBump();
+      //window.addEventListener('resize', this.handleResize);
     }
   },
 
   componentWillUnmount: function() {
     if( !global.IS_SERVER_REQUEST && !this.props.disableBumping ) {
-      window.removeEventListener('resize', this.handleResize);
-      var $e = $(ReactDOM.findDOMNode(this));
-      ['a', 'b'].forEach( k => {
-        var f = 'keep-between-'+k;
-        if( $e.data(f) ) {
-          $(window).off('scroll',$e.data(f));
-          $e.data(f,null);
-        }
-      });
+      $(window).off('scroll', this.onWinScroll);
     }
   },
 
-  handleResize: function() {
-    if( !global.IS_SERVER_REQUEST && !this.props.disableBumping ) {
-      var $e = $(ReactDOM.findDOMNode(this));
-      ['a', 'b'].forEach( k => {
-        var f = 'keep-between-'+k;
-        if( $e.data(f) ) {
-          $e.data(f)();
-        }
-      });
-    }
-  },
-
-  resetBump: function() {
+  onWinScroll: function() {
     var $e = $(ReactDOM.findDOMNode(this));
-    if( $e.is(':visible') ) {
-      if( this.props.keepAbove ) {
-        this.setupBump( $e, $(this.props.keepAbove), true );
-      }
-      if( this.props.keepBelow ) {
-        this.setupBump( $e, $(this.props.keepBelow), false );
-      }
-    }
-  },
 
-  setupBump: function($e,$bumper,isKeepAbove) {
-    
     if( !$e.is(':visible') ) {
       return;
     }
-    
-    var propName = 'keep-between-' + (isKeepAbove ? 'a' : 'b');
-    
-    $e.data( propName, function() {
-      // we have to do this stuff in the event handler
-      // because DOM
-      var eHeight      = $e.outerHeight() + HEIGHT_PADDING;      
-      var bumperHeight = $bumper.outerHeight() + HEIGHT_PADDING;
-      var bumperTop    = $bumper.offset().top;
-      var top          = Number($e.css('top').replace(/[^-\d\.]/g, ''));
-      var bumperPos    = bumperTop - $(window).scrollTop();
-      
-      if( isKeepAbove ) {
-        if( top + eHeight > bumperPos) {
-          $e.css( { top: (bumperPos-eHeight) + 'px' } );
-        }
-      } else { 
-        if( top < bumperPos + bumperHeight ) {
-          $e.css( { top: (bumperPos + bumperHeight) + 'px' } );
-        }
-      }
-    });  
 
-    $(window).scroll( $e.data(propName) );
+    var $keepAbove = $(this.props.keepAbove);
+    var $keepBelow = $(this.props.keepBelow);
 
-    $e.data(propName)();
+    var eHeight = $e.outerHeight() + HEIGHT_PADDING;
+    var eTop    =  Number($e.css('top').replace(/[^-\d\.]/g, ''));
+    var eBottom = eTop + eHeight;
+    var winTop  =  $(window).scrollTop();
+    
+    var above = {
+      height: $keepAbove.outerHeight() + HEIGHT_PADDING,
+      top:    $keepAbove.offset().top,
+    };
+    above.pos    = above.top - winTop;
+    
+    var below = {
+      height: $keepBelow.outerHeight() + HEIGHT_PADDING,
+      top:    $keepBelow.offset().top,
+    };
+    below.pos    = below.top - winTop;
+    below.bottom = below.pos + below.height;
+
+    var value   = '';
+    if( eBottom > above.pos ) {
+      value = above.pos - eHeight;
+    } else if( eTop < below.bottom ) {
+      value = below.bottom;
+    } else if( eTop < 0 ) {
+        if( winTop + eHeight > above.top ) {
+          value = above.pos - eHeight;
+        } else {
+          value = below.top + below.height; // use offset values for winpos
+        }
+    }
+
+    if( value ) {
+      $e.css( { top: value + 'px' } );
+    }
   },
 
+  resetBump() {
+    // depricated!!
+  }
 };
 
 module.exports = BoundingMixin;

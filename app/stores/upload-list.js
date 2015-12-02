@@ -7,6 +7,8 @@ import Tags        from './tags';
 import { oassign,
          TagString }   from '../unicorns';
 
+const TAG_FIELDS = ['tags', 'reqtags', 'oneof'];
+
 class UploadList extends Query {
 
   constructor(defaultParams) {
@@ -16,21 +18,25 @@ class UploadList extends Query {
     this._tags         = null;
   }
 
+  get supportsOptions() {
+    return true;
+  }
+
   get queryString() {
     var copy = {};
     var qp   = this.model.queryParams;
     var defs = this.defaultParams;
     var skip = [ 'f', 'dataview'];
-    var tags = [ 'tags', 'reqtags', 'oneof' ];
+
     for( var k in qp ) {
       if( !skip.includes(k) ) {
         if( k === 'offset' ) {
-          if( qp.offset !== 0 ) {
+          if( qp.offset > 0 ) {
             copy.offset = qp.offset;
           }
         } else {
           if( k in defs ) {
-            if( tags.includes(k) ) {
+            if( TAG_FIELDS.includes(k) ) {
               if( qp[k] && !(new TagString(defs[k])).isEqual(qp[k]) ) {
                 copy[k] = qp[k];
               }
@@ -51,10 +57,7 @@ class UploadList extends Query {
   }
 
   get queryParams() {
-    var qp     = oassign( {}, this.model.queryParams );
-    qp.tags    = new TagString(qp.tags);
-    qp.reqtags = new TagString(qp.reqtags);
-    return qp;
+    return this._expandQP(this.model.queryParams);
   }
   
   get tags() {
@@ -64,13 +67,8 @@ class UploadList extends Query {
     return this._tags;
   }
 
-  applySoftParams(queryParams) {
-    queryParams.offset = 0;
-    return this._applySoftParams(this._qp(queryParams));
-  }
-
   paginate(offset) {
-    return this._applySoftParams(this._qp({offset}));
+    return this._applySoftParams(this._qp({offset},events.PARAMS_CHANGED));
   }
 
   applyTags(tags) {
@@ -82,18 +80,22 @@ class UploadList extends Query {
     return this.applyHardParams(qp);    
   }
 
-  applyHardParams(queryParams) {
+  applySoftParams(queryParams) {
     queryParams.offset = 0;
-    return this.getModel(this._qp(queryParams));
+    return this._applySoftParams(this._qp(queryParams,events.PARAMS_CHANGED));
   }
 
-  supportsOptions() {
-    return true;
+  applyHardParams(queryParams) {
+    queryParams.offset = 0;
+    return this.getModel(this._qp(queryParams,events.PARAMS_CHANGED));
   }
 
   applyDefaults() {
-    this.defaultParams.offset = 0;
-    return this.getModel(this._qp(this.defaultParams));
+    var qp  = oassign( {}, this.model.queryParams, this.defaultParams, { offset: 0 } );
+    var qpt = this._expandQP(qp);
+    this.emit( events.GET_PARAMS_DEFAULT, qpt, this );
+    var qpc = this.model.queryParams = this._contractQP( qpt, {} );
+    return this.applyHardParams(qpc);
   }
 
   paramsDirty() {
@@ -141,16 +143,34 @@ class UploadList extends Query {
     var qp   = oassign( {}, queryParams );
     qp.reqtags = new TagString(qp.reqtags);
     qp.tags    = new TagString(qp.tags);
+    qp.oneof   = new TagString(qp.oneof);
     return qp;
   }
 
-  _qp(queryParams) {
+  _contractQP(queryParams,result) {
+    for( var k in queryParams ) {
+      if( TAG_FIELDS.includes(k) ) {
+        if( queryParams[k].getLength() > 0 ) {
+          result[k] = queryParams[k].toString();
+        }
+      } else if( k === 'offset' ) {
+        if( queryParams.offset > 0 ) {
+          result.offset = queryParams.offset;
+        }
+      } else {
+        if( queryParams[k] !== null && typeof queryParams[k] !== 'undefined') {
+          result[k] = queryParams[k];
+        }
+      }
+    }
+    return result;
+  }
+
+  _qp(queryParams,event) {
     var qp = this.model.queryParams;
-    oassign( qp, queryParams);
-    var qpt     = oassign( {}, qp );
-    qpt.tags    = new TagString(qp.tags);
-    qpt.reqtags = new TagString(qp.reqtags);
-    this.emit( events.PARAMS_CHANGED, qpt, this );
+    oassign( qp, queryParams); // paste over model's queryParams
+    var qpt  = this._expandQP(qp);
+    this.emit( event, qpt, this );
     return qp;
   }
 

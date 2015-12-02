@@ -1,11 +1,16 @@
 /* stems list css */
 
+.stems-browser {
+  margin-left: -15px; /* make up for container-fluid */
+}
+
 .stems-browser .stems-listing-widget {
   border: 1px solid #7DCF1F;
   border-radius: 7px ;
   padding: 9px;
   background-color: rgba(246, 249, 237, 0.22);
   margin-bottom: 30px;
+  margin-top: 60px;
 }
 
 .stems-listing-widget .no-hit-suggestion {
@@ -106,6 +111,10 @@
   font-weight: bold;
 }
 
+.stems-browser .stems-files > li.hi-hi > span div {
+  font-weight: normal;
+}
+
 .stems-browser .stems-files > li.lo-hi {
 }
 
@@ -139,3 +148,24 @@
   margin-bottom: 12px;
 }
 
+.stems-listing {
+  /* height: 400px; */
+  overflow: scroll;
+  padding-right: 20px;
+}
+
+.page-header {
+  height: 170px;
+  margin: 0px;
+  text-align: left;
+  position: absolute;
+}
+
+.page-header > div,
+.page-header h1 {
+  font-size: 20px;
+  text-align: left;
+  margin-left: 8px;
+  padding: 0px;
+  margin-top: 12px;
+}

@@ -15,7 +15,7 @@ class NowPlayingStore {
     };
   }
 
-  supportsOptions() {
+  get supportsOptions() {
     return false;
   }
   

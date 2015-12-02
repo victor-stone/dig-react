@@ -142,13 +142,13 @@ const QueryOptions = React.createClass({
   },
 
   stateFromStore: function(store) {
-    var dirty = store.supportsOptions() && store.paramsDirty();
+    var dirty = store.supportsOptions && store.paramsDirty();
     return { dirty };
   },
 
   render: function() {
 
-    if( !this.props.store.supportsOptions() ) {
+    if( !this.props.store.supportsOptions ) {
       return null;
     }
     

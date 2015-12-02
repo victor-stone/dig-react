@@ -40,7 +40,10 @@ const SelectableTag = React.createClass({
           {" "}
           {tag.id} 
           {" "}
-          <span className="light-color">{"("}{tag.count}{")"}</span>
+          {tag.count
+            ? <span className="light-color">{"("}{tag.count}{")"}</span>
+            : null
+          }
         </li>
       );
   }
@@ -152,24 +155,24 @@ const SelectedTags = React.createClass({
               : null
           }
           {' '}
-          {matchAnyOK ? <MatchAnyButton store={store} /> : null}
+          {matchAnyOK ? <MatchAllButton store={store} /> : null}
       </div>
       );
   },
 
 });
 
-const MatchAnyButton = React.createClass({
+const MatchAllButton = React.createClass({
 
   mixins: [QueryParamTracker],
 
   stateFromParams: function(queryParams) {
-    return { toggle: queryParams.type === 'any' };
+    return { toggle: queryParams.type === 'all' };
   },
 
   performQuery: function() {
     // yes, we reverse it here
-    var type = this.state.toggle ? 'all' : 'any';
+    var type = this.state.toggle ? 'any' : 'all';
     this.props.store.applyHardParams( { type } );
   },
 
@@ -179,7 +182,7 @@ const MatchAnyButton = React.createClass({
                        checked={this.state.toggle} 
                        type="checkbox"
                 />
-                {" match any"}
+                {" match all"}
               </label>
             );
   },
@@ -218,8 +221,8 @@ const NoTagHits = React.createClass({
                 </li>
                 {showMatchAny
                   ?<li>
-                    {"The default search is for music that matches "}<strong>{"all"}</strong>{" the tags. "}
-                    {"Try a search for "}<strong>{"any"}</strong>{" combination of them."}
+                    {"You've selected a search for music that matches "}<strong>{"all"}</strong>{" the tags. "}
+                    {"Try a search for "}<strong>{"any"}</strong>{" combination of tags by unchecking the 'all' button."}
                   </li>
                   : null
                 }
@@ -242,5 +245,5 @@ module.exports = {
   SelectedTags,
   TagCategoryBox,
   NoTagHits,
-  MatchAnyButton,
+  MatchAllButton,
 };

@@ -11,7 +11,7 @@ import { QueryParamTracker,
 
 const InstrumentalOnlyFilter = React.createClass({
 
-  mixins: [QueryParamTracker,DirtyParamTracker],
+  mixins: [ QueryParamTracker, DirtyParamTracker ],
 
   stateFromParams: function(queryParams) {
     return { toggle: queryParams.reqtags.includes('instrumental') };

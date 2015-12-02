@@ -19,7 +19,7 @@ dig.title = 'Dig Deep';
 dig.path  = '/dig';
 
 dig.store = function(params,queryParams) {
-  var opts = mergeParams( { type: 'all' }, qc.remixes );
+  var opts = mergeParams( { type: 'any' }, qc.remixes );
   var qparams = mergeParams( {}, opts, queryParams );
   return PlaylistStore.storeFromQuery(qparams, opts);
 };

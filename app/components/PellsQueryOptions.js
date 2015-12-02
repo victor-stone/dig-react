@@ -9,11 +9,12 @@ import { BPMDisplay,
          BPMSlider }          from './BPM'; 
 
 import { QueryParamTracker,
+         DefaultParamTracker,
          DirtyParamTracker }   from '../mixins';
 
 const UnmixedOnlyFilter = React.createClass({
 
-  mixins: [QueryParamTracker, DirtyParamTracker],
+  mixins: [QueryParamTracker, DirtyParamTracker, DefaultParamTracker],
 
   stateFromParams: function(queryParams) {
     var toggle = queryParams.remixmax === '0';
@@ -24,6 +25,10 @@ const UnmixedOnlyFilter = React.createClass({
     if( !isDirty.isDirty) {
       isDirty.isDirty = queryParams.remixmax === '0';
     }
+  },
+
+  onGetParamsDefault: function(queryParams) {
+    queryParams.remixmax = null;
   },
 
   performQuery: function() {

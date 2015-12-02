@@ -2,8 +2,8 @@
 
 .stems-browser .stems-tags-widget {
   margin-left: 25px;
-  margin-bottom: 80px;
-  padding: 15px 5px;
+  position: fixed;
+  top:  150px;
 }
 
 .stems-browser .stems-tags-widget .input-group {
@@ -13,14 +13,14 @@
 }
 
 .stems-browser ul.tags-list {
-   height: 360px;
-    overflow: auto;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 8px;
-    width: 220px;
-    background-color: white;
-    margin: 0 auto;
+  height: 360px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  width: 220px;
+  background-color: white;
+  margin: 0 auto;
 }
 
 .stems-browser ul.tags-list > li {
@@ -40,9 +40,13 @@
 }
 
 .stems-browser .selected-tags {
-  margin: 15px;
   padding: 8px;
-  /* min-height: 50px; */
+  min-height: 50px;
+  position: fixed;
+  background-color: #9AB52F;
+  z-index: 200;
+  width: 100%;
+  text-align: center;
 }
 
 .stems-browser .selected-tags .btn-tag {
@@ -53,7 +57,8 @@
   border-radius: 3px;
   color: green;
   text-decoration: none;
-  box-shadow: 1px 1px #EEE;
+  box-shadow: 1px 1px #389E39;
+  background-color: antiquewhite;
 }
 
 .stems-browser .selected-tags .btn-tag:hover {
@@ -66,5 +71,18 @@
 
 .stems-browser .selected-tags .btn-tag .fa-2x {
   font-size: 13px;
+}
+
+.stems-tags-bumper {
+  width: 100%;
+  height: 2px;
+  margin-top: 60px;
+}
+
+.stems-tags-widget .related-tags ul.tags-list {
+  font-weight: bold;
+  color: green;
+  height: 150px;
+  margin-bottom: 15px;
 }
 

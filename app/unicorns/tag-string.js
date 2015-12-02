@@ -142,7 +142,11 @@ TagString.prototype.add = function(tag) {
   
   if( tag instanceof TagString ) {
     if( tag._tagsArray.length ) {
-      this._tagsArray = this._tagsArray.concat( tag._tagsArray );
+      tag._tagsArray.forEach( t => {
+        if( !this._tagsArray.contains(t) ) {
+          this._tagsArray.push(t);
+        }
+      });
     }
     return this;
   }
@@ -231,6 +235,11 @@ TagString.prototype.diff = function(returnTagsOnlyInThisOne) {
   var opts = this.copyOptions();
   opts.source = getDiff(this._tagsArray.slice(),TagString.toArray(returnTagsOnlyInThisOne,opts));
   return new TagString(opts);  
+};
+
+TagString.prototype.sort = function() {
+  this._tagsArray.sort();
+  return this;
 };
 
 TagString.prototype.isEqual = function(tags) {
