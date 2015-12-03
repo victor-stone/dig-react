@@ -157,7 +157,15 @@ class UploadUserBasic extends Model {
   constructor() {
     super(...arguments);
     this.nameBinding = '_bindParent.user_real_name';
-    this.idBinding = '_bindParent.user_name';
+
+    this.getId = function() {
+      if( this._bindParent.user_name )
+        return this._bindParent.user_name;
+      if( this._bindParent.artist_page_url ) {
+        return this._bindParent.artist_page_url.match(/\/([^\s\/]+)$/)[1];
+      }
+    };
+
   }
 }
 
@@ -175,7 +183,7 @@ class UploadBasic extends Model {
 
 }
 
-class Remix  extends UploadBasic {
+class Related  extends UploadBasic {
 
   constructor() {
     super(...arguments);
@@ -190,7 +198,9 @@ class Remix  extends UploadBasic {
   }
 }
 
-class Source extends UploadBasic { }
+class Remix  extends Related { }
+
+class Source extends Related { }
 
 class TrackbackUser extends Model {
   constructor() {

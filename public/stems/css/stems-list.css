@@ -40,7 +40,6 @@
   padding-right: 7px;
 }
 
-
 .stems-browser .stems-listing > li .stem-name {
   margin-right: 15px;
   color: #9d9d9d;
@@ -66,7 +65,6 @@
   content: 'bpm';
   margin-right: 4px;
 }
-
 
 .stems-browser .stems-files > li .ext {
    text-transform: uppercase;
@@ -120,8 +118,7 @@
 
 .stems-browser .zip-contents {
   padding: 0px;
-  top: 100px;
-  position:fixed;
+  margin-top: 12px;
 }
 
 .stems-browser .zip-contents > li.hi-hi {
@@ -149,23 +146,10 @@
 }
 
 .stems-listing {
-  /* height: 400px; */
-  overflow: scroll;
   padding-right: 20px;
 }
 
-.page-header {
-  height: 170px;
-  margin: 0px;
-  text-align: left;
-  position: absolute;
+li.stem-files-line a.btn.btn-info {
+  background: #3CA73C;
 }
 
-.page-header > div,
-.page-header h1 {
-  font-size: 20px;
-  text-align: left;
-  margin-left: 8px;
-  padding: 0px;
-  margin-top: 12px;
-}

@@ -132,6 +132,37 @@ function OptionsWrap(props) {
   return <ul className="query-options-elements">{props.children}</ul>;
 }
 
+const QueryOptionsBox = React.createClass({
+
+  getDefaultProps: function() {
+    return { 
+      handleShowOptions: this.noop,
+       show: true 
+     };
+  },
+
+  noop: function() {
+
+  },
+
+  render: function() {
+    var cls  = 'query-options ' + (this.props.show ? 'open' : 'hidden');
+
+    return (
+        <ul className={cls}>
+          <li className="btn-primary title" onClick={this.props.handleShowOptions} >
+            <Glyph icon="gear" />{" filters"}
+            <CloseButton onClick={this.handleShowOptions} />
+          </li>
+          <li>{this.props.children}</li>
+          <li>
+            <ResetOptionsButton store={this.props.store} />
+          </li>
+        </ul>
+      );
+  }
+});
+
 const QueryOptions = React.createClass({
 
   mixins: [ModelTracker],
@@ -152,24 +183,16 @@ const QueryOptions = React.createClass({
       return null;
     }
     
-    var showP       = this.state.showOptions;
+    var showP       = this.state.showOptions || false;
     var buttonColor = this.state.dirty ? { color: 'yellow' } : {};
     var cls         = 'hidden-xs hidden-sm query-options-box' + (showP ? ' open' : '' );
-    var cls2        = 'query-options ' + (showP ? 'open' : 'hidden');
     var cls3        = 'btn btn-primary' + (showP ? ' hidden' : '');
 
     return (
       <div className={cls}>
-        <ul className={cls2}>
-          <li className="btn-primary title" onClick={this.handleShowOptions} >
-            <Glyph icon="gear" />{" filters"}
-            <CloseButton onClick={this.handleShowOptions} />
-          </li>
-          <li>{this.props.children}</li>
-          <li>
-            <ResetOptionsButton store={this.props.store} />
-          </li>
-        </ul>
+        <QueryOptionsBox show={showP} store={this.props.store} handleShowOptions={this.handleShowOptions}>
+          {this.props.children}
+        </QueryOptionsBox>
         <button className={cls3} style={buttonColor} onClick={this.handleShowOptions} ><Glyph icon="gear" />{" filters"}</button>
       </div>
     );
@@ -179,6 +202,7 @@ const QueryOptions = React.createClass({
 
 module.exports = {
   QueryOptions,
+  QueryOptionsBox,
   ResetOptionsButton,
   LicenseInfoPopup,
   LicenseFilter,

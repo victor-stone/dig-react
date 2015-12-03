@@ -7,7 +7,9 @@ var BoundingMixin = {
 
   componentDidMount: function() {
     if( !global.IS_SERVER_REQUEST && !this.props.disableBumping ) {
+      this.elementTop = null;
       $(window).on('scroll', this.onWinScroll);
+
       //this.resetBump();
       //window.addEventListener('resize', this.handleResize);
     }
@@ -26,43 +28,25 @@ var BoundingMixin = {
       return;
     }
 
-    var $keepAbove = $(this.props.keepAbove);
-    var $keepBelow = $(this.props.keepBelow);
-
-    var eHeight = $e.outerHeight() + HEIGHT_PADDING;
-    var eTop    =  Number($e.css('top').replace(/[^-\d\.]/g, ''));
-    var eBottom = eTop + eHeight;
-    var winTop  =  $(window).scrollTop();
-    
-    var above = {
-      height: $keepAbove.outerHeight() + HEIGHT_PADDING,
-      top:    $keepAbove.offset().top,
-    };
-    above.pos    = above.top - winTop;
-    
-    var below = {
-      height: $keepBelow.outerHeight() + HEIGHT_PADDING,
-      top:    $keepBelow.offset().top,
-    };
-    below.pos    = below.top - winTop;
-    below.bottom = below.pos + below.height;
-
-    var value   = '';
-    if( eBottom > above.pos ) {
-      value = above.pos - eHeight;
-    } else if( eTop < below.bottom ) {
-      value = below.bottom;
-    } else if( eTop < 0 ) {
-        if( winTop + eHeight > above.top ) {
-          value = above.pos - eHeight;
-        } else {
-          value = below.top + below.height; // use offset values for winpos
-        }
+    if( this.elementTop === null ) {
+      this.elementTop = $e.offset().top;   
+      $e.css( {position: 'fixed'} );
     }
 
-    if( value ) {
-      $e.css( { top: value + 'px' } );
+    var $header = $(this.props.keepBelow);
+    this.headerSize = $header.outerHeight();
+    var scrollTop = $(window).scrollTop();    
+    var margin = scrollTop > (this.elementTop - this.headerSize)
+                    ? (this.elementTop - this.headerSize)
+                    : scrollTop;
+
+    var eBottom   = this.elementTop + ($e.outerHeight() + HEIGHT_PADDING);
+    var footerTop = $(this.props.keepAbove).offset().top - scrollTop;
+    if( eBottom > footerTop ) {
+      margin += (eBottom - footerTop);
     }
+
+    $e.css( { 'margin-top': -margin } );
   },
 
   resetBump() {

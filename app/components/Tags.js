@@ -5,6 +5,7 @@ import QueryOptions  from './QueryOptions';
 
 import {  ModelTracker, 
           QueryParamTracker,
+          UriParamTracker,
           SelectedTagsTracker   } from '../mixins';
 
 const DEFAULT_COL_SIZE = 3;
@@ -52,7 +53,7 @@ const SelectableTag = React.createClass({
 
 const SelectableTagList = React.createClass({
 
-  mixins: [SelectedTagsTracker],
+  mixins: [ SelectedTagsTracker ],
 
   filterTagsByCat: function( tags ) {
     if( !this.cattags ) {
@@ -134,12 +135,16 @@ const SelectedTag = React.createClass({
 
 const SelectedTags = React.createClass({
 
-  mixins: [SelectedTagsTracker],
+  mixins: [ SelectedTagsTracker, UriParamTracker ],
 
   clear: function(e) {
     e.stopPropagation();
     e.preventDefault();
     this.props.store.applyTags( '' );
+  },
+
+  onGetParamsURI: function(queryParams) {
+    queryParams.tags.clear();
   },
 
   render: function() {
@@ -164,10 +169,14 @@ const SelectedTags = React.createClass({
 
 const MatchAllButton = React.createClass({
 
-  mixins: [QueryParamTracker],
+  mixins: [ QueryParamTracker, UriParamTracker ],
 
   stateFromParams: function(queryParams) {
     return { toggle: queryParams.type === 'all' };
+  },
+
+  onGetParamsURI: function(queryParams) {
+    queryParams.type = 'any';
   },
 
   performQuery: function() {

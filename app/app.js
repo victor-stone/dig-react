@@ -3,10 +3,12 @@ import React       from 'react';
 import ajaxAdapter from './services/query-ajax-adapter';
 import router      from './services/router';
 import events      from './models/events';
+
+import { browserScripts } from './unicorns';
 import { Banner,
          TitleSetter,
          ErrorDisplay,
-         AudioPlayer }   from './components';
+         AudioPlayer }    from './components';
 
 const App = React.createClass({
 
@@ -64,20 +66,7 @@ const App = React.createClass({
       return;
     }
 
-    try {  
-      hash = hash.replace(/#/,'');
-      var anchor = $('a[name="'+hash+'"]');
-      var offset = 0; 
-      $('html,body').animate(
-          { scrollTop: $(anchor).offset().top - offset },
-          { duration: 'slow', 
-            easing: 'swing'
-          }
-        );
-    }
-    catch( e ) {
-      //Ember.debug('wups ' + e.toString() );
-    }      
+    browserScripts.scrollToHash(hash);
   },
 
   render: function() {

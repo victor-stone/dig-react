@@ -1,5 +1,6 @@
-import pagingStats from './paging-stats';
-import TagString from './tag-string';
+import pagingStats    from './paging-stats';
+import TagString      from './tag-string';
+import browserScripts from './browser-scripts';
 
 const NOT_FOUND = -1;
 
@@ -19,8 +20,9 @@ if( typeof Array.prototype.contains === 'undefined' ) {
 
 if( typeof Array.prototype.findBy === 'undefined' ) {
   Array.prototype.findBy = function(key,value) {
+    var valIsDefined = typeof value !== 'undefined';
     for( var i = 0; i < this.length; i++ ) {
-      if( this[i][key] === value ) {
+      if( (valIsDefined && this[i][key] === value) || this[i][key] ) {
         return this[i];
       }
     }
@@ -50,6 +52,19 @@ if( typeof Array.prototype.filter === 'undefined' ) {
     return results;
   };
 
+}
+
+if( typeof Array.prototype.filterBy === 'undefined' ) {
+  Array.prototype.filterBy = function(key,value) {
+    var results = [];
+    var valIsDefined = typeof value !== 'undefined';
+    for( var i = 0; i < this.length; i++ ) {
+      if( (valIsDefined && this[i][key] === value) || this[i][key] ) {
+        results.push(this[i]);
+      }
+    }
+    return results;
+  };
 }
 
 if( typeof Array.prototype.rejectBy === 'undefined' ) {
@@ -200,5 +215,6 @@ module.exports = {
   underscore,
   debounce,
   pagingStats,
-  TagString
+  TagString,
+  browserScripts
 };

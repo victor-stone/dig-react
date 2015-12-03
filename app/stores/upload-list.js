@@ -91,11 +91,11 @@ class UploadList extends Query {
   }
 
   applyDefaults() {
-    var qp  = oassign( {}, this.model.queryParams, this.defaultParams, { offset: 0 } );
-    var qpt = this._expandQP(qp);
-    this.emit( events.GET_PARAMS_DEFAULT, qpt, this );
-    var qpc = this.model.queryParams = this._contractQP( qpt, {} );
-    return this.applyHardParams(qpc);
+    return this._applyDefaults([events.GET_PARAMS_DEFAULT]);
+  }
+
+  applyURIDefault() {
+    return this._applyDefaults([ events.GET_PARAMS_DEFAULT, events.GET_PARAMS_URI ]);
   }
 
   paramsDirty() {
@@ -172,6 +172,14 @@ class UploadList extends Query {
     var qpt  = this._expandQP(qp);
     this.emit( event, qpt, this );
     return qp;
+  }
+
+  _applyDefaults(events) {
+    var qp  = oassign( {}, this.model.queryParams, this.defaultParams, { offset: 0 } );
+    var qpt = this._expandQP(qp);
+    events.forEach( e => this.emit( e, qpt, this ) );
+    var qpc = this.model.queryParams = this._contractQP( qpt, {} );
+    return this.applyHardParams(qpc);
   }
 
   _applySoftParams(queryParams) {

@@ -1,3 +1,4 @@
+/* globals $ */
 import React            from 'react';
 import Glyph            from './Glyph'; 
 import Tags             from './Tags';
@@ -8,18 +9,45 @@ import events           from '../models/events';
 import { StoreEvents,
          TopSideElement,
          BoundingElement,
-         SelectedTagTracker }  from '../mixins';
+         SelectedTagsTracker }  from '../mixins';
 
 const MIN_TAG_COUNT = 20;
+const FADE_IN_DELAY = 800;
+const FADE_IN_SPEED = 1000;
 
 const SelectedTagSection = React.createClass({
 
-  mixins: [ TopSideElement ],
+  mixins: [ TopSideElement, SelectedTagsTracker ],
+
+  componentDidMount: function() {
+    this.doFadeAnimation();
+  },
+
+  componentDidUpdate: function() {
+    this.doFadeAnimation();
+  },
+
+  doFadeAnimation: function() {
+    if( !global.IS_SERVER_REQUEST ) {
+      var hasTags = this.state.selectedTags.getLength() > 0;
+      if( !hasTags ) {
+        setTimeout( function() {
+          $('.no-selected-tags').fadeIn( FADE_IN_SPEED );
+        }, FADE_IN_DELAY );
+      }
+    }
+  },
 
   render: function() {
+    var hasTags = this.state.selectedTags.getLength() > 0;
+    var style = { display: 'none' };
+
     return (
         <div className="selected-tags">
-          <Tags.SelectedTags {...this.props}/>
+          {hasTags
+            ? <Tags.SelectedTags {...this.props}/>
+            : <div className="no-selected-tags" style={style}>{"select tags to get started"}</div>
+          }
         </div>
       );
   }
@@ -37,18 +65,24 @@ function TagsLoading() {
 
 const StemsTagList = React.createClass({
 
-  mixins: [ StoreEvents, SelectedTagTracker, BoundingElement ],
+  mixins: [ StoreEvents, SelectedTagsTracker, BoundingElement ],
 
   getDefaultProps: function() {
     return { 
         keepAbove: '.footer',
-        keepBelow: '.stems-tags-bumper',
+        keepBelow: '.selected-tags',
         storeEvent: events.MODEL_UPDATED 
       };
   },
   
   getInitialState: function() {
-    return { tab: 'all', related: [], tags: [], loading: true };
+    return { 
+      tab: 'all', 
+      related: [], 
+      filtered: [], 
+      tags: [], 
+      loading: true 
+    };
   },
 
   componentWillMount: function() {
@@ -82,15 +116,16 @@ const StemsTagList = React.createClass({
   },
 
   getRelatedTags: function() {
-    var store = this.props.store;
-    if( !!store.model.queryParams.tags && store.model.total ) {
+    var store    = this.props.store;
+    var seltags  = (store.model.queryParams.tags || '').toString();
+    if( seltags.length > 0 && store.model.total ) {
       var uploadtags = new TagString();
       store.model.playlist.forEach( u => uploadtags.add(u.userTags) );
       var allTags = this.allTags.filter( t => t.count >= MIN_TAG_COUNT )
                                 .map( t => t.id );
       var tags = uploadtags
                   .intersection( allTags )
-                  .remove( this.props.store.model.queryParams.tags )
+                  .remove( seltags )
                   .sort()
                   .map( t => { return { id: t }; } );
       return tags;
@@ -101,13 +136,13 @@ const StemsTagList = React.createClass({
   filter: function(filter, isIcon, filterCB) {
     if( isIcon ) {
       filterCB('');
-      this.setState( { filtered: null } );
+      this.setState( { filtered: [] } );
     } else if( filter && filter.length > 0 ) {
       var tags = this._currentTags();
       var filtered = tags.filter( t => t.id.includes(filter) );
       this.setState( { filtered } );
     } else {
-      this.setState( { filtered: null } );
+      this.setState( { filtered: [] } );
     }
   },
 
@@ -119,7 +154,7 @@ const StemsTagList = React.createClass({
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
-      this.setState( { tab, loading: true }, () => this.getModel() );
+      this.setState( { tab, filtered: [] } );
     };
   },
 
@@ -133,7 +168,8 @@ const StemsTagList = React.createClass({
       return null;
     }
 
-    var tags       = this.state.filtered || this._currentTags();
+    var filtered   = this.state.filtered;
+    var tags       = filtered.length ? filtered : this._currentTags();
     var numRelated = this.state.related.length;
 
     return (

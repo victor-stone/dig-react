@@ -9,6 +9,7 @@ import QueryParamTracker from './query-param-tracker';
 import SelectedTagsTracker from './selected-tags-tracker';
 import StoreEvents from './store-events';
 import TopSideElement from './top-side-element';
+import UriParamTracker from './URI-param-tracker';
 
 
 module.exports = {
@@ -20,6 +21,7 @@ module.exports = {
     QueryParamTracker,
     SelectedTagsTracker,
     StoreEvents,
-    TopSideElement 
+    TopSideElement,
+    UriParamTracker 
 };
 

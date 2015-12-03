@@ -3,9 +3,9 @@ import Glyph  from './Glyph';
 import AB     from './ActionButtons';
 import events from '../models/events';
 
-import {  StoreEvents,
-          BoundingElement  } from '../mixins';
-import { TagString }         from '../unicorns';
+import { StoreEvents }      from '../mixins';
+import { TagString,
+         browserScripts }   from '../unicorns';
 
 const UploadLink = AB.UploadLink;
 
@@ -22,9 +22,42 @@ const ZIPLink = React.createClass({
   },
 });
 
+const ZIPHashLink = React.createClass({
+  
+  scroller: function(hash) {
+    return function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      browserScripts.scrollToHash(hash);
+    };
+  },
+
+  render: function() {
+    var cls  = 'btn btn-info btn-lg hidden-xs hidden-sm ';
+    var href = '#zip-' + this.props.model.id;
+    return (<a className={cls} href={href} onClick={this.scroller(href)} ><Glyph fixed icon="info" /></a>);
+  },
+});
+
+function ZIPFiles(props) {
+
+    var files  = props.model.zipContents
+                  .filter( f => f.match(/(__MACOSX|\.DS_Store)/) === null )
+                  .map( f => f.replace(/\/.*\//g,'') );
+    var tags   = props.tags;
+    return (
+        <ul className="zip-files">
+          {files.map( (f,i) => {
+            var cls = tags && tags.anyInString(f.toLowerCase()) ? 'hi-hi' : '';
+            return( <li className={cls} key={i}>{f}</li> );
+          })}
+        </ul>
+      );
+}
+
 const ZIPContentViewer = React.createClass({
 
-  mixins: [BoundingElement,StoreEvents],
+  mixins: [StoreEvents],
 
   getDefaultProps: function() {
     return {
@@ -35,31 +68,27 @@ const ZIPContentViewer = React.createClass({
   },
 
   getInitialState: function() {
-    return { files: null };
-  },
-
-  componentDidUpdate: function() {
-    this.resetBump();
+    return { file: null };
   },
 
   onInspectZip: function(file,store) {
+    
     if( this.state.store ) {
       this._unsub(this.state.store);
     }
     this._sub(store);
-    var qp = store.model.queryParams;    
+
+    var qp   = store.model.queryParams;    
     var tags = qp.searchp 
                 ? new TagString(qp.searchp.replace(/\s/g,','))
                 : new TagString(store.model.queryParams.tags);
-    this.setState( { file, 
-                     store,
-                     selectedTags: tags,
-                     files: file && file.zipContents } );
+
+    this.setState( { file, store, tags } ); 
   },
 
   onSelectedTags: function(queryParams) {
     var tags = new TagString(queryParams.tags);
-    this.setState( { selectedTags: tags } );
+    this.setState( { tags } );
   },
 
   _sub: function(store) {
@@ -71,28 +100,25 @@ const ZIPContentViewer = React.createClass({
   },
 
   render: function() {
-    if( !this.state.files ) {
+    if( !this.state.file ) {
       return null;
     }
-
     var upload = this.state.file.upload;
-    var files  = this.state.files
-                  .filter( f => f.match(/(__MACOSX|\.DS_Store)/) === null )
-                  .map( f => f.replace(/\/.*\//g,'') );
-    var tags   = this.state.selectedTags;
+    var tags   = this.state.tags;
     return (
         <ul className="zip-contents">
           <li className="head"><Glyph icon="file-archive-o" />{" Contents of ZIP file"}</li>
           <li className="sub-head"><UploadLink model={upload} /></li>
-          {files.map( (f,i) => {
-            var cls = tags && tags.anyInString(f.toLowerCase()) ? 'hi-hi' : '';
-            return( <li className={cls} key={i}>{f}</li> );
-          })}
+          <ZIPFiles model={this.state.file} tags={tags} />
         </ul>
       );
   }
 });
 
-ZIPContentViewer.ZIPLink = ZIPLink;
+ZIPContentViewer.ZIPLink     = ZIPLink;
+ZIPContentViewer.ZIPHashLink = ZIPHashLink;
+ZIPContentViewer.ZIPFiles    = ZIPFiles;
 
 module.exports = ZIPContentViewer;
+
+//

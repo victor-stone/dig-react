@@ -3,31 +3,22 @@ import DownloadPopup    from './DownloadPopup';
 import ZIPContentViewer from './ZIPContentViewer';
 import AudioPlayer      from './AudioPlayer';
 import People           from './People';
+import { UploadLink }   from './ActionButtons';
 import env              from '../services/env';
 import { NoTagHits }    from './Tags';
 import { TagString }    from '../unicorns';
 import events           from '../models/events';
-import {  ModelTracker,
-          QueryParamTracker,
+import {  QueryParamTracker,
           SelectedTagsTracker  } from '../mixins';
 
 const StemsFiles = React.createClass({
 
-  mixins: [SelectedTagsTracker, QueryParamTracker],
-
-  stateFromParams: function(queryParams) {
-    if( queryParams.searchp ) {
-      return { searchTerms: new TagString(queryParams.searchp.replace(/\s/g,',')) };
-    }
-    return {};
-  },
-
   highlights(tags) {
-    var highlights = {};
-    var files = this.props.model.files;
     if( !tags || tags.isEmpty() ) {
       return {};
     }
+    var highlights = {};
+    var files = this.props.model.files;
     if( files.length === 1 ) {
       highlights[files[0].id] = 'hi-hi';
       return highlights;
@@ -80,13 +71,12 @@ const StemsFiles = React.createClass({
   },
 
   render: function() {
-    var model = this.props.model;
-    var files = model.files;
-    var highs = this.highlights(this.state.searchTerms || this.state.selectedTags);
+    var files = this.props.model.files;
+    var highs = this.highlights(this.props.searchTerms || this.props.tags);
 
     return(
         <ul className="stems-files">
-          {files.map( f => this.oneFile(f,highs[f.id]||'',model) )}
+          {files.map( f => this.oneFile(f,highs[f.id]||'',this.props.model) )}
         </ul>
       );
   }
@@ -94,36 +84,45 @@ const StemsFiles = React.createClass({
 
 const StemsList = React.createClass({
 
-  mixins: [ModelTracker,SelectedTagsTracker],
+  mixins: [QueryParamTracker,SelectedTagsTracker],
 
   getDefaultProps: function() {
-    return { skipUser: false };
+    return { skipUser: false,
+             noHitsComp: NoTagHits };
   },
  
-  stateFromStore: function(store) {
-    return { store };
+  stateFromParams: function(queryParams) {
+    if( queryParams.searchp ) {
+      return { searchTerms: new TagString(queryParams.searchp.replace(/\s/g,',')) };
+    }
+    return { searchTerms: null };
   },
 
   render: function() {
-    var model = this.state.store.model;
+    var store = this.props.store;
+    var model = store.model;
 
     if( !model || !model.total ) {
-      return (<NoTagHits store={this.state.store} />);
+      if( this.props.noHitsComp ) {
+        return (React.createElement(this.props.noHitsComp, { store }));
+      }
+      return (<h2>{"didn't catch that"}</h2>);
     }
+    
     var fo = this.props.filesOnly;
     var nn = fo || this.props.namesOnly;
 
-    var store = this.props.store;
-    var tags  = this.state.selectedTags;
+    var tags    = this.state.selectedTags;
+    var searchp = this.state.searchTerms;
 
     return (
         <ul className="stems-listing">
           {model.playlist.map( (u,i) => {
             return (<li key={i}>
                       {u.bpm ? <span className="bpm">{u.bpm}</span> : null}
-                      {fo ? null : <span className="stem-name">{u.name}</span>}
+                      {fo ? null : <UploadLink model={u} />}
                       {nn ? null : <People.Link model={u.artist} className="stem-artist" />}
-                      <StemsFiles model={u} store={store} tags={tags} />
+                      <StemsFiles model={u} store={store} tags={tags} searchTerms={searchp} />
                   </li>); })
           }
         </ul>

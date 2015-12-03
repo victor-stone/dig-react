@@ -1,8 +1,10 @@
+/* globals $ */
+
 import React     from 'react';
 
 import { LicenseFilter,
          LimitFilter,
-         QueryOptions,
+         QueryOptionsBox,
          OptionsWrap } from './QueryOptions';
          
 import { BPMDisplay,
@@ -33,10 +35,39 @@ var _StemsQueryOptions = React.createClass({
   },
 });
   
-function StemsQueryOptions(props) {
-  return (<QueryOptions store={props.store}>
-            <_StemsQueryOptions store={props.store} />
-          </QueryOptions>);
-}
+const StemsQueryOptions = React.createClass({
+
+  getInitialState: function() {
+    return { collapsed: true };
+  },
+
+  handleShowOptions: function() {
+    this.setState( { collapsed: !this.state.collapsed }, this.doAnimation );
+  },
+
+  doAnimation: function() {
+    var target = this.state.collapsed ? '27px' : '280px';
+    $('.query-options').animate(
+        { height: target },
+        { duration: 'fast', 
+          easing: 'swing'
+        }
+      );
+    var selector = '.query-options-box.open ul.query-options > li.title .close';
+    $(selector).toggle( !this.state.collapsed );
+  },
+
+  render: function() {
+    return (
+      <div className="query-options-box open">
+        <QueryOptionsBox store={this.props.store} handleShowOptions={this.handleShowOptions}>
+          <_StemsQueryOptions store={this.props.store} />
+        </QueryOptionsBox>
+      </div>
+    );
+  }
+});
 
 module.exports = StemsQueryOptions;
+
+//

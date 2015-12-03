@@ -104,17 +104,23 @@ class Router extends Eventer
     }
     var handler = handlers[0];
 
-    if( q && 
-        this.currentRoute.component &&
+    if( this.currentRoute.component &&
+        !this.currentRoute.component.noReuse &&
         document.location.pathname === this.currentRoute.component.path &&
         this.currentRoute.store.applyHardParams ) {
 
           var store = this.currentRoute.store;
-          var qp = querystring.parse(q.substr(1));
           this.ignoreEvents = true;
-          store.applyURIQuery(qp).finally( () => {
-            this.ignoreEvents = false;
-          });
+          if( q ) {
+            var qp = querystring.parse(q.substr(1));
+            store.applyURIQuery(qp).finally( () => {
+              this.ignoreEvents = false;
+            });
+          } else {
+            store.applyURIDefault().finally( () => {
+              this.ignoreEvents = false;
+            });
+          }
 
     } else {
 

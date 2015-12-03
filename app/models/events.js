@@ -13,6 +13,7 @@ var Events = {
   PARAMS_CHANGED:     'params_changed',
   ARE_PARAMS_DIRTY:   'are_params_dirty',
   GET_PARAMS_DEFAULT: 'get_params_default',
+  GET_PARAMS_URI:     'get_params_uri',
   MODEL_UPDATED:      'model_updated',
   COMPONENT_UPDATE:   'component_update',
   INSPECT_ZIP:        'inspect_zip',

@@ -24,7 +24,7 @@ class Env extends Eventer {
 
   error(e) {
     this.error = e;
-    this.log('caught error',e);
+    this.log('caught error',e.stack);
     this.emit('error',e);
   }
 

@@ -2,12 +2,13 @@
 
 .stems-browser .paging {
   position: relative;
-  top: 0px;
+  margin-top: 60px;
+  margin-bottom: 14;
+  top:  0px;
   left: 0px;
   width: 180;
   background-color: rgba(245, 253, 216, 0);
   border: 0px;
-  margin: 0px auto;
 }
 
 .stems-browser .paging > ul {

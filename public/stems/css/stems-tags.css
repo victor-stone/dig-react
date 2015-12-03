@@ -2,21 +2,31 @@
 
 .stems-browser .stems-tags-widget {
   margin-left: 25px;
-  position: fixed;
-  top:  150px;
+}
+
+.stems-browser .stems-tags-widget .tab-content {
+  padding-top: 14px;
 }
 
 .stems-browser .stems-tags-widget .input-group {
-  width: 220px;
-  margin-bottom: 0px;
+  width: 170px;
   margin: 4 auto; 
+  margin-bottom: 10px;
+}
+
+.stems-tags-widget span.badge {
+  background-color: #9AB52F;
+}
+
+.stems-browser .stems-tags-widget .tab-content {
+  border-bottom: 1px solid #e2e2e2;
+  border-right: 1px solid #e2e2e2;
+  border-left: 1px solid #e2e2e2;
 }
 
 .stems-browser ul.tags-list {
   height: 360px;
   overflow: auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
   padding: 8px;
   width: 220px;
   background-color: white;
@@ -86,3 +96,10 @@
   margin-bottom: 15px;
 }
 
+.no-selected-tags {
+  color: white;;
+  font-size: 20px;
+  font-weight: 500;
+  text-shadow: 1px 1px black;
+  letter-spacing: 3.0;
+}

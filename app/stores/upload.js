@@ -5,7 +5,7 @@ import rsvp             from 'rsvp';
 
 
 function _fixFeaturing(model) {
-  if( !model.featuring && model.sources && model.upload.setFeatureSources ) {
+  if( !model.upload.featuring && model.sources && model.upload.setFeatureSources ) {
     model.upload.setFeatureSources(model.sources);
   }
   return model;
@@ -15,17 +15,25 @@ class Upload extends Query {
 
   constructor() {
     super(...arguments);
+    this.model = {};
   }
 
-  find(id) {
+  get queryParams() {
+    return (this.model && this.model.queryParams) || {};
+  }
+
+  find(id,userid,_flags) {
     
+    var flags = _flags || Upload.ALL;
+
     var model = null;
 
     var queries = {
-      upload: this.info(id),
-      remixes: this.remixes(id),
-      trackbacks: this.trackbacks(id),
-      sources: this.sources(id)
+      upload:     this.info(id),
+      remixes:    flags & Upload.REMIXES    ? this.remixes(id)    : [],
+      trackbacks: flags & Upload.TRACKBACKS ? this.trackbacks(id) : [],
+      sources:    flags & Upload.SOURCES    ? this.sources(id)    : [],
+      artist:     userid ? this.findUser(userid) : null,
     };
 
     return this.transaction(rsvp.hash(queries)
@@ -37,11 +45,15 @@ class Upload extends Query {
         }
         model = _fixFeaturing(record);
 
-        return this.findUser(model.upload.artist.id);
+        return model.artist ? model.artist : this.findUser(model.upload.artist.id);
 
       }).then( user => {
         
+        model.artist        = 
         model.upload.artist = user;
+        model.queryParams   = { ids: id, u: user.id };
+        
+        this.model = model;
 
         return model;
       }));
@@ -95,14 +107,19 @@ Upload.service = new Upload();
 
 Upload.MAX_TRACKBACK_FETCH = 25;
 
-Upload.storeFromQuery = function(id) {
+Upload.storeFromQuery = function(id,user,flags) {
   var uploadStore = new Upload();
-  return uploadStore.find(id)
+  return uploadStore.find(id,user,flags)
                         .then( model => {
                             uploadStore.model = model;
                             return uploadStore;
                         });
 };
+
+Upload.REMIXES    = 0x001;
+Upload.TRACKBACKS = 0x002;
+Upload.SOURCES    = 0x004;
+Upload.ALL        = Upload.REMIXES | Upload.TRACKBACKS | Upload.SOURCES;
 
 module.exports = Upload;
 

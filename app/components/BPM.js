@@ -79,6 +79,7 @@ const BPMSlider = React.createClass({
       });      
 
       slider.noUiSlider.on('slide', this.onSlide );
+      slider.noUiSlider.set( this.state.bpmVal );
       $('.noUi-pips-horizontal div:nth-child(2)').html('all');
     }
   },

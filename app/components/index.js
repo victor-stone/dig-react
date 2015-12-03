@@ -35,6 +35,7 @@ import StemsHeader from './StemsHeader';
 import StemsList from './StemsList';
 import StemsQueryOptions from './StemsQueryOptions';
 import StemsTags from './StemsTags';
+import StemsUpload from './StemsUpload';
 import Tags from './Tags';
 import TitleSetter from './TitleSetter';
 import Topic from './Topic';
@@ -78,6 +79,7 @@ module.exports = {
     StemsList,
     StemsQueryOptions,
     StemsTags,
+    StemsUpload,
     Tags,
     TitleSetter,
     Topic,

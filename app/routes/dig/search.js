@@ -1,7 +1,7 @@
 import React from 'react';
 import rsvp  from 'rsvp';
 
-import { underscore, 
+import { // underscore, 
             mergeParams } from '../../unicorns';
 
 import qc from '../../models/query-configs';
@@ -11,6 +11,8 @@ import {  Link,
           PageHeader, 
           DigRemixes as Playlist, 
           Paging } from '../../components';
+
+import { QueryParamTracker } from '../../mixins';
 
 import TagStore       from '../../stores/tags';
 import QueryStore     from '../../stores/query';
@@ -57,24 +59,35 @@ var DidYouMeanSection = React.createClass({
 
 });
 
-var search = React.createClass({
+var SearchHeader = React.createClass({
+  mixins: [ QueryParamTracker ],
 
-  render() {
-    var text   = this.props.queryParams.searchp;
-    var store  = this.props.store;
-
-    return  (
-      <div>
-        <PageHeader icon="search" title={text} subTitle="Search Results" />
-        <DidYouMeanSection model={store.didYouMean} />
-        <Paging store={store} />
-        <Playlist store={store} />
-        <Playlist.NotALotHere store={store} />
-      </div>
-    );
+  stateFromParams: function(queryParams) {
+    return { text: queryParams.searchp };
   },
 
+  render: function() {
+    var text = this.state.text;
+
+    return (
+        <PageHeader icon="search" title={text} subTitle="Search Results" />
+      );
+  }  
 });
+
+
+function search(props) {
+  var store = props.store;
+  return  (
+    <div>
+      <SearchHeader store={store} />
+      <DidYouMeanSection model={store.didYouMean} />
+      <Paging store={store} />
+      <Playlist store={store} />
+      <Playlist.NotALotHere store={store} />
+    </div>
+  );
+}
 
 function didYouMean( text )
 {
@@ -95,7 +108,7 @@ function didYouMean( text )
 
     genres: tagStore.searchTags({
                 min: 5,
-                ids: underscore(text)
+                ids: text, // underscore(text)
               })
     };    
     
@@ -118,6 +131,8 @@ function didYouMean( text )
 }
 
 search.title = 'Search';
+
+search.noReuse = true;
 
 search.store = function( params, queryParams ) {
   if( queryParams.searchp ) {
