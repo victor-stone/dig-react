@@ -117,6 +117,22 @@ class UploadList extends Query {
       artist:   queryParams.u ? this.findUser(queryParams.u) : null,
     };
 
+    if( queryParams.searchp ) {
+      var text = queryParams.searchp.replace(/[^a-zA-Z0-9 _()\*\.]/,'');
+
+      if( text ) {
+        hash.artists = this.searchUsers({
+                    limit: 40,
+                    remixmin: 1,
+                    searchp: text
+                  });
+        hash.genres = this.tags.searchTags( text.split(/\s/).filter( t => t.length > 2 ) );
+      } else {
+        hash.artists = [];
+        hash.genres  = [];
+      }
+    }
+
     hash = this.promiseHash(hash,queryParams);
     
     return rsvp.hash(hash).then( model => {

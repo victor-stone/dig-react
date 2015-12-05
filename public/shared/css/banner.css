@@ -1,0 +1,16 @@
+.page-banner {
+  text-align: center;
+  background-color: antiquewhite;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.page-banner a {
+  display: inline-block;
+  margin: 0px 8px;
+  font-weight: bold;
+  border-radius: 3px;
+  border: 1px solid;
+  padding: 0px 4px;
+
+}

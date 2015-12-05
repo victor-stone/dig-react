@@ -12,11 +12,10 @@ function StemsBrowser(props) {
 
     return (
       <div className="stems-browser">
-        <SelectedTagSection store={store}  />
+        <SelectedTagSection store={store} />
         <div className="content-fluid" >
           <div className="row stems-browser-widget">
             <div  className="col-md-3">
-              <div className="stems-tags-bumper"></div>
               <StemsTagList store={store} />
             </div>
             <div className="col-md-6 stems-listing-widget">

@@ -1,0 +1,42 @@
+/* shared home css */
+
+.gso-links .panel {
+  background-color: white;
+  border-radius: 18px;
+  margin-top: 8px;
+  color: #2B3E66;
+}
+
+.gso-links .panel-title {
+  font-size: 30px;
+  height: 135px;
+  padding-top: 14px;
+  font-weight: normal;
+  width: 38%;
+  padding-left: 20px;
+}
+
+.gso-links .panel-body {
+  padding-bottom: 30px;
+  font-size: 18px;
+  min-height: 150px;
+  padding-left: 40%;
+  padding-top: 44px;
+  font-weight: normal;
+}
+
+.gso-links .panel-footer {
+  background-color: transparent;
+  border-top: 1px solid #aaa;
+}
+
+.gso-links {
+  background-color: #EEE;
+  margin-bottom: 0px;
+}
+
+.gso-links.panel-group {
+  padding-top: 84px;
+  padding-bottom: 50px;
+
+}

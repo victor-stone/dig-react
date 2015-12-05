@@ -34,6 +34,21 @@ var UploadLink = React.createClass({
   }
 });
 
+var DeadLink = React.createClass({
+
+  onClick: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    if( this.props.onClick ) {
+      this.props.onClick(e);
+    }
+  },
+
+  render: function() {
+    return (<a href="#" {...this.props}>{this.props.children}</a>);
+  }
+});
+
 var ExternalLink = React.createClass({
 
   render: function() {
@@ -63,6 +78,7 @@ var AddTrackbackPopup = React.createClass({
 module.exports = {
   AddTrackbackPopup,
   CloseButton,
+  DeadLink,
   ExternalLink,
   UploadLink
 };

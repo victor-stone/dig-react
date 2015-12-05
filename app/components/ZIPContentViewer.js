@@ -4,8 +4,7 @@ import AB     from './ActionButtons';
 import events from '../models/events';
 
 import { StoreEvents }      from '../mixins';
-import { TagString,
-         browserScripts }   from '../unicorns';
+import { TagString }        from '../unicorns';
 
 const UploadLink = AB.UploadLink;
 
@@ -22,22 +21,6 @@ const ZIPLink = React.createClass({
   },
 });
 
-const ZIPHashLink = React.createClass({
-  
-  scroller: function(hash) {
-    return function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      browserScripts.scrollToHash(hash);
-    };
-  },
-
-  render: function() {
-    var cls  = 'btn btn-info btn-lg hidden-xs hidden-sm ';
-    var href = '#zip-' + this.props.model.id;
-    return (<a className={cls} href={href} onClick={this.scroller(href)} ><Glyph fixed icon="info" /></a>);
-  },
-});
 
 function ZIPFiles(props) {
 
@@ -116,7 +99,6 @@ const ZIPContentViewer = React.createClass({
 });
 
 ZIPContentViewer.ZIPLink     = ZIPLink;
-ZIPContentViewer.ZIPHashLink = ZIPHashLink;
 ZIPContentViewer.ZIPFiles    = ZIPFiles;
 
 module.exports = ZIPContentViewer;

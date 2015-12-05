@@ -4,6 +4,7 @@ import ActionButtons from './ActionButtons';
 import AudioPlayer from './AudioPlayer';
 import Banner from './Banner';
 import BPM from './BPM';
+import DidYouMean from './DidYouMean';
 import DigDeep from './DigDeep';
 import DigFooter from './DigFooter';
 import DigHeader from './DigHeader';
@@ -28,11 +29,13 @@ import People from './People';
 import QueryOptions from './QueryOptions';
 import RemixQueryOptions from './RemixQueryOptions';
 import SearchBox from './SearchBox';
+import SearchHeader from './SearchHeader';
 import SharePopup from './SharePopup';
 import StemsBrowser from './StemsBrowser';
 import StemsFooter from './StemsFooter';
 import StemsHeader from './StemsHeader';
 import StemsList from './StemsList';
+import StemsPeople from './StemsPeople';
 import StemsQueryOptions from './StemsQueryOptions';
 import StemsTags from './StemsTags';
 import StemsUpload from './StemsUpload';
@@ -48,6 +51,7 @@ module.exports = {
     AudioPlayer,
     Banner,
     BPM,
+    DidYouMean,
     DigDeep,
     DigFooter,
     DigHeader,
@@ -72,11 +76,13 @@ module.exports = {
     QueryOptions,
     RemixQueryOptions,
     SearchBox,
+    SearchHeader,
     SharePopup,
     StemsBrowser,
     StemsFooter,
     StemsHeader,
     StemsList,
+    StemsPeople,
     StemsQueryOptions,
     StemsTags,
     StemsUpload,

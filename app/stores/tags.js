@@ -74,19 +74,21 @@ class Tags extends Query {
     return rsvp.hash(results);
   }
   
-  searchTags(params) {
-    params.dataview = 'tags';
-    params.f = 'js';
-    return this.query(params).then( serialize( ccmixter.Tag ) );
+  searchTags(tags) {
+    var t = (new TagString(tags)).toArray();
+    if( t.length === 0 ) {
+      return rsvp.resolve([]);
+    }
+    var r = new RegExp('(' + t.join('|') + ')');
+    return this.remixCategories().then( cats => {
+      return this._contactCats(cats).filter( t => t.id.match(r) );
+    });
   }
 
   sampleCategories() {
     return this.categories( REMIX_CATEGORY_NAMES, 'sample', MIN_SAMPLE_TAG_PAIR )
       .then( cats => {
-          var allTags = [];
-          for( var k in cats ) {
-            allTags = allTags.concat(cats[k]);
-          }
+          var allTags = this._contactCats(cats);
           allTags.sort( function(a,b) { return a.id > b.id ? SORT_UP : SORT_DOWN; } );
           return allTags;
         });
@@ -117,6 +119,14 @@ class Tags extends Query {
 
   _putCache(key,tags) {
     _tagsCache[ key ] = tags;
+  }
+  
+  _contactCats(cats) {
+    var allTags = [];
+    for( var k in cats ) {
+      allTags = allTags.concat(cats[k]);
+    }
+    return allTags;
   }
 }
 

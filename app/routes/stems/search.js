@@ -25,7 +25,9 @@ var SearchHead = React.createClass({
 
 });
 
-
+function NoSearchHits() {
+  return (<div className="well no-search-hits">{"wups - no matches for that search"}</div>);
+}
 function stemsSearch(props) {
 
   var store = props.store;
@@ -38,7 +40,7 @@ function stemsSearch(props) {
           <div className="row">
             <div className="col-md-6 stems-listing-widget col-md-offset-3">
               <Paging store={store} disableBumping />
-              <StemsList store={store} />   
+              <StemsList store={store} noHitsComp={NoSearchHits} />   
             </div>
             <div className="col-md-2">
               <ZIPContentViewer store={store} />

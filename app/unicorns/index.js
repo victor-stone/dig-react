@@ -44,9 +44,17 @@ if( typeof Array.prototype.find === 'undefined' ) {
 if( typeof Array.prototype.filter === 'undefined' ) {
   Array.prototype.filter = function(cb) {
     var results = [];
-    for( var i = 0; i < this.length; i++ ) {
-      if( cb( this[i], i ) ) {
-        results.push(this[i]);
+    if( cb instanceof RegExp ) {
+      for( var n = 0; n < this.length; n++ ) {
+        if( this[n].match(cb) ) {
+          results.push(this[n]);
+        }
+      }
+    } else {
+      for( var i = 0; i < this.length; i++ ) {
+        if( cb( this[i], i ) ) {
+          results.push(this[i]);
+        }
       }
     }
     return results;

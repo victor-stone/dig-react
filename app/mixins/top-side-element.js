@@ -20,6 +20,7 @@ var TopSideElement = {
     var $e = $(ReactDOM.findDOMNode(this));
     if( this.elementTop === null ) {
       this.elementTop = $e.offset().top;      
+      $e.css( { position: 'fixed' } );
     }
     var scrollTop = $(window).scrollTop();    
     var margin = scrollTop > this.elementTop ? this.elementTop : scrollTop;

@@ -20,8 +20,9 @@ var stems = React.createClass({
 stems.title = 'Samples Browser';
 
 stems.store = function(params,queryParams) {
-  var qparams = mergeParams( { type: 'any' }, qc.samples, queryParams );
-  return Samples.storeFromQuery(qparams,qc.samples);
+  var opts    = mergeParams( {type: 'any' }, qc.samples );
+  var qparams = mergeParams( { }, opts, queryParams );
+  return Samples.storeFromQuery(qparams,opts);
 };
 
 module.exports = stems;

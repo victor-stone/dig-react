@@ -1,5 +1,9 @@
 /* stems list css */
 
+.row.stems-browser-widget {
+  padding-top: 65px;
+}
+
 .stems-browser {
   margin-left: -15px; /* make up for container-fluid */
 }
@@ -10,7 +14,6 @@
   padding: 9px;
   background-color: rgba(246, 249, 237, 0.22);
   margin-bottom: 30px;
-  margin-top: 60px;
 }
 
 .stems-listing-widget .no-hit-suggestion {
@@ -20,24 +23,6 @@
 
 .stems-listing-widget .no-hit-suggestion .empty-query > ul > li {
   margin-bottom: 20px;
-}
-
-.stems-browser .stems-files {
-  margin-top: 8px;
-}
-
-.stems-browser .stems-files > li {
-  cursor: default;
-  display: inline-block;
-  background-color: #eee;
-  border-radius: 4px;
-  min-width: 120px;
-  width: 40%;
-  overflow: hidden;
-  white-space: nowrap;
-  margin-right: 14px;
-  margin-bottom: 8px;
-  padding-right: 7px;
 }
 
 .stems-browser .stems-listing > li .stem-name {
@@ -53,6 +38,7 @@
 .stems-browser .stems-listing > li .stem-artist {
   font-size: 13px;
   color: #9d9d9d;
+  margin-left: 15px;
 }
 
 .stems-browser .stems-listing > li .bpm {
@@ -66,75 +52,27 @@
   margin-right: 4px;
 }
 
-.stems-browser .stems-files > li .ext {
-   text-transform: uppercase;
-   background-color: #FFF;
-   padding: 2px;
-   border-radius: 3px;
-   font-size: 10px;
-   color: black;
-   box-shadow: 1px 1px #666;
-   margin-right: 6px;
-   margin-left: 4px;
-}
 
-.stems-browser .stems-files > li .nic {
-   text-transform: lowercase;
-   font-size: 12px;
-   max-width: 87px;
-   display: inline-block;
-   overflow: hidden;
-   vertical-align: middle;
-}
-
-.stems-browser .stems-files > li > a.btn-lg,
-.stems-browser .stems-files > li > span > button.sm-download {
-  padding: 4px;
-  font-size: 14px;
-}
-
-/* download button */
-.stems-browser .stems-files > li > span:nth-child(1) {
-  display: inline-block;
-  float: right;
-}
-
-/* nic name */
-.stems-browsers .stems-files > li > span:nth-child(3) {
-  min-width: 30px;
-  display: inline-block;
-}
-
-.stems-browser .stems-files > li.hi-hi {
-  font-weight: bold;
-}
-
-.stems-browser .stems-files > li.hi-hi > span div {
-  font-weight: normal;
-}
-
-.stems-browser .stems-files > li.lo-hi {
-}
-
-.stems-browser .zip-contents {
+.stems-browser .zip-contents ,
+.stems-browser .zip-contents .zip-files {
   padding: 0px;
   margin-top: 12px;
 }
 
-.stems-browser .zip-contents > li.hi-hi {
+.stems-browser .zip-contents > .zip-files > li.hi-hi {
   background-color: white;
   font-weight:normal;
   border: 1px solid  green;
 }
 
-.stems-browser .zip-contents > li {
+.stems-browser .zip-contents > .zip-files > li {
   white-space: pre;
   font-size: 10px;
   font-family: "Lucida Console", Monaco, monospace;
   margin-bottom: 5px;
 }
 
-.stems-browser .zip-contents > li.head {
+.stems-browser .zip-contents > .zip-files > li.head {
   font-weight: bold;
   font-size: 16px;
 }
@@ -146,10 +84,6 @@
 }
 
 .stems-listing {
-  padding-right: 20px;
-}
-
-li.stem-files-line a.btn.btn-info {
-  background: #3CA73C;
+  padding: 0px 20px 0px 0px;
 }
 

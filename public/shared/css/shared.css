@@ -45,6 +45,13 @@ span.light-color a {
   width: 100%;
 }
 
+.img-circle {
+  box-shadow: 4px 4px 8px #999;
+  margin-right: 15px;
+  margin-bottom: 20px;
+}
+
+
 /* modals can be embedded in playlists so these
    need to get reset
    TODO: something other than this
@@ -54,22 +61,6 @@ span.light-color a {
   font-size: 14px;
 }
 
-.page-banner {
-  text-align: center;
-  background-color: antiquewhite;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-.page-banner a {
-  display: inline-block;
-  margin: 0px 8px;
-  font-weight: bold;
-  border-radius: 3px;
-  border: 1px solid;
-  padding: 0px 4px;
-
-}
 
 .required::after {
   content: '*';
@@ -114,86 +105,6 @@ span.light-color a {
   color: red;
 }
 
-.brand-glyph {
-  background-image: url('../images/brands.png');
-  background-repeat: no-repeat;
-  display: inline-block;
-  width: 100px;
-  height: 50px;
-}
-
-.artistech {
-  background-position: 0px -50px;
-}
-
-.artistech:hover {
-  background-position: 0px 0px;
-}
-
-.cc {
-  background-position: -100px -50px;
-}
-
-.cc:hover {
-  background-position: -100px 0px;
-}
-
-.ccmixter {
-  background-position: -200px -50px;
-}
-
-.ccmixter:hover {
-  background-position: -200px 0px;
-}
-
-.tunetrack {
-  background-position: -300px -50px;
-}
-
-.tunetrack:hover {
-  background-position: -300px 0px;
-}
-
-.gso-links .panel {
-  background-color: white;
-  border-radius: 18px;
-  margin-top: 8px;
-  color: #2B3E66;
-}
-
-.gso-links .panel-title {
-  font-size: 30px;
-  height: 135px;
-  padding-top: 14px;
-  font-weight: normal;
-  width: 38%;
-  padding-left: 20px;
-}
-
-.gso-links .panel-body {
-  padding-bottom: 30px;
-  font-size: 18px;
-  min-height: 150px;
-  padding-left: 40%;
-  padding-top: 44px;
-  font-weight: normal;
-}
-
-.gso-links .panel-footer {
-  background-color: transparent;
-  border-top: 1px solid #aaa;
-}
-
-.gso-links {
-  background-color: #EEE;
-  margin-bottom: 0px;
-}
-
-.gso-links.panel-group {
-  padding-top: 84px;
-  padding-bottom: 50px;
-
-}
 
 .paging {
   position: fixed;

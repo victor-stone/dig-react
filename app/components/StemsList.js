@@ -3,13 +3,17 @@ import DownloadPopup    from './DownloadPopup';
 import ZIPContentViewer from './ZIPContentViewer';
 import AudioPlayer      from './AudioPlayer';
 import People           from './People';
-import { UploadLink }   from './ActionButtons';
+import Glyph            from './Glyph';
+import Link             from './Link';
 import env              from '../services/env';
 import { NoTagHits }    from './Tags';
 import { TagString }    from '../unicorns';
 import events           from '../models/events';
-import {  QueryParamTracker,
+import {  ModelTracker,
           SelectedTagsTracker  } from '../mixins';
+import { DeadLink }     from './ActionButtons';
+
+//const SLIDE_DELAY = 1700;
 
 const StemsFiles = React.createClass({
 
@@ -48,15 +52,21 @@ const StemsFiles = React.createClass({
   },
 
   oneFile: function(f,cls,model) {
-      var playable = f.isMP3 || (f.isFLAC && env.supportFLAC);
       cls = `stem-files-line ${cls}`;
 
       return (
         <li key={f.id} className={cls} >
           <DownloadPopup fixed btnClass="sm-download" model={model} file={f} />
           {" "}
-          {playable
+          {f.isMP3
             ? <AudioPlayer.PlayButton fixed model={f} />
+            : null
+          }
+          {f.isFLAC
+            ? (env.supportFLAC
+                ? <AudioPlayer.PlayButton fixed model={f} />
+                : <DeadLink className="btn btn-info btn-lg disabled"><Glyph icon="play" fixed /></DeadLink>
+              )
             : null
           }
           {f.isZIP
@@ -82,25 +92,91 @@ const StemsFiles = React.createClass({
   }
 });
 
+function StemDetailTags(props) {
+  var tags = props.tags.map( t => 
+      (<Link key={t} 
+             href={'/stems?tags=' + t} 
+             className="btn btn-success btn-xs btn-tag light-on-hover"
+       >
+          <Glyph icon="tag" />
+          {" "}
+          {t}
+       </Link>) );
+  return( <div className="upload-tags" >{tags}</div> );
+}
+
+const StemDetail = React.createClass({
+
+  getInitialState: function() {
+    return { model: this.props.model };
+  },
+
+  componentDidMount: function() {
+   var $e = $('#upload-detail-' + this.state.model.id );
+   $e.slideDown('slow');
+  },
+
+  render: function() {
+    var model = this.state.model;
+    var id    = 'upload-detail-' + model.id;
+
+    return (<div className="stems-detail" id={id} >
+        <StemDetailTags tags={model.userTags} />
+      </div>);
+  }
+});
+
 const StemsList = React.createClass({
 
-  mixins: [QueryParamTracker,SelectedTagsTracker],
+  mixins: [ ModelTracker, SelectedTagsTracker],
 
   getDefaultProps: function() {
     return { skipUser: false,
              noHitsComp: NoTagHits };
   },
  
-  stateFromParams: function(queryParams) {
+  stateFromStore: function(store) {
+    var model       = store.model;
+    var queryParams = model.queryParams;
+    var expanded    = 0;
+    var searchTerms = null;
     if( queryParams.searchp ) {
-      return { searchTerms: new TagString(queryParams.searchp.replace(/\s/g,',')) };
+      searchTerms = new TagString(queryParams.searchp.replace(/\s/g,','));
     }
-    return { searchTerms: null };
+
+    return { model, expanded, searchTerms };
+  },
+
+  /* globals $ */
+  onNameClick: function(id) {
+    var _this = this;
+
+    return function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if( _this.state.expanded ) {
+        var $e = $('#upload-detail-' + _this.state.expanded );
+        if( _this.state.expanded === id ) {
+          if ($e.is(':hidden')) {
+            $e.slideDown('slow');
+          } else {
+            $e.slideUp('fast');
+          }
+          return;
+        } else {
+          $e.slideUp('fast', function() {
+            _this.setState( { expanded: id } );
+          });
+          return;
+        }
+      }
+      _this.setState( { expanded: id } );
+    };
   },
 
   render: function() {
     var store = this.props.store;
-    var model = store.model;
+    var model = this.state.model;
 
     if( !model || !model.total ) {
       if( this.props.noHitsComp ) {
@@ -120,9 +196,18 @@ const StemsList = React.createClass({
           {model.playlist.map( (u,i) => {
             return (<li key={i}>
                       {u.bpm ? <span className="bpm">{u.bpm}</span> : null}
-                      {fo ? null : <UploadLink model={u} />}
+                      {fo ? null : <a href="#" onClick={this.onNameClick(u.id)}>{u.name}</a>}
                       {nn ? null : <People.Link model={u.artist} className="stem-artist" />}
-                      <StemsFiles model={u} store={store} tags={tags} searchTerms={searchp} />
+                      <StemsFiles 
+                        model={u} 
+                        store={store} 
+                        tags={tags} 
+                        searchTerms={searchp} 
+                      />
+                      {this.state.expanded === u.id
+                        ? <StemDetail model={u} />
+                        : null
+                      }
                   </li>); })
           }
         </ul>

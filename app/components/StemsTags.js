@@ -12,7 +12,7 @@ import { StoreEvents,
          SelectedTagsTracker }  from '../mixins';
 
 const MIN_TAG_COUNT = 20;
-const FADE_IN_DELAY = 800;
+const FADE_IN_DELAY = 1800;
 const FADE_IN_SPEED = 1000;
 
 const SelectedTagSection = React.createClass({
@@ -40,12 +40,12 @@ const SelectedTagSection = React.createClass({
 
   render: function() {
     var hasTags = this.state.selectedTags.getLength() > 0;
-    var style = { display: 'none' };
+    var style   = { display: 'none' };
 
     return (
-        <div className="selected-tags">
+        <div className="selected-tags" >
           {hasTags
-            ? <Tags.SelectedTags {...this.props}/>
+            ? <Tags.SelectedTags {...this.props}  />
             : <div className="no-selected-tags" style={style}>{"select tags to get started"}</div>
           }
         </div>
