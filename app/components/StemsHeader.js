@@ -19,7 +19,7 @@ const StemsHeader = React.createClass({
   render: function() {
 
     return  (        
-        <nav className="navbar navbar-inverse">
+        <nav className="navbar navbar-inverse top-navbar">
           <div className="container-fluid">
             <NavbarHeader title="stems.ccMixter" />
             <div className="collapse navbar-collapse" id="dig-collapse">

@@ -113,13 +113,9 @@ class Router extends Eventer
           this.ignoreEvents = true;
           if( q ) {
             var qp = querystring.parse(q.substr(1));
-            store.applyURIQuery(qp).finally( () => {
-              this.ignoreEvents = false;
-            });
+            store.applyURIQuery(qp).finally( this._postInRouteNavigate.bind(this) );
           } else {
-            store.applyURIDefault().finally( () => {
-              this.ignoreEvents = false;
-            });
+            store.applyURIDefault().finally( this._postInRouteNavigate.bind(this) );
           }
 
     } else {
@@ -160,6 +156,7 @@ class Router extends Eventer
         str = '?' + str;
       }
       this.setBrowserAddressBar( str );
+      this._postInRouteNavigate();
     }    
   }
 
@@ -170,6 +167,11 @@ class Router extends Eventer
     if( env.routes ) {
       this.addRoutes( env.routes, env.rewriteRules );
     }
+  }
+
+  _postInRouteNavigate() {
+    this.ignoreEvents = false;
+    this.emit( events.NAVIGATE_TO_THIS );
   }
 
 }

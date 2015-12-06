@@ -1,0 +1,19 @@
+/* stems zip file css */
+
+
+ul.zip-files {
+  padding: 0px;
+  margin-top: 12px;
+}
+
+ul.zip-files > li.hi-hi {
+  color: orangered;
+  font-weight:normal;
+}
+
+ul.zip-files > li {
+  white-space: pre;
+  font-size: 14px;
+  font-family: "Lucida Console", Monaco, monospace;
+  margin-bottom: 5px;
+}

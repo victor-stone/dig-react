@@ -1,130 +1,12 @@
 import React            from 'react';
-import DownloadPopup    from './DownloadPopup';
-import ZIPContentViewer from './ZIPContentViewer';
-import AudioPlayer      from './AudioPlayer';
 import People           from './People';
-import Glyph            from './Glyph';
-import Link             from './Link';
-import env              from '../services/env';
+import StemsFiles       from './StemsFiles';
+import StemsDetail      from './StemsDetail';
 import { NoTagHits }    from './Tags';
 import { TagString }    from '../unicorns';
-import events           from '../models/events';
-import {  ModelTracker,
-          SelectedTagsTracker  } from '../mixins';
-import { DeadLink }     from './ActionButtons';
-
-//const SLIDE_DELAY = 1700;
-
-const StemsFiles = React.createClass({
-
-  highlights(tags) {
-    if( !tags || tags.isEmpty() ) {
-      return {};
-    }
-    var highlights = {};
-    var files = this.props.model.files;
-    if( files.length === 1 ) {
-      highlights[files[0].id] = 'hi-hi';
-      return highlights;
-    }
-    
-    var atLeastOneHit = false;
-    files.forEach( f => {
-      var found = (f.nicName && tags.anyInString(f.nicName)) ||
-                  (f.zipContents && tags.anyInArray(f.zipContents) );
-
-      atLeastOneHit = atLeastOneHit || (found !== null);
-      highlights[f.id] = found ? 'hi-hi' : 'lo-hi';
-    });
-
-    if( !atLeastOneHit ) {
-      return {};
-    }
-
-    return highlights;
-  },
-
-  onZIPClick: function(file) {
-    // the exsiting 'upload' property
-    // is bare-bones so let's fill it out
-    file.upload = this.props.model;
-    this.props.store.emit(events.INSPECT_ZIP,file,this.props.store);
-  },
-
-  oneFile: function(f,cls,model) {
-      cls = `stem-files-line ${cls}`;
-
-      return (
-        <li key={f.id} className={cls} >
-          <DownloadPopup fixed btnClass="sm-download" model={model} file={f} />
-          {" "}
-          {f.isMP3
-            ? <AudioPlayer.PlayButton fixed model={f} />
-            : null
-          }
-          {f.isFLAC
-            ? (env.supportFLAC
-                ? <AudioPlayer.PlayButton fixed model={f} />
-                : <DeadLink className="btn btn-info btn-lg disabled"><Glyph icon="play" fixed /></DeadLink>
-              )
-            : null
-          }
-          {f.isZIP
-            ? <ZIPContentViewer.ZIPLink model={f} onClick={this.onZIPClick} />
-            : null
-          }
-          {" "}
-          <span className="ext">{f.extension}</span>
-          {" "}
-          <span className="nic">{f.nicName}</span>
-        </li>);
-  },
-
-  render: function() {
-    var files = this.props.model.files;
-    var highs = this.highlights(this.props.searchTerms || this.props.tags);
-
-    return(
-        <ul className="stems-files">
-          {files.map( f => this.oneFile(f,highs[f.id]||'',this.props.model) )}
-        </ul>
-      );
-  }
-});
-
-function StemDetailTags(props) {
-  var tags = props.tags.map( t => 
-      (<Link key={t} 
-             href={'/stems?tags=' + t} 
-             className="btn btn-success btn-xs btn-tag light-on-hover"
-       >
-          <Glyph icon="tag" />
-          {" "}
-          {t}
-       </Link>) );
-  return( <div className="upload-tags" >{tags}</div> );
-}
-
-const StemDetail = React.createClass({
-
-  getInitialState: function() {
-    return { model: this.props.model };
-  },
-
-  componentDidMount: function() {
-   var $e = $('#upload-detail-' + this.state.model.id );
-   $e.slideDown('slow');
-  },
-
-  render: function() {
-    var model = this.state.model;
-    var id    = 'upload-detail-' + model.id;
-
-    return (<div className="stems-detail" id={id} >
-        <StemDetailTags tags={model.userTags} />
-      </div>);
-  }
-});
+import { ModelTracker,
+         SelectedTagsTracker  } from '../mixins';
+import { CloseButton }          from './ActionButtons';
 
 const StemsList = React.createClass({
 
@@ -174,6 +56,12 @@ const StemsList = React.createClass({
     };
   },
 
+  onClose: function() {
+    var qp = this.state.model.queryParams;
+    delete qp['ids'];
+    this.props.store.applyHardParams(qp);
+  },
+
   render: function() {
     var store = this.props.store;
     var model = this.state.model;
@@ -187,6 +75,7 @@ const StemsList = React.createClass({
     
     var fo = this.props.filesOnly;
     var nn = fo || this.props.namesOnly;
+    var fl = !!model.queryParams.ids;
 
     var tags    = this.state.selectedTags;
     var searchp = this.state.searchTerms;
@@ -195,8 +84,9 @@ const StemsList = React.createClass({
         <ul className="stems-listing">
           {model.playlist.map( (u,i) => {
             return (<li key={i}>
+                      {fl ? <CloseButton className="close" onClick={this.onClose} /> : null}
                       {u.bpm ? <span className="bpm">{u.bpm}</span> : null}
-                      {fo ? null : <a href="#" onClick={this.onNameClick(u.id)}>{u.name}</a>}
+                      {fo ? null : <a href="#" className="stem-name" onClick={this.onNameClick(u.id)}>{u.name}</a>}
                       {nn ? null : <People.Link model={u.artist} className="stem-artist" />}
                       <StemsFiles 
                         model={u} 
@@ -204,8 +94,8 @@ const StemsList = React.createClass({
                         tags={tags} 
                         searchTerms={searchp} 
                       />
-                      {this.state.expanded === u.id
-                        ? <StemDetail model={u} />
+                      {fl || this.state.expanded === u.id
+                        ? <StemsDetail model={u} store={store} />
                         : null
                       }
                   </li>); })

@@ -17,7 +17,11 @@ function scrollToHash(hash) {
   }
 }
 
+function scrollToTop() {
+  $('html,body').animate( { scrollTop: 0 }, {duration: 'fast' } );
+}
 
 module.exports = {
-  scrollToHash
+  scrollToHash,
+  scrollToTop
 };

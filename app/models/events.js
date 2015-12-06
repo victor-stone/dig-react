@@ -3,6 +3,7 @@ var Events = {
   ERROR:             'error',
   LOADING:            'loading',
   NAVIGATE_TO:        'navigate_to',
+  NAVIGATE_TO_THIS:   'navigate_to_this',
   NOW_PLAYING:        'now_playing',
   CONTROLS:           'controls',
   POSITION:           'position',

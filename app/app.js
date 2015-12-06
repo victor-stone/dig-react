@@ -21,8 +21,9 @@ const App = React.createClass({
       this.setState(this.props);
     } else {
 
-      ajaxAdapter.on( events.LOADING,     this.onLoading );
-      router     .on( events.NAVIGATE_TO, this.onNavigateTo );
+      ajaxAdapter.on( events.LOADING,          this.onLoading );
+      router     .on( events.NAVIGATE_TO,      this.onNavigateTo );
+      router     .on( events.NAVIGATE_TO_THIS, this.onNavigateToThis );
 
       if( !this.state.component ) {
         router.updateURL();
@@ -46,7 +47,13 @@ const App = React.createClass({
   },
 
   onNavigateTo: function(specs) {
-    this.setState( specs );
+    this.setState( specs, this.onNavigateToThis );
+  },
+
+  onNavigateToThis: function() {
+    if( !this.state.hash ) {
+      browserScripts.scrollToTop();
+    }
   },
 
   onLoading: function(loading) {
@@ -62,11 +69,10 @@ const App = React.createClass({
   scrollToHash: function() {
 
     var hash = this.state.hash;
-    if( !hash ) {
-      return;
+    if( hash ) {
+      browserScripts.scrollToHash(hash);
     }
 
-    browserScripts.scrollToHash(hash);
   },
 
   render: function() {

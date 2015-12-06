@@ -60,6 +60,7 @@
   width: 100%;
   text-align: center;
   z-index: 200;
+  position: absolute;
 }
 
 .stems-browser .selected-tags .btn-tag {

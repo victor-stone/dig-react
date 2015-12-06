@@ -6,7 +6,6 @@ import Upload  from '../stores/upload';
 import { LicenseInfoLink, 
          LicenseInfo } from './LicenseInfo';
 
-
 var DownloadPopup = React.createClass({
 
   getInitialState: function() {
@@ -157,7 +156,7 @@ var DownloadPopup = React.createClass({
     var popup = this.state.view.showModal ? this.genPopup() : null;
 
     return (
-      <span>
+      <span className="download-button-container">
         <button className={cls} onClick={this.handleShowModal} ><Glyph fixed={fixed} sz={sz} icon="cloud-download" />{this.props.children}</button>
         {popup}
       </span>

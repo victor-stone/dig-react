@@ -18,9 +18,17 @@ var TopSideElement = {
 
   onWindowScroll: function() {
     var $e = $(ReactDOM.findDOMNode(this));
-    if( this.elementTop === null ) {
-      this.elementTop = $e.offset().top;      
-      $e.css( { position: 'fixed' } );
+    if( this.props.keepBelow ) {
+      if( this.elementTop === null ) {
+        $e.css( { position: 'fixed' } );
+      }
+      var $header = $(this.props.keepBelow);
+      this.elementTop = $header.offset().top + $header.outerHeight();
+    } else {
+      if( this.elementTop === null ) {
+        this.elementTop = $e.offset().top;      
+        $e.css( { position: 'fixed' } );
+      }
     }
     var scrollTop = $(window).scrollTop();    
     var margin = scrollTop > this.elementTop ? this.elementTop : scrollTop;

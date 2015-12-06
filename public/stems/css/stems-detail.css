@@ -1,0 +1,27 @@
+/* stems detail css */
+
+.stems-detail {
+  display: none;
+  margin:  7px;
+  padding: 4px;
+  border: 1px solid green;
+  border-radius: 5px;
+}
+
+.stems-detail {
+  background-image: linear-gradient(to bottom, rgba(255,235,59,0.27) 0%, rgba(247,234,57,0.2) 100%);
+}
+
+.stems-detail .upload-tags {
+  margin: 12px 4px;
+}
+
+
+.stems-detail .upload-tags .btn-tag {
+  margin: 4px;
+}
+
+.stems-detail .ccmixter-link {
+  float: right;
+  margin: 12px;
+}

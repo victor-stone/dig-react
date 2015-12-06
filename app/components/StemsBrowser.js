@@ -7,6 +7,33 @@ import StemsQueryOptions from './StemsQueryOptions';
 import { SelectedTagSection,
          StemsTagList }       from './StemsTags';
 
+import { BoundingElement }    from '../mixins';
+
+const StemsBrowserTools = React.createClass({
+
+  mixins: [ BoundingElement ],
+
+  getDefaultProps: function() {
+    return { 
+        keepAbove: '.footer',
+        keepBelow: '.selected-tags'
+      };
+  },
+  
+  render: function() {
+    var store = this.props.store;
+
+    return (
+        <div className="stems-fixed-column">
+          <Paging store={store} disableBumping />
+          <StemsQueryOptions store={store} />
+          <ZIPContentViewer store={store} />
+        </div>
+      );    
+  }
+
+});
+
 function StemsBrowser(props) {
     var store = props.store;
 
@@ -22,9 +49,7 @@ function StemsBrowser(props) {
               <StemsList store={store} />   
             </div>
             <div className="col-md-2">
-              <Paging store={store} disableBumping />
-              <StemsQueryOptions store={store} />
-              <ZIPContentViewer store={store} />
+              <StemsBrowserTools store={store} />
             </div>
           </div>
         </div>

@@ -45,18 +45,27 @@
    vertical-align: middle;
 }
 
-.stems-browser .stems-files > li > a.btn-lg,
-.stems-browser .stems-files > li > span > button.sm-download {
-  padding: 4px;
-  font-size: 14px;
-}
-
-/* download button */
-.stems-browser .stems-files > li > span:nth-child(1) {
+.stems-browser .stems-files > li > span.download-button-container {
   display: inline-block;
   float: right;
 }
 
+.stems-browser .stems-files > li > a.play-disabled,
+.stems-browser .stems-files > li > a.play-button,
+.stems-browser .stems-files > li > span.zip-link-container        > a.zip-link,
+.stems-browser .stems-files > li > span.download-button-container > button.sm-download {
+  padding: 4px;
+  font-size: 14px;
+}
+
+.stems-browser .stems-files > li > a.play-button {
+  background: #3CA73C;
+}
+
+.stems-browser .stems-files > li > a.play-disabled {
+  background: #999;
+  border: 0px;
+}
 
 .stems-browser .stems-files > li.hi-hi {
   font-weight: bold;
@@ -69,17 +78,4 @@
 .stems-browser .stems-files > li.lo-hi {
 }
 
-/* play button */
-li.stem-files-line > a.btn.btn-info {
-  background: #3CA73C;
-}
 
-li.stem-files-line > a.btn.btn-info.disabled {
-  background: #999;
-  border: 0px;
-}
-
-
-.stems-detail {
-  display: none;
-}

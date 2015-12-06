@@ -32,18 +32,19 @@ import SearchBox from './SearchBox';
 import SearchHeader from './SearchHeader';
 import SharePopup from './SharePopup';
 import StemsBrowser from './StemsBrowser';
+import StemsDetail from './StemsDetail';
+import StemsFiles from './StemsFiles';
 import StemsFooter from './StemsFooter';
 import StemsHeader from './StemsHeader';
 import StemsList from './StemsList';
 import StemsPeople from './StemsPeople';
 import StemsQueryOptions from './StemsQueryOptions';
 import StemsTags from './StemsTags';
-import StemsUpload from './StemsUpload';
 import Tags from './Tags';
 import TitleSetter from './TitleSetter';
 import Topic from './Topic';
 import TrackbackPopup from './TrackbackPopup';
-import ZIPContentViewer from './ZIPContentViewer';
+import ZIPContentPopup from './ZIPContentPopup';
 
 
 module.exports = {
@@ -79,17 +80,18 @@ module.exports = {
     SearchHeader,
     SharePopup,
     StemsBrowser,
+    StemsDetail,
+    StemsFiles,
     StemsFooter,
     StemsHeader,
     StemsList,
     StemsPeople,
     StemsQueryOptions,
     StemsTags,
-    StemsUpload,
     Tags,
     TitleSetter,
     Topic,
     TrackbackPopup,
-    ZIPContentViewer 
+    ZIPContentPopup 
 };
 

@@ -19,6 +19,10 @@ const SelectedTagSection = React.createClass({
 
   mixins: [ TopSideElement, SelectedTagsTracker ],
 
+  getDefaultProps: function() {
+    return { keepBelow: 'nav.top-navbar' };
+  },
+  
   componentDidMount: function() {
     this.doFadeAnimation();
   },

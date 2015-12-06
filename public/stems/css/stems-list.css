@@ -25,9 +25,19 @@
   margin-bottom: 20px;
 }
 
+.stems-browser .stems-listing > li > .close {
+  float: right;
+  color: white;
+  padding: 0px 4px;
+  background: green;
+  opacity: .8;
+  border-radius: 5px;
+}
+
 .stems-browser .stems-listing > li .stem-name {
   margin-right: 15px;
-  color: #9d9d9d;
+  color: black;
+  font-weight: 500;
 }
 
 .stems-browser .stems-listing > li .stem-artist:hover,
@@ -53,34 +63,9 @@
 }
 
 
-.stems-browser .zip-contents ,
-.stems-browser .zip-contents .zip-files {
+.stems-browser .zip-contents  {
   padding: 0px;
   margin-top: 12px;
-}
-
-.stems-browser .zip-contents > .zip-files > li.hi-hi {
-  background-color: white;
-  font-weight:normal;
-  border: 1px solid  green;
-}
-
-.stems-browser .zip-contents > .zip-files > li {
-  white-space: pre;
-  font-size: 10px;
-  font-family: "Lucida Console", Monaco, monospace;
-  margin-bottom: 5px;
-}
-
-.stems-browser .zip-contents > .zip-files > li.head {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.stems-browser .zip-contents > li.sub-head {
-  border-bottom: 1px solid #999;
-  font-size: 13px;
-  margin-bottom: 12px;
 }
 
 .stems-listing {
