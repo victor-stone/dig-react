@@ -9,7 +9,7 @@ import { Paging,
          DidYouMean }     from '../../components';
 
 function NoHits() {
-  return(<div className="well">{"wups - can't find anything that matches that!"}</div>);
+  return(<div ></div>);
 }
 
 function search(props) {

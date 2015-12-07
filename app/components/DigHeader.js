@@ -10,7 +10,7 @@ import serviceLookup from '../services';
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">
       <li>
-        <a href="http://ccmixter.org/keep-ccmixter-open-and-free"><i className="fa fa-heart"></i>{" Donate(!)"}</a>
+        <a href="http://ccmixter.org/keep-ccmixter-open-and-free" target="_blank"><i className="fa fa-heart"></i>{" Donate"}</a>
       </li>
       <li>
         <Link href="/#howitworks">{"how it works"}</Link>
@@ -19,7 +19,7 @@ const NavbarRight = (
         <Link href="/licenses">{"licenses"}</Link>
       </li>
       <li className="hidden-xs hidden-sm">
-        <Link href="/dig">{"tag search "}<Glyph icon="tags" /></Link>
+        <Link href="/dig"><Glyph icon="tags" />{" tag search"}</Link>
       </li>
       <li>
         <a  href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{"featured "}<Glyph icon="chevron-down" /></a>

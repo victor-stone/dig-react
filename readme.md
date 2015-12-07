@@ -1,6 +1,6 @@
 
 
-This project builds dig.ccmixter.org and pells.ccmixter.org and some admin tools.
+This project builds dig.ccmixter.org, pells.ccmixter.org, stems.ccmixter.org and some admin tools.
 
 ## Build & Run
 
@@ -26,7 +26,7 @@ npm i uglify -g
 ./build --<appname>
 ```
 
-where <appname> is either 'dig' or 'pells'
+where <appname> is either `dig`, `pells` or `stems`
 
 options:
 ```
@@ -52,6 +52,10 @@ and
 node pells
 ```
 
+and 
+```
+node stems
+```
 options:
 
 ```

@@ -1,6 +1,5 @@
 import React            from 'react';
 import StemsList        from './StemsList';
-import ZIPContentViewer from './ZIPContentViewer';
 import Paging           from './Paging';
 import People           from './People';
 
@@ -19,11 +18,10 @@ var StemsPeople = React.createClass({
         <div className="container-fluid stems-browser">
           <div className="row">
             <div className="col-md-6 col-md-offset-3 stems-listing-widget">
-              <Paging store={store} ref="paging" disableBumping />
               <StemsList store={store} namesOnly noHitsComp={NoPeopleSamples} />
             </div>
             <div className="col-md-2">
-              <ZIPContentViewer store={store} />
+              <Paging store={store} ref="paging" disableBumping />
             </div>
           </div>
         </div>

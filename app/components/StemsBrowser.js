@@ -1,7 +1,6 @@
 import React             from 'react';
 import StemsList         from './StemsList';
 import Paging            from './Paging'; 
-import ZIPContentViewer  from './ZIPContentViewer';
 import StemsQueryOptions from './StemsQueryOptions';
 
 import { SelectedTagSection,
@@ -27,7 +26,6 @@ const StemsBrowserTools = React.createClass({
         <div className="stems-fixed-column">
           <Paging store={store} disableBumping />
           <StemsQueryOptions store={store} />
-          <ZIPContentViewer store={store} />
         </div>
       );    
   }

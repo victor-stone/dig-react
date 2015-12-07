@@ -6,7 +6,6 @@ import { mergeParams }    from '../../unicorns';
 
 import {  StemsList,
           Paging,
-          ZIPContentViewer,
           PageHeader }       from '../../components';
 
 import { QueryParamTracker } from '../../mixins';
@@ -39,11 +38,10 @@ function stemsSearch(props) {
         <div className="stems-browser">
           <div className="row">
             <div className="col-md-6 stems-listing-widget col-md-offset-3">
-              <Paging store={store} disableBumping />
               <StemsList store={store} noHitsComp={NoSearchHits} />   
             </div>
             <div className="col-md-2">
-              <ZIPContentViewer store={store} />
+              <Paging store={store} disableBumping />
             </div>
           </div>
         </div>
