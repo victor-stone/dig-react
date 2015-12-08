@@ -5,10 +5,10 @@ import React     from 'react';
 import { LicenseFilter,
          LimitFilter,
          QueryOptionsBox,
-         OptionsWrap } from './QueryOptions';
+         OptionsWrap } from '../QueryOptions';
          
 import { BPMDisplay,
-         BPMSlider   } from './BPM'; 
+         BPMSlider   } from '../BPM'; 
 
 var _StemsQueryOptions = React.createClass({
 

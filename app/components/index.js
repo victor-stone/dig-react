@@ -5,13 +5,9 @@ import AudioPlayer from './AudioPlayer';
 import Banner from './Banner';
 import BPM from './BPM';
 import DidYouMean from './DidYouMean';
-import DigDeep from './DigDeep';
-import DigFooter from './DigFooter';
-import DigHeader from './DigHeader';
-import DigRemixes from './DigRemixes';
+import dig from './dig';
 import DownloadPopup from './DownloadPopup';
 import ErrorDisplay from './ErrorDisplay';
-import FeaturedPage from './FeaturedPage';
 import Footer from './Footer';
 import Glyph from './Glyph';
 import LicenseInfo from './LicenseInfo';
@@ -21,25 +17,17 @@ import Modal from './Modal';
 import NavbarHeader from './NavbarHeader';
 import PageHeader from './PageHeader';
 import Paging from './Paging';
+import pells from './pells';
 import PellsBrowser from './PellsBrowser';
 import PellsFooter from './PellsFooter';
 import PellsHeader from './PellsHeader';
 import PellsQueryOptions from './PellsQueryOptions';
 import People from './People';
 import QueryOptions from './QueryOptions';
-import RemixQueryOptions from './RemixQueryOptions';
 import SearchBox from './SearchBox';
 import SearchHeader from './SearchHeader';
 import SharePopup from './SharePopup';
-import StemsBrowser from './StemsBrowser';
-import StemsDetail from './StemsDetail';
-import StemsFiles from './StemsFiles';
-import StemsFooter from './StemsFooter';
-import StemsHeader from './StemsHeader';
-import StemsList from './StemsList';
-import StemsPeople from './StemsPeople';
-import StemsQueryOptions from './StemsQueryOptions';
-import StemsTags from './StemsTags';
+import stems from './stems';
 import Tags from './Tags';
 import TitleSetter from './TitleSetter';
 import Topic from './Topic';
@@ -53,13 +41,9 @@ module.exports = {
     Banner,
     BPM,
     DidYouMean,
-    DigDeep,
-    DigFooter,
-    DigHeader,
-    DigRemixes,
+    dig,
     DownloadPopup,
     ErrorDisplay,
-    FeaturedPage,
     Footer,
     Glyph,
     LicenseInfo,
@@ -69,25 +53,17 @@ module.exports = {
     NavbarHeader,
     PageHeader,
     Paging,
+    pells,
     PellsBrowser,
     PellsFooter,
     PellsHeader,
     PellsQueryOptions,
     People,
     QueryOptions,
-    RemixQueryOptions,
     SearchBox,
     SearchHeader,
     SharePopup,
-    StemsBrowser,
-    StemsDetail,
-    StemsFiles,
-    StemsFooter,
-    StemsHeader,
-    StemsList,
-    StemsPeople,
-    StemsQueryOptions,
-    StemsTags,
+    stems,
     Tags,
     TitleSetter,
     Topic,

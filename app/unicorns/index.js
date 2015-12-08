@@ -19,7 +19,7 @@ if( typeof Array.prototype.contains === 'undefined' ) {
 }
 
 if( typeof Array.prototype.remove === 'undefined' ) {  
-  Array.prototype.contains = function(obj) {
+  Array.prototype.remove = function(obj) {
     var index = this.indexOf(obj);
     if( index !== NOT_FOUND ) {
       this.splice(index,1);

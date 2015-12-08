@@ -3,12 +3,12 @@ import qc                 from '../../models/query-configs';
 import Acappellas         from '../../stores/acappellas';
 import { mergeParams }    from '../../unicorns';
 import { People }         from '../../components';
-import { PellsBrowser }   from '../../components/PellsBrowser';
+import { Browse }         from '../../components/pells';
 
 
 function people(props) {
   var artist = props.store.model.artist;
-  return (<div><People.Header model={artist} /><PellsBrowser {...props} /></div>);
+  return (<div><People.Header model={artist} /><Browse.PellsBrowser {...props} /></div>);
 }
 
 people.title = 'People';

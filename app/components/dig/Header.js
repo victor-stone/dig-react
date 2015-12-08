@@ -1,11 +1,11 @@
 import React     from 'react';
-import Link      from './Link';
-import SearchBox from './SearchBox';
+import Link      from '../Link';
+import SearchBox from '../SearchBox';
 
-import Glyph        from './Glyph';
-import LoadingGlyph from './LoadingGlyph';
-import NavbarHeader from './NavbarHeader';
-import serviceLookup from '../services';
+import Glyph        from '../Glyph';
+import LoadingGlyph from '../LoadingGlyph';
+import NavbarHeader from '../NavbarHeader';
+import serviceLookup from '../../services';
 
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">

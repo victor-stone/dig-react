@@ -1,9 +1,9 @@
 import React        from 'react';
-import Link         from './Link';
-import SearchBox    from './SearchBox';
-import LoadingGlyph from './LoadingGlyph';
-import NavbarHeader from './NavbarHeader';
-import services     from '../services';
+import Link         from '../Link';
+import SearchBox    from '../SearchBox';
+import LoadingGlyph from '../LoadingGlyph';
+import NavbarHeader from '../NavbarHeader';
+import services     from '../../services';
 
 
 const PellsHeader = React.createClass({

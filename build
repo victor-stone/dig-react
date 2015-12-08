@@ -120,7 +120,13 @@ function stageResults() {
 
 
 function generateComponentIndex() {
-  return bt.generateIndexJS('./app', 'components', n => n );
+
+  var all = [
+    bt.generateIndexJS('./app/components', 'dig',   n => n ),
+    bt.generateIndexJS('./app/components', 'pells', n => n ),
+    bt.generateIndexJS('./app/components', 'stems', n => n ),
+  ];
+  return rsvp.all(all).then( () => bt.generateIndexJS('./app', 'components', n => n ) );
 }
 
 function generateMixinsIndex() {
@@ -305,3 +311,4 @@ function log() {
     console.log.apply(console.log,arguments);
   }
 }
+

@@ -1,11 +1,13 @@
 /* globals $ */
 import React            from 'react';
-import Link             from './Link';
-import Glyph            from './Glyph';
-import { ExternalLink } from './ActionButtons';
+import Link             from '../Link';
+import Glyph            from '../Glyph';
+import { ExternalLink }   from '../ActionButtons';
+import { browserScripts } from '../../unicorns';
 
+const SCROLL_OFFSET = 100;
 
-const StemDetailTags = React.createClass({
+const DetailTags = React.createClass({
 
   onAddTag: function(tag) {
     var _this = this;
@@ -31,7 +33,7 @@ const StemDetailTags = React.createClass({
   }
 });
 
-const StemDetail = React.createClass({
+const Detail = React.createClass({
 
   getInitialState: function() {
     return { model: this.props.model };
@@ -39,7 +41,7 @@ const StemDetail = React.createClass({
 
   componentDidMount: function() {
    var $e = $('#upload-detail-' + this.state.model.id );
-   $e.slideDown('slow');
+   $e.slideDown('slow', function() { browserScripts.scrollIntoView($e, SCROLL_OFFSET); });
   },
 
   render: function() {
@@ -49,7 +51,7 @@ const StemDetail = React.createClass({
 
     return (
       <div className="stems-detail" id={id} >
-        <StemDetailTags tags={model.userTags} store={this.props.store} />
+        <DetailTags tags={model.userTags} store={this.props.store} />
         <ExternalLink href={ccmhref} className="ccmixter-link btn btn-sm btn-warning" text="@ccMixter" />
         <div className="clearfix" ></div>
       </div>);
@@ -57,4 +59,4 @@ const StemDetail = React.createClass({
 });
 
 
-module.exports = StemDetail;
+module.exports = Detail;

@@ -1,14 +1,14 @@
 import React              from 'react';
-import Glyph              from './Glyph';
-import DownloadPopup      from './DownloadPopup';
-import Link               from './Link';
-import ActionButtons      from './ActionButtons';
-import PellsQueryOptions  from './PellsQueryOptions';
-import Paging             from './Paging';
-import AudioPlayerService from '../services/audio-player';
-import { TagString }      from '../unicorns'; 
+import QueryOptions       from './QueryOptions';
+import Glyph              from '../Glyph';
+import DownloadPopup      from '../DownloadPopup';
+import Link               from '../Link';
+import ActionButtons      from '../ActionButtons';
+import Paging             from '../Paging';
+import AudioPlayerService from '../../services/audio-player';
+import { TagString }      from '../../unicorns'; 
 import { ModelTracker,
-         NowPlayingTracker } from '../mixins';
+         NowPlayingTracker } from '../../mixins';
 
 var ExternalLink = ActionButtons.ExternalLink;
 
@@ -227,7 +227,7 @@ function PellsBrowser(props) {
   var store = props.store;
   return (
     <div className="container pells-page">
-      <PellsQueryOptions store={store} />
+      <QueryOptions store={store} />
       <div className="row">
         <div className="col-md-2 pell-paging">
           <Paging store={store} disableBumping />

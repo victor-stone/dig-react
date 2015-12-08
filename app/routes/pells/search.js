@@ -2,8 +2,7 @@ import React              from 'react';
 import qc                 from '../../models/query-configs';
 import Acappellas         from '../../stores/acappellas';
 import { mergeParams }    from '../../unicorns';
-import { PellsListing,
-         PellDetail }     from '../../components/PellsBrowser';
+import { Browse }         from '../../components/pells';
 import { Paging,
          SearchHeader,
          DidYouMean }     from '../../components';
@@ -24,11 +23,11 @@ function search(props) {
                 </div>
                 <div className="col-md-7 pell-browser">
                   <div className="tab-content">
-                    <PellsListing store={store} />
+                    <Browse.PellsListing store={store} />
                   </div>
                 </div>
                 <div className="col-md-3">
-                  <PellDetail store={store} />
+                  <Browse.PellDetail store={store} />
                 </div>
               </div>
             </div>

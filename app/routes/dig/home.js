@@ -104,13 +104,9 @@ const homePage = (
 </div>
 );
 
-var index = React.createClass({
-
-  render() {
-    return  homePage;
-  },
-
-});
+function index() {
+  return homePage;
+}
 
 index.title = 'dig.ccMixter Home';
 

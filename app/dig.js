@@ -4,9 +4,9 @@ import routes from './routes/dig';
 import App    from './app';
 
 import {
-          DigHeader as Header,
-          DigFooter as Footer
-        } from './components';
+          Header,
+          Footer
+        } from './components/dig';
 
 var rewriteRules = [
   { regex: new RegExp(/^\/free_music/),                now: '/free' },

@@ -1,15 +1,15 @@
 import React        from 'react';
-import Link         from './Link';
-import Glyph        from './Glyph';
-import SearchBox    from './SearchBox';
-import LoadingGlyph from './LoadingGlyph';
-import NavbarHeader from './NavbarHeader';
-import services     from '../services';
+import Link         from '../Link';
+import Glyph        from '../Glyph';
+import SearchBox    from '../SearchBox';
+import LoadingGlyph from '../LoadingGlyph';
+import NavbarHeader from '../NavbarHeader';
+import services     from '../../services';
 
 
-const StemsHeader = React.createClass({
+const Header = React.createClass({
 
-  displayName: 'StemsHeader',
+  displayName: 'Header',
 
   submitSearch: function(text) {
     var router = services('router');
@@ -56,4 +56,4 @@ const StemsHeader = React.createClass({
 
 });
 
-module.exports = StemsHeader;
+module.exports = Header;

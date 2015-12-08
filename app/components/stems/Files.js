@@ -1,12 +1,12 @@
 import React            from 'react';
-import DownloadPopup    from './DownloadPopup';
-import ZIPContentPopup  from './ZIPContentPopup';
-import AudioPlayer      from './AudioPlayer';
-import Glyph            from './Glyph';
-import env              from '../services/env';
-import { DeadLink }     from './ActionButtons';
+import DownloadPopup    from '../DownloadPopup';
+import ZIPContentPopup  from '../ZIPContentPopup';
+import AudioPlayer      from '../AudioPlayer';
+import Glyph            from '../Glyph';
+import env              from '../../services/env';
+import { DeadLink }     from '../ActionButtons';
 
-const StemsFiles = React.createClass({
+const Files = React.createClass({
 
   highlights(tags) {
     if( !tags || tags.isEmpty() ) {
@@ -77,4 +77,4 @@ const StemsFiles = React.createClass({
 });
 
 
-module.exports = StemsFiles;
+module.exports = Files;

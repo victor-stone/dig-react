@@ -2,13 +2,13 @@ import React     from 'react';
 import qc        from '../../models/query-configs';
 import Playlist  from '../../stores/playlist';
 
-import {  DigRemixes,
-          DidYouMean,
-          Link,
-          Glyph,
-          SearchHeader,
-          Paging           } from '../../components';
-import { mergeParams }       from '../../unicorns';
+import { DidYouMean,
+         Link,
+         Glyph,
+         SearchHeader,
+         Paging }       from '../../components';
+import { mergeParams }  from '../../unicorns';
+import { Browse }       from '../../components/dig';
 
 
 function NoHits() {
@@ -28,8 +28,8 @@ function search(props) {
       <SearchHeader store={store} />
       <DidYouMean store={store} artists genres ><NoHits /></DidYouMean>
       <Paging store={store} />
-      <DigRemixes store={store} />
-      <DigRemixes.NotALotHere store={store} />
+      <Browse store={store} />
+      <Browse.NotALotHere store={store} />
     </div>
   );
 }

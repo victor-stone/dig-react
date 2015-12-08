@@ -3,14 +3,14 @@ import React     from 'react';
 import { LicenseFilter,
          QueryOptions,
          LimitFilter,
-         OptionsWrap } from './QueryOptions';
+         OptionsWrap } from '../QueryOptions';
 
 import { BPMDisplay,
-         BPMSlider }          from './BPM'; 
+         BPMSlider }          from '../BPM'; 
 
 import { QueryParamTracker,
          DefaultParamTracker,
-         DirtyParamTracker }   from '../mixins';
+         DirtyParamTracker }   from '../../mixins';
 
 const UnmixedOnlyFilter = React.createClass({
 

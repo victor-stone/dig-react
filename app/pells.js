@@ -4,9 +4,9 @@ import routes from './routes/pells';
 import App    from './app';
 
 import {
-          PellsHeader as Header,
-          PellsFooter  as Footer
-        } from './components';
+          Header,
+          Footer
+        } from './components/pells';
 
 var rewriteRules = [
   { regex: /^\/files\/([^\/]+)\/([^\/]+)/, now: '/people/$1' },

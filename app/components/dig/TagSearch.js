@@ -1,9 +1,9 @@
 import React         from 'react';
-import Glyph         from './Glyph'; 
-import Paging        from './Paging'; 
-import Tags          from './Tags';
-import DigRemixes    from './DigRemixes';
-import events        from '../models/events';
+import Glyph         from '../Glyph'; 
+import Paging        from '../Paging'; 
+import Tags          from '../Tags';
+import Browse        from './Browse';
+import events        from '../../models/events';
 
 const TagCategoryRow = React.createClass({
 
@@ -105,7 +105,7 @@ var DigDeep = React.createClass({
       <div>
         <RemixTagSelectionSection store={store}  />
         <Paging store={store} ref="paging"/>
-        <DigRemixes store={store} />   
+        <Browse store={store} />   
         <Tags.NoTagHits store={store}  />     
       </div>
     );

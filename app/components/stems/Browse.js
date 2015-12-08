@@ -1,14 +1,14 @@
-import React             from 'react';
-import StemsList         from './StemsList';
-import Paging            from './Paging'; 
-import StemsQueryOptions from './StemsQueryOptions';
+import React        from 'react';
+import Listing      from './Listing'  ;
+import Paging       from '../Paging'; 
+import QueryOptions from './QueryOptions';
 
 import { SelectedTagSection,
-         StemsTagList }       from './StemsTags';
+         TagsList }       from './Tags';
 
-import { BoundingElement }    from '../mixins';
+import { BoundingElement }    from '../../mixins';
 
-const StemsBrowserTools = React.createClass({
+const Tools = React.createClass({
 
   mixins: [ BoundingElement ],
 
@@ -25,14 +25,14 @@ const StemsBrowserTools = React.createClass({
     return (
         <div className="stems-fixed-column">
           <Paging store={store} disableBumping />
-          <StemsQueryOptions store={store} />
+          <QueryOptions store={store} />
         </div>
       );    
   }
 
 });
 
-function StemsBrowser(props) {
+function Browser(props) {
     var store = props.store;
 
     return (
@@ -41,13 +41,13 @@ function StemsBrowser(props) {
         <div className="content-fluid" >
           <div className="row stems-browser-widget">
             <div  className="col-md-3">
-              <StemsTagList store={store} />
+              <TagsList store={store} />
             </div>
             <div className="col-md-6 stems-listing-widget">
-              <StemsList store={store} />   
+              <Listing   store={store} />   
             </div>
             <div className="col-md-2">
-              <StemsBrowserTools store={store} />
+              <Tools store={store} />
             </div>
           </div>
         </div>
@@ -55,5 +55,5 @@ function StemsBrowser(props) {
     );
 }
 
-module.exports = StemsBrowser;
+module.exports = Browser;
 

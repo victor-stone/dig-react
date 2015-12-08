@@ -1,6 +1,6 @@
 import React      from 'react';
 import rsvp       from 'rsvp';
-import NowPlaying from '../store/nowplaying';
+import NowPlaying from '../stores/nowplaying';
 
 import { PageHeader, 
          DigRemixes as Playlist }     from '../components';

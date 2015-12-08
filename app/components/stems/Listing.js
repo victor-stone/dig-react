@@ -1,14 +1,17 @@
 import React            from 'react';
-import People           from './People';
-import StemsFiles       from './StemsFiles';
-import StemsDetail      from './StemsDetail';
-import { NoTagHits }    from './Tags';
-import { TagString }    from '../unicorns';
+import People           from '../People';
+import Files            from './Files';
+import Detail           from './Detail';
+import { NoTagHits }    from '../Tags';
+import { TagString,
+         browserScripts }       from '../../unicorns';
 import { ModelTracker,
-         SelectedTagsTracker  } from '../mixins';
-import { CloseButton }          from './ActionButtons';
+         SelectedTagsTracker  } from '../../mixins';
+import { CloseButton }          from '../ActionButtons';
 
-const StemsList = React.createClass({
+const SCROLL_OFFSET = 100;
+
+const Listing = React.createClass({
 
   mixins: [ ModelTracker, SelectedTagsTracker],
 
@@ -40,7 +43,9 @@ const StemsList = React.createClass({
         var $e = $('#upload-detail-' + _this.state.expanded );
         if( _this.state.expanded === id ) {
           if ($e.is(':hidden')) {
-            $e.slideDown('slow');
+            $e.slideDown('slow', function() { 
+              browserScripts.scrollIntoView($e, SCROLL_OFFSET); 
+            } );
           } else {
             $e.slideUp('fast');
           }
@@ -88,14 +93,14 @@ const StemsList = React.createClass({
                       {u.bpm ? <span className="bpm">{u.bpm}</span> : null}
                       {fo ? null : <a href="#" className="stem-name" onClick={this.onNameClick(u.id)}>{u.name}</a>}
                       {nn ? null : <People.Link model={u.artist} className="stem-artist" />}
-                      <StemsFiles 
+                      <Files 
                         model={u} 
                         store={store} 
                         tags={tags} 
                         searchTerms={searchp} 
                       />
                       {fl || this.state.expanded === u.id
-                        ? <StemsDetail model={u} store={store} />
+                        ? <Detail model={u} store={store} />
                         : null
                       }
                   </li>); })
@@ -105,4 +110,4 @@ const StemsList = React.createClass({
     }
 });
 
-module.exports = StemsList;
+module.exports = Listing;

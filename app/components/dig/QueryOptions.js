@@ -1,13 +1,14 @@
 import React     from 'react';
-import qc        from '../models/query-configs';
-import { TagString } from '../unicorns';
+import qc        from '../../models/query-configs';
+import { TagString } from '../../unicorns';
 import { LicenseFilter,
          LimitFilter,
          SortFilter,
-         OptionsWrap }    from './QueryOptions';
+         QueryOptions,
+         OptionsWrap }    from '../QueryOptions';
          
 import { QueryParamTracker,
-         DirtyParamTracker }  from '../mixins';
+         DirtyParamTracker }  from '../../mixins';
 
 const InstrumentalOnlyFilter = React.createClass({
 
@@ -38,7 +39,7 @@ const InstrumentalOnlyFilter = React.createClass({
   }
 });
 
-const RemixQueryOptions = React.createClass({
+const _RemixQueryOptions = React.createClass({
 
   render: function() {
     
@@ -62,6 +63,12 @@ const RemixQueryOptions = React.createClass({
     );
   },
 });
-  
+
+function RemixQueryOptions(props) {
+  return ( <QueryOptions store={props.store}>
+              <_RemixQueryOptions store={props.store} />
+          </QueryOptions> );
+}
+
 module.exports = RemixQueryOptions;
 

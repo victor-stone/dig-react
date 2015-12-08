@@ -4,7 +4,7 @@ import Samples          from '../../stores/samples';
 
 import { mergeParams }    from '../../unicorns';
 
-import {  StemsList,
+import {  stems,
           Paging,
           PageHeader }       from '../../components';
 
@@ -38,7 +38,7 @@ function stemsSearch(props) {
         <div className="stems-browser">
           <div className="row">
             <div className="col-md-6 stems-listing-widget col-md-offset-3">
-              <StemsList store={store} noHitsComp={NoSearchHits} />   
+              <stems.Listing store={store} noHitsComp={NoSearchHits} />   
             </div>
             <div className="col-md-2">
               <Paging store={store} disableBumping />

@@ -1,27 +1,22 @@
 import React         from 'react';
-import { DigDeep }   from '../../components';
+import { TagSearch } from '../../components/dig';
 import qc            from '../../models/query-configs';
-import PlaylistStore from '../../stores/playlist';
+import Playlist      from '../../stores/playlist';
 
 import { mergeParams } from '../../unicorns';
 
+function dig(props) {
+  return (<TagSearch {...props}/>);
+}
 
-var dig = React.createClass({
-
-  render() {
-    return (<DigDeep store={this.props.store}/>);
-  }
-
-});
-
-dig.title = 'Dig Deep';
+dig.title = 'Tag Search';
 
 dig.path  = '/dig';
 
 dig.store = function(params,queryParams) {
   var opts = mergeParams( { type: 'any' }, qc.remixes );
   var qparams = mergeParams( {}, opts, queryParams );
-  return PlaylistStore.storeFromQuery(qparams, opts);
+  return Playlist.storeFromQuery(qparams, opts);
 };
 
 module.exports = dig;

@@ -7,7 +7,6 @@ import index from './home';
 import people from './people';
 import stems from './browse';
 import search from './search';
-import upload from './upload';
 
 module.exports = { 
   aboutFLAC,
@@ -18,6 +17,5 @@ module.exports = {
   people,
   search,
   stems,
-  upload
 };
 

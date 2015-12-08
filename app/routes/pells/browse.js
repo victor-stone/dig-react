@@ -3,7 +3,7 @@ import qc                 from '../../models/query-configs';
 import Acappellas         from '../../stores/acappellas';
 import { mergeParams }    from '../../unicorns';
 import { Glyph }          from '../../components';
-import { PellsBrowser }   from '../../components/PellsBrowser';
+import { Browse }         from '../../components/pells';
 
 function PellHeader() {
   return (
@@ -17,7 +17,7 @@ function PellHeader() {
 }
 
 function pells(props) {
-  return (<div><PellHeader /><PellsBrowser {...props} /></div>);
+  return (<div><PellHeader /><Browse.PellsBrowser {...props} /></div>);
 }
 
 pells.title = 'A Cappella Browser';

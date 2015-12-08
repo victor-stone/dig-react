@@ -12,7 +12,7 @@ class Samples extends UploadList {
 
 Samples.storeFromQuery = function(params,defaults) {
   var samples = new Samples(defaults);
-  return samples.getModel(params).then( () => samples );  
+  return samples.getModel(params).then( () => { return samples; } );  
 };
 
 module.exports = Samples;

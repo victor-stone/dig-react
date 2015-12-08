@@ -2,28 +2,28 @@ import React            from 'react';
 import qc               from '../../models/query-configs';
 import Samples          from '../../stores/samples';
 import { mergeParams }  from '../../unicorns';
-import { StemsBrowser } from '../../components';
+import { stems }        from '../../components';
 
-var stems = React.createClass({
+var browse = React.createClass({
 
   render() {
     var store = this.props.store;
     return (
       <div className="container-fluid">
-        <StemsBrowser store={store} />
+        <stems.Browse store={store} />
       </div>
     );      
   },
 
 });
 
-stems.title = 'Samples Browser';
+browse.title = 'Samples Browser';
 
-stems.store = function(params,queryParams) {
+browse.store = function(params,queryParams) {
   var opts    = mergeParams( {type: 'any' }, qc.samples );
   var qparams = mergeParams( { }, opts, queryParams );
   return Samples.storeFromQuery(qparams,opts);
 };
 
-module.exports = stems;
+module.exports = browse;
 

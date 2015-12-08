@@ -1,11 +1,11 @@
 import React            from 'react';
 import { mergeParams }  from '../../unicorns';
 import qc               from '../../models/query-configs';
-import PlaylistStore    from '../../stores/playlist';
+import Playlist         from '../../stores/playlist';
 
-import {  DigRemixes as Playlist, 
-          People,
-          Paging   }  from '../../components';
+import {  Browse }      from '../../components/dig'; 
+import {  People,
+          Paging   }    from '../../components';
 
 
 var people = React.createClass({
@@ -17,8 +17,8 @@ var people = React.createClass({
       <div>
         <People.Header model={store.model.artist} />
         <Paging store={store} />
-        <Playlist store={store} skipUser />
-        <Playlist.NotALotHere store={store} />
+        <Browse store={store} skipUser />
+        <Browse.NotALotHere store={store} />
       </div>
     );
   },
@@ -32,7 +32,7 @@ people.title = 'People';
 people.store = function(params,queryParams) {
   var opts    = mergeParams( {}, qc.remixes );
   var qparams = mergeParams( {}, opts, { u: params.userid }, queryParams );
-  return PlaylistStore.storeFromQuery(qparams,opts)
+  return Playlist.storeFromQuery(qparams,opts)
           .then( store => {
             people.title = store.model.artist.name;
             return store;

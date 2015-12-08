@@ -4,9 +4,9 @@ import App    from './app';
 import routes from './routes/stems';
 
 import {
-          StemsHeader as Header,
-          StemsFooter as Footer
-        } from './components';
+          Header,
+          Footer
+        } from './components/stems';
 
 var rewriteRules = [
   { regex: /^\/files\/([^\/]+)\/([^\/]+)/, now: '/stems?ids=$2' },

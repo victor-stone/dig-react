@@ -1,9 +1,7 @@
-'use strict';
-
 import React      from 'react';
-import DigRemixes from './DigRemixes';
-import PageHeader from './PageHeader';
-import Paging     from './Paging';
+import Browse     from './Browse';
+import PageHeader from '../PageHeader';
+import Paging     from '../Paging';
 
 
 const FeaturedPage = React.createClass({
@@ -19,8 +17,8 @@ const FeaturedPage = React.createClass({
       <div className="playlist">
         <PageHeader icon={icon} title={title} subTitle={subTitle} />
         <Paging store={store} />
-        <DigRemixes store={store} />
-        <DigRemixes.NotALotHere store={store} />
+        <Browse store={store} />
+        <Browse.NotALotHere store={store} />
       </div>
     );
     

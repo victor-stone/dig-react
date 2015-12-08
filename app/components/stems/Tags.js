@@ -1,15 +1,15 @@
 /* globals $ */
 import React            from 'react';
-import Glyph            from './Glyph'; 
-import Tags             from './Tags';
-import SearchBox        from './SearchBox';
-import { TagString }    from '../unicorns';
-import events           from '../models/events';
+import Glyph            from '../Glyph'; 
+import Tags             from '../Tags';
+import SearchBox        from '../SearchBox';
+import { TagString }    from '../../unicorns';
+import events           from '../../models/events';
 
 import { StoreEvents,
          TopSideElement,
          BoundingElement,
-         SelectedTagsTracker }  from '../mixins';
+         SelectedTagsTracker }  from '../../mixins';
 
 const MIN_TAG_COUNT = 20;
 const FADE_IN_DELAY = 1800;
@@ -67,7 +67,7 @@ function TagsLoading() {
   );
 }
 
-const StemsTagList = React.createClass({
+const TagsList = React.createClass({
 
   mixins: [ StoreEvents, SelectedTagsTracker, BoundingElement ],
 
@@ -198,6 +198,6 @@ const StemsTagList = React.createClass({
 module.exports = {
   SelectedTagSection,
   TagsLoading,
-  StemsTagList
+  TagsList
 };
 

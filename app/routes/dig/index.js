@@ -3,7 +3,7 @@ import nowplaying from '../nowplaying';
 import credits from '../credits';
 
 import ccplus from './ccplus';
-import dig from './dig-deep';
+import dig from './tag-search';
 import edpicks from './edpicks';
 import film from './film';
 import free from './free';
