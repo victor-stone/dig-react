@@ -18,6 +18,15 @@ if( typeof Array.prototype.contains === 'undefined' ) {
   Array.prototype.contains = Array.prototype.includes;
 }
 
+if( typeof Array.prototype.remove === 'undefined' ) {  
+  Array.prototype.contains = function(obj) {
+    var index = this.indexOf(obj);
+    if( index !== NOT_FOUND ) {
+      this.splice(index,1);
+    }
+  };
+}
+
 if( typeof Array.prototype.findBy === 'undefined' ) {
   Array.prototype.findBy = function(key,value) {
     var valIsDefined = typeof value !== 'undefined';

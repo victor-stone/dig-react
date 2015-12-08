@@ -1,29 +1,9 @@
-import React            from 'react';
-import rsvp             from 'rsvp';
+import React      from 'react';
+import rsvp       from 'rsvp';
+import NowPlaying from '../store/nowplaying';
+
 import { PageHeader, 
          DigRemixes as Playlist }     from '../components';
-
-import AudioPlayerService from '../services/audio-player';
-
-class NowPlayingStore {
-
-  constructor() {
-    var pl = AudioPlayerService.playlist || [];
-    this.model = {
-      playlist: pl,
-      total: pl.length
-    };
-  }
-
-  get supportsOptions() {
-    return false;
-  }
-  
-  on() {}
-  removeListener() {}
-
-}
-
 
 var nowplaying = React.createClass({
 
@@ -43,7 +23,7 @@ var nowplaying = React.createClass({
 nowplaying.title = 'Now Playing';
 
 nowplaying.store = function( /*params,queryParams*/ ) {
-  var store = new NowPlayingStore();
+  var store = new NowPlaying();
   return rsvp.resolve( store );
 };
 
