@@ -80,7 +80,7 @@
  }
 
 .pell-browser .pell .title {
-  width: 70%;
+  width: 63%;
   margin-left: 5px;
   padding-left: 5px;
   display: inline-block;
@@ -107,3 +107,12 @@
   color: white;
   text-decoration: none;
 }
+
+.pell-play {
+  display: inline-block;
+  float: left;
+  margin-right: 12px;
+  padding: 3px 7px 3px 9px;
+  border-radius: 50%;
+}
+

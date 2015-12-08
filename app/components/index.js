@@ -18,10 +18,6 @@ import NavbarHeader from './NavbarHeader';
 import PageHeader from './PageHeader';
 import Paging from './Paging';
 import pells from './pells';
-import PellsBrowser from './PellsBrowser';
-import PellsFooter from './PellsFooter';
-import PellsHeader from './PellsHeader';
-import PellsQueryOptions from './PellsQueryOptions';
 import People from './People';
 import QueryOptions from './QueryOptions';
 import SearchBox from './SearchBox';
@@ -54,10 +50,6 @@ module.exports = {
     PageHeader,
     Paging,
     pells,
-    PellsBrowser,
-    PellsFooter,
-    PellsHeader,
-    PellsQueryOptions,
     People,
     QueryOptions,
     SearchBox,

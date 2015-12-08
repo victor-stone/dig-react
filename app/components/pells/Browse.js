@@ -5,7 +5,9 @@ import DownloadPopup      from '../DownloadPopup';
 import Link               from '../Link';
 import ActionButtons      from '../ActionButtons';
 import Paging             from '../Paging';
-import AudioPlayerService from '../../services/audio-player';
+import { PlayButton }     from '../AudioPlayer';
+import events             from '../../models/events';
+import env                from '../../services/env';
 import { TagString }      from '../../unicorns'; 
 import { ModelTracker,
          NowPlayingTracker } from '../../mixins';
@@ -85,7 +87,7 @@ var PellsListing = React.createClass({
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
-      AudioPlayerService.togglePlay(pell);
+      env.emit( events.INSPECT_DETAILS, pell);
     };
   },
 
@@ -93,26 +95,18 @@ var PellsListing = React.createClass({
 
     function pellLine(pell) {
 
-      var args = [ 'li', 
-                { className: 'pell', key: pell.id } ];
-
-      if( pell.bpm ) {
-        var e = React.createElement('span', { className: 'bpm' }, 'bpm: ', pell.bpm);
-        args.push(e); 
-      }
-
-      var e1 = React.createElement('span', { className: 'title',onClick: this.selectLine(pell) }, pell.name);
-      args.push(e1);
-
-      if( !artist ) {
-        var e2 = React.createElement(Link, 
-                                    { href: '/people/' + pell.artist.id }, 
-                                      pell.artist.name);
-        var e3 = React.createElement('span', { className: 'artist' }, e2 );
-        args.push(e3);
-      }
-
-      return React.createElement.apply(React,args);
+      return (<li className="pell" key={pell.id}>        
+                  {pell.bpm
+                    ? <span className="bpm">{'bpm: ' + pell.bpm}</span>
+                    : null
+                  }
+                  <span className="title" onClick={this.selectLine(pell)}>{pell.name}</span>
+                  <PlayButton model={pell} className="pell-play btn-sm" />
+                  {artist
+                    ? null
+                    : <span className="artist"><Link href={'/people/' + pell.artist.id}>{pell.artist.name}</Link></span>
+                  }
+              </li>);
     }
 
     var playlist = this.state.model.playlist;
@@ -122,8 +116,6 @@ var PellsListing = React.createClass({
     return React.createElement( 'ul', null, lines );
     }
 });
-
-
 
 var PellDetail = React.createClass({
 
