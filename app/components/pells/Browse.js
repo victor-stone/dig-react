@@ -6,8 +6,6 @@ import Link               from '../Link';
 import ActionButtons      from '../ActionButtons';
 import Paging             from '../Paging';
 import { PlayButton }     from '../AudioPlayer';
-import events             from '../../models/events';
-import env                from '../../services/env';
 import { TagString }      from '../../unicorns'; 
 import { ModelTracker,
          NowPlayingTracker } from '../../mixins';
@@ -87,7 +85,7 @@ var PellsListing = React.createClass({
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
-      env.emit( events.INSPECT_DETAILS, pell);
+      this.props.onSelectedPell(pell);
     };
   },
 
@@ -119,14 +117,14 @@ var PellsListing = React.createClass({
 
 var PellDetail = React.createClass({
 
-  mixins: [NowPlayingTracker],
-
   getInitialState: function() {
-    return this.onNowPlayingState();
+    return { 
+      model: this.props.model,
+      show: 'listing'};
   },
 
-  onNowPlayingState: function() {
-    return { show: 'listing'};    
+  componentWillReceiveProps: function(newProps) {
+    this.setState( { model: newProps.model } );
   },
 
   showListing: function(e) {
@@ -146,6 +144,10 @@ var PellDetail = React.createClass({
   },
 
   renderListing: function(model) {
+    if( !model ) {
+      return null;
+    }
+    
     return (<ul className="download-list">
         <li>
           <span className="name">{model.name}</span>
@@ -187,7 +189,7 @@ var PellDetail = React.createClass({
 
   render: function() {
 
-    var model       = this.state.nowPlaying;
+    var model       = this.state.model;
     var cls         = 'pell-detail' + (model ? '' : ' hidden');
     var showListing = this.state.show === 'listing';
     var element     = model ? (showListing ? this.renderListing(model) : this.renderDetail(model)) : null;
@@ -215,28 +217,42 @@ var PellDetail = React.createClass({
   }
 });
 
-function PellsBrowser(props) {
-  var store = props.store;
-  return (
-    <div className="container pells-page">
-      <QueryOptions store={store} />
-      <div className="row">
-        <div className="col-md-2 pell-paging">
-          <Paging store={store} disableBumping />
-        </div>
-        <div className="col-md-7 pell-browser">
-          <PellsTabs store={store} />
-          <div className="tab-content">
-            <PellsListing store={store} />
+var  PellsBrowser = React.createClass({
+
+  mixins: [NowPlayingTracker],
+
+  onNowPlayingState: function(selected) {
+    this.setState( { selected } );
+  },
+
+  onSelectedPell: function(selected) {
+    this.setState( { selected });
+  },
+
+  render: function() {
+    var store = this.props.store;
+    return (
+      <div className="container pells-page">
+        <QueryOptions store={store} />
+        <div className="row">
+          <div className="col-md-2 pell-paging">
+            <Paging store={store} disableBumping />
+          </div>
+          <div className="col-md-7 pell-browser">
+            <PellsTabs store={store} />
+            <div className="tab-content">
+              <PellsListing store={store} onSelectedPell={this.onSelectedPell} />
+            </div>
+          </div>
+          <div className="col-md-3">
+            <PellDetail store={store} model={this.state.selected} />
           </div>
         </div>
-        <div className="col-md-3">
-          <PellDetail store={store} />
-        </div>
       </div>
-    </div>
-  );      
-}
+    );      
+  }
+
+});
 
 
 module.exports = {
