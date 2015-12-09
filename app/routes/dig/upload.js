@@ -1,5 +1,5 @@
 import React   from 'react';
-import Upload  from '../../components/dig/upload';
+import Upload  from '../../components/dig/Upload';
 import Uploads from '../../stores/upload';
 
 function uploadRoute(props) {
