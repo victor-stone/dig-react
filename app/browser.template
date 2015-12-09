@@ -6,6 +6,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var env = require('./services/env');
 
+require('./services/analytics')();
+
 env.set( { 
     debugMode: {debugMode},
     browser: true,

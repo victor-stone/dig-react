@@ -2,6 +2,8 @@ import React   from 'react';
 import Glyph   from './Glyph';
 import Modal   from './Modal';
 import Upload  from '../stores/upload';
+import env     from '../services/env';
+import events  from '../models/events';
 
 import { LicenseInfoLink, 
          LicenseInfo } from './LicenseInfo';
@@ -58,6 +60,10 @@ var DownloadPopup = React.createClass({
     this.setState( { showLicense: false } );
   },
 
+  onDownloadClick: function(/*e*/) {
+    env.emit( events.DOWNLOAD, this.state.fullUpload );
+  },
+
   genPopup: function() {
     var upload = this.state.fullUpload;
 
@@ -112,7 +118,7 @@ var DownloadPopup = React.createClass({
           <div className="col-md-6">
             <ul className="actions actions-centered">
               <li>
-                <a className="btn btn-info btn-lg" href={dlRec.mediaURL} download><Glyph icon="cloud-download" x2 left/>{" Download "}<small>{dlRec.downloadSize}</small></a>
+                <a className="btn btn-info btn-lg" href={dlRec.mediaURL} onClick={this.onDownloadClick} download><Glyph icon="cloud-download" x2 left/>{" Download "}<small>{dlRec.downloadSize}</small></a>
               </li>
               <li className="license-badge">
                 <a href={upload.licenseURL}><img src={upload.licenseLogoURL} /></a> <LicenseInfoLink onShow={this.showLicense} />
