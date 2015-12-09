@@ -1,22 +1,22 @@
 import React   from 'react';
-import Upload  from '../../components/dig';
+import Upload  from '../../components/dig/upload';
 import Uploads from '../../stores/upload';
 
-function upload(props) {
+function uploadRoute(props) {
   return (<Upload {...props} />);
 }
 
-upload.title = 'Files';
+uploadRoute.title = 'Files';
 
-upload.path = '/files/:userid/:uploadid';
+uploadRoute.path = '/files/:userid/:uploadid';
 
-upload.store = function(params/*,queryParams*/) {
+uploadRoute.store = function(params/*,queryParams*/) {
   return Uploads.storeFromQuery(params.uploadid).then( store =>
             { 
-                upload.title = store.model.upload.name;
+                uploadRoute.title = store.model.upload.name;
                 return store;
             });
 };
 
-module.exports = upload;
+module.exports = uploadRoute;
 
