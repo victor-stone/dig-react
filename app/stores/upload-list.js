@@ -117,8 +117,11 @@ class UploadList extends Query {
       artist:   queryParams.u ? this.findUser(queryParams.u) : null,
     };
 
-    if( queryParams.searchp ) {
+    if( 'searchp' in queryParams ) {
       var text = queryParams.searchp.replace(/[^a-zA-Z0-9 _()\*\.]/,'');
+
+      hash.artists = [];
+      hash.genres  = [];
 
       if( text ) {
         hash.artists = this.searchUsers({
@@ -127,9 +130,6 @@ class UploadList extends Query {
                     searchp: text
                   });
         hash.genres = this.tags.searchTags( text.split(/\s/).filter( t => t.length > 2 ) );
-      } else {
-        hash.artists = [];
-        hash.genres  = [];
       }
     }
 
