@@ -3,7 +3,7 @@ import rsvp       from 'rsvp';
 import NowPlaying from '../stores/nowplaying';
 
 import { PageHeader } from '../components';
-import { Browse }     from '../components/dig';
+import { Remixes }    from '../components/dig';
 
 
 var nowplaying = React.createClass({
@@ -14,7 +14,7 @@ var nowplaying = React.createClass({
     return  (
       <div>
         <PageHeader icon="music" title={nowplaying.title} />
-        <Browse store={store} />
+        <Remixes store={store} />
       </div>
     );
   },
