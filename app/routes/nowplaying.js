@@ -2,8 +2,9 @@ import React      from 'react';
 import rsvp       from 'rsvp';
 import NowPlaying from '../stores/nowplaying';
 
-import { PageHeader, 
-         DigRemixes as Playlist }     from '../components';
+import { PageHeader } from '../components';
+import { Browse }     from '../components/dig';
+
 
 var nowplaying = React.createClass({
 
@@ -13,7 +14,7 @@ var nowplaying = React.createClass({
     return  (
       <div>
         <PageHeader icon="music" title={nowplaying.title} />
-        <Playlist store={store} />
+        <Browse store={store} />
       </div>
     );
   },

@@ -31,8 +31,14 @@ if( typeof Array.prototype.findBy === 'undefined' ) {
   Array.prototype.findBy = function(key,value) {
     var valIsDefined = typeof value !== 'undefined';
     for( var i = 0; i < this.length; i++ ) {
-      if( (valIsDefined && this[i][key] === value) || this[i][key] ) {
-        return this[i];
+      if( valIsDefined ) {
+        if( this[i][key] === value ) {
+          return this[i];
+        }
+      } else {
+        if( this[i][key] ) {
+          return this[i];
+        }
       }
     }
     return null;
@@ -76,8 +82,14 @@ if( typeof Array.prototype.filterBy === 'undefined' ) {
     var results = [];
     var valIsDefined = typeof value !== 'undefined';
     for( var i = 0; i < this.length; i++ ) {
-      if( (valIsDefined && this[i][key] === value) || this[i][key] ) {
-        results.push(this[i]);
+      if( valIsDefined ) {
+        if( this[i][key] === value ) {
+          results.push(this[i]);
+        }
+      } else {
+        if( this[i][key] ) {
+          results.push(this[i]);
+        }
       }
     }
     return results;
