@@ -5,11 +5,11 @@ import AudioService from '../services/audio-player';
 module.exports = function() {
 
   AudioService.on( events.NOW_PLAYING, function(upload) {
-    window.ga('send', 'event', 'Audio', 'play', env.appName + '-generic', upload.id  );
+    window.ga('send', 'event', 'Audio', 'play', env.appName + '-' + upload.name  );
   });
 
   env.on( events.DOWNLOAD, function(upload) {
-    window.ga('send', 'event', 'File', 'download', env.appName + '-generic', upload.id  );
+    window.ga('send', 'event', 'File', 'download', env.appName + '-' + upload.name  );
   });
 
 };
