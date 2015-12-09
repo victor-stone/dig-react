@@ -3,7 +3,7 @@ import { mergeParams }  from '../../unicorns';
 import qc               from '../../models/query-configs';
 import Playlist         from '../../stores/playlist';
 
-import {  Browse }      from '../../components/dig'; 
+import {  Remixes }     from '../../components/dig'; 
 import {  People,
           Paging   }    from '../../components';
 
@@ -17,8 +17,8 @@ var people = React.createClass({
       <div>
         <People.Header model={store.model.artist} />
         <Paging store={store} />
-        <Browse store={store} skipUser />
-        <Browse.NotALotHere store={store} />
+        <Remixes store={store} skipUser />
+        <Remixes.NotALotHere store={store} />
       </div>
     );
   },

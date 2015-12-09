@@ -62,15 +62,9 @@
   margin-right: 10px;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li #limit {
-  width: 60px;
-  margin-left: 15px;
-}
-
 .query-options-box.open ul.query-options ul.query-options-elements > li #sort {
   width: inherit;
 }
-
 
 .query-options-box.open ul.query-options ul.query-options-elements > li .bpm-slider-container {
   width: 92%;

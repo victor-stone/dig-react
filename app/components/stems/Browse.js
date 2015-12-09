@@ -32,7 +32,7 @@ const Tools = React.createClass({
 
 });
 
-function Browser(props) {
+function Stems(props) {
     var store = props.store;
 
     return (
@@ -55,5 +55,5 @@ function Browser(props) {
     );
 }
 
-module.exports = Browser;
+module.exports = Stems;
 

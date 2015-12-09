@@ -8,7 +8,7 @@ import { DidYouMean,
          SearchHeader,
          Paging }       from '../../components';
 import { mergeParams }  from '../../unicorns';
-import { Browse }       from '../../components/dig';
+import { Remixes }      from '../../components/dig';
 
 
 function NoHits() {
@@ -28,8 +28,8 @@ function search(props) {
       <SearchHeader store={store} />
       <DidYouMean store={store} artists genres ><NoHits /></DidYouMean>
       <Paging store={store} />
-      <Browse store={store} />
-      <Browse.NotALotHere store={store} />
+      <Remixes store={store} />
+      <Remixes.NotALotHere store={store} />
     </div>
   );
 }

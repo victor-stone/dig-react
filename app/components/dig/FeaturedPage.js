@@ -1,5 +1,5 @@
 import React      from 'react';
-import Browse     from './Browse';
+import Remixes    from './Remixes';
 import PageHeader from '../PageHeader';
 import Paging     from '../Paging';
 
@@ -17,8 +17,8 @@ const FeaturedPage = React.createClass({
       <div className="playlist">
         <PageHeader icon={icon} title={title} subTitle={subTitle} />
         <Paging store={store} />
-        <Browse store={store} />
-        <Browse.NotALotHere store={store} />
+        <Remixes store={store} />
+        <Remixes.NotALotHere store={store} />
       </div>
     );
     

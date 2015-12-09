@@ -3,8 +3,8 @@
 import React     from 'react';
 
 import { LicenseFilter,
-         LimitFilter,
          QueryOptionsBox,
+         SortFilter,
          OptionsWrap } from '../QueryOptions';
          
 import { BPMDisplay,
@@ -22,13 +22,13 @@ var _StemsQueryOptions = React.createClass({
           <LicenseFilter store={store} />
         </li>
         <li>
+          <SortFilter store={store} />
+        </li>
+        <li>
           <BPMDisplay store={store} />
         </li>
         <li>
           <BPMSlider store={store} />
-        </li>
-        <li>
-          <LimitFilter store={store} />
         </li>
       </OptionsWrap>
     );

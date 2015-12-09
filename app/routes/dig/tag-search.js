@@ -5,19 +5,19 @@ import Playlist      from '../../stores/playlist';
 
 import { mergeParams } from '../../unicorns';
 
-function dig(props) {
+function tagSearch(props) {
   return (<TagSearch {...props}/>);
 }
 
-dig.title = 'Tag Search';
+tagSearch.title = 'Tag Search';
 
-dig.path  = '/dig';
+tagSearch.path  = '/dig';
 
-dig.store = function(params,queryParams) {
+tagSearch.store = function(params,queryParams) {
   var opts = mergeParams( { type: 'any' }, qc.remixes );
   var qparams = mergeParams( {}, opts, queryParams );
   return Playlist.storeFromQuery(qparams, opts);
 };
 
-module.exports = dig;
+module.exports = tagSearch;
 

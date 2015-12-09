@@ -2,7 +2,7 @@ import React         from 'react';
 import Glyph         from '../Glyph'; 
 import Paging        from '../Paging'; 
 import Tags          from '../Tags';
-import Browse        from './Browse';
+import Remixes       from './Remixes';
 import events        from '../../models/events';
 
 const TagCategoryRow = React.createClass({
@@ -14,8 +14,9 @@ const TagCategoryRow = React.createClass({
 
     return (
       <div className="row">
-        <div className="col-md-1 hmmmmmm">
-        </div>{catNames.map( n => <Tags.TagCategoryBox model={categories[n]} key={n} catID={n} store={store} /> )}</div>
+        <div className="col-md-1 hmmmmmm"></div>
+        {catNames.map( n => <Tags.TagCategoryBox model={categories[n]} key={n} catID={n} store={store} /> )}
+      </div>
       );
   },
   
@@ -95,7 +96,7 @@ const RemixTagSelectionSection = React.createClass({
 });
 
 
-var DigDeep = React.createClass({
+var TagSearch = React.createClass({
 
   render() {
 
@@ -105,7 +106,7 @@ var DigDeep = React.createClass({
       <div>
         <RemixTagSelectionSection store={store}  />
         <Paging store={store} ref="paging"/>
-        <Browse store={store} />   
+        <Remixes store={store} />   
         <Tags.NoTagHits store={store}  />     
       </div>
     );
@@ -113,5 +114,5 @@ var DigDeep = React.createClass({
 
 });
 
-module.exports = DigDeep;
+module.exports = TagSearch;
 

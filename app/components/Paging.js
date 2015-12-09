@@ -1,5 +1,6 @@
 import React            from 'react';
 import Glyph            from './Glyph';
+import { LimitFilter }  from './QueryOptions';
 import events           from '../models/events';
 
 import { ModelTracker,
@@ -7,6 +8,8 @@ import { ModelTracker,
          StoreEvents } from '../mixins';
 
 import { pagingStats } from '../unicorns';
+
+const MIN_LIMIT = 10;
 
 const PagerLink = React.createClass({
 
@@ -76,18 +79,20 @@ const Paging = React.createClass({
   },
   
   render: function() {
-    var s = pagingStats(this.state);
-    var cls = 'paging' + (s.shouldShow ? '' : ' hidden');
-    
+    var s    = pagingStats(this.state);
+    var cls  = 'paging' + (s.total > 0 ? '' : ' hidden');
+    var cls2 = 'pagination' + (s.shouldShow ? '' : ' hidden');
+    var cls3 = s.total > MIN_LIMIT ? '' : 'hidden';
     return(
       <div className={cls}>
-        <ul className="pagination">  
+        <ul className={cls2}>  
           <PagerLink newOffset={this.onNewOffset} offset="0"            show={s.showFirst} icon="angle-double-left" />
           <PagerLink newOffset={this.onNewOffset} offset={s.prevValue}  show={s.showPrev}  icon="arrow-left" />
           <PagerLink newOffset={this.onNewOffset} offset={s.nextValue}  show={s.showNext}  icon="arrow-right" />
           <PagerLink newOffset={this.onNewOffset} offset={s.lastPage}   show={s.showLast}  icon="angle-double-right" />
         </ul>
-        <div className="center-text">{s.printableOffset + ' - ' + s.printableLastValue + ' of ' + s.printableTotal}</div>
+        <div className="paging-caption center-text">{s.printableOffset + ' - ' + s.printableLastValue + ' of ' + s.printableTotal}</div>
+        <LimitFilter store={this.props.store} className={cls3} />
       </div>
       );
   },

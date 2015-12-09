@@ -31,7 +31,7 @@
   font-size: 10px;
 }
 
-.pell-paging .paging div {
+.pell-paging .paging div.paging-caption {
   color: #444;
   text-align: left;
   padding-left: 15%;

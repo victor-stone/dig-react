@@ -2,7 +2,6 @@ import React     from 'react';
 import qc        from '../../models/query-configs';
 import { TagString } from '../../unicorns';
 import { LicenseFilter,
-         LimitFilter,
          SortFilter,
          QueryOptions,
          OptionsWrap }    from '../QueryOptions';
@@ -55,9 +54,6 @@ const _RemixQueryOptions = React.createClass({
           </li>
           <li>
             <InstrumentalOnlyFilter store={store} />
-          </li>
-          <li>
-            <LimitFilter store={store} />
           </li>
       </OptionsWrap>
     );

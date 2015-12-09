@@ -2,7 +2,6 @@ import React     from 'react';
 
 import { LicenseFilter,
          QueryOptions,
-         LimitFilter,
          OptionsWrap } from '../QueryOptions';
 
 import { BPMDisplay,
@@ -58,9 +57,6 @@ function PellsQueryOptionsItems(props) {
       </li>
       <li>
         <UnmixedOnlyFilter store={store} />
-      </li>
-      <li>
-        <LimitFilter store={store} />
       </li>
     </OptionsWrap>
   );

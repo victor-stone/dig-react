@@ -30,7 +30,7 @@ var ArtistLink = React.createClass({
 
 });
 
-var PlaylistItem = React.createClass({
+var RemixLine = React.createClass({
 
   render: function() {
     var u = this.props.upload;
@@ -81,7 +81,7 @@ var NotALotHere = React.createClass({
   }
 });
 
-var Playlist = React.createClass({
+var Remixes = React.createClass({
 
   mixins: [ModelTracker],
 
@@ -101,8 +101,8 @@ var Playlist = React.createClass({
 
     var model = this.state.model;
 
-    var playlistItems = model.playlist.map( upload =>
-      <PlaylistItem key      = {upload.id} 
+    var remixLines = model.playlist.map( upload =>
+      <RemixLine key      = {upload.id} 
                     upload   = {upload} 
                     skipUser = {this.props.skipUser} 
                     onPlay   = {this.onPlay}
@@ -115,7 +115,7 @@ var Playlist = React.createClass({
           <div className="col-md-9 col-md-offset-2 col-md-sm-12">
             <QueryOptions store={this.props.store} />
             <ul className="play-list">
-              {playlistItems}
+              {remixLines}
             </ul>
           </div>
         </div>
@@ -124,7 +124,7 @@ var Playlist = React.createClass({
   }
 });
 
-Playlist.NotALotHere = NotALotHere;
+Remixes.NotALotHere = NotALotHere;
 
-module.exports = Playlist;
+module.exports = Remixes;
 

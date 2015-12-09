@@ -254,7 +254,7 @@ TagString.prototype.isEqual = function(tags) {
 };
 
 TagString.prototype.anyInString = function(stringToSearch) {
-  var str = stringToSearch.toLowerCase();
+  var str = (stringToSearch + '').toLowerCase();
   return this._tagsArray.find( tag => str.includes(tag) );
 };
 

@@ -1,29 +1,45 @@
 /* stems paging css */
 
 .stems-browser .paging {
-  position: relative;
-  margin-bottom: 14;
-  top:  0px;
-  left: 0px;
-  width: 180;
-  background-color: rgba(245, 253, 216, 0);
-  border: 0px;
+  text-align: center;
 }
 
 .stems-browser .paging > ul {
-  margin: 0px;
+  margin-bottom: 5px;
 }
 
 .stems-browser .pagination > li > a {
+  font-size: 70%;
   color: green;
 }
 
 .stems-browser .pagination >  .disabled  > a {
   color: #777;
 } 
-.stems-browser .paging > div {
+
+.stems-browser .paging > div.paging-caption {
   margin: 0px;
   padding: 0px;
   color: black;  
 }
 
+.stems-browser .paging > label.limit-label {
+  display: inline-block;
+  font-size: 12px;
+  text-align: center;
+  border: 2px white;
+  color: black;
+  margin: 10px 0px 10px 0px;
+}
+
+.stems-browser .paging > label.limit-label > span {
+  width: 50px;
+  margin-right: 9px;
+}
+
+.stems-browser .paging > label.limit-label > select {
+  width: 50%;
+  display: inline-block;
+  font-size: 12px;
+  height: initial;
+}

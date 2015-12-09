@@ -35,7 +35,7 @@ const Header = React.createClass({
                   <Link href="/aboutFLAC">{"about FLAC"}</Link>
                 </li>
                 <li>
-                  <Link href="/stems">{"browse"}</Link>
+                  <Link href="/stems"><Glyph icon="tags" />{" tag search"}</Link>
                 </li>
       <li>
         <a  href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{"featured "}<Glyph icon="chevron-down" /></a>
