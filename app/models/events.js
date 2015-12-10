@@ -19,7 +19,8 @@ var Events = {
   COMPONENT_UPDATE:   'component_update',
   INSPECT_ZIP:        'inspect_zip',
   SAMPLE_TAG_TAB:     'sample_tag_tab',
-  DOWNLOAD:           'download'
+  DOWNLOAD:           'download',
+  USER_SEARCH:        'user_search'
 };
 
 module.exports = Events;

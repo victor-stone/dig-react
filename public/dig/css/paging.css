@@ -30,10 +30,11 @@
 }
 
 .paging > label.limit-label > select {
-    width: 50%;
+    width: 50px;
     display: inline-block;
     font-size: 12px;
     height: initial;
+    text-align: center;
 }
 
 @media screen and (max-width: 770px) {

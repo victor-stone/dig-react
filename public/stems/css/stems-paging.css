@@ -33,12 +33,12 @@
 }
 
 .stems-browser .paging > label.limit-label > span {
-  width: 50px;
+  width: 50%;
   margin-right: 9px;
 }
 
 .stems-browser .paging > label.limit-label > select {
-  width: 50%;
+  width: 50px;
   display: inline-block;
   font-size: 12px;
   height: initial;

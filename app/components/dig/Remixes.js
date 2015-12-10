@@ -7,6 +7,10 @@ import QueryOptions       from './QueryOptions';
 import AudioPlayerService from '../../services/audio-player';
 import { ModelTracker }   from '../../mixins';
 
+import { ResetOptionsButton } from '../QueryOptions';
+
+const MIN_LIMIT = 10;
+
 var SongLink = React.createClass({
 
   render: function() {
@@ -51,7 +55,7 @@ var NotALotHere = React.createClass({
 
   stateFromStore: function(store) {
     var model = store.model;
-    var showNotALot = model.total < model.queryParams.limit && store.paramsDirty();
+    var showNotALot = model.total < MIN_LIMIT && store.paramsDirty();
     return { showNotALot };    
   },
 
@@ -70,7 +74,7 @@ var NotALotHere = React.createClass({
                     <ul>
                         <li>
                             {"You might consider resetting the options "}
-                            <QueryOptions.ResetOptionsButton store={this.props.store} />
+                            <ResetOptionsButton store={this.props.store} />
                         </li>
                     </ul>
                 </div>
@@ -103,9 +107,9 @@ var Remixes = React.createClass({
 
     var remixLines = model.playlist.map( upload =>
       <RemixLine key      = {upload.id} 
-                    upload   = {upload} 
-                    skipUser = {this.props.skipUser} 
-                    onPlay   = {this.onPlay}
+                 upload   = {upload} 
+                 skipUser = {this.props.skipUser} 
+                 onPlay   = {this.onPlay}
       />
     );
 

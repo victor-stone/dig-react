@@ -38,6 +38,10 @@ search.title = 'Search';
 
 search.store = function( params, queryParams ) {
 
+  if( ! ('searchp' in queryParams) ) {
+    queryParams.searchp = '';
+  }
+
   var opts    = mergeParams( { search_type: 'all' }, qc.remixes );
   var qparams = mergeParams( {}, opts, queryParams );
 

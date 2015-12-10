@@ -56,6 +56,7 @@ const Paging = React.createClass({
     return {
       keepAbove: '.footer',
       keepBelow: '.page-header',
+      disableAtWidth: 770,
       storeEvent: events.COMPONENT_UPDATE,
     };
   },
