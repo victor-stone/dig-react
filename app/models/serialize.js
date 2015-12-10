@@ -1,4 +1,4 @@
-'use strict';
+import events from './events';
 
 /*
   Some things to note:
@@ -80,7 +80,7 @@
 function _serialize(jsonData,model,bindParent) {
 
   if( !jsonData ) {
-    throw new Error('Nothing here');
+    throw new Error( events.ERROR_IN_JSON );
   }
 
   if( Array.isArray(jsonData) ) {

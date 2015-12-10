@@ -20,7 +20,8 @@ var Events = {
   INSPECT_ZIP:        'inspect_zip',
   SAMPLE_TAG_TAB:     'sample_tag_tab',
   DOWNLOAD:           'download',
-  USER_SEARCH:        'user_search'
+  USER_SEARCH:        'user_search',
+  ERROR_IN_JSON:      'json_error'
 };
 
 module.exports = Events;

@@ -142,14 +142,25 @@ class UploadList extends Query {
 
     hash = this.promiseHash(hash,queryParams);
     
+    this.error = null;
+
     return rsvp.hash(hash).then( model => {
       this.model = model;
       model.queryParams = oassign( {}, queryParams );
       this.emit( events.MODEL_UPDATED, model );
       return model;
     }).catch( e => {
-      var str = /*decodeURIComponent*/(querystring.stringify(queryParams));
-      throw new Error( `${str} original: ${e.toString()}-${e.stack}`);
+      if( e.message === events.ERROR_IN_JSON ) {
+        this.model.playlist = [];
+        this.model.total = 0;
+        this.model.error = this.error = e.message;
+        this.model.artist = {};
+        this.model.queryParams = oassign( {}, queryParams );
+        return this.model;
+      } else {
+        var str = /*decodeURIComponent*/(querystring.stringify(queryParams));
+        throw new Error( `${str} original: ${e.toString()}-${e.stack}`);
+      }
     });
 
   }

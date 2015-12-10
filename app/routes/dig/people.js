@@ -34,7 +34,7 @@ people.store = function(params,queryParams) {
   var qparams = mergeParams( {}, opts, { u: params.userid }, queryParams );
   return Playlist.storeFromQuery(qparams,opts)
           .then( store => {
-            people.title = store.model.artist.name;
+            people.title = !this.error && store.model.artist.name;
             return store;
           });
 };
