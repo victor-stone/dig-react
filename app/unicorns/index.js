@@ -232,18 +232,23 @@ var debounce = function(func, wait, immediate) {
     };
 };
 
+function cleanSearchString(str) {
+  return str.replace(/[^a-zA-Z0-9\s_()\*\.]/g,'');
+}
+
 module.exports = {
-  commaize,
+  browserScripts,
   camelize,
-  oassign,
-  mergeParams,
+  cleanSearchString,
+  commaize,
   dasherize,
+  debounce,
   decamlize,
+  mergeParams,
+  oassign,
+  pagingStats,
   trim,
   w,
   underscore,
-  debounce,
-  pagingStats,
   TagString,
-  browserScripts
 };

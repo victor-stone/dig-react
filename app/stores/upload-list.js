@@ -5,6 +5,7 @@ import events      from '../models/events';
 import Tags        from './tags';
 
 import { oassign,
+         cleanSearchString,
          TagString }   from '../unicorns';
 
 const TAG_FIELDS = ['tags', 'reqtags', 'oneof'];
@@ -110,15 +111,21 @@ class UploadList extends Query {
     queryParams.f        = 'js';
     queryParams.dataview = 'links_by';
     queryParams.offset   = queryParams.offset || 0;
-    
+
+    var hasSearch = 'searchp' in queryParams;
+
+    if( hasSearch ) {
+      queryParams.searchp = cleanSearchString( queryParams.searchp );
+    }
+
     var hash = {
       playlist: this.fetch(queryParams),
       total:    this.count(queryParams),
       artist:   queryParams.u ? this.findUser(queryParams.u) : null,
     };
 
-    if( 'searchp' in queryParams ) {
-      var text = queryParams.searchp.replace(/[^a-zA-Z0-9 _()\*\.]/,'');
+    if( hasSearch) {
+      var text = queryParams.searchp;
 
       hash.artists = [];
       hash.genres  = [];

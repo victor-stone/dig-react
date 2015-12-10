@@ -11,13 +11,17 @@ function scrollToTop() {
 }
 
 function scrollToElement(e, offset) {
-  offset = offset || 0;
-  $('html,body').animate(
-      { scrollTop: $(e).offset().top - offset },
-      { duration: 'slow', 
-        easing: 'swing'
-      }
-    );
+  var $e = $(e);
+  if( $e[0] ) {
+    offset = offset || 0;
+    var top = $e.offset().top;
+    $('html,body').animate(
+        { scrollTop: top - offset },
+        { duration: 'slow', 
+          easing: 'swing'
+        }
+      );
+  }
 }
 
 function scrollIntoView(e, offset) {

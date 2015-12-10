@@ -1,5 +1,7 @@
-import React     from 'react';
-import Glyph from './Glyph';
+import React  from 'react';
+import Glyph  from './Glyph';
+
+import { cleanSearchString } from '../unicorns';
 
 const RETURN_KEY = 13;
 
@@ -48,7 +50,7 @@ const SearchBox = React.createClass({
   },
 
   submitSearch: function(isIcon) {
-    var text = this.state.value;
+    var text = cleanSearchString(this.state.value);
     this.props.submitSearch( text, isIcon || false, (newText) => {
       this.setState({value: newText});
     });
