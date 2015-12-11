@@ -10,7 +10,7 @@ import serviceLookup from '../../services';
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">
       <li>
-        <a href="http://ccmixter.org/keep-ccmixter-open-and-free" target="_blank"><i className="fa fa-heart"></i>{" Donate"}</a>
+        <a href="http://ccmixter.org/keep-ccmixter-open-and-free" target="_blank"><i className="fa fa-heart"></i>{" donate"}</a>
       </li>
       <li>
         <Link href="/#howitworks">{"how it works"}</Link>

@@ -13,6 +13,10 @@ var people = React.createClass({
   render() {
     var store  = this.props.store;
 
+    if( store.error ) {
+      return (<div className="well"><h1>{"wups, can't find that artist"}</h1></div>);
+    }
+    
     return  (
       <div>
         <People.Header model={store.model.artist} />

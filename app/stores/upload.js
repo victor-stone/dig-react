@@ -1,8 +1,8 @@
 import Query            from './query';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
+import events           from '../models/events';
 import rsvp             from 'rsvp';
-
 
 function _fixFeaturing(model) {
   if( !model.upload.featuring && model.sources && model.upload.setFeatureSources ) {
@@ -36,6 +36,10 @@ class Upload extends Query {
       artist:     userid ? this.findUser(userid) : null,
     };
 
+    this.error = null;
+
+    var _this = this;
+
     return this.transaction(rsvp.hash(queries)
 
       .then( record => {
@@ -56,7 +60,25 @@ class Upload extends Query {
         this.model = model;
 
         return model;
-      }));
+
+      }).catch( e => {
+        if( e.message === events.ERROR_IN_JSON ) {
+          model = {
+            upload: {},
+            remixes: [],
+            trackbacks: [],
+            sources: [],
+            artist: {}
+          };
+          _this.model = model;
+          _this.error = this.model.error = e;
+          return model;
+        } else { 
+          throw e;
+        }
+      })
+
+    );
   }
   
   trackbacks(forId) {
