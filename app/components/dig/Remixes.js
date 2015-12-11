@@ -98,14 +98,14 @@ var Remixes = React.createClass({
   },
 
   onPlay: function() {
-    AudioPlayerService.setPlaylist( this.state.model.playlist );
+    AudioPlayerService.setPlaylist( this.state.model.items );
   },
 
   render: function() {
 
     var model = this.state.model;
 
-    var remixLines = model.playlist.map( upload =>
+    var remixLines = model.items.map( upload =>
       <RemixLine key      = {upload.id} 
                  upload   = {upload} 
                  skipUser = {this.props.skipUser} 

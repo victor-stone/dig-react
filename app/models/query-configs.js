@@ -13,17 +13,17 @@ module.exports = {
   pells: {
     limit:   10,
     lic:     'all',
-    reqtags: 'acappella'
+    reqtags: 'acappella,-autoplay'
   },
   
   samples: {
     limit: 10,
-    reqtags: 'sample',
+    reqtags: 'sample,-autoplay',
     lic: 'all'
   },
   
   pellsFeatured: {
-    reqtags: 'acappella,featured',
+    reqtags: 'acappella,featured,-autoplay',
   },
 
   pellsCount: {

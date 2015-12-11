@@ -6,7 +6,7 @@ class NowPlaying {
   constructor() {
     var pl = AudioPlayerService.playlist || [];
     this.model = {
-      playlist: pl,
+      items: pl,
       total: pl.length
     };
   }

@@ -1,7 +1,7 @@
 import React         from 'react';
 import { TagSearch } from '../../components/dig';
 import qc            from '../../models/query-configs';
-import Playlist      from '../../stores/playlist';
+import Remixes      from '../../stores/remixes';
 
 import { mergeParams } from '../../unicorns';
 
@@ -16,7 +16,7 @@ tagSearch.path  = '/dig';
 tagSearch.store = function(params,queryParams) {
   var opts = mergeParams( { type: 'any' }, qc.remixes );
   var qparams = mergeParams( {}, opts, queryParams );
-  return Playlist.storeFromQuery(qparams, opts);
+  return Remixes.storeFromQuery(qparams, opts);
 };
 
 module.exports = tagSearch;

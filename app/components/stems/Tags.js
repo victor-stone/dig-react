@@ -124,7 +124,7 @@ const TagsList = React.createClass({
     var seltags  = (store.model.queryParams.tags || '').toString();
     if( seltags.length > 0 && store.model.total ) {
       var uploadtags = new TagString();
-      store.model.playlist.forEach( u => uploadtags.add(u.userTags) );
+      store.model.items.forEach( u => uploadtags.add(u.userTags) );
       var allTags = this.allTags.filter( t => t.count >= MIN_TAG_COUNT )
                                 .map( t => t.id );
       var tags = uploadtags

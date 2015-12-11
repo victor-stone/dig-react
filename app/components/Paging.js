@@ -9,6 +9,9 @@ import { ModelTracker,
 
 import { pagingStats } from '../unicorns';
 
+import env from '../services/env';
+env.assert( LimitFilter, 'LimitFilter');
+
 const MIN_LIMIT = 10;
 
 const PagerLink = React.createClass({
@@ -70,7 +73,7 @@ const Paging = React.createClass({
     return {
         offset: model.queryParams.offset,
         limit:  model.queryParams.limit,
-        length: model.playlist.length,
+        length: model.items.length,
         total:  model.total      
     };
   },

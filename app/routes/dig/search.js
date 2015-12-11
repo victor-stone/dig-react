@@ -1,6 +1,6 @@
 import React     from 'react';
 import qc        from '../../models/query-configs';
-import Playlist  from '../../stores/playlist';
+import Rmx       from '../../stores/remixes';
 
 import { DidYouMean,
          Link,
@@ -45,7 +45,7 @@ search.store = function( params, queryParams ) {
   var opts    = mergeParams( { search_type: 'all' }, qc.remixes );
   var qparams = mergeParams( {}, opts, queryParams );
 
-  return Playlist.storeFromQuery(qparams,opts);
+  return Rmx.storeFromQuery(qparams,opts);
 };
 
 module.exports = search;

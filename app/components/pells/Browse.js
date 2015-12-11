@@ -107,9 +107,9 @@ var PellsListing = React.createClass({
               </li>);
     }
 
-    var playlist = this.state.model.playlist;
+    var items    = this.state.model.items;
     var artist   = this.state.model.artist;
-    var lines    = playlist.map(pellLine.bind(this));
+    var lines    = items.map(pellLine.bind(this));
 
     return React.createElement( 'ul', null, lines );
     }

@@ -19,6 +19,7 @@ import PageHeader from './PageHeader';
 import Paging from './Paging';
 import pells from './pells';
 import People from './People';
+import playlists from './playlists';
 import QueryOptions from './QueryOptions';
 import SearchBox from './SearchBox';
 import SearchHeader from './SearchHeader';
@@ -51,6 +52,7 @@ module.exports = {
     Paging,
     pells,
     People,
+    playlists,
     QueryOptions,
     SearchBox,
     SearchHeader,

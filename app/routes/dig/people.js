@@ -1,7 +1,7 @@
 import React            from 'react';
 import { mergeParams }  from '../../unicorns';
 import qc               from '../../models/query-configs';
-import Playlist         from '../../stores/playlist';
+import Rmx              from '../../stores/remixes';
 
 import {  Remixes }     from '../../components/dig'; 
 import {  People,
@@ -36,7 +36,7 @@ people.title = 'People';
 people.store = function(params,queryParams) {
   var opts    = mergeParams( {}, qc.remixes );
   var qparams = mergeParams( {}, opts, { u: params.userid }, queryParams );
-  return Playlist.storeFromQuery(qparams,opts)
+  return Rmx.storeFromQuery(qparams,opts)
           .then( store => {
             people.title = !this.error && store.model.artist.name;
             return store;

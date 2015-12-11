@@ -119,9 +119,9 @@ class UploadList extends Query {
     }
 
     var hash = {
-      playlist: this.fetch(queryParams),
-      total:    this.count(queryParams),
-      artist:   queryParams.u ? this.findUser(queryParams.u) : null,
+      items:  this.fetch(queryParams),
+      total:  this.count(queryParams),
+      artist: queryParams.u ? this.findUser(queryParams.u) : null,
     };
 
     if( hasSearch) {
@@ -151,7 +151,7 @@ class UploadList extends Query {
       return model;
     }).catch( e => {
       if( e.message === events.ERROR_IN_JSON ) {
-        this.model.playlist = [];
+        this.model.items = [];
         this.model.total = 0;
         this.model.error = this.error = e.message;
         this.model.artist = {};
@@ -217,8 +217,8 @@ class UploadList extends Query {
   }
 
   _applySoftParams(queryParams) {
-    return this.fetch(queryParams).then( playlist => {
-      this.model.playlist = playlist;
+    return this.fetch(queryParams).then( items => {
+      this.model.items = items;
       this.emit( events.MODEL_UPDATED );
       return this.model;
     });

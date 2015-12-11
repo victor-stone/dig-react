@@ -87,7 +87,7 @@ const Listing = React.createClass({
 
     return (
         <ul className="stems-listing">
-          {model.playlist.map( (u,i) => {
+          {model.items.map( (u,i) => {
             return (<li key={i}>
                       {fl ? <CloseButton className="close" onClick={this.onClose} /> : null}
                       {u.bpm ? <span className="bpm">{u.bpm}</span> : null}

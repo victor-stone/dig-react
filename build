@@ -12,13 +12,22 @@ var globp   = rsvp.denodeify(glob);
 
 var bt = require('./bin/build-tools');
 
+var apps = [ 'dig', 'pells', 'stems', 'playlists' ];
+
 var MODE     = argv.mode || (argv.p ? 'prod' : 'dev');
 var buildAll = argv.all || argv.a || argv.p || false;
 var verbose  = argv.verbose || argv.v || false;
-var APP_NAME =   argv.pells ?  'pells' : 
-                (argv.dig   ?  'dig'   : 
-                (argv.stems ?  'stems' :
-                (argv.app   || 'dig')));
+var APP_NAME = null;
+
+apps.forEach( _appName => {
+  if( argv[_appName] ) {
+    APP_NAME = _appName;
+  }
+});
+
+if( !APP_NAME ) {
+  APP_NAME = app[0];
+}
 
 clog( '------------------------ Building ------------------------');
 clog( ' buiding at: ', new Date() + '');
@@ -118,14 +127,12 @@ function stageResults() {
           });
 }
 
-
 function generateComponentIndex() {
 
-  var all = [
-    bt.generateIndexJS('./app/components', 'dig',   n => n ),
-    bt.generateIndexJS('./app/components', 'pells', n => n ),
-    bt.generateIndexJS('./app/components', 'stems', n => n ),
-  ];
+  var all = [];
+
+  apps.forEach( _appName => all.push( bt.generateIndexJS('./app/components', _appName, n => n ) ) );
+
   return rsvp.all(all).then( () => bt.generateIndexJS('./app', 'components', n => n ) );
 }
 
@@ -176,10 +183,12 @@ function publishAppPublicFiles() {
     .then( fnames => fnames.forEach( f => bt.copy( f, f.replace(rootd, WEB_DIR ) ) ) );    
 }
 
+/**/
 function bundleAppCSSFiles() {
   return globp( `public/{shared,${APP_NAME}}/css/*.css` )
     .then( files => bundleAppFiles(files,'css') );
 }
+/**/
 
 function _compileTemplate(platform, outfile) {
 

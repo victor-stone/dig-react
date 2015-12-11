@@ -3,7 +3,7 @@ import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
 
 
-class Playlist extends UploadList {
+class Remixes extends UploadList {
 
   fetch(queryParams) {
     return this.query(queryParams).then( serialize(ccmixter.Upload) );
@@ -17,9 +17,9 @@ class Playlist extends UploadList {
 //
 // very handy for routing
 //
-Playlist.storeFromQuery = function(params,defaults) {
-  var pl = new Playlist(defaults);
+Remixes.storeFromQuery = function(params,defaults) {
+  var pl = new Remixes(defaults);
   return pl.getModel(params).then( () => pl );  
 };
 
-module.exports = Playlist;
+module.exports = Remixes;
