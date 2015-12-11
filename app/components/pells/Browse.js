@@ -159,7 +159,7 @@ var PellDetail = React.createClass({
           return (
             <li className="dl-list" key={file.id} >
                 <DownloadPopup btnClass="sm-download" 
-                               fullUpload={model} 
+                               model={model} 
                                file={file} 
                 /> 
                 {" "}

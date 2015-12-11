@@ -312,6 +312,7 @@ class ACappella extends Upload {
 
     this.getFileInfo = function(target) {
       return this._findFileInfo( target, f => f.isPlayablePell ) ||
+        this._findFileInfo( target, f => f.isMP3 && f.nicName && f.nicName.match(/(vocal|vox|pell)/) ) ||
         this._findFileInfo( target, f => f.isMP3 );
     };
 
