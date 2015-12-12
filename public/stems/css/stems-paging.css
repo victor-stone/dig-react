@@ -38,8 +38,8 @@
 }
 
 .stems-browser .paging > label.limit-label > select {
-  width: 50px;
   display: inline-block;
   font-size: 12px;
   height: initial;
+  color: black;
 }

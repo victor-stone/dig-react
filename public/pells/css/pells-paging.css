@@ -50,9 +50,9 @@
 }
 
 .pell-paging .paging > label.limit-label > select {
-  width: 50px;
   display: inline-block;
   font-size: 12px;
   height: initial;
   text-align: center;
+  color: black;
 }
