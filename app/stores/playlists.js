@@ -1,4 +1,5 @@
 import Uploads     from './uploads';
+import Upload      from './upload';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
 import rsvp        from 'rsvp';
@@ -19,9 +20,16 @@ class Playlists extends Uploads {
     return this.tags.forCategories( ['genre','mood'], '');
   }
 
+  get uploadStore() {
+    if( !this._uploadStore ) {
+      this._uploadStore = new Upload();
+    }
+    return this._uploadStore;
+  }
+
   getModel(queryParams) {
     var defaults =  { 
-        dataview: 'playlists',
+        dataview:  'playlists',
         f:         'js',
         limit:     DEFAULT_LIMIT,
         offset:    0,
@@ -36,8 +44,10 @@ class Playlists extends Uploads {
     var me = this;
 
     var model = {
-      items: me.fetch(q),
-      total: this.count(q.minitems)
+      items:  me.fetch(q),
+      total:  this.count(q),
+      upload: q.upload ? this.uploadStore.info(q.upload) : null,
+      curator: q.user ? this.findUser(q.user) : null
     };
 
     return rsvp.hash(model).then( model => {
@@ -54,13 +64,19 @@ class Playlists extends Uploads {
               .then( models => this._filterGenreTags(models) );
   }
 
-  count(minitems) {
+  count(queryParams) {
     var q = {
       f: 'count',
       dataview: 'playlists',
       datasource: 'cart',
-      minitems
     };
+
+    [ 'minitems', 'upload', 'tags', 'user', 'type', 'dynamic'].forEach( p => {
+      if( queryParams[p] ) {
+        q[p] = queryParams[p];
+      }
+    });
+
     return this.queryOne(q);
   }
 

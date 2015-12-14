@@ -5,6 +5,7 @@
   border: 1px solid #999;
   padding: 8px;
   border-radius: 5px;
+  min-height: 60px;
 }
 
 .playlists-list > li > .play-all-button {

@@ -1,5 +1,6 @@
 import React      from 'react';
 import Playlist   from '../../stores/playlist';
+import Paging     from '../../components/Paging';
 import PageHeader from '../../components/PageHeader';
 import Info       from '../../components/playlists/Info';
 import Tracks     from '../../components/playlists/Tracks';
@@ -15,6 +16,10 @@ var PlaylistPage = React.createClass({
           <PageHeader icon="music" title={model.head.name} subTitle="playlist" />
           <div className="row">
             <div className="col-md-3 col-md-offset-1">
+              {model.head.isDynamic
+                ? <Paging store={model.tracks} />
+                : null
+              }
               <Info store={store} />
             </div>
             <div className="col-md-6">

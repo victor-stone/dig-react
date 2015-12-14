@@ -177,7 +177,7 @@ const TagsList = React.createClass({
     var numRelated = this.state.related.length;
 
     return (
-        <div className="stems-tags-widget">
+        <div className="stems-tags-widget hidden-xs hidden-sm">
           <ul className="nav nav-tabs">
             <li className={this.checkActive('all')} ><a href="#" onClick={this.onTab('all')}>{"all tags"}</a></li>
             <li className={this.checkActive('related')} ><a href="#" onClick={this.onTab('related')}>{"related "}<span className="badge">{numRelated}</span></a></li>

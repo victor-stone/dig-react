@@ -54,6 +54,8 @@
 
 .audio-player .song-info a.upload-link {
   color: #FFF;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .audio-player .song-info a.user {

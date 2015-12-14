@@ -3,6 +3,8 @@ import serialize from '../models/serialize';
 import ccmixter  from '../models/ccmixter';
 import rsvp      from 'rsvp';
 
+import { oassign } from '../unicorns';
+
 class Topics extends Query {
 
   constructor() {
@@ -27,6 +29,29 @@ class Topics extends Query {
       .then( model => this.model = model );
   }
 
+  type(topicType) {
+    var args = {
+      f: 'js',
+      dataview: 'topics',
+      type: topicType,
+      limit: 10
+    };
+    var hash = {
+      items: this.query(args).then( serialize( ccmixter.Topic ) ),
+      total: this.count(args)
+    };
+
+    return rsvp.hash(hash).then( model => {
+      this.model = model;
+      this.model.queryParams = oassign( {}, args );
+    });
+  }
+
+  count(queryParams) {
+    var qp = oassign( {}, queryParams );
+    qp.dataview = 'count_topics';
+    return this.queryOne(qp);
+  }
 }
 
 Topics.namedTopics = {

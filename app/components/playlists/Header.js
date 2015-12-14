@@ -23,14 +23,20 @@ const Header = React.createClass({
             <NavbarHeader title="playlists.ccMixter" />
             <div className="collapse navbar-collapse" id="dig-collapse">
               <ul className="nav navbar-nav">
-                <li><LoadingGlyph /></li>    
               </ul>
               <div role="search" className="navbar-form navbar-right">
                 <SearchBox submitSearch={this.submitSearch} placeholder="genre, title, etc." />
               </div>      
               <ul className="nav navbar-nav navbar-right">
+                <li><LoadingGlyph /></li>    
                 <li>
-                  <Link href="/browse">{"browse"}</Link>
+                  <Link href="/featured">{"featured"}</Link>
+                </li>
+                <li>
+                  <Link href="/dynamic">{"dynamic"}</Link>
+                </li>
+                <li>
+                  <Link href="/browse">{"latest"}</Link>
                 </li>
                 <li>
                   <Link href="/licenses">{"licenses"}</Link>

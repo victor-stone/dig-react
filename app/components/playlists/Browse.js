@@ -20,14 +20,17 @@ var Playlists = React.createClass({
   render: function() {
 
     var model = this.state.model;
-    
+    var showUser = !this.props.skipUser;
     return (
       <ul className="playlists-list">
       {model.items.map( p => {
         return(<li key={p.id}>
           <PlayAllButton playlist={p.id} />
           <Link href={'/playlist/browse/'+p.id} className="playlist-link">{p.name}<span className="badge">{p.count}</span></Link>          
-          <div className="playlist-curator">{"curator: "}<Link href={'/people/' + p.curator.id}>{p.curator.name}</Link></div>
+          {showUser
+            ? <div className="playlist-curator">{"curator: "}<Link href={'/people/' + p.curator.id}>{p.curator.name}</Link></div>
+            : null
+          }          
           <Tags model={p.tags} />
         </li>);})
       }
@@ -36,6 +39,24 @@ var Playlists = React.createClass({
     }
 });
 
+var PlaylistWidget = React.createClass({
+
+  render: function() {
+    var store = this.props.store;
+    return (
+      <div className="container playlist-browser">
+        <div className="row">
+          <div className="col-md-2 col-md-offset-1">
+            <Paging store={store} disableBumping />
+          </div>
+          <div className="col-md-8">
+            <Playlists store={store} skipUser={this.props.skipUser} />
+          </div>
+        </div>
+      </div>
+    );      
+  }
+});
 
 var Browse = React.createClass({
 
@@ -44,16 +65,7 @@ var Browse = React.createClass({
     return (
       <div>
         <PageHeader icon="music" title="Playlists" />
-        <div className="container playlist-browser">
-          <div className="row">
-            <div className="col-md-2 col-md-offset-1">
-              <Paging store={store} disableBumping />
-            </div>
-            <div className="col-md-7">
-              <Playlists store={store} />
-            </div>
-          </div>
-        </div>
+        <PlaylistWidget store={store} />
       </div>
     );      
   }
@@ -63,6 +75,7 @@ var Browse = React.createClass({
 
 module.exports = {
   Playlists,
+  PlaylistWidget,
   Browse
 };
 
