@@ -29,14 +29,11 @@ var SelectedTagsTracker = {
   },
 
   _tagsFromParams: function(queryParams) {
-    if( queryParams.tags ) {
-      if( this.props.catID ) {
-        return { selectedTags: this.filterTagsByCat(queryParams.tags) };
-      } else {
-        return { selectedTags: new TagString(queryParams.tags) };
-      }
+    var qpTags = new TagString(queryParams.tags);
+    if( !qpTags.isEmpty() && this.props.catID ) {
+      return { selectedTags: this.filterTagsByCat(qpTags) };
     }
-    return { selectedTags: new TagString() };
+    return { selectedTags: qpTags };
   }
 };
 
