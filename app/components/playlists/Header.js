@@ -30,7 +30,7 @@ const Header = React.createClass({
               </div>      
               <ul className="nav navbar-nav navbar-right">
                 <li>
-                  <Link href="/playlists">{"browse"}</Link>
+                  <Link href="/browse">{"browse"}</Link>
                 </li>
                 <li>
                   <Link href="/licenses">{"licenses"}</Link>

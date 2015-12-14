@@ -18,7 +18,7 @@ env.set( {
   rewriteRules,
   bannerTopic: 'stemsBanner',
   supportPlaylist: false,
-  supportWavImg: false,
+  supportWavImg: true,
 });
 
 module.exports = function(props) { return <App {...props} header={Header} footer={Footer} />; };

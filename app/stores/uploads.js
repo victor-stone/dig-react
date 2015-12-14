@@ -8,8 +8,6 @@ import { oassign,
          cleanSearchString,
          TagString }   from '../unicorns';
 
-const TAG_FIELDS = ['tags', 'reqtags', 'oneof'];
-
 class UploadList extends Query {
 
   constructor(defaultParams) {
@@ -17,6 +15,7 @@ class UploadList extends Query {
     this.model         = {};
     this.defaultParams = defaultParams || {};
     this._tags         = null;
+    this.tagFields     = ['tags', 'reqtags', 'oneof'];
   }
 
   get supportsOptions() {
@@ -37,7 +36,7 @@ class UploadList extends Query {
           }
         } else {
           if( k in defs ) {
-            if( TAG_FIELDS.includes(k) ) {
+            if( this.tagFields.includes(k) ) {
               if( qp[k] && !(new TagString(defs[k])).isEqual(qp[k]) ) {
                 copy[k] = qp[k];
               }
@@ -175,15 +174,13 @@ class UploadList extends Query {
 
   _expandQP(queryParams) {
     var qp   = oassign( {}, queryParams );
-    qp.reqtags = new TagString(qp.reqtags);
-    qp.tags    = new TagString(qp.tags);
-    qp.oneof   = new TagString(qp.oneof);
+    this.tagFields.forEach( f => qp[f] = new TagString(qp[f]) );
     return qp;
   }
 
   _contractQP(queryParams,result) {
     for( var k in queryParams ) {
-      if( TAG_FIELDS.includes(k) ) {
+      if( this.tagFields.includes(k) ) {
         if( queryParams[k].getLength() > 0 ) {
           result[k] = queryParams[k].toString();
         }

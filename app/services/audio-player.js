@@ -26,7 +26,7 @@ class AudioPlayer extends Eventer
       playlist is an array of models. the .media property may not be
       present on these items.
     */
-    this.playlist = null;
+    this._playlist = null;
 
     this._mediaCache = {};
 
@@ -58,16 +58,20 @@ class AudioPlayer extends Eventer
 
   hasNext() {
     var index = this._nowPlayingIndex();
-    return index > NOT_FOUND && index < this.playlist.length - 1;
+    return index > NOT_FOUND && index < this._playlist.length - 1;
   }
   
   hasPrev() {
     return this._nowPlayingIndex() > 0;
   }
   
-  setPlaylist(playlist) {
-    this.playlist = playlist;
+  set playlist(playlist) {
+    this._playlist = playlist;
     this.emit( events.PLAYLIST, playlist);
+  }
+
+  get playlist() {
+    return this._playlist;
   }
 
   bindToNowPlaying(model) {
@@ -87,8 +91,8 @@ class AudioPlayer extends Eventer
   }
   
   _updatePlaylist() {
-    if( this.nowPlaying && this.playlist ) {
-      if( !this.playlist.findBy('mediaURL',this.nowPlaying.url ) ) {
+    if( this.nowPlaying && this._playlist ) {
+      if( !this._playlist.findBy('mediaURL',this.nowPlaying.url ) ) {
         // user hit 'play' on a song not in this playlist
         // nuke it
         this.playlist = null;
@@ -97,12 +101,12 @@ class AudioPlayer extends Eventer
   }
   
   _advance(dir) {
-    this.play( this.playlist[this._nowPlayingIndex() + dir ] );
+    this.play( this._playlist[this._nowPlayingIndex() + dir ] );
   }
   
   _nowPlayingIndex() {
     var index = NOT_FOUND;
-    var pl = this.playlist;
+    var pl = this._playlist;
     if( pl && this.nowPlaying ) {
       index = pl.indexOf( pl.findBy('mediaURL',this.nowPlaying.url) );
     }

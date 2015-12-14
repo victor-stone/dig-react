@@ -40,7 +40,7 @@ const PlayControls = React.createClass({
     var canPlaylist  = env.supportPlaylist;
 
     return (
-      <div className="btn-group pull-left">
+      <div className="controls">
         {canPlaylist
           ? <a href="#" onClick={this.playPrevious} className={prevClass} >
               <Glyph icon="backward" />

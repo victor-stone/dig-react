@@ -33,9 +33,9 @@ const PlaylistButton = React.createClass({
 
     return(
         hasPlaylist
-          ? (<div className="pull-right">
+          ? (<div className="pull-right hidden-xs hidden-sm">
               <Link href="/nowplaying" className="btn btn-sm btn-info" id="playlist-button">
-                <Glyph icon="music" />{" playlist"}
+                <Glyph icon="music" />{" now playing"}
               </Link>
             </div>)
           : null     

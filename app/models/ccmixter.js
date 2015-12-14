@@ -41,6 +41,7 @@
 import Model          from './model';
 import LicenseUtils   from './licenses';
 import { TagString }  from '../unicorns';
+import querystring    from 'querystring';
 
 const NOT_FOUND = -1;
 
@@ -496,6 +497,50 @@ class Topic extends Model {
   }
 }
 
+class PlaylistCurator extends Model {
+  constructor() {
+    super(...arguments);
+    this.nameBinding = '_bindParent.user_real_name';
+    this.idBinding   = '_bindParent.user_name';
+  }
+}
+
+class Playlist extends Model {
+  constructor() {
+    super(...arguments);
+    this._modelSubtree = {
+      curator: PlaylistCurator
+    };
+    this.idBinding = 'cart_id';
+    this.nameBinding = 'cart_name';
+    this.date = 'cart_date_format';
+    this.getIsDynamic = function() {
+      return !!Number(this.is_dynamic);
+    };
+    this.getQueryParams = function() {
+      return querystring.parse(this.cart_dynamic);
+    };
+    this.getCount = function() {
+      if( this.is_dynamic ) {
+        var qp = querystring.parse(this.cart_dynamic);
+        return  qp.limit || 0;
+      }
+      return this.cart_num_items || 0;
+    };
+    this.getTags = function() {
+      return new TagString(this.cart_tags);
+    };
+  }
+}
+
+class PlaylistHead extends Playlist {
+  constructor() {
+    super(...arguments);
+    this.subTypeBinding = 'cart_subtype';
+    this.descriptionBinding = 'cart_desc_html';
+  }
+}
+
 module.exports = {
   Remix,
   Trackback,
@@ -508,5 +553,7 @@ module.exports = {
   Source,
   Topic,
   ACappella, 
-  Sample
+  Sample,
+  Playlist,
+  PlaylistHead
 };

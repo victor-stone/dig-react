@@ -82,7 +82,7 @@ const PlaybackScrubber = React.createClass({
     var posCss  = { width: this.positionWidth() + '%' };
 
     return (
-        <div onClick={this.click} ref="container" className="playback-scrubber pull-left">
+        <div onClick={this.click} ref="container" className="playback-scrubber pull-left hidden-xs hidden-sm">
           <WavImage />
           <div className="loaded bar"   
                ref="loading"  

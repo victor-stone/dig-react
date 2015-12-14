@@ -8,7 +8,7 @@ const WavImage = React.createClass({
 
   getInitialState: function() {
     this.grabImage();
-    return { svg: null };
+    return { svg: null, fade: 'out' };
   },
 
   componentWillMount: function() {
@@ -24,6 +24,7 @@ const WavImage = React.createClass({
   },
 
   onNowPlaying: function( /*nowPlaying*/ ) {
+    this.setState( { fade: 'out' } );
     this.grabImage();
   },
 
@@ -32,9 +33,9 @@ const WavImage = React.createClass({
       var imageURL = AudioService.nowPlaying.wavImageURL;
       if( imageURL ) {
         // todo: export full xml+svg and put in <img> tag
-        var args = { url: imageURL, method: 'GET', dataType: 'text' };
+        var args = { url: imageURL + '?w=200&h=22', method: 'GET', dataType: 'text' };
         ajax(args).then( svg => {
-          this.setState( { svg } );
+          this.setState( { svg, fade: 'in' } );
         });
       }      
     }
@@ -42,9 +43,10 @@ const WavImage = React.createClass({
 
   render: function() {
     /*eslint "react/no-danger":0 */
-    var svg  = this.state.svg ? { __html: this.state.svg } : null;
+    var svg  = { __html: this.state.svg };
+    var cls  = 'waveimage bar fade ' + this.state.fade;
 
-    return svg ? <div className="waveimage bar fade in" dangerouslySetInnerHTML={svg}/> : <div className="waveimage bar" />;
+    return (<div className={cls} dangerouslySetInnerHTML={svg}/>);
   }
 });
 

@@ -1,0 +1,12 @@
+/* playlist tags css */
+
+.playlist-tags {
+  text-align: left;
+  margin-top: 8px;
+}
+
+.playlist-tags > .playlist-tag {
+  margin-left: 8px;
+  color: brown;
+  display: inline-block;
+}

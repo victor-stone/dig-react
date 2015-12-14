@@ -1,9 +1,9 @@
-import UploadList  from './upload-list';
+import Uploads     from './uploads';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
 
 
-class Remixes extends UploadList {
+class Remixes extends Uploads {
 
   fetch(queryParams) {
     return this.query(queryParams).then( serialize(ccmixter.Upload) );

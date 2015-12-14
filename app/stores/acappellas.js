@@ -1,4 +1,4 @@
-import UploadList       from './upload-list';
+import Uploads          from './uploads';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import rsvp             from 'rsvp';
@@ -70,7 +70,7 @@ TotalsCache.getTotals = function(params,store) {
   return TotalsCache._service.getTotals(params,store);
 };
 
-class ACappellas extends UploadList {
+class ACappellas extends Uploads {
 
   getModel( queryParams ) {
     var tags   = new TagString(queryParams.reqtags);

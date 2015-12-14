@@ -1,5 +1,3 @@
-'use strict';
-
 import rsvp from 'rsvp';
 
 const MAX_ERROR_STR = 40;

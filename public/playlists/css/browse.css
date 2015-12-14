@@ -1,0 +1,43 @@
+/* playlsits browse */
+
+.playlists-list > li {
+  margin-bottom: 19px;
+  border: 1px solid #999;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.playlists-list > li > .play-all-button {
+  margin-right: 10px;
+  margin-top: 8px;
+  display: inline-block;
+  float: left;
+}
+
+.playlists-list > li > .playlist-link {
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  color: #666;
+}
+
+.playlists-list > li > a > .badge {
+  font-size: 9px;
+  vertical-align: super;
+  background-color: #DDD;
+  color: black;
+  margin-left: 6px;
+}
+
+.playlists-list > li > .playlist-curator {
+  display: block;
+  text-align: center;
+  color: #999;
+}
+
+.playlists-list > li > .playlist-curator a {
+  color: #666;
+  font-style: italic;
+}
+

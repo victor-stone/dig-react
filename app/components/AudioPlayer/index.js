@@ -78,24 +78,21 @@ const AudioPlayer = React.createClass({
     var position   = this.state.position;
     var controls   = this.state.controls;
 
-    var articleClass = 'clearfix audio-player ' + ( this.state.isPlaying ? 'is-playing' : '' );
+    var articleClass = 'container-fluid clearfix audio-player ' + ( this.state.isPlaying ? 'is-playing' : '' );
 
     return(
-      <nav className="navbar navbar-default navbar-fixed-bottom">
-        <div className="container-fluid">
-          <article className={articleClass} >
-            <PlayControls ref="controls" controls={controls} />
-            <div className="media-body clearfix">
-              <PlaylistButton   media={nowPlaying} />
-              <PlaybackScrubber media={nowPlaying} position={position} />
-              <UploadLink className="upload-link" model={nowPlaying} />
-              {" "}
-              <People.Link model={nowPlaying.artist} className="user light-color" />
-            </div>
-          </article>
+      <div className={articleClass} >
+        <PlayControls ref="controls" controls={controls} />
+        <div className="clearfix">
+          <PlaylistButton   media={nowPlaying} />
+          <PlaybackScrubber media={nowPlaying} position={position} />
+          <div className="song-info hidden-xs">
+            <UploadLink className="upload-link" model={nowPlaying} />
+            {" "}
+            <People.Link model={nowPlaying.artist} className="user light-color hidden-sm" />
+          </div>
         </div>
-      </nav>
-
+      </div>
       );
   },
 });

@@ -1,0 +1,35 @@
+/* playlists paging css */
+
+.paging {
+  text-align: center;
+  min-width: 165px;
+}
+
+.pagination a {
+  font-size: 70%
+}
+
+.paging > label.limit-label {
+  border: 0px;
+}
+
+.paging > label.limit-label > span {
+  width: 50%;
+  margin-right: 9px;
+}
+
+.paging > label.limit-label > select {
+  display: inline-block;
+  font-size: 12px;
+  height: initial;
+  color: black;
+}
+
+@media screen and (max-width: 770px) {
+
+  .paging > label.limit-label,
+  .paging > div.paging-caption {
+    display: none;
+  }
+
+}

@@ -20,7 +20,7 @@ var browse = React.createClass({
 browse.title = 'Samples Browser';
 
 browse.store = function(params,queryParams) {
-  var opts    = mergeParams( {type: 'any' }, qc.samples, qc.magicSort );
+  var opts    = mergeParams( {type: 'any' }, qc.samples, qc.recent );
   var qparams = mergeParams( { }, opts, queryParams );
   return Samples.storeFromQuery(qparams,opts);
 };

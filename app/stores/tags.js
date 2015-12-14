@@ -36,12 +36,26 @@ class Tags extends Query {
       dataview: 'tags_with_cat'
     };
     var cached = this._checkCache(q);
-    if( cached ) {
-      return rsvp.resovle(cached);
+    if( cached.models ) {
+      return rsvp.resolve(cached.models);
     }
-    return this.query(q).then( r =>  TagString.create( { source: r.map( t => t.tags_tag ) } ));
+    return this.query(q).then( r =>  {
+      var results = TagString.create( { source: r.map( t => t.tags_tag ) } );
+      this._putCache(cached.key,results);
+      return results;
+    });
   }
   
+  forCategories(categories,pairWith) {
+    var arr = categories.map( c => this.forCategory(c,pairWith ) );
+    return rsvp.all( arr ).then( arr => {
+      var ts = arr[0];
+      for( var i = 1; i < arr.length; i++ ) {
+        ts.add(arr[i]);
+      }
+      return ts;
+    });
+  }
   // return an array of Tag models
   category(category,pairWith,minCount) {
     var q = {   

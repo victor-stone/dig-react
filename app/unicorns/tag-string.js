@@ -226,9 +226,17 @@ TagString.prototype.containsOne = function(tag) {
 };
 
 TagString.prototype.intersection = function(other) {
-  var opts = this.copyOptions();
-  opts.source = getIntersect(this._tagsArray.slice(),TagString.toArray(other,opts));
-  return new TagString(opts);
+  var ret  = this; 
+  if( this._tagsArray.length ) {
+    var opts = this.copyOptions();
+    var arr2 = TagString.toArray(other,opts);
+    if( arr2.length ) {
+      var arr1 = this._tagsArray.slice();
+      opts.source = getIntersect(arr1,arr2);
+      ret = new TagString(opts);
+    }
+  }
+  return ret;
 };
 
 TagString.prototype.diff = function(returnTagsOnlyInThisOne) {

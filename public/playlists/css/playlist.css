@@ -1,0 +1,30 @@
+/* playlist page */
+
+.playlist-detail-page .playlist-description {
+  margin-top: 13px;
+}
+.playlist-detail-page .playlist-curator span {
+  color: #999;
+}
+
+.playlist-detail-page .playlist-curator a {
+  font-style: italic;
+  color: #555;
+}
+
+.playlist-detail-page .playlist-tracks > li {
+  margin-bottom: 8px;
+}
+
+.playlist-detail-page .playlist-tracks .track-name {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+}
+
+.playlist-detail-page .playlist-tracks .track-artist {
+  margin-left: 8px;
+  font-size: 12px;
+  color: #777;
+}

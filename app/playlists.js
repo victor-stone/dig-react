@@ -19,7 +19,7 @@ env.set( {
   routes,
   rewriteRules,
   //bannerTopic: 'playlistsBanner',
-  supportPlaylist: false,
+  supportPlaylist: true,
   supportWavImg: false,
 });
 
