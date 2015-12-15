@@ -44,7 +44,12 @@ function bundleFiles(arr,destination,sortpri,sep) {
                          .join( `\n${sep}/* ccmbuildjoint */\n` );
         fs.write(fd,data);
         fs.close(fd);
-      });
+      })
+    .catch( e => {
+      clog( `Error trying to open ${destination}` );
+      err(e);
+    });
+
 }
 
 function copy(src,dest) {

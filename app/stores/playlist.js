@@ -34,6 +34,7 @@ class Playlist extends Query {
 
     var pl = {
       playlist: id,
+      limit: 10,
     };
 
     var model = {

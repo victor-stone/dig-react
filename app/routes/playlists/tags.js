@@ -20,7 +20,7 @@ tags.path = '/tags/:tags';
 tags.title = 'Tags';
 
 tags.store = function(params /*,queryParams */) {
-  return Playlists.storeFromQuery( { tags: params.tags } );
+  return Playlists.storeFromQuery( { tags: params.tags, minitems: '-1' } );
 };
 
 module.exports = tags;

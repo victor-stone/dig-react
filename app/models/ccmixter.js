@@ -515,17 +515,13 @@ class Playlist extends Model {
     this.nameBinding = 'cart_name';
     this.date = 'cart_date_format';
     this.getIsDynamic = function() {
-      return !!Number(this.is_dynamic);
+      return !!this.cart_dynamic;
     };
     this.getQueryParams = function() {
       return querystring.parse(this.cart_dynamic);
     };
     this.getCount = function() {
-      if( this.is_dynamic ) {
-        var qp = querystring.parse(this.cart_dynamic);
-        return  qp.limit || 0;
-      }
-      return this.cart_num_items || 0;
+      return this.cart_dynamic ? 'dynamic' : this.cart_num_items || 0;
     };
     this.getTags = function() {
       return new TagString(this.cart_tags);

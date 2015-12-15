@@ -4,6 +4,7 @@ import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import Eventer          from '../services/eventer';
 import queryAjaxAdapter from '../services/query-ajax-adapter';
+import { oassign }      from '../unicorns';
 
 class Query extends Eventer
 {
@@ -27,6 +28,14 @@ class Query extends Eventer
       f: 'js'
     };
     return this.queryOne(qparams).then( serialize( ccmixter.User ) );
+  }
+
+  findUsers(queryParams) {
+    var qp = oassign( {
+      t: 'user_list',
+      f: 'js',
+    }, queryParams );
+    return this.query(qp).then( serialize( ccmixter.User ) );
   }
 
   searchUsers(params) {

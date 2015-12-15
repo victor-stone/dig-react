@@ -20,7 +20,7 @@ curator.path = '/people/:userid';
 curator.title = 'People';
 
 curator.store = function(params /*,queryParams */) {
-  var id = { user: params.userid };
+  var id = { user: params.userid, minitems: '-1' };
   return Playlists.storeFromQuery(id).then( store => {
     curator.title = store.model.curator.name;
     return store;

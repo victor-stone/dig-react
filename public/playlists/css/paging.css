@@ -1,5 +1,9 @@
 /* playlists paging css */
 
+.playlist-detail-page .paging {
+  position: relative;
+}
+
 .paging {
   text-align: center;
   min-width: 165px;

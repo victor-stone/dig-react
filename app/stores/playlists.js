@@ -71,7 +71,7 @@ class Playlists extends Uploads {
       datasource: 'cart',
     };
 
-    [ 'minitems', 'upload', 'tags', 'user', 'type', 'dynamic'].forEach( p => {
+    [ 'minitems', 'upload', 'tags', 'user', 'type', 'dynamic', 'search'].forEach( p => {
       if( queryParams[p] ) {
         q[p] = queryParams[p];
       }

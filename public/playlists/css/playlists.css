@@ -4,12 +4,17 @@
   padding-top: 7px;
 }
 
-.navbar-inverse {
+.navbar-inverse,
+.footer,
+.playlist-bg-color {
   background-image: -webkit-linear-gradient(top, #E4DECD 0%, #857254 100%);
   background-image: -o-linear-gradient(top, #3c3c55 0%, #226 100%);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#CCC1A8), to(#8A7759));
   background-image: linear-gradient(to bottom, #CCC0A6 0%, #837052 100%);
   background-repeat: repeat-x;
+}
+
+.navbar-inverse {
   border-radius: 4px;
   margin-bottom: 0px;
 }
@@ -23,7 +28,6 @@
 }
 
 .footer {
-  background-color: #A19072;
   color: white;
   padding-bottom: 40px;
 }

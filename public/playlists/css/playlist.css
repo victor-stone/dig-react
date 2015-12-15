@@ -3,6 +3,7 @@
 .playlist-detail-page .playlist-description {
   margin-top: 13px;
 }
+
 .playlist-detail-page .playlist-curator span {
   color: #999;
 }
@@ -10,6 +11,11 @@
 .playlist-detail-page .playlist-curator a {
   font-style: italic;
   color: #555;
+}
+
+.playlist-detail-page .playlist-description img {
+  display: block;
+  margin: 16px auto;
 }
 
 .playlist-detail-page .playlist-tracks > li {

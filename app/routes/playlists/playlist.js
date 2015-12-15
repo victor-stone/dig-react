@@ -17,7 +17,7 @@ var PlaylistPage = React.createClass({
           <div className="row">
             <div className="col-md-3 col-md-offset-1">
               {model.head.isDynamic
-                ? <Paging store={model.tracks} />
+                ? <Paging store={model.tracks} disableBumping />
                 : null
               }
               <Info store={store} />
