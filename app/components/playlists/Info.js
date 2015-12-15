@@ -2,6 +2,11 @@
 import React      from 'react';
 import Tags       from './Tags';
 import { Link }   from '../People';
+import SharePopup from '../SharePopup';
+
+function ShareLink(model) {
+  return 'http://playlists.ccmixter.org/playlist/browse/' + model.id;
+}
 
 var Info = React.createClass({
 
@@ -13,8 +18,9 @@ var Info = React.createClass({
         <div className="playlist-info hidden-xs hidden-sm">
           <div className="playlist-curator">
             <span>{"curator: "}</span>
-            <Link model={model.curator} />
+            <Link model={model.curator} avatar />
           </div>
+          <SharePopup model={model} modelLink={ShareLink} />
           <Tags model={model.tags} />
           {description
             ? <div className="playlist-description" dangerouslySetInnerHTML={description}></div>

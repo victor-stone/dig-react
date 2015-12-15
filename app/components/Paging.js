@@ -1,16 +1,13 @@
 import React            from 'react';
 import Glyph            from './Glyph';
-import { LimitFilter }  from './QueryOptions';
 import events           from '../models/events';
 
 import { ModelTracker,
+         QueryParamTracker,
          BoundingElement,
          StoreEvents } from '../mixins';
 
 import { pagingStats } from '../unicorns';
-
-import env from '../services/env';
-env.assert( LimitFilter, 'LimitFilter');
 
 const MIN_LIMIT = 10;
 
@@ -50,6 +47,33 @@ const PagerLink = React.createClass({
 
 });
 
+const LimitFilter = React.createClass({ 
+
+  mixins: [QueryParamTracker],
+
+  stateFromParams: function(queryParams) {
+    return { limit: queryParams.limit };
+  },
+
+  performQuery: function() {
+    var limit = this.refs['limit'].value;
+    this.props.store.applyHardParams( { limit } );
+  },
+
+  render: function() {
+    var cls = 'limit-label ' + (this.props.className || '');
+    return (
+        <label className={cls}>{"display "}
+          <select ref="limit" id="limit" value={this.state.limit} onChange={this.performQuery} >
+            <option>{"10"}</option>
+            <option>{"20"}</option>
+            <option>{"40"}</option>
+          </select>
+        </label>
+      );    
+  }
+
+});
 
 const Paging = React.createClass({
 

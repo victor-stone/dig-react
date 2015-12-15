@@ -15,8 +15,9 @@ const creditsPage = (
             <ul className="credits">
               <li><span className="label">{"coding"}</span><ExLink href="http://assoverteakettle.org" text="victor stone" /></li>
               <li><span className="label">{"design"}</span><ExLink href="https://99designs.com/profiles/rnddsgn" text="Rendi Sapurtra" />{" "}<ExLink href="https://99designs.com/profiles/oan" text="oan" /></li>
-              <li><span className="label">{"vintage mic image"}</span><ExLink href="https://www.flickr.com/photos/holmesjr/14821723452/in/photolist-6KmUX7-ozKd15-bjsqAP-chf5mG-bB4V41-qejGm-88LGME-6vnHeK-btPYuC-8F3Qca-9kp6aT-fnHA8h-6ZWBUS-92cVdM-buprd4-jBa7tc-8x58zj-nJBSFg-k46cd4-wTZMe-8sRArj-bjsocc-9v4qUG-fK7AVi-9v4vsE-92g3A3-qLjrP2-3fWw9i-71Vhpk-pHmBAC-8u8hTf-msMvav-buprfp-bjUPHs-4qnNLn-5Z6vL5-8MC5Ti-msNLMm-cQRDi7-crz365-4vothW-bjspn2-8F6QWN-8dF7Nw-ifCvkY-q6LtyG-TnJMe-fK7Bz8-gNgzSB-EJHCT/" text="holmes palacios jr." /></li>
-              <li><span className="label">{"drummer"}</span><ExLink href="https://www.flickr.com/photos/vandenbussche_wim/16538781765/in/photolist-rctzBK-4A1T32-fj31aV-dZVRDr-9inKpb-9inKom-9ijDEB-9inFc9-osui1D-r4mNbs-ayhNmY-4SQWgX-davPTH-davTGY-9zW26a-exbv7e-dmd4wi-8TmT6Q-szao8r-bdhMq6-8xKjXo-4SUH5m-pzQh6B-9sa288-9sge2w-rdDTET-ahSai9-wauFwA-oneggS-vv5ZGy-88s9LA-oDWtWg-bHxKsg-ahGc8L-kraAnk-quHdHH-onHxG3-9sdePt-guBn62-aiCJY1-nfHgtA-7VcCe5-deFSir-zQ1szm-aks7AD-akuUJY-ay4et8-aAh7QA-wqw1H2-qUVfJE/" text="wim vandenbussche" /></li>
+              <li><span className="label">{"vintage mic image"}</span><ExLink href="https://flic.kr/p/ozKd15" text="holmes palacios jr." /></li>
+              <li><span className="label">{"drummer"}</span><ExLink href="https://flic.kr/p/rctzBK" text="wim vandenbussche" /></li>
+              <li><span className="label">{"beach"}</span><ExLink href="https://flic.kr/p/p5Akxa" text="roman iakoubtchik" /></li>
               <li><span className="label">{"awesome testing tools"}</span><ExLink href="https://www.browserstack.com" text="browser stack" /></li>
               <li><span className="label">{"invaluable contributors"}</span><ExLink href="http://ccmixter.org/people/go1dfish" text="alex" />{" "}<ExLink href="http://ccmixter.org/people/mindmapthat" text="kara" />
                     {" "}<ExLink href="http://ccmixter.org/people/snowflake" text="emily" />

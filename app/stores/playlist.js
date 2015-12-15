@@ -42,7 +42,14 @@ class Playlist extends Query {
       tracks:  this.uploads.getModel(pl).then( () => this.uploads )
     };
 
-    return this.transaction(rsvp.hash(model)).then( model => { this.model = model; return model; });
+    return this.transaction(rsvp.hash(model)
+              .then( model => { 
+                  this.model = model; 
+                  return this.findUser(model.head.curator.id); 
+              }).then( curator => {
+                  this.model.head.curator = curator;
+                  return this.model;
+              }));
   }
 }
 

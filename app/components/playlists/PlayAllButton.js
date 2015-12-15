@@ -46,6 +46,7 @@ var PlayAllButton = React.createClass({
   },
 
   setTracks: function() {
+    AudioService.playlistURL = '/playlist/browse/' + this.state.playlist;
     AudioService.playlist = this.state.tracks;        
     AudioService.play( this.state.tracks[0] );
   },

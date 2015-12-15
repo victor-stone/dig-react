@@ -1,6 +1,7 @@
 import React        from 'react';
 import Glyph        from './Glyph';
 import Modal        from './Modal';
+import env          from '../services/env';
 
 const SharePopup = React.createClass({
 
@@ -19,6 +20,9 @@ const SharePopup = React.createClass({
   },
 
   modelLink: function() {
+    if( this.props.modelLink ) {
+      return this.props.modelLink(this.props.model);
+    }
     return 'http://dig.ccmixter.org/files/' +
           this.props.model.artist.id +
           '/' + this.props.model.id;
@@ -36,8 +40,8 @@ const SharePopup = React.createClass({
   },
   
   mailLink: function() {
-    return 'mailto://?subject=' + 'Dig the sounds at Dig' +
-          '&body=' + 'I\'m sharing some sounds I found at dig.ccmixter:  ' +
+    return 'mailto://?subject=' + 'Dig the sounds' +
+          '&body=' + 'I\'m sharing some sounds I found at '+env.appName+'.ccmixter:  ' +
           this.modelLink();
   },
 

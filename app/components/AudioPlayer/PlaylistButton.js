@@ -8,7 +8,8 @@ import AudioService from '../../services/audio-player';
 const PlaylistButton = React.createClass({
 
   getInitialState: function() {
-    return { hasPlaylist: !!AudioService.playlist };
+    return { hasPlaylist: !!AudioService.playlist,
+             url: AudioService.playlistURL };
   },
 
   componentWillMount: function() {
@@ -24,7 +25,8 @@ const PlaylistButton = React.createClass({
   },
 
   onPlaylist: function(playlist) {
-    this.setState( { hasPlaylist: !!playlist } );
+    this.setState( { hasPlaylist: !!playlist,
+                     url: AudioService.playlistURL } );
   },
 
   render: function() {
@@ -34,7 +36,7 @@ const PlaylistButton = React.createClass({
     return(
         hasPlaylist
           ? (<div className="pull-right hidden-xs hidden-sm">
-              <Link href="/nowplaying" className="btn btn-sm btn-info" id="playlist-button">
+              <Link href={this.state.url} className="btn btn-sm btn-info" id="playlist-button">
                 <Glyph icon="music" />{" now playing"}
               </Link>
             </div>)

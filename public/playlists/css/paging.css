@@ -6,15 +6,22 @@
 
 .paging {
   text-align: center;
-  min-width: 165px;
+  width: 180px;
+  background-color: #BBAD92;
+  border-radius: 6px;
+  padding: 4px 0px;
+  margin-bottom: 14px;
 }
 
+.paging ul.pagination {
+
+}
 .pagination a {
   font-size: 70%
 }
 
 .paging > label.limit-label {
-  border: 0px;
+  margin-top: 10px;
 }
 
 .paging > label.limit-label > span {
@@ -31,9 +38,14 @@
 
 @media screen and (max-width: 770px) {
 
+  .paging {
+    background-color: transparent;
+    margin: 0px auto;
+  }
   .paging > label.limit-label,
   .paging > div.paging-caption {
     display: none;
   }
 
 }
+

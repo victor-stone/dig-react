@@ -1,0 +1,14 @@
+/* shared actions css */
+
+.actions {
+  padding-left: 0px;
+}
+
+.actions > li {
+  margin-bottom: 15px;  
+}
+
+.actions-centered > li {
+  text-align: center;
+}
+

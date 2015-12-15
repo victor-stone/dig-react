@@ -135,16 +135,6 @@ a.btn-exp:hover {
   width: 10px;
 }
 
-.actions {
-  padding-left: 0px;
-}
-.actions > li {
-  margin-bottom: 15px;  
-}
-.actions-centered > li {
-  text-align: center;
-}
-
 
 /* query page */
 

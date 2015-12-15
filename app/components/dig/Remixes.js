@@ -98,6 +98,7 @@ var Remixes = React.createClass({
   },
 
   onPlay: function() {
+    AudioPlayerService.playlistURL = '/nowplaying';
     AudioPlayerService.playlist = this.state.model.items;
   },
 

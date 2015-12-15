@@ -13,7 +13,9 @@ var Tracks = React.createClass({
   },
 
   onPlay: function() {
-    AudioService.playlist = this.state.model.items;
+    var model = this.state.model;
+    AudioService.playlistURL = '/playlist/browse/' + model.queryParams.playlist;
+    AudioService.playlist = model.items;
   },
 
   render: function() {

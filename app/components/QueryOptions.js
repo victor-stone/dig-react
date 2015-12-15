@@ -53,34 +53,6 @@ const LicenseFilter = React.createClass({
   }
 });
 
-const LimitFilter = React.createClass({ 
-
-  mixins: [QueryParamTracker],
-
-  stateFromParams: function(queryParams) {
-    return { limit: queryParams.limit };
-  },
-
-  performQuery: function() {
-    var limit = this.refs['limit'].value;
-    this.props.store.applyHardParams( { limit } );
-  },
-
-  render: function() {
-    var cls = 'form-control limit-label ' + (this.props.className || '');
-    return (
-        <label className={cls}>{"display "}
-          <select ref="limit" id="limit" value={this.state.limit} onChange={this.performQuery} >
-            <option>{"10"}</option>
-            <option>{"20"}</option>
-            <option>{"40"}</option>
-          </select>
-        </label>
-      );    
-  }
-
-});
-
 const SortFilter = React.createClass({ 
 
   mixins: [QueryParamTracker],
@@ -206,7 +178,6 @@ module.exports = {
   ResetOptionsButton,
   LicenseInfoPopup,
   LicenseFilter,
-  LimitFilter,
   OptionsWrap,
   SortFilter
 };
