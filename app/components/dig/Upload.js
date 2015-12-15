@@ -72,18 +72,26 @@ var UploadHeader = React.createClass({
 });
 
 
-var ccPlusLink = React.createClass({
+var CcPlusLink = React.createClass({
+
+  getInitialState: function() {
+    return { model: this.props.model };
+  },
+
+  componentWillReceiveProps: function(props) {
+    this.setState( { model: props.model } );
+  },
 
   render: function() {
-    var model = this.props.model;
-    if( !model.ccPlus ) {
+    var model = this.state.model;
+    if( !model.isCCPlus ) {
       return null;
     }
     return(
-      <li className="license-badge">
+      <span>
         <a href={model.purchaseLicenseURL}><img src={model.purchaseLogoURL} /></a>
         <LicenseInfo.LicenseInfoPopup />
-      </li>
+      </span>
       );
   }
 
@@ -93,13 +101,16 @@ var LicenseSection = React.createClass({
 
   render: function() {
     var model = this.props.model;
+
     return (
       <ul className="actions">
         <li className="license-badge">
           <a href={model.license_url}><img className="download-license" src={model.licenseLogoURL} /></a>  
           <LicenseInfo.LicenseInfoPopup />
         </li>
-        <ccPlusLink model={model} />
+        <li className="license-badge">
+          <CcPlusLink model={model} />
+        </li>
         <li>
           <ExternalLink className="btn btn-success" href={model.url} text="@ccMixter" />
         </li>
