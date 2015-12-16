@@ -1,8 +1,16 @@
 /* global soundManager */
 import { debounce } from '../../unicorns';
-import Media from './media';
+import Media        from './media';
+import env          from '../env';
 
 const PLAYBACK_DEBOUNCE = 50;
+
+var _didSMSetup = false;
+
+function smFailure(status) {
+  var str = `audio error(${status}) - ${status.type}`;
+  env.error(str);
+}
 
 class MP3 extends Media
 {
@@ -18,6 +26,12 @@ class MP3 extends Media
     var url = this.url;
     if( !url ) {
       return;
+    }
+
+    if( !_didSMSetup ) {
+      soundManager.setup( { forceUseGlobalHTML5Audio: true } );
+      soundManager.ontimeout( smFailure );
+      _didSMSetup = true;
     }
 
     var me = this;
