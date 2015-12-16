@@ -85,7 +85,8 @@ class Media extends Eventer
   }
   
   fastEmit() {
-    this.emit.apply(this,arguments);
+    setTimeout( () => this.emit.apply(this,arguments), EMIT_DELAY );    
+//    this.emit.apply(this,arguments);
   }  
   
   safeEmit() {
