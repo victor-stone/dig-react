@@ -84,8 +84,15 @@ class Media extends Eventer
     this.fastEmit('finish',this);
   }
   
+  setSoundFail() {
+    this.isPaused = false;
+    this.isPlaying = false;
+    this.fastEmit( 'stop', this );
+    this.fastEmit( 'controls', this );
+    this.fastEmit( 'finish', this );
+  }
+
   fastEmit() {
- //   setTimeout( () => this.emit.apply(this,arguments), EMIT_DELAY );    
     this.emit.apply(this,arguments);
   }  
   
