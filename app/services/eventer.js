@@ -3,14 +3,12 @@
 import EventEmitter from 'events';
 import events       from '../models/events';
 
+var _knownEvents = null;
 function isValidEvent(event) {
-  var found = false;
-  Object.keys(events).forEach( e => {
-    if( events[e] === event ) {
-      found = true;
-    }
-  });
-  return found;
+  if( !_knownEvents ) {
+    _knownEvents = Object.keys(events).map( e => events[e] );
+  }
+  return _knownEvents.includes(event);
 }
 
 const MAX_LISTENERS = 50;

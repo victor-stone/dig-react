@@ -8,21 +8,18 @@ import events           from '../../models/events';
 
 import { StoreEvents,
          TopSideElement,
-         BoundingElement,
          SelectedTagsTracker }  from '../../mixins';
 
 const MIN_TAG_COUNT = 20;
 const FADE_IN_DELAY = 1800;
 const FADE_IN_SPEED = 1000;
 
+const SELECTED_TAG_HEIGHT = 50;
+
 const SelectedTagSection = React.createClass({
 
   mixins: [ TopSideElement, SelectedTagsTracker ],
 
-  getDefaultProps: function() {
-    return { keepBelow: 'nav.top-navbar' };
-  },
-  
   componentDidMount: function() {
     this.doFadeAnimation();
   },
@@ -50,7 +47,7 @@ const SelectedTagSection = React.createClass({
         <div className="selected-tags" >
           {hasTags
             ? <Tags.SelectedTags {...this.props}  />
-            : <div className="no-selected-tags" style={style}>{"select tags to get started"}</div>
+            : <div className="no-selected-tags" style={style}><Glyph icon="check-square-o" />{" select tags to get started"}</div>
           }
         </div>
       );
@@ -69,12 +66,12 @@ function TagsLoading() {
 
 const TagsList = React.createClass({
 
-  mixins: [ StoreEvents, SelectedTagsTracker, BoundingElement ],
+  mixins: [ StoreEvents, SelectedTagsTracker, TopSideElement ],
 
   getDefaultProps: function() {
     return { 
+        topMargin: SELECTED_TAG_HEIGHT,
         keepAbove: '.footer',
-        keepBelow: '.selected-tags',
         storeEvent: events.MODEL_UPDATED 
       };
   },

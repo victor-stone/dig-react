@@ -9,7 +9,7 @@ var PlayButton = React.createClass({
   getInitialState: function() {
     if( !global.IS_SERVER_REQUEST ) {
       if( !AudioService.bindToNowPlaying(this.props.model) ) {
-        AudioService._media(this.props.model);
+        AudioService.attachMedia(this.props.model);
       }
     }
     var media     = this.props.model.media;

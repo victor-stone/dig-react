@@ -34,7 +34,7 @@ var BoundingMixin = {
       }
 
       var $header     = $(this.props.keepBelow);
-      var headerSize  = $header.outerHeight();
+      var headerSize  = $header.outerHeight(true);
       var scrollTop   = $(window).scrollTop();    
       var margin      = scrollTop > (this.elementTop - headerSize)
                           ? (this.elementTop - headerSize)

@@ -131,6 +131,10 @@ class AudioPlayer extends Eventer
     }
   }
 
+  attachMedia(playable) {
+    return this._media(playable);
+  }
+  
   _media(playable) {
     
     if( !playable ) {

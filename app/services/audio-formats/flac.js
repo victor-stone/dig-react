@@ -21,9 +21,9 @@ class FLAC extends Media
 
     var me = this;
     var sound = window.AV.Player.fromURL(url);
-    this.soundPlay   = sound.play.bind(sound);
-    this.soundStop   = sound.stop.bind(sound);
-    this.soundPause  = sound.pause.bind(sound);
+    this._play   = sound.play.bind(sound);
+    this._stop   = sound.stop.bind(sound);
+    this._pause  = sound.pause.bind(sound);
 
     sound.togglePlay  = sound.togglePlayback;
     sound.togglePause = sound.togglePlayback;
@@ -31,18 +31,18 @@ class FLAC extends Media
     sound.play = function() {
       me.isPaused = false;
       me.setIsPlaying(true);
-      me.soundPlay();
+      me._play();
     };
 
     sound.stop = function() {
       me.isPaused = false;
       me.setIsPlaying(false);
-      me.soundStop();
+      me._stop();
     };
 
     sound.pause = function() {
       me.setIsPaused(true);
-      me.soundPause();
+      me._pause();
     };
 
     sound.on('error',function(err) {
@@ -51,7 +51,7 @@ class FLAC extends Media
     
     sound.on('end', function() {
         me.setIsPlaying(false);
-        me.safeEmit('finish',me);
+        me.setIsFinished();
       });
 
     var onLoading = this.onLoading.bind(this);
@@ -66,7 +66,7 @@ class FLAC extends Media
         me.safeEmit('position',me.positionProperties,me);
       }, PLAYBACK_DEBOUNCE) ),
 
-    sound.preload();
+    //sound.preload();
 
     this._sound = sound;
     return sound;

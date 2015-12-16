@@ -65,6 +65,6 @@ module.exports = {
   },
 
   playlistCurators: {
-    ids: 'victor,snowflake,The_Kitchen,admin,MMTMMP,musikpirat,thejukejoint,thehookpodcast,coffeeeurope,gurdonark,mcjackinthebox,'
+    ids: 'scmixer,VJ_Memes,mindmapthat,victor,snowflake,The_Kitchen,admin,MMTMMP,musikpirat,thejukejoint,thehookpodcast,coffeeeurope,gurdonark,mcjackinthebox,'
   }
 };

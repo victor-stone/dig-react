@@ -38,7 +38,7 @@ class MP3 extends Media
       },
       onfinish() {
         me.setIsPlaying(false);
-        me.safeEmit('finish',me);
+        me.setIsFinished();
       },
 
       whileloading: debounce(me._setPositionProperties.bind(me), PLAYBACK_DEBOUNCE),

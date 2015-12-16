@@ -3,6 +3,8 @@ import People from '../People';
 import AB     from '../ActionButtons';
 import events from '../../models/events';
 
+import { oassign } from '../../unicorns';
+
 import PlayControls     from './PlayControls';
 import PlaylistButton   from './PlaylistButton';
 import PlaybackScrubber from './PlaybackScrubber';
@@ -10,6 +12,13 @@ import PlayButton       from './PlayButton';
 import AudioService     from '../../services/audio-player';
 
 var UploadLink = AB.UploadLink;
+
+var nullPosition = { 
+  bytesLoaded: -1,
+  bytesTotal: -1,
+  position: -1,
+  duration: -1,
+};
 
 const AudioPlayer = React.createClass({
 
@@ -22,12 +31,7 @@ const AudioPlayer = React.createClass({
         hasNext: false,
         hasPrev: false,
       },         
-      position: { 
-        bytesLoaded: -1,
-        bytesTotal: -1,
-        position: -1,
-        duration: -1,
-      }              
+      position: oassign( {}, nullPosition )
     };
   },
 
@@ -63,7 +67,11 @@ const AudioPlayer = React.createClass({
         hasNext:   AudioService.hasNext(),
         hasPrev:   AudioService.hasPrev()
       };
-    this.setState( { controls } );
+    var state = { controls };
+    if( !controls.isPaused && !controls.isPlaying ) {
+      state.position = oassign( {}, nullPosition );
+    }
+    this.setState( state );
   },
 
   onPosition: function(position) {

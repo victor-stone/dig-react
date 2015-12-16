@@ -6,16 +6,18 @@ import QueryOptions from './QueryOptions';
 import { SelectedTagSection,
          TagsList }       from './Tags';
 
-import { BoundingElement }    from '../../mixins';
+import { TopSideElement }    from '../../mixins';
+
+const SELECTED_TAG_HEIGHT = 50;
 
 const Tools = React.createClass({
 
-  mixins: [ BoundingElement ],
+  mixins: [ TopSideElement ],
 
   getDefaultProps: function() {
     return { 
         keepAbove: '.footer',
-        keepBelow: '.selected-tags'
+        topMargin: SELECTED_TAG_HEIGHT,
       };
   },
   

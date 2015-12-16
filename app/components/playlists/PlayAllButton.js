@@ -12,7 +12,9 @@ var PlayAllButton = React.createClass({
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      AudioService.on( events.PLAYLIST, this.onPlaylist);        
+      AudioService.on( events.PLAYLIST, this.onPlaylist);  
+      var playlistOn = AudioService.playlistURL === this._playlistURL();
+      this.setState( { playlistOn } );
     }
   },
 
@@ -46,7 +48,7 @@ var PlayAllButton = React.createClass({
   },
 
   setTracks: function() {
-    AudioService.playlistURL = '/playlist/browse/' + this.state.playlist;
+    AudioService.playlistURL = this._playlistURL();
     AudioService.playlist = this.state.tracks;        
     AudioService.play( this.state.tracks[0] );
   },
@@ -55,6 +57,10 @@ var PlayAllButton = React.createClass({
     if( AudioService.nowPlaying ) {
       AudioService.nowPlaying.stop();
     }
+  },
+
+  _playlistURL: function() {
+    return '/playlist/browse/' + this.state.playlist;
   },
 
   render: function() {

@@ -45,18 +45,18 @@ class Media extends Eventer
     }
   }
 
+  togglePause() {
+    var sound = this.sound();
+    if( sound ) {
+      sound.togglePause();
+    }
+  }
+  
   togglePlay() {
     if (this.isPlaying) {
       this.stop();
     } else {
       this.play();
-    }
-  }
-  
-  togglePause() {
-    var sound = this.sound();
-    if( sound ) {
-      sound.togglePause();
     }
   }
   
@@ -71,17 +71,24 @@ class Media extends Eventer
 
   setIsPlaying(flag) {
     this.isPlaying = flag;
-    this.safeEmit( flag ? 'play' : 'stop', this );
-    this.safeEmit( 'controls', this );
+    this.fastEmit( flag ? 'play' : 'stop', this );
+    this.fastEmit( 'controls', this );
   }
 
   setIsPaused(flag) {
     this.isPaused = flag;
-    this.safeEmit( 'controls', this );
+    this.fastEmit( 'controls', this );
   }
 
+  setIsFinished() {
+    this.fastEmit('finish',this);
+  }
+  
+  fastEmit() {
+    this.emit.apply(this,arguments);
+  }  
+  
   safeEmit() {
-    // throw the event over to the main window thread
     setTimeout( () => this.emit.apply(this,arguments), EMIT_DELAY );    
   }
 
