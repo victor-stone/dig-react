@@ -57,6 +57,11 @@ class MP3 extends Media
       onfailure() {
         me.setSoundFail();
       },
+      onload(loadOk) {
+        if( !loadOk ) {
+          me.setSoundFail();
+        }
+      },
 
       whileloading: debounce(me._setPositionProperties.bind(me), PLAYBACK_DEBOUNCE),
       whileplaying: debounce(me._setPositionProperties.bind(me), PLAYBACK_DEBOUNCE),
