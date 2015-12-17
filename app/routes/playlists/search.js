@@ -4,7 +4,32 @@ import { PlaylistWidget } from '../../components/playlists/Browse';
 import { mergeParams }    from '../../unicorns';
 
 import PageHeader             from '../../components/PageHeader';
-import { QueryParamTracker }  from '../../mixins';
+import Glyph                  from '../../components/Glyph';
+import Link                   from '../../components/Link';
+import { QueryParamTracker,
+         ModelTracker }       from '../../mixins';
+
+var CuratorSearchResults = React.createClass({
+
+  mixins: [ ModelTracker ],
+
+  stateFromStore: function(store) {
+    return { curators: store.model.curators || [] };
+  },
+
+  render: function() {
+    var curators = this.state.curators;
+    if( !curators.length ) {
+      return null;
+    }
+    return (
+        <div className="curator-search-results">
+          <span className="curator-label">{"curators: "}</span>
+          {curators.map( c => (<Link key={c.id} href={'/people/' + c.id}><Glyph icon="user" />{" " }{c.name}</Link>))}
+        </div>
+      );
+  }
+});
 
 var search = React.createClass({
     
@@ -21,6 +46,7 @@ var search = React.createClass({
     return (        
       <div className="container-fluid playlist-search-page">
         <PageHeader icon="search" subTitle="search" title={text} />
+        <CuratorSearchResults store={store} />
         <PlaylistWidget store={store} />
       </div>
     );

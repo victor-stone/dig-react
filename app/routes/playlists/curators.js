@@ -1,11 +1,12 @@
 import React              from 'react';
 import Query              from '../../stores/query';
-import queryConfig        from '../../models/query-configs';
-
+import Blobs              from '../../stores/blobs';
 
 import PageHeader       from '../../components/PageHeader';
 import { Link }         from '../../components/People';
 import { ExternalLink } from '../../components/ActionButtons';
+
+const CURATORS_BLOB = 226312;
 
 function Curators(props) {
   var store = props.store;
@@ -30,10 +31,14 @@ function curatorsPage(props) {
 curatorsPage.title = 'Featured Curators';
 
 curatorsPage.store = function(/*params,queryParams */) {
-  var query = new Query();
-  return query.findUsers( queryConfig.playlistCurators ).then( curators =>{
-    query.model = curators;
-    return query;
+  var blobs = new Blobs();
+  return blobs.find( CURATORS_BLOB ).then( blob => {
+    var ids = blob.text;
+    var query = new Query();
+    return query.findUsers( { ids } ).then( curators =>{
+      query.model = curators;
+      return query;
+    });
   });
 };
 

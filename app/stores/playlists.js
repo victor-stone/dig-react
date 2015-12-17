@@ -3,11 +3,16 @@ import Upload      from './upload';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
 import rsvp        from 'rsvp';
-import { oassign } from '../unicorns';
 import events      from '../models/events';
 
-const DEFAULT_LIMIT    = 10;
-const DEFAULT_MINITEMS = 10;
+import { oassign,
+         cleanSearchString }   from '../unicorns';
+
+const DEFAULT_LIMIT           = 10;
+const DEFAULT_UPLOAD_MINITEMS = 1;
+const DEFAULT_SEARCH_MINITEMS = 1;
+const DEFAULT_USER_MINITEMS   = '-1';
+const DEFAULT_MINITEMS        = 5;
 
 class Playlists extends Uploads {
 
@@ -35,19 +40,32 @@ class Playlists extends Uploads {
         offset:    0,
       };
 
+    var hasSearch = 'search' in queryParams;
+
     if( !queryParams.dynamic ) {
-      defaults.minitems = DEFAULT_MINITEMS;
+      if( queryParams.upload ) {
+        defaults.minitems = DEFAULT_UPLOAD_MINITEMS;
+      } else if( queryParams.user ) {
+        defaults.minitems = DEFAULT_USER_MINITEMS;
+      } else if( hasSearch ) {
+        defaults.minitems = DEFAULT_SEARCH_MINITEMS;
+      } else {
+        defaults.minitems = DEFAULT_MINITEMS;
+      }
     }
 
     var q = oassign( defaults, queryParams || {});
       
-    var me = this;
+    if( hasSearch ) {
+      q.search = cleanSearchString( q.search );
+    }
 
     var model = {
-      items:  me.fetch(q),
+      items:  this.fetch(q),
       total:  this.count(q),
       upload: q.upload ? this.uploadStore.info(q.upload) : null,
-      curator: q.user ? this.findUser(q.user) : null
+      curator: q.user ? this.findUser(q.user) : null,
+      curators: hasSearch ? this.searchUsers( { limit: 40, searchp: q.search, minpl: 1 } ) : null
     };
 
     return rsvp.hash(model).then( model => {

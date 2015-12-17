@@ -1,0 +1,24 @@
+/* playlists search */
+
+.curator-search-results {
+  width: 65%;
+  margin: 0 auto 35px auto;
+}
+
+.curator-search-results a {
+  margin-left: 12px;
+  margin-bottom: 10px;
+  display: inline-block;
+  padding: 8px;
+  background-color: #DDD;
+  border-radius: 5px;
+  color: #666;
+  border: 1px solid white;
+}
+
+.curator-search-results a:hover {
+  background-color: #EEE;
+  text-decoration: none;
+  color: black;
+  border: 1px solid black;;
+}
