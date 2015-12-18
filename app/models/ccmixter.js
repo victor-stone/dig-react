@@ -361,11 +361,15 @@ class User extends UserBasic {
     this.avatarURLBinding = 'user_avatar_url';
 
     this.getUrl = function() {
-      return this.artist_page_url + '/profile';
+      if( this.artist_page_url ) {
+        return this.artist_page_url + '/profile';
+      } else {
+        return 'http://ccmixter.org/people/' + this.user_name + '/profile';
+      }
     };
     
     this.getHomepage = function() {
-      if( this.user_homepage === this.artist_page_url ) {
+      if( this.user_homepage === this.getUrl() ) {
         return null;
       }
       return this.user_homepage;
@@ -373,6 +377,7 @@ class User extends UserBasic {
 
   }
 }
+
 
 class DetailUploadUser extends UploadUserBasic {
   constructor() {

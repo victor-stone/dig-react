@@ -25,7 +25,7 @@ var CuratorSearchResults = React.createClass({
     return (
         <div className="curator-search-results">
           <span className="curator-label">{"curators: "}</span>
-          {curators.map( c => (<Link key={c.id} href={'/people/' + c.id}><Glyph icon="user" />{" " }{c.name}</Link>))}
+          {curators.map( c => (<Link key={c.id} href={'/people/' + c.id}><Glyph icon="user" />{" "}{c.name}</Link>))}
         </div>
       );
   }

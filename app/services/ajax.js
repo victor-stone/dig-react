@@ -15,6 +15,9 @@ function resolveWithJSON(resolve, reject, url, supposedJSON) {
 }
 
 function serverAjax(opts) {
+  if( '_ccmClientOnly' in opts ) {
+    return rsvp.resolve( [] );
+  }
   var http = require('http');
   return new rsvp.Promise( function(resolve, reject) {
     if( opts.method === 'GET') {

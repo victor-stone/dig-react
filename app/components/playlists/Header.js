@@ -5,6 +5,7 @@ import LoadingGlyph from '../LoadingGlyph';
 import NavbarHeader from '../NavbarHeader';
 import services     from '../../services';
 import Glyph        from '../Glyph';
+import CurrentUser  from '../CurrentUserMenu';
 
 const Header = React.createClass({
 
@@ -27,6 +28,7 @@ const Header = React.createClass({
               </div>      
               <ul className="nav navbar-nav navbar-right">
                 <li><LoadingGlyph /></li>    
+                <li><CurrentUser /></li>
                 <li><a href="http://ccmixter.org/keep-ccmixter-open-and-free"><Glyph icon="heart" />{" donate"}</a></li>
                 <li>
                   <Link href="/featured">{"featured"}</Link>

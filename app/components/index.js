@@ -4,6 +4,7 @@ import ActionButtons from './ActionButtons';
 import AudioPlayer from './AudioPlayer';
 import Banner from './Banner';
 import BPM from './BPM';
+import CurrentUserMenu from './CurrentUserMenu';
 import DidYouMean from './DidYouMean';
 import dig from './dig';
 import DownloadPopup from './DownloadPopup';
@@ -37,6 +38,7 @@ module.exports = {
     AudioPlayer,
     Banner,
     BPM,
+    CurrentUserMenu,
     DidYouMean,
     dig,
     DownloadPopup,

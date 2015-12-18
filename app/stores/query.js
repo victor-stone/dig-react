@@ -1,5 +1,3 @@
-'use strict';
-
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import Eventer          from '../services/eventer';
