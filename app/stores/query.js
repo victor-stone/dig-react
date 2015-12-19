@@ -2,7 +2,8 @@ import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import Eventer          from '../services/eventer';
 import queryAjaxAdapter from '../services/query-ajax-adapter';
-import { oassign }      from '../unicorns';
+import { oassign,
+         mergeParams }  from '../unicorns';
 
 class Query extends Eventer
 {
@@ -36,10 +37,17 @@ class Query extends Eventer
     return this.query(qp).then( serialize( ccmixter.User ) );
   }
 
+  // search the entire user record
   searchUsers(params) {
     params.dataview ='user_basic';
     params.f = 'js';
     return this.query(params).then( serialize( ccmixter.UserBasic ) );
+  }
+
+  // only look at the beginning of the user_name or user_real_name  
+  lookUpUsers(str, queryParams) {
+    var q = mergeParams( { lookup: str }, queryParams || {} );
+    return this.searchUsers( q );
   }
   
   count(qparams) {

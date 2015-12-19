@@ -104,6 +104,17 @@ if( typeof Array.prototype.rejectBy === 'undefined' ) {
   };
 }
 
+const ELLIPSE = '...';
+
+if( typeof String.prototype.ellipse === 'undefined' ) {
+  String.prototype.ellipse = function(len) {
+    if( this.length > len ) {
+      return this.substr(0,len-ELLIPSE.length) + ELLIPSE;
+    }
+    return this;
+  };
+}
+
 function decamlize(str) {
   return str.replace(/::/g, '/')
             .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')

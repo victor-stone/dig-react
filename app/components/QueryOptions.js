@@ -16,7 +16,7 @@ import { ModelTracker,
   // TODO: care
 
 function LicenseInfoPopup() {
-  return <Link href="/licenses"><Glyph icon="question-circle" /></Link>;
+  return <Link href="/licenses" className="lic-help"><Glyph icon="question-circle" /></Link>;
 }
 
 const LicenseFilter = React.createClass({

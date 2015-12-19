@@ -7,7 +7,7 @@ import events from '../models/events';
       return { someStateDerivedFromStore: ... }
     }
 */
-var PlaylistUpdater = {
+var ModelTracker = {
 
   getInitialState: function() {
     return this.stateFromStore(this.props.store);
@@ -37,5 +37,5 @@ var PlaylistUpdater = {
 };
 
 
-module.exports = PlaylistUpdater;
+module.exports = ModelTracker;
 

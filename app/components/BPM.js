@@ -154,7 +154,7 @@ var BPMDisplay = React.createClass({
       val = 'all';
     }
     return ( 
-        <span>
+        <span className="bpm-display">
           <span className="bpm-title">{"bpm "}</span>
           <span className="bpm">{val}</span>
         </span>

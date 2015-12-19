@@ -5,6 +5,7 @@ import Footer from './Footer';
 import Header from './Header';
 import Info from './Info';
 import PlayAllButton from './PlayAllButton';
+import QueryOptions from './QueryOptions';
 import Tags from './Tags';
 import Tracks from './Tracks';
 
@@ -15,6 +16,7 @@ module.exports = {
     Header,
     Info,
     PlayAllButton,
+    QueryOptions,
     Tags,
     Tracks 
 };

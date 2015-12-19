@@ -1,0 +1,129 @@
+/* new playlist css */
+
+.query-options-elements {
+  margin-top: 15px;
+}
+
+.query-options-elements > li {
+  margin-bottom: 18px;
+}
+
+.query-options-elements > li > .bpm-slider-container {
+  margin-top: 12px;
+  padding-top: 2px;
+  padding-bottom: 42px;
+}
+
+.query-options-elements .no-selected-tags {
+  color: #999;
+  font-style: italic;
+}
+.query-options-elements .selected-tags a.btn-tag {
+  font-size: 12px;
+  display: inline-block;
+  border-radius: 5px;
+  background-color: #DDD;
+  padding: 6px;
+  vertical-align: center;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.query-options-elements .selected-tags a.btn-tag:hover {
+  background-color: #EEE;
+  color: black;
+  text-decoration: none;
+}
+.query-options-elements .selected-tags a.btn-tag i.fa {
+  font-size: 13px;
+}
+
+.query-options-elements .artist-list,
+.query-options-elements .tags-list {
+  max-height: 200px;
+  overflow: scroll;
+  padding: 0px 10px;
+  border-radius: 3px;
+  border: 1px solid #999;
+  width: 90%;
+  margin: 0px auto;
+  cursor: default;
+}
+
+.query-options-elements .artist-list li,
+.query-options-elements .tags-list li {
+  padding: 1px 8px;
+  margin: 0px;
+}
+
+.query-options-elements .tag-filter {
+  background-color: #CCC;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.query-options-elements .tag-filter .selected-tags {
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 14px;
+  background-color: white;
+}
+
+.query-options-elements .tag-filter .tags-list {
+  background-color: white;
+  border-radius: 6px;
+}
+
+.query-options-elements .artist-filter {
+  background-color: #CCC;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.query-options-elements .artist-filter .artist-list {
+  background-color: white;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-radius: 6px;
+}
+
+.query-options-elements .artist-list li:hover,
+.query-options-elements .tags-list li:hover {
+  background-color: #EEE;
+}
+
+.query-options-elements select#sort,
+.query-options-elements select#lic {
+  width: 80%;
+}
+
+.query-options-elements .lic-help {
+  display: none;
+}
+
+.query-options-elements input[type="checkbox"] {
+  margin-left: 10px;
+}
+
+.query-options-elements .bpm-display {
+  text-align: center;
+  display: block;
+}
+
+.query-options-elements .bpm-title {
+  font-weight: bold;
+}
+
+.track-list > li > .name {
+  font-weight: bold;
+}
+
+.track-list > li > .by {
+  color: #BBB;
+}
+
+.track-list > li > .artist {
+  font-style: italic;
+}
