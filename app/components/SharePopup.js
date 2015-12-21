@@ -67,10 +67,11 @@ const SharePopup = React.createClass({
   render: function() {
     var popup = this.state.view.showModal ? this.genPopup() : null;
     var sz    = this.props.big ? 'x4' : '';
+    var cls   = this.props.med ? 'btn btn-success' : 'btn btn-lg btn-success';
     var fixed = this.props.fixed || false;
     return (
         <span>
-          <a className="btn btn-lg btn-success" href="#" onClick={this.handleShowModal}><Glyph fixed={fixed} icon="share-alt" sz={sz} /></a>
+          <a className={cls} href="#" onClick={this.handleShowModal}><Glyph fixed={fixed} icon="share-alt" sz={sz} /></a>
           {popup}
         </span>
       );  

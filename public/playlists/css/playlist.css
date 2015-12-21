@@ -34,3 +34,16 @@
   font-size: 12px;
   color: #777;
 }
+
+
+.action-btn-toolbar {
+  padding: 6px;
+  height: 44px;
+  border-radius: 5px;
+}
+
+.action-btn-toolbar .btn {
+  height: 32px;
+  margin-right: 5px;
+  display: inline-block;
+}

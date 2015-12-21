@@ -68,9 +68,20 @@
   border-radius: 4px;
   padding: 8px;
   margin-bottom: 14px;
+  margin-right: 38px;
   background-color: white;
 }
 
+.query-options-elements .tag-filter .tags-chevron {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.query-options-elements .tag-filter .tags-chevron:hover {
+  background-color: white;
+}
 .query-options-elements .tag-filter .tags-list {
   background-color: white;
   border-radius: 6px;
@@ -127,3 +138,21 @@
 .track-list > li > .artist {
   font-style: italic;
 }
+
+.save-playlist-form .playlist-save-label {
+  width: 20%;
+  float:  left;
+  text-align: right;
+  vertical-align: middle;
+  display: inline-block;
+  margin: 8px;
+}
+
+.save-playlist-form input[type="text"] {
+  width: 75%;
+}
+
+.save-playlist-form .save-button {
+  margin: 20px 44%;
+}
+

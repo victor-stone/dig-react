@@ -2,12 +2,12 @@ import React from 'react';
 
 import qc                       from '../../models/query-configs';
 import { mergeParams }          from '../../unicorns';
-import Remixes                  from '../../stores/remixes';
+import Playlist                 from '../../stores/playlist';
 import { DynamicForm }          from '../../components/playlists/Edit';
 import PageHeader               from '../../components/PageHeader';
 import env                      from '../../services/env';
 
-var NewPlaylist = React.createClass({
+var EditPlaylist = React.createClass({
 
   componentWillMount: function() {
     env.disableAutoScroll = true;
@@ -34,13 +34,11 @@ var NewPlaylist = React.createClass({
   }
 });
 
-NewPlaylist.path = '/new';
+EditPlaylist.path = '/playlist/browse/:id/edit';
 
-NewPlaylist.store = function() {
-  var opts = mergeParams( { type: 'any' }, qc.remixes );
-  var qparams = mergeParams( {}, opts );
-  return Remixes.storeFromQuery(qparams, opts);
+EditPlaylist.store = function(params) {
+  return Playlist.storeFromQuery(params.id);
 };
 
-module.exports = NewPlaylist;
+module.exports = EditPlaylist;
 

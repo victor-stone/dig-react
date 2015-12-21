@@ -1,4 +1,5 @@
 import React                   from 'react';
+import Glyph                   from './Glyph';
 import { SelectedTags,
          SelectableTagList }   from './Tags';
 import { SelectedTagsTracker } from '../mixins';
@@ -47,15 +48,31 @@ const TagsList = React.createClass({
   }
 });
 
-function TagFilter(props) {
-  var store = props.store;
-  return (
-    <div className="tag-filter">
-      <SelectedTagSection store={store} />
-      <TagsList store={store} />
-    </div>
-  );
-}
+var TagFilter = React.createClass({
+
+  getInitialState: function() {
+    return { showTags: false };
+  },
+
+  toggleShowTags: function() {
+    this.setState( { showTags: !this.state.showTags } );
+  },
+
+  render: function() {
+    var store = this.props.store;
+    var chevron = this.state.showTags ? 'chevron-down' : 'chevron-left';
+    return (
+      <div className="tag-filter">
+        <button className="pull-right tags-chevron" onClick={this.toggleShowTags}><Glyph icon={chevron} /></button>
+        <SelectedTagSection store={store} />
+        {this.state.showTags
+          ? <TagsList store={store} />
+          : null
+        }        
+      </div>
+    );
+  }
+});
 
 module.exports = TagFilter;
 

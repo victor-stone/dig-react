@@ -249,6 +249,12 @@ function bundleVendorJSFiles() {
     vendorJSSources.dev. push( 'node_modules/nouislider/distribute/nouislider.js');
     vendorJSSources.prod.push( 'node_modules/nouislider/distribute/nouislider.min.js');
   }
+  
+  if( APP_NAME === 'playlists') {
+    vendorJSSources.dev. push( 'vendor/jquery-ui-1.11.4.custom/jquery-ui.js');
+    vendorJSSources.prod.push( 'vendor/jquery-ui-1.11.4.custom/jquery-ui.min.js');
+  }
+
   if( APP_NAME === 'stems') {
     vendorJSSources.dev. push( 'vendor/flacplayer/aurora/aurora.js');
     vendorJSSources.prod.push( 'vendor/flacplayer/aurora/aurora.min.js');
@@ -291,10 +297,19 @@ function bundleVendorCSSFiles() {
       'node_modules/font-awesome/css/font-awesome.min.css',
     ]
   };
+  
   if( APP_NAME === 'pells' || APP_NAME === 'stems' || APP_NAME === 'playlists') {
     vendorCSSSources.dev. push('node_modules/nouislider/distribute/nouislider.min.css');
     vendorCSSSources.prod.push('node_modules/nouislider/distribute/nouislider.min.css');
-  }  
+  }
+
+  if( APP_NAME === 'playlists') {
+    vendorCSSSources.dev. push('vendor/jquery-ui-1.11.4.custom/jquery-ui.css');
+    vendorCSSSources.dev. push('vendor/jquery-ui-1.11.4.custom/jquery-ui.structure.css');
+    vendorCSSSources.prod.push('vendor/jquery-ui-1.11.4.custom/jquery-ui.min.css');
+    vendorCSSSources.prod.push('vendor/jquery-ui-1.11.4.custom/jquery-ui.structure.min.css');
+  }
+
   return bundleVendorFiles(vendorCSSSources[MODE],'css');
 }
 

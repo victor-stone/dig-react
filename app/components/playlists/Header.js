@@ -6,12 +6,37 @@ import NavbarHeader from '../NavbarHeader';
 import services     from '../../services';
 import Glyph        from '../Glyph';
 
+import { CurrentUserTracker } from '../../mixins';
+
 import {  CurrentUserMenu,
           CurrentUserMenuHead }  from '../CurrentUserMenu';
 
-const Header = React.createClass({
+var PlaylistUserMenu = React.createClass({
 
-  displayName: 'Header',
+  mixins: [CurrentUserTracker],
+
+  render: function() {
+    if( !this.state.user ) {
+      return null;
+    }
+
+    var id = this.state.user.id;
+
+    return (
+        <li>
+          <CurrentUserMenuHead />
+          <CurrentUserMenu>
+            <li><Link href={'/people/' + id}><Glyph fixed icon="music" />{" your playlists"}</Link></li>
+            <li><Link href="/new"><Glyph fixed icon="bolt" />{" new dynamic playlist"}</Link></li>
+          </CurrentUserMenu>
+        </li>
+      );
+  }
+
+});
+
+
+const Header = React.createClass({
 
   submitSearch: function(text) {
     var router = services('router');
@@ -40,10 +65,7 @@ const Header = React.createClass({
                 <li>
                   <Link href="/curators">{"curators"}</Link>
                 </li>
-                <li>
-                  <CurrentUserMenuHead />
-                  <CurrentUserMenu />
-                </li>
+                <PlaylistUserMenu />
               </ul>
             </div>
           </div>

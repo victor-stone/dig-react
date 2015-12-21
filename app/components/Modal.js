@@ -20,6 +20,8 @@ let Modal = React.createClass({
     var title    = this.props.title;
     var subTitle = this.props.subTitle;
     var action   = this.props.action;
+    var icon     = this.props.icon || 'share';
+    var text     = ' ' + (this.props.buttonText || 'Submit');
 
     return (
       <div className="modal fade">
@@ -35,7 +37,7 @@ let Modal = React.createClass({
           <div className="modal-footer">
             <button type="button" className="btn btn-default" data-dismiss="modal">{"Close"}</button>
             {action 
-              ? <button className="btn btn-primary btn-success" onClick={action}><Glyph icon="share" />{" Submit"}</button>
+              ? <button className="btn btn-primary btn-success" onClick={action}><Glyph icon={icon} />{text}</button>
               : null
             }
           </div>
@@ -47,3 +49,5 @@ let Modal = React.createClass({
 });
 
 module.exports = Modal;
+
+//

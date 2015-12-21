@@ -2,6 +2,7 @@
 import React       from 'react';
 import ajaxAdapter from './services/query-ajax-adapter';
 import router      from './services/router';
+import env         from './services/env';
 import events      from './models/events';
 
 import { browserScripts } from './unicorns';
@@ -52,7 +53,9 @@ const App = React.createClass({
 
   onNavigateToThis: function() {
     if( !this.state.hash ) {
-      browserScripts.scrollToTop();
+      if( !env.disableAutoScroll ) {
+        browserScripts.scrollToTop();
+      }
     }
   },
 

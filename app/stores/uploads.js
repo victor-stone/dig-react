@@ -23,37 +23,11 @@ class UploadList extends Query {
   }
 
   get queryString() {
-    var copy = {};
-    var qp   = this.model.queryParams;
-    var defs = this.defaultParams;
-    var skip = [ 'f', 'dataview'];
+    return this._queryString(false);
+  }
 
-    for( var k in qp ) {
-      if( !skip.includes(k) ) {
-        if( k === 'offset' ) {
-          if( qp.offset > 0 ) {
-            copy.offset = qp.offset;
-          }
-        } else {
-          if( k in defs ) {
-            if( this.tagFields.includes(k) ) {
-              if( qp[k] && !(new TagString(defs[k])).isEqual(qp[k]) ) {
-                copy[k] = qp[k];
-              }
-            } else {
-              if( qp[k] !== defs[k] ) {
-                copy[k] = qp[k];
-              }
-            }
-          } else {
-            if( qp[k] ) {
-              copy[k] = qp[k];
-            }
-          }
-        }
-      }
-    }
-    return querystring.stringify(copy);
+  get queryStringWithDefaults() {
+    return this._queryString(true);
   }
 
   get queryParams() {
@@ -221,6 +195,39 @@ class UploadList extends Query {
     });
   }
 
+  _queryString(withDefault) {
+    var qp   = this.model.queryParams;
+    var defs = this.defaultParams;
+    var copy = withDefault ? oassign( {}, defs) : {};
+    var skip = [ 'f', 'dataview'];
+
+    for( var k in qp ) {
+      if( !skip.includes(k) ) {
+        if( k === 'offset' ) {
+          if( qp.offset > 0 ) {
+            copy.offset = qp.offset;
+          }
+        } else {
+          if( !withDefault && k in defs ) {
+            if( this.tagFields.includes(k) ) {
+              if( qp[k] && !(new TagString(defs[k])).isEqual(qp[k]) ) {
+                copy[k] = qp[k];
+              }
+            } else {
+              if( qp[k] !== defs[k] ) {
+                copy[k] = qp[k];
+              }
+            }
+          } else {
+            if( qp[k] ) {
+              copy[k] = qp[k];
+            }
+          }
+        }
+      }
+    }
+    return querystring.stringify(copy);    
+  }
 }
 
 module.exports = UploadList;

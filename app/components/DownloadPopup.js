@@ -89,9 +89,11 @@ var DownloadPopup = React.createClass({
     var featuring      = upload.featuring ? `Ft: ${upload.featuring}` : '';
     var permission     = upload.isOpen ? 'Free to use in commercial projects.' : 'For noncommercial projects only.';
 
+    var url = upload.url.replace(/ccmixter\.org/, 'dig.ccmixter.org');
+
     var licenseTextTemplate = {
-      plain: `${upload.name} by ${upload.artist.name} (c) ${upload.licenseYear} Licensed under a Creative Commons ${upload.licenseName} license. ${upload.url} ${featuring}`,
-      html: `<div class="attribution-block"><a href="${upload.url}">${upload.name}</a> by ${upload.artist.name} (c) ${upload.licenseYear} Licensed under a Creative Commons <a href="${upload.licenseURL}">${upload.licenseName}</a> license. ${featuring}</div>`,
+      plain: `${upload.name} by ${upload.artist.name} (c) ${upload.licenseYear} Licensed under a Creative Commons ${upload.licenseName} license. ${url} ${featuring}`,
+      html: `<div class="attribution-block"><a href="${url}">${upload.name}</a> by ${upload.artist.name} (c) ${upload.licenseYear} Licensed under a Creative Commons <a href="${upload.licenseURL}">${upload.licenseName}</a> license. ${featuring}</div>`,
     };
 
     var licenseText = licenseTextTemplate[ plainSelected ? 'plain' : 'html' ];

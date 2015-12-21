@@ -19,7 +19,7 @@ var ExtraTags = React.createClass({
   },
 
   stateFromParams: function(queryParams) {
-    if( this.state ) {
+    if( this.state && this.state.value ) {
       var qptags = new TagString(queryParams.tags);
       return { value: qptags.intersection(this.state.value).toString() };
     }
@@ -53,7 +53,7 @@ var ExtraTags = React.createClass({
 
     return (
       <div className="input-group input-group-sm">
-        <input id="extra-tags" type="text" onChange={this.handleChange} value={this.state.value} className="form-control input-sm"  placeholder="extra tags..." />
+        <input type="text" onChange={this.handleChange} value={this.state.value} className="form-control input-sm"  placeholder="extra tags..." />
         <span className="input-group-btn">
           <button type="button" onClick={this.onSave}  className="btn btn-default"><Glyph icon="check" /></button>
           <button type="button" onClick={this.onClear} className="btn btn-default"><Glyph icon="times" /></button>

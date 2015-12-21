@@ -92,7 +92,10 @@ const ArtistFilter = React.createClass({
     return (
       <div className="artist-filter" >
           <SearchBox icon="times" ref="edit" placeholder="artist name" submitSearch={this.filter}  anyKey />
-          <ArtistList store={this.props.store} artistSelect={this.artistSelect} search={this.state.u} />
+          {this.state.u
+            ? <ArtistList store={this.props.store} artistSelect={this.artistSelect} search={this.state.u} />
+            : null
+          }
       </div>
       );
   }

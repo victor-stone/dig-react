@@ -1,21 +1,19 @@
 import React from 'react';
-import CCMixter from '../stores/ccmixter';
 import Glyph from './Glyph';
-import Link from './Link';
+
+import { CurrentUserTracker } from '../mixins';
 
 const MAX_NAME_LEN = 15;
 
 const CurrentUserMenuHead = React.createClass({
 
-  getInitialState: function() {
-    return { user: null };
-  },
-
-  componentWillMount: function() {
-    CCMixter.currentUser().then( user => this.setState( { user } ) );
-  },
+  mixins: [CurrentUserTracker],
 
   render: function() {
+
+    if( this.state.userLoading ) {
+      return null;      
+    }
 
     if( !this.state.user ) {
       return (<a href="http://ccmixter.org/login"><Glyph icon="user" />{" log in"}</a>);
@@ -32,13 +30,7 @@ const CurrentUserMenuHead = React.createClass({
 
 const CurrentUserMenu = React.createClass({
 
-  getInitialState: function() {
-    return { user: null };
-  },
-
-  componentWillMount: function() {
-    CCMixter.currentUser().then( user => this.setState( { user } ) );
-  },
+  mixins: [CurrentUserTracker],
 
   render: function() {
 
@@ -46,13 +38,9 @@ const CurrentUserMenu = React.createClass({
       return null;
     }
 
-    var u = this.state.user;
-    var phref  = '/people/' + u.id;
-
     return (
         <ul className="dropdown-menu">
-          <li><Link href={phref}><Glyph fixed icon="music" />{" playlists"}</Link></li>
-          <li><Link href="/new"><Glyph fixed icon="edit" />{" create new"}</Link></li>
+          {this.props.children}
         </ul>
       );            
   }
