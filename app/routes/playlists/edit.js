@@ -1,11 +1,9 @@
 import React from 'react';
 
-import qc                       from '../../models/query-configs';
-import { mergeParams }          from '../../unicorns';
-import Playlist                 from '../../stores/playlist';
-import { DynamicForm }          from '../../components/playlists/Edit';
-import PageHeader               from '../../components/PageHeader';
-import env                      from '../../services/env';
+import Playlist         from '../../stores/playlist';
+import { DynamicForm }  from '../../components/playlists/Edit';
+import PageHeader       from '../../components/PageHeader';
+import env              from '../../services/env';
 
 var EditPlaylist = React.createClass({
 
