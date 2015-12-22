@@ -24,14 +24,14 @@
 
 .playlist-detail-page .playlist-tracks .track-name {
   margin-left: 8px;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   color: #555;
 }
 
 .playlist-detail-page .playlist-tracks .track-artist {
   margin-left: 8px;
-  font-size: 12px;
+  font-size: 16px;
   color: #777;
 }
 
@@ -47,3 +47,39 @@
   margin-right: 5px;
   display: inline-block;
 }
+
+.playlist-detail-page .edit-controls .btn span {
+  margin: -4px 4px;
+  display: inline-block;
+}
+
+.page-header .edit-controls {
+  margin-left: 12px;
+}
+
+.tracks-widget .edit-controls {
+  float: right;
+}
+
+.tracks-widget .track-list.ui-sortable {
+  padding: 0px;
+}
+
+.tracks-widget .track-list.ui-sortable > li {
+  padding-bottom: 8px;
+  font-size: 17px;
+  cursor: pointer;
+  color: #777;
+}
+
+.tracks-widget .track-list.ui-sortable > li:hover {
+  color: black;
+}
+
+.tracks-widget .track-list.ui-sortable > li > .dragger {
+  margin: 4px;
+  padding: 4px;
+  border-radius: 2px;
+}
+
+

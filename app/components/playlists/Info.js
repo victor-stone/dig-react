@@ -29,25 +29,6 @@ var DeleteLink = React.createClass({
 });
 
 
-var EditLink = React.createClass({
-
-  mixins: [CurrentUserTracker],
-
-  render: function() {
-    var u     = this.state.user;
-    var model = this.props.model;
-    if( !u || model.curator.id !== u.id ) {
-      return null;
-    }
-
-    var href = '/playlist/browse/' + model.id + '/edit';
-
-    return (
-        <RLink className="btn btn-success" href={href}><Glyph icon="edit" />{" edit"}</RLink>
-      );
-  }
-});
-
 function ShareLink(model) {
   return 'http://playlists.ccmixter.org/playlist/browse/' + model.id;
 }
@@ -68,7 +49,6 @@ var Info = React.createClass({
           </div>
           <div className="action-btn-toolbar">
             <SharePopup model={model} modelLink={ShareLink} med />
-            <EditLink model={model} />
             <DeleteLink model={model} />
           </div>
           <Tags model={model.tags} />

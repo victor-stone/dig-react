@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Playlist         from '../../stores/playlist';
-import { DynamicForm }  from '../../components/playlists/Edit';
+import { StaticForm }   from '../../components/playlists/Edit';
 import PageHeader       from '../../components/PageHeader';
 import env              from '../../services/env';
 
@@ -19,11 +19,11 @@ var EditPlaylist = React.createClass({
     var store = this.props.store;
     return (
         <div className="new-playlist-widget">
-          <PageHeader icon="edit" title="New Playlist" />
+          <PageHeader icon="edit" title="Edit Playlist" />
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-8 col-md-offset-2">
-                <DynamicForm store={store} />
+                <StaticForm store={store} />
               </div>
             </div>
           </div>

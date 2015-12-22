@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Modal                    from '../../components/Modal';
+import Glyph                    from '../../components/Glyph';
 import QueryOptions             from '../../components/playlists/QueryOptions';
 import { ModelTracker }         from '../../mixins';
 
@@ -128,28 +129,10 @@ var DynamicForm = React.createClass({
   }
 });
 
-var StaticForm = React.createClass({
-
-  render: function() {
-    var store = this.props.store;
-    return (
-        <div className="row">
-          <div className="col-md-6">
-          </div>
-          <div className="col-md-6">
-            <h3>{"preview"}</h3>
-            <TrackList store={store} sortable />
-          </div>
-        </div>
-      );
-  }
-});
-
 
 module.exports = {
   DynamicForm,
   SaveDynamicPopup,
-  StaticForm,
   TrackList
 };
 

@@ -9,11 +9,13 @@ import tags        from './tags';
 import featured    from './featured';
 import search      from './search';
 import newPlaylist from './new-playlist';
+import edit        from './edit';
 
 module.exports = { 
   browse,
   curators,
   credits,
+  edit,
   featured,
   index,
   newPlaylist,

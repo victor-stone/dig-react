@@ -12,7 +12,7 @@ const PageHeader = React.createClass({
       return (
           <div className="page-header"> 
             <h1 className="center-text">
-                <small><Glyph icon={icon} /> {subTitle}</small> {title}
+                <small><Glyph icon={icon} /> {subTitle}</small> <span>{title}</span>
             </h1>
           </div>
         );
@@ -20,7 +20,7 @@ const PageHeader = React.createClass({
       return (
           <div className="page-header"> 
             <h1 className="center-text">
-                <Glyph icon={icon} /> {title}
+                <Glyph icon={icon} /> <span>{title}</span>
             </h1>
           </div>
         );
