@@ -8,6 +8,42 @@ import RLink      from '../../components/Link';
 
 import { PlaylistOwner } from '../../mixins';
 
+var EditControls = {
+
+  _startEdit: function() {
+    this.setState( { editing: true }, () => {
+      if( this.startEdit ) {
+        this.startEdit();
+      }
+    });
+  },
+
+  _doneEdit: function() {
+    if( this.doneEdit ) {
+      this.doneEdit();
+    }
+    this.setState( { editing: false } );
+  },
+
+  _cancelEdit: function() {
+    this.setState( { editing: false }, () => {
+      if( this.cancelEdit ) {
+        this.cancelEdit();
+      }
+    });
+  },
+
+  controls: function(props) {
+      var title = props.title ? (' ' + props.title) : '';
+      return (
+        <div className="btn-group btn-group-sm edit-controls">
+          <button className="btn btn-default" disabled={this.state.editing}  onClick={this._startEdit} ><Glyph icon="edit"  />{title}</button>
+          <button className="btn btn-default" disabled={!this.state.editing} onClick={this._doneEdit}  ><Glyph icon="check" /></button>
+          <button className="btn btn-default" disabled={!this.state.editing} onClick={this._cancelEdit}><Glyph icon="times" /></button>              
+        </div>    
+      );
+  }
+};
 var DeleteLink = React.createClass({
 
   mixins: [PlaylistOwner],
@@ -32,7 +68,7 @@ function ShareLink(model) {
 
 var EditableDescription = React.createClass({
 
-  mixins: [ PlaylistOwner ],
+  mixins: [ PlaylistOwner, EditControls ],
 
   getInitialState: function() {
     var desc = this.props.store.model.head.description || '';
@@ -42,18 +78,12 @@ var EditableDescription = React.createClass({
     return { text: desc, orgText: desc };
   },
 
-  startEdit: function() {
-    this.setState( { editing: true } );
-  },
-
   doneEdit: function() {
-    this.setState( { editing: false }, () => {
-
-    });
+    this.setState( { text: this.refs.description.value } );
   },
 
   cancelEdit: function() {
-    this.setState( { editing: false, text: this.state.orgText } );
+    this.setState( { text: this.state.orgText } );
   },
 
   render: function() {
@@ -61,9 +91,10 @@ var EditableDescription = React.createClass({
     var desc = this.state.text;
 
     if( !this.state.editing ) {
+      if( !desc && this.state.isOwner ) {
+        desc = 'Add a description...';
+      }
       desc = { __html: desc };
-    } else if( !desc && this.state.isOwner ) {
-      desc = 'Add a description...';
     }    
 
     return (
@@ -73,11 +104,7 @@ var EditableDescription = React.createClass({
           : <span dangerouslySetInnerHTML={desc}></span>
         }
         {this.state.isOwner
-          ? <div className="btn-group btn-group-sm edit-controls">
-              <button className="btn btn-default" disabled={this.state.editing}  onClick={this.startEdit} ><Glyph icon="edit"  /></button>
-              <button className="btn btn-default" disabled={!this.state.editing} onClick={this.doneEdit}  ><Glyph icon="check" /></button>
-              <button className="btn btn-default" disabled={!this.state.editing} onClick={this.cancelEdit}><Glyph icon="times" /></button>              
-            </div>
+          ? this.controls( {title: 'edit description'} )
           : null
         }
         </div>

@@ -13,6 +13,38 @@
   color: #555;
 }
 
+.static-playlist-tag-editor ul {
+  padding: 0px;
+}
+
+.static-playlist-tag-editor .tags li {
+  display: inline-block;
+  margin-right: 9px;
+  border: 1px solid;
+  padding: 5px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.static-playlist-tag-editor .tags li i {
+  margin-right: 4px;
+}
+
+.static-playlist-tag-editor .pool {
+  height: 220px;
+  overflow: scroll;
+  border: 1px solid;
+}
+
+.static-playlist-tag-editor .pool li {
+  margin-bottom: 3px;
+  padding-left: 8px;
+}
+
+.static-playlist-tag-editor .pool li i {
+  margin-right: 5px;
+}
+
 .playlist-detail-page .playlist-description img {
   display: block;
   margin: 16px auto;

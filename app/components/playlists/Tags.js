@@ -67,16 +67,16 @@ var TagsEditor = React.createClass({
   removeTag: function(tag) {
     var _this = this;
     return function() {
-      _this.setState( { tags: this.state.tags.remove(tag),
-                        pool: this.state.pool.add(tag) } );
+      _this.setState( { tags: _this.state.tags.remove(tag),
+                        pool: _this.state.pool.add(tag).sort() } );
     };
   },
 
   addTag: function(tag) {
     var _this = this;
     return function() {
-      _this.setState( { tags: this.state.tags.add(tag),
-                        pool: this.state.pool.remove(tag) } );
+      _this.setState( { tags: _this.state.tags.add(tag),
+                        pool: _this.state.pool.remove(tag) } );
     };
   },
 
@@ -89,7 +89,7 @@ var TagsEditor = React.createClass({
             {this.state.tags.map( (t,i) => <li key={i} onClick={this.removeTag(t)}><Glyph icon="times" />{t}</li> )}
           </ul>
           <ul className="pool">
-            {this.state.pool.map( (t,i) => <li key={i} onClick={this.add(t)}><Glyph icon="plus"/>{t}</li> )}
+            {this.state.pool.map( (t,i) => <li key={i} onClick={this.addTag(t)}><Glyph icon="plus"/>{t}</li> )}
           </ul>
         </div>
       );
@@ -101,7 +101,7 @@ var TagsEditor = React.createClass({
           {body}
           {this.state.isOwner
             ? <div className="btn-group btn-group-sm edit-controls">
-                <button className="btn btn-default" disabled={this.state.editing}  onClick={this.startEdit} ><Glyph icon="edit"  /></button>
+                <button className="btn btn-default" disabled={this.state.editing}  onClick={this.startEdit} ><Glyph icon="edit"  />{" edit tags"}</button>
                 <button className="btn btn-default" disabled={!this.state.editing} onClick={this.doneEdit}  ><Glyph icon="check" /></button>
                 <button className="btn btn-default" disabled={!this.state.editing} onClick={this.cancelEdit}><Glyph icon="times" /></button>
               </div>
