@@ -15,7 +15,6 @@ var EditableTracks = React.createClass({
   },
 
   startEdit: function() {
-
     this.setState( { editing: true } );
   },
 

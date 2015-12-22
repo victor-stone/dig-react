@@ -21,7 +21,7 @@ var EditDiv = React.createClass({
   },
 
   onChange: function() {
-    var text = $('#' + this.props.id).html().replace(/[\n\r]/g,' ');
+    var text = $('#' + this.props.id).html(); // .replace(/[\n\r]/g,' ');
     this.setState( { text }, () => {
       if( this.props.onChange ) {
         this.props.onChange( this.state.text );

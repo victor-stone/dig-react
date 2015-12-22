@@ -7,8 +7,6 @@ import PlayAllButton      from './PlayAllButton';
 //import { TagString }      from '../../unicorns'; 
 import { ModelTracker }   from '../../mixins';
 
-
-
 var Playlists = React.createClass({
 
   mixins: [ModelTracker],

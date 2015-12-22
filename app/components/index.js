@@ -31,6 +31,7 @@ import SharePopup from './SharePopup';
 import stems from './stems';
 import TagFilter from './TagFilter';
 import Tags from './Tags';
+import TagsExtra from './TagsExtra';
 import TitleSetter from './TitleSetter';
 import Topic from './Topic';
 import TrackbackPopup from './TrackbackPopup';
@@ -70,6 +71,7 @@ module.exports = {
     stems,
     TagFilter,
     Tags,
+    TagsExtra,
     TitleSetter,
     Topic,
     TrackbackPopup,
