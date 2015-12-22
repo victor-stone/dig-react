@@ -6,6 +6,7 @@ import DefaultParamTracker from './default-param-tracker';
 import DirtyParamTracker from './dirty-param-tracker';
 import ModelTracker from './model-tracker';
 import NowPlayingTracker from './now-playing-tracker';
+import PlaylistOwner from './playlist-owner';
 import QueryParamTracker from './query-param-tracker';
 import SelectedTagsTracker from './selected-tags-tracker';
 import StoreEvents from './store-events';
@@ -20,6 +21,7 @@ module.exports = {
     DirtyParamTracker,
     ModelTracker,
     NowPlayingTracker,
+    PlaylistOwner,
     QueryParamTracker,
     SelectedTagsTracker,
     StoreEvents,

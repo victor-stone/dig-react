@@ -9,6 +9,7 @@ import CurrentUserMenu from './CurrentUserMenu';
 import DidYouMean from './DidYouMean';
 import dig from './dig';
 import DownloadPopup from './DownloadPopup';
+import EditDiv from './EditDiv';
 import ErrorDisplay from './ErrorDisplay';
 import Footer from './Footer';
 import Glyph from './Glyph';
@@ -47,6 +48,7 @@ module.exports = {
     DidYouMean,
     dig,
     DownloadPopup,
+    EditDiv,
     ErrorDisplay,
     Footer,
     Glyph,

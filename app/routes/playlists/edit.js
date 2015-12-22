@@ -1,11 +1,13 @@
-import React from 'react';
+import React             from 'react';
 
-import Playlist         from '../../stores/playlist';
-import { StaticForm }   from '../../components/playlists/Edit';
-import PageHeader       from '../../components/PageHeader';
-import env              from '../../services/env';
+import { mergeParams }   from '../../unicorns';
 
-var EditPlaylist = React.createClass({
+import Playlist          from '../../stores/playlist';
+import { DynamicForm }   from '../../components/playlists/Edit';
+import EditableTitle     from '../../components/playlists/EditableTitle';
+import env               from '../../services/env';
+
+var Edit = React.createClass({
 
   componentWillMount: function() {
     env.disableAutoScroll = true;
@@ -15,15 +17,19 @@ var EditPlaylist = React.createClass({
     env.disableAutoScroll = false;
   },
   
+  onSave: function() {
+
+  },
+
   render: function() {
-    var store = this.props.store;
+    var store = this.props.store.model.tracks;
     return (
-        <div className="new-playlist-widget">
-          <PageHeader icon="edit" title="Edit Playlist" />
+        <div className="edit-playlist-widget">
+          <EditableTitle store={this.props.store} />
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-8 col-md-offset-2">
-                <StaticForm store={store} />
+                <DynamicForm store={store} onSave={this.onSave} />
               </div>
             </div>
           </div>
@@ -32,11 +38,18 @@ var EditPlaylist = React.createClass({
   }
 });
 
-EditPlaylist.path = '/playlist/browse/:id/edit';
+Edit.path = '/playlist/browse/:id/edit';
 
-EditPlaylist.store = function(params) {
-  return Playlist.storeFromQuery(params.id);
+Edit.store = function(params) {
+  var _store = null;
+  return Playlist.storeFromQuery(params.id).then( store => {
+    _store = store;
+    var m = store.model;
+    var qp = mergeParams( {}, m.tracks.model.queryParams, m.head.queryParams );
+    delete qp['playlist'];
+    return store.model.tracks.applyHardParams( qp );
+  }).then( () => _store );
 };
 
-module.exports = EditPlaylist;
+module.exports = Edit;
 

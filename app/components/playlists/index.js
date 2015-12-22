@@ -2,10 +2,13 @@
 
 import Browse from './Browse';
 import Edit from './Edit';
+import EditableTitle from './EditableTitle';
+import EditableTracks from './EditableTracks';
 import Footer from './Footer';
 import Header from './Header';
 import Info from './Info';
 import PlayAllButton from './PlayAllButton';
+import Playlist from './Playlist';
 import QueryOptions from './QueryOptions';
 import Tags from './Tags';
 import Tracks from './Tracks';
@@ -14,10 +17,13 @@ import Tracks from './Tracks';
 module.exports = {
     Browse,
     Edit,
+    EditableTitle,
+    EditableTracks,
     Footer,
     Header,
     Info,
     PlayAllButton,
+    Playlist,
     QueryOptions,
     Tags,
     Tracks 

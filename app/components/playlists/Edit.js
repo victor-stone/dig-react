@@ -30,7 +30,10 @@ var TrackList = React.createClass({
     return(
         <ul className="track-list" id="fo">
           {model.items.map( (t,i) =>  <li key={t.id} id={'fo_' + (i+1)}>
-                                    <span className="dragger"><Glyph icon="bars" /></span>
+                                    {this.props.sortable
+                                      ? <span className="dragger"><Glyph icon="bars" /></span>
+                                      : null
+                                    }
                                     <span className="name">
                                       {t.name}
                                     </span>
@@ -122,7 +125,11 @@ var DynamicForm = React.createClass({
           <div className="col-md-6">
             <h3>{"preview"}</h3>
             <TrackList store={store} />
-            <SaveDynamicPopup store={store} />
+            {this.props.onSave
+              ? <button className="btn btn-success"><Glyph icon="cloud-upload" onClick={this.props.onSave}/>{" Save"}</button>
+              : <SaveDynamicPopup store={store} />
+            }
+            
           </div>
         </div>
       );
