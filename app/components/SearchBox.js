@@ -31,7 +31,7 @@ const SearchBox = React.createClass({
 
  getInitialState: function() {
     return {
-      value: ''
+      value: this.props.defaultValue || ''
     };
   },
 

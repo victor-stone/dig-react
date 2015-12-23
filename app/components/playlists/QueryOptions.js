@@ -3,9 +3,9 @@ import React     from 'react';
 import InstrumentalOnlyFilter  from '../InstrumentalOnlyFilter';
 import ArtistFilter            from '../ArtistFilter';
 import TagFilter               from '../TagFilter';
+import TagsExtra               from '../TagsExtra';
 import { LicenseFilter,
          SortFilter,
-         TagsExtra,
          OptionsWrap }    from '../QueryOptions';
 
 function PlaylistQueryOptions(props) {

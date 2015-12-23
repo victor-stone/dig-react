@@ -22,7 +22,7 @@ function curatorsPage(props) {
   return (        
     <div className="container-fluid curators-page">
       <PageHeader icon="hand-o-up" title={curatorsPage.title} />
-      <div className="curator-message">{"Interested in being a curator? Head on over to "}<ExternalLink href="http://ccmixter.org" text="ccMixter" />{" to create an account to create your own playlists."}</div>
+      <div className="curator-message playlist-bg-color">{"Interested in being a curator? Head on over to "}<ExternalLink href="http://ccmixter.org" text="ccMixter" />{" to create an account to create your own playlists."}</div>
       <Curators store={store} />
     </div>
   );

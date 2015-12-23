@@ -25,6 +25,7 @@ const App = React.createClass({
       ajaxAdapter.on( events.LOADING,          this.onLoading );
       router     .on( events.NAVIGATE_TO,      this.onNavigateTo );
       router     .on( events.NAVIGATE_TO_THIS, this.onNavigateToThis );
+      env        .on( events.APP_MSG,          this.onAppMessage );
 
       if( !this.state.component ) {
         router.updateURL();
@@ -63,6 +64,10 @@ const App = React.createClass({
     $('.outlet-wrap').toggleClass('loading-screen fade',loading);
   },
 
+  onAppMessage: function(msg) {
+    this.setState( { message: msg } );
+  },
+
   postUpdate() {
     if( !global.IS_SERVER_REQUEST ) {
       this.scrollToHash();
@@ -83,6 +88,7 @@ const App = React.createClass({
     var title = this.state.component && this.state.component.title;
     var header = React.createElement(this.props.header);
     var footer = React.createElement(this.props.footer);
+    var msg    = this.state.msg ? React.createElement(this.state.msg) : null;
     return (
       <div>
         <div id="wrap">
@@ -90,6 +96,7 @@ const App = React.createClass({
           <Banner />
           {header}
           <ErrorDisplay />
+          {msg}
           <div className="outlet-wrap">
             {this.state.component
               ? React.createElement(this.state.component,

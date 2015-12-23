@@ -21,7 +21,8 @@ var Events = {
   SAMPLE_TAG_TAB:     'sample_tag_tab',
   DOWNLOAD:           'download',
   USER_SEARCH:        'user_search',
-  ERROR_IN_JSON:      'json_error'
+  ERROR_IN_JSON:      'json_error',
+  APP_MSG:            'app_msg'
 };
 
 module.exports = Events;

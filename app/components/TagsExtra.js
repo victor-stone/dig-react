@@ -8,7 +8,7 @@ var TagsExtra = React.createClass({
   mixins: [QueryParamTracker],
 
   getInitialState: function() {
-    return { value: this.props.tags.toString() };
+    return { value: (this.props.tags || '').toString() };
   },
 
   stateFromParams: function(queryParams) {

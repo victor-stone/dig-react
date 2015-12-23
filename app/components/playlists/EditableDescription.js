@@ -29,11 +29,14 @@ var EditableDescription = React.createClass({
     var desc = this.state.text;
 
     if( !this.state.editing ) {
+      if( !desc && !this.state.isOwner ) {
+        return null;
+      }
       desc = { __html: desc };
     }
 
     return (
-        <div className="playlist-description"> 
+        <div className="playlist-description playlist-bg-color"> 
         {this.state.editing
           ? <textarea ref="description" defaultValue={desc}></textarea>
           : <span dangerouslySetInnerHTML={desc}></span>

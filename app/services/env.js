@@ -1,6 +1,9 @@
 /* eslint no-console:0 */
 import { oassign } from '../unicorns';
-import Eventer from './eventer';
+import Eventer     from './eventer';
+import events      from '../models/events';
+ 
+const TEN_SECONDS = 10000;
 
 class Env extends Eventer {
 
@@ -20,6 +23,11 @@ class Env extends Eventer {
     if( this.debugMode ) {
       console.log(...arguments);
     }
+  }
+
+  set message(msgComponent) {
+    this.emit( events.APP_MSG, msgComponent );
+    setTimeout( () => this.emit( events.APP_MSG, null ), TEN_SECONDS);
   }
 
   error(e) {

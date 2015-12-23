@@ -5,7 +5,10 @@ import { QueryParamTracker,
          DefaultParamTracker,
          DirtyParamTracker }   from '../mixins';
 
-import SearchBox              from './SearchBox';
+import SearchBox               from './SearchBox';
+import { debounce }            from '../unicorns';
+
+const SEARCH_DEBOUNCE = 800;
 
 const ArtistList = React.createClass({
 
@@ -67,6 +70,10 @@ const ArtistFilter = React.createClass({
     queryParams.u = null;
   },
 
+  triggerSearch: debounce( function(u) {
+    this.setState( {u} );
+  }, SEARCH_DEBOUNCE ),
+
   filter: function(u, isIcon, filterCB) {
     
     var kill = function() {
@@ -77,7 +84,8 @@ const ArtistFilter = React.createClass({
       filterCB('');
       kill();
     } else if( u && u.length > 0 ) {
-      this.setState( { u } );
+      //this.triggerSearch(this,u);
+      this.setState( {u} );
     } else {
       kill();
     }
@@ -91,7 +99,7 @@ const ArtistFilter = React.createClass({
   render: function() {
     return (
       <div className="artist-filter" >
-          <SearchBox icon="times" ref="edit" placeholder="artist name" submitSearch={this.filter}  anyKey />
+          <SearchBox icon="times" ref="edit" defaultValue={this.state.u} placeholder="artist name" submitSearch={this.filter}  anyKey />
           {this.state.u
             ? <ArtistList store={this.props.store} artistSelect={this.artistSelect} search={this.state.u} />
             : null

@@ -34,11 +34,14 @@ var DeleteLink = React.createClass({
     var id = this.props.store.model.head.id;
     CCMixter.deletePlaylist(id)
       .then( () => {
-        env.message = (<div className="alert alert-success fade in">
-                      <strong>{"Success!"}</strong>{this.state.msg}
-                      </div>);
+        /*eslint "react/no-danger":0 */
         /* global $ */
         $('.modal').modal('hide');
+        var times = { __html: '&times;' };
+        env.message = (<div className="alert alert-success fade in">
+                        <a href="#" className="close" data-dismiss="alert" dangerouslySetInnerHTML={times}></a>
+                        <strong>{"Success!"}</strong>{this.state.msg}
+                      </div>);
         window.history.back();
       }).catch( (e) => this.setState( { msg: 'wups - ' + e.message, error: e } ) );
   },
@@ -104,11 +107,10 @@ var Info = React.createClass({
 
     return (
         <div className="playlist-info hidden-xs hidden-sm">
-          <div className="playlist-curator">
-            <span>{"curator: "}</span>
+          <div className="playlist-curator playlist-bg-color">
             <People.Link model={model.curator} avatar />
           </div>
-          <div className="action-btn-toolbar">
+          <div className="action-btn-toolbar playlist-bg-color">
             <SharePopup    model={model} modelLink={ShareLink} med />
             <EditQueryLink store={store} />
             <DeleteLink    store={store} />

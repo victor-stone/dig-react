@@ -45,7 +45,12 @@ Edit.store = function(params) {
   return Playlist.storeFromQuery(params.id).then( store => {
     _store = store;
     var m = store.model;
+    delete m.tracks.model.queryParams['playlist'];
     var qp = mergeParams( {}, m.tracks.model.queryParams, m.head.queryParams );
+    if( 'user' in qp ) {
+      qp.u = qp.user;
+      delete qp['user'];
+    }
     delete qp['playlist'];
     return store.model.tracks.applyHardParams( qp );
   }).then( () => _store );
