@@ -1,50 +1,79 @@
-/*eslint "react/no-danger":0 */
 import React      from 'react';
-import Tags       from './Tags';
-import { Link }   from '../People';
+import People     from '../People';
 import SharePopup from '../SharePopup';
 import Glyph      from '../../components/Glyph';
-import RLink      from '../../components/Link';
+import Link       from '../../components/Link';
+import Modal      from '../../components/Modal';
 
-import { PlaylistOwner } from '../../mixins';
+import EditableDescription from './EditableDescription';
+import EditableTags        from './EditableTags';
 
-var EditControls = {
+import CCMixter            from '../../stores/ccmixter';
+import { PlaylistOwner }   from '../../mixins';
+import env                 from '../../services';
 
-  _startEdit: function() {
-    this.setState( { editing: true }, () => {
-      if( this.startEdit ) {
-        this.startEdit();
-      }
-    });
-  },
-
-  _doneEdit: function() {
-    if( this.doneEdit ) {
-      this.doneEdit();
-    }
-    this.setState( { editing: false } );
-  },
-
-  _cancelEdit: function() {
-    this.setState( { editing: false }, () => {
-      if( this.cancelEdit ) {
-        this.cancelEdit();
-      }
-    });
-  },
-
-  controls: function(props) {
-      var title = props.title ? (' ' + props.title) : '';
-      return (
-        <div className="btn-group btn-group-sm edit-controls">
-          <button className="btn btn-default" disabled={this.state.editing}  onClick={this._startEdit} ><Glyph icon="edit"  />{title}</button>
-          <button className="btn btn-default" disabled={!this.state.editing} onClick={this._doneEdit}  ><Glyph icon="check" /></button>
-          <button className="btn btn-default" disabled={!this.state.editing} onClick={this._cancelEdit}><Glyph icon="times" /></button>              
-        </div>    
-      );
-  }
-};
 var DeleteLink = React.createClass({
+
+  mixins: [PlaylistOwner],
+
+  getInitialState: function() {
+    return { view: false };
+  },
+  
+  handleHideModal: function() {
+    this.setState({ view: false });
+  },
+
+  handleShowModal: function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState( { view: true, msg: null, error: null } );
+  },
+
+  doDelete: function() {
+    var id = this.props.store.model.head.id;
+    CCMixter.deletePlaylist(id)
+      .then( () => {
+        env.message = (<div className="alert alert-success fade in">
+                      <strong>{"Success!"}</strong>{this.state.msg}
+                      </div>);
+        /* global $ */
+        $('.modal').modal('hide');
+        window.history.back();
+      }).catch( (e) => this.setState( { msg: 'wups - ' + e.message, error: e } ) );
+  },
+
+  genPopup: function() {
+    var title = this.props.store.model.head.name;
+    var body = null;
+    var action = null;
+
+    if( this.state.error ) {
+      body = (<div className="alert alert-danger fade in">
+                <strong>{"wups!"}</strong>{this.state.msg}
+              </div>);
+    }  else {
+      body = <div>{"are you sure you want to delete this playlist? (there's no undo)"}</div>;
+      action = this.doDelete;
+    }
+
+    return ( <Modal handleHideModal={this.handleHideModal} icon="trash" subTitle="confirm delete" title={title} action={action} buttonText="Delete">
+              {body}
+            </Modal> );
+  },
+
+  render: function() {
+    if( !this.state.isOwner ) {
+      return null;
+    }
+
+    return this.state.view 
+            ? this.genPopup()
+            : (<button className="btn btn-danger" onClick={this.handleShowModal}><Glyph icon="trash" />{" delete"}</button>);
+  }
+});
+
+var EditQueryLink = React.createClass({
 
   mixins: [PlaylistOwner],
 
@@ -53,12 +82,13 @@ var DeleteLink = React.createClass({
       return null;
     }
 
-    var model = this.props.model;    
-    var href  = '/playlist/browse/' + model.id + '/delete';
+    var head = this.props.store.model.head;
+    var isDyn = head.isDynamic;
+    var href  = '/playlist/browse/' + head.id + '/edit';
 
-    return (
-        <RLink className="btn btn-danger" href={href}><Glyph icon="trash" />{" delete"}</RLink>
-      );
+    return isDyn
+          ? <Link className="btn btn-success" href={href}><Glyph icon="edit" />{" edit query"}</Link>
+          : null;
   }
 });
 
@@ -66,69 +96,25 @@ function ShareLink(model) {
   return 'http://playlists.ccmixter.org/playlist/browse/' + model.id;
 }
 
-var EditableDescription = React.createClass({
-
-  mixins: [ PlaylistOwner, EditControls ],
-
-  getInitialState: function() {
-    var desc = this.props.store.model.head.description || '';
-    if( desc ) {
-      desc = desc.replace(/http:\/\/ccmixter.org\/playlist\/browse/g,'/playlist/browse' );
-    }    
-    return { text: desc, orgText: desc };
-  },
-
-  doneEdit: function() {
-    this.setState( { text: this.refs.description.value } );
-  },
-
-  cancelEdit: function() {
-    this.setState( { text: this.state.orgText } );
-  },
-
-  render: function() {
-
-    var desc = this.state.text;
-
-    if( !this.state.editing ) {
-      if( !desc && this.state.isOwner ) {
-        desc = 'Add a description...';
-      }
-      desc = { __html: desc };
-    }    
-
-    return (
-        <div className="playlist-description"> 
-        {this.state.editing
-          ? <textarea ref="description" defaultValue={desc}></textarea>
-          : <span dangerouslySetInnerHTML={desc}></span>
-        }
-        {this.state.isOwner
-          ? this.controls( {title: 'edit description'} )
-          : null
-        }
-        </div>
-      );
-  }
-});
-
 var Info = React.createClass({
 
   render: function() {
+    var store = this.props.store;
     var model = this.props.store.model.head;
 
     return (
         <div className="playlist-info hidden-xs hidden-sm">
           <div className="playlist-curator">
             <span>{"curator: "}</span>
-            <Link model={model.curator} avatar />
+            <People.Link model={model.curator} avatar />
           </div>
           <div className="action-btn-toolbar">
-            <SharePopup model={model} modelLink={ShareLink} med />
-            <DeleteLink model={model} />
+            <SharePopup    model={model} modelLink={ShareLink} med />
+            <EditQueryLink store={store} />
+            <DeleteLink    store={store} />
           </div>
-          <Tags.Editor store={this.props.store} />
-          <EditableDescription store={this.props.store} />
+          <EditableTags store={store} />
+          <EditableDescription store={store} />
         </div>
       );
   }

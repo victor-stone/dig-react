@@ -29,6 +29,10 @@ class CCMixter
     var q = 'name=' + name + '&cart_description=' + description;
     return this.adapter.callOne('playlist/create?' + q).then( serialize( ccmixter.Playlist ) );
   }
+
+  deletePlaylist(id) {
+    return this.adapter.callOne('playlist/delete/' + id);
+  }
 }
 
 module.exports = new CCMixter();

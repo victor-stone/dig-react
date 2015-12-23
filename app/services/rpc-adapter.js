@@ -5,10 +5,13 @@ class RPCAdapter
 {
   constructor() {
     this.ajax   = ajax;
-    this.rpcHost = env.rpcHost || 'http://ccmixter.org/api/';
   }
 
   call(cmd,isSingleton) {
+    if( !this.rpcHost ) {
+      this.rpcHost = env.rpcHost || 'http://ccmixter.org/api/';
+    }
+    
     var url = this.rpcHost + cmd;
     var opts = {
       url:      url,

@@ -1,10 +1,13 @@
 import React  from 'react';
-import Glyph  from './Glyph';
+
+import { EditControls } from '../mixins';
 
 /*eslint "react/no-danger":0 */
 /* globals $ */
 
 var EditDiv = React.createClass({
+
+  mixins: [EditControls],
 
   getInitialState: function() {
     return { text:    this.props.text,
@@ -30,28 +33,23 @@ var EditDiv = React.createClass({
   },
 
   startEdit: function() {
-    this.setState( { editing: true }, () => $('#' + this.props.id).focus() );
+    $('#' + this.props.id).focus();
   },
 
   doneEdit: function() {
-    this.setState( { editing: false }, () => {
-      if( this.props.doneEdit ) {
-        this.props.doneEdit( this.state.text );
-      }
-    });
+    if( this.props.doneEdit ) {
+      this.props.doneEdit( this.state.text );
+    }
   },
 
   cancelEdit: function() {
-    this.setState( { editing: false, text: this.state.orgText }, () => {
-      if( this.props.cancelEdit ) {
-        this.props.cancelEdit( this.state.text );
-      }
-    });
+    this.setState( { text: this.state.orgText } );
   },
 
   render: function() {
-    var html  = { __html: this.state.text };
-    var title = this.props.title ? ' ' + this.props.title : '';
+    var html     = { __html: this.state.text };
+    var title    = this.props.title;
+    var controls = this.state.enabled ? this.editControls( {title} ) : null;
 
     return (
       <span>
@@ -60,14 +58,7 @@ var EditDiv = React.createClass({
               contentEditable={this.state.editing} 
               dangerouslySetInnerHTML={html} 
         />
-        {this.state.enabled
-          ? <div className="btn-group btn-group-sm edit-controls">
-              <button className="btn btn-default" disabled={this.state.editing}  onClick={this.startEdit} ><Glyph icon="edit"  />{title}</button>
-              <button className="btn btn-default" disabled={!this.state.editing} onClick={this.doneEdit}  ><Glyph icon="check" /></button>
-              <button className="btn btn-default" disabled={!this.state.editing} onClick={this.cancelEdit}><Glyph icon="times" /></button>              
-            </div>
-          : null
-        }
+        {controls}
       </span>               
     );
   }

@@ -15,17 +15,17 @@ var LicenseInfoLink = React.createClass({
 var LicenseInfoPopup = React.createClass({
 
   getInitialState: function() {
-    return {view: {showModal: false} };
+    return { view: false };
   },
   
   handleHideModal: function() {
-    this.setState({view: {showModal: false}});
+    this.setState({ view: false });
   },
 
   handleShowModal: function(e){
     e.stopPropagation();
     e.preventDefault();
-    this.setState( { view: {showModal: true} } );
+    this.setState( { view: true } );
   },
 
   genPopup: function() {
@@ -36,7 +36,7 @@ var LicenseInfoPopup = React.createClass({
 
   render: function() {
 
-    var popup = this.state.view.showModal ? this.genPopup() : null;
+    var popup = this.state.showModal ? this.genPopup() : null;
     return (
         <span>
           <LicenseInfoLink onShow={this.handleShowModal} />

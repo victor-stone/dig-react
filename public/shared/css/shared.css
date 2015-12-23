@@ -71,7 +71,7 @@ span.light-color a {
   opacity: 0.5;
 }
 
-.page-header h1 i {
+.page-header h1 > i {
   color: #777;
   text-shadow: 5px 5px 4px #ddd;
 }

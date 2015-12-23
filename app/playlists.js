@@ -1,12 +1,5 @@
 import React  from 'react';
 import env    from './services/env';
-import App    from './app';
-import routes from './routes/playlists';
-
-import {
-          Header,
-          Footer
-        } from './components/playlists';
 
 var rewriteRules = [
 /*
@@ -21,6 +14,15 @@ env.set( {
   //bannerTopic: 'playlistsBanner',
   supportPlaylist: true,
   supportWavImg: false,
+  // rpcHost: 'http://ccm/api/'
 });
+
+import App    from './app';
+import routes from './routes/playlists';
+
+import {
+          Header,
+          Footer
+        } from './components/playlists';
 
 module.exports = function(props) { return <App {...props} header={Header} footer={Footer} />; };

@@ -2,6 +2,8 @@
 
 import Browse from './Browse';
 import Edit from './Edit';
+import EditableDescription from './EditableDescription';
+import EditableTags from './EditableTags';
 import EditableTitle from './EditableTitle';
 import EditableTracks from './EditableTracks';
 import Footer from './Footer';
@@ -17,6 +19,8 @@ import Tracks from './Tracks';
 module.exports = {
     Browse,
     Edit,
+    EditableDescription,
+    EditableTags,
     EditableTitle,
     EditableTracks,
     Footer,

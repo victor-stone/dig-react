@@ -4,6 +4,7 @@ import BoundingElement from './bounding-element';
 import CurrentUserTracker from './current-user-tracker';
 import DefaultParamTracker from './default-param-tracker';
 import DirtyParamTracker from './dirty-param-tracker';
+import EditControls from './edit-controls';
 import ModelTracker from './model-tracker';
 import NowPlayingTracker from './now-playing-tracker';
 import PlaylistOwner from './playlist-owner';
@@ -19,6 +20,7 @@ module.exports = {
     CurrentUserTracker,
     DefaultParamTracker,
     DirtyParamTracker,
+    EditControls,
     ModelTracker,
     NowPlayingTracker,
     PlaylistOwner,
