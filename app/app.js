@@ -69,6 +69,10 @@ const App = React.createClass({
     this.setState( { alertType, alert } );
   },
 
+  onAlertClosed: function() {
+    this.setState( { alert: null } );
+  },
+
   postUpdate() {
     if( !global.IS_SERVER_REQUEST ) {
       this.scrollToHash();
@@ -86,7 +90,7 @@ const App = React.createClass({
 
   render: function() {
 
-    var title = this.state.component && this.state.component.title;
+    var title  = this.state.component && this.state.component.title;
     var header = React.createElement(this.props.header);
     var footer = React.createElement(this.props.footer);
     return (
@@ -96,7 +100,10 @@ const App = React.createClass({
           <Banner />
           {header}
           <ErrorDisplay />
-          <Alert type={this.state.alertType} text={this.state.alert} className="system-alert" />
+          {this.state.alert
+            ? <Alert type={this.state.alertType} text={this.state.alert} className="system-alert" onClose={this.onAlertClosed}/>
+            : null
+          }
           <div className="outlet-wrap">
             {this.state.component
               ? React.createElement(this.state.component,

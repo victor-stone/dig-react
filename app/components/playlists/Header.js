@@ -26,7 +26,7 @@ var PlaylistUserMenu = React.createClass({
         <li>
           <CurrentUserMenuHead />
           <CurrentUserMenu>
-            <li><Link href={'/people/' + id}><Glyph fixed icon="music" />{" your playlists"}</Link></li>
+            <li><Link href={'/people/' + id + '?minitems=0'}><Glyph fixed icon="music" />{" your playlists"}</Link></li>
             <li><Link href="/new"><Glyph fixed icon="bolt" />{" new dynamic playlist"}</Link></li>
           </CurrentUserMenu>
         </li>
@@ -54,7 +54,7 @@ const Header = React.createClass({
                 <SearchBox submitSearch={this.submitSearch} placeholder="genre, title, etc." />
               </div>      
               <ul className="nav navbar-nav navbar-right">
-                <li><LoadingGlyph /></li>    
+                <li><a href="#"><LoadingGlyph /></a></li>    
                 <li><a href="http://ccmixter.org/keep-ccmixter-open-and-free"><Glyph icon="heart" />{" donate"}</a></li>
                 <li>
                   <Link href="/featured">{"featured"}</Link>

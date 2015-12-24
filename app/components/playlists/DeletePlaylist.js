@@ -12,11 +12,14 @@ var DeletePlaylist = React.createClass({
   mixins: [PlaylistOwner],
 
   getInitialState: function() {
+    this.manualHide = false;
     return { view: false };
   },
   
   handleHideModal: function() {
-    this.setState({ view: false });
+    if( !this.manualHide ) {
+      this.setState({ view: false });
+    }
   },
 
   handleShowModal: function(e){
@@ -30,6 +33,7 @@ var DeletePlaylist = React.createClass({
     CCMixter.deletePlaylist(id)
       .then( () => {
         /* global $ */
+        this.manualHide = true;
         $('.modal').modal('hide');
         env.alert('success','playlist has been deleted');
         window.history.back();

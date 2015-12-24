@@ -1,5 +1,7 @@
 import React      from 'react';
 import Glyph      from '../Glyph';
+import CCMixter   from '../../stores/ccmixter';
+import env        from '../../services/env';
 
 import { PlaylistOwner,
         EditControls } from '../../mixins';
@@ -14,7 +16,13 @@ var EditableTitle = React.createClass({
   },
 
   doneEdit: function() {
-    this.setState( { text: this.refs.ptitle.value, editing: false } );
+    var name = this.refs.ptitle.value;
+    var id   = this.props.store.model.head.id;
+    CCMixter.updatePlaylist(id,{name}).then( model=> {
+      this.setState( { text: model.name, editing: false } );
+    }).catch( e => {
+      env.alert('warning', 'wups. ' + e.message);
+    });
   },
 
   cancelEdit: function() {

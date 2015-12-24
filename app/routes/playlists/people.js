@@ -1,5 +1,6 @@
 import React              from 'react';
 import Playlists          from '../../stores/playlists';
+import { mergeParams }    from '../../unicorns';
 import { PlaylistWidget } from '../../components/playlists/Browse';
 
 
@@ -19,9 +20,9 @@ curator.path = '/people/:userid';
 
 curator.title = 'People';
 
-curator.store = function(params /*,queryParams */) {
-  var id = { user: params.userid, minitems: '-1' };
-  return Playlists.storeFromQuery(id).then( store => {
+curator.store = function(params,queryParams) {
+  var q = mergeParams( { user: params.userid, minitems: '-1' }, queryParams );
+  return Playlists.storeFromQuery(q).then( store => {
     curator.title = store.model.curator.name;
     return store;
   });
