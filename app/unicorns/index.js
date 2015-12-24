@@ -163,6 +163,8 @@ function w(s) {
   return s.split(/\s+/);
 }
 
+Object.values = obj => Object.keys(obj).map(key => obj[key]);
+
 var oassign = Object.assign || function (target,...sources) 
 { 
   sources.forEach( function(source) {

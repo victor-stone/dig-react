@@ -507,6 +507,7 @@ class PlaylistCurator extends Model {
     super(...arguments);
     this.nameBinding = '_bindParent.user_real_name';
     this.idBinding   = '_bindParent.user_name';
+    this.avatarURLBinding = '_bindParent.user_avatar_url';
   }
 }
 
@@ -539,6 +540,7 @@ class PlaylistHead extends Playlist {
     super(...arguments);
     this.subTypeBinding = 'cart_subtype';
     this.descriptionBinding = 'cart_desc_html';
+    this.descriptionRawBinding = 'cart_description';
   }
 }
 

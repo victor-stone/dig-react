@@ -54,6 +54,10 @@ var EditableTags = React.createClass({
   },
 
   render: function() {
+    if( !this.state.tags.length && !this.state.isOwner ) {
+      return null;
+    }
+    
     var isDyn = this.props.store.model.head.isDynamic;
     var controls = this.state.isOwner && !isDyn ? this.editControls({title:'edit tags'}) : null;
 

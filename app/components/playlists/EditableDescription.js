@@ -1,5 +1,7 @@
 /*eslint "react/no-danger":0 */
 import React      from 'react';
+import CCMixter   from '../../stores/ccmixter';
+import env        from '../../services/env';
 
 import { PlaylistOwner,
          EditControls } from '../../mixins';
@@ -9,15 +11,30 @@ var EditableDescription = React.createClass({
   mixins: [ PlaylistOwner, EditControls ],
 
   getInitialState: function() {
+    function cleanLinks(str) {
+      return str.replace(/http:\/\/ccmixter.org\/playlist\/browse/g,'/playlist/browse' );
+    }
+
     var desc = this.props.store.model.head.description || '';
+    var raw  = this.props.store.model.head.descriptionRaw || '';
     if( desc ) {
-      desc = desc.replace(/http:\/\/ccmixter.org\/playlist\/browse/g,'/playlist/browse' );
-    }    
-    return { text: desc, orgText: desc };
+      desc = cleanLinks(desc);
+    }
+    if( raw ) {
+      raw = cleanLinks(raw);
+    }
+    return { text: desc, orgText: desc, raw };
   },
 
   doneEdit: function() {
-    this.setState( { text: this.refs.description.value } );
+    this.setState( { raw: this.refs.description.value }, () => {
+      var id = this.props.store.model.head.id;
+      CCMixter.updatePlaylist( id, { description: this.state.raw } ).then( model => {
+        this.setState( { text: model.description } );
+      }).catch( e => {
+        env.alert('warning','wups; ' + e.message);
+      });
+    });
   },
 
   cancelEdit: function() {
@@ -38,7 +55,7 @@ var EditableDescription = React.createClass({
     return (
         <div className="playlist-description playlist-bg-color"> 
         {this.state.editing
-          ? <textarea ref="description" defaultValue={desc}></textarea>
+          ? <textarea ref="description" defaultValue={this.state.raw}></textarea>
           : <span dangerouslySetInnerHTML={desc}></span>
         }
         {this.state.isOwner

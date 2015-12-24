@@ -1,3 +1,4 @@
+import querystring  from 'querystring';
 import ccmixter     from '../models/ccmixter';
 import serialize    from '../models/serialize';
 import RPCAdapter   from '../services/rpc-adapter';
@@ -32,6 +33,15 @@ class CCMixter
 
   deletePlaylist(id) {
     return this.adapter.callOne('playlist/delete/' + id);
+  }
+
+  updatePlaylist(id,fields) {
+    var q = querystring.stringify(fields);
+    return this.adapter.callOne('playlist/update/' + id + '?' + q).then( serialize(ccmixter.PlaylistHead) );
+  }
+
+  reorderPlaylist(id,reorderSpec) {
+    return this.adapter.callOne('playlist/reorder/' + id + '?' + reorderSpec);
   }
 }
 

@@ -81,24 +81,71 @@
   display: inline-block;
 }
 
-.playlist-detail-page .playlist-tags {
+.playlist-detail-page .static-playlist-tag-editor {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 12px;
+}
+
+.playlist-detail-page  .static-playlist-tag-editor .edit-controls {
+  margin: 10px;
+}
+
+.playlist-detail-page .playlist-tags {
 }
 
 .playlist-detail-page .playlist-tags a {
   color: black;
 }
 
-.playlist-detail-page .playlist-tags .edit-controls {
-  margin: 10px;
-}
-
 .playlist-detail-page .playlist-tags a:hover {
   color: white;
   text-decoration: none;
 }
+
+
+.static-playlist-tag-editor ul {
+  padding: 0px;
+}
+
+.static-playlist-tag-editor .tags li {
+  display: inline-block;
+  margin-right: 9px;
+  border: 1px solid;
+  padding: 3px 5px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.static-playlist-tag-editor .tags li i {
+  margin-right: 4px;
+}
+
+.static-playlist-tag-editor .pool {
+  padding: 4px;
+  height: 220px;
+  overflow: scroll;
+  border: 1px solid;
+  background-color: white;
+}
+
+.static-playlist-tag-editor .pool li {
+  margin-bottom: 3px;
+  padding-left: 8px;
+  cursor: pointer;
+}
+
+.static-playlist-tag-editor .pool li:hover {
+  background-color: #EEE;
+  border-radius: 4px;
+}
+
+.static-playlist-tag-editor .pool li i {
+  margin-right: 5px;
+}
+
 
 .playlist-detail-page .playlist-description {
   margin-bottom: 13px;
@@ -129,38 +176,6 @@
   height: 10em;
   font-family: Arial;
   color: black;
-}
-
-.static-playlist-tag-editor ul {
-  padding: 0px;
-}
-
-.static-playlist-tag-editor .tags li {
-  display: inline-block;
-  margin-right: 9px;
-  border: 1px solid;
-  padding: 5px;
-  border-radius: 4px;
-  margin-bottom: 4px;
-}
-
-.static-playlist-tag-editor .tags li i {
-  margin-right: 4px;
-}
-
-.static-playlist-tag-editor .pool {
-  height: 220px;
-  overflow: scroll;
-  border: 1px solid;
-}
-
-.static-playlist-tag-editor .pool li {
-  margin-bottom: 3px;
-  padding-left: 8px;
-}
-
-.static-playlist-tag-editor .pool li i {
-  margin-right: 5px;
 }
 
 .playlist-detail-page .playlist-tracks > li {

@@ -28,7 +28,7 @@ class Playlist extends Query {
 
     var q = {
       f: 'js',
-      dataview: 'playlist_detail',
+      dataview: 'playlist_head',
       ids: id,
     };
 
@@ -42,14 +42,10 @@ class Playlist extends Query {
       tracks:  this.uploads.getModel(pl).then( () => this.uploads )
     };
 
-    return this.transaction(rsvp.hash(model)
+    return rsvp.hash(model)
               .then( model => { 
                   this.model = model; 
-                  return this.findUser(model.head.curator.id); 
-              }).then( curator => {
-                  this.model.head.curator = curator;
-                  return this.model;
-              }));
+              });
   }
 }
 
