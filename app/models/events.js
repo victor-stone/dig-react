@@ -22,7 +22,7 @@ var Events = {
   DOWNLOAD:           'download',
   USER_SEARCH:        'user_search',
   ERROR_IN_JSON:      'json_error',
-  APP_MSG:            'app_msg'
+  APP_ALERT:           'app_alert'
 };
 
 module.exports = Events;

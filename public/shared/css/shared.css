@@ -51,6 +51,15 @@ span.light-color a {
   margin-bottom: 20px;
 }
 
+.system-alert.alert {
+  width: 60%;
+  margin: 10px auto;
+}
+
+.system-alert.alert strong {
+  margin-right: 12px;
+  display: inline-block;
+}
 
 /* modals can be embedded in playlists so these
    need to get reset

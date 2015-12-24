@@ -3,8 +3,6 @@ import { oassign } from '../unicorns';
 import Eventer     from './eventer';
 import events      from '../models/events';
  
-const TEN_SECONDS = 10000;
-
 class Env extends Eventer {
 
   constructor() {
@@ -25,9 +23,8 @@ class Env extends Eventer {
     }
   }
 
-  set message(msgComponent) {
-    this.emit( events.APP_MSG, msgComponent );
-    setTimeout( () => this.emit( events.APP_MSG, null ), TEN_SECONDS);
+  alert(type,message) {
+    this.emit( events.APP_ALERT, type, message );
   }
 
   error(e) {

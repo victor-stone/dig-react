@@ -54,29 +54,23 @@ var EditableTags = React.createClass({
   },
 
   render: function() {
-    var body = null;
-    if( this.state.editing ) {
-      body = (
-        <div className="static-playlist-tag-editor">
-          <ul className="tags">
-            {this.state.tags.map( (t,i) => <li key={i} onClick={this.removeTag(t)}><Glyph icon="times" />{t}</li> )}
-          </ul>
-          <ul className="pool">
-            {this.state.pool.map( (t,i) => <li key={i} onClick={this.addTag(t)}><Glyph icon="plus"/>{t}</li> )}
-          </ul>
-          {this.editControls({title:'edit tags'})}
-        </div>
-      );
-    } else {
-      var controls = this.state.isOwner && !isDyn ? this.editControls({title:'edit tags'}) : null;
-      body = (<Tags bg model={this.state.tags}>{controls}</Tags>);
-    }
-
     var isDyn = this.props.store.model.head.isDynamic;
+    var controls = this.state.isOwner && !isDyn ? this.editControls({title:'edit tags'}) : null;
 
     return (
-        <div>
-          {body}
+        <div className="static-playlist-tag-editor playlist-bg-color">
+          {this.state.editing
+            ? <div>
+                <ul className="tags">
+                  {this.state.tags.map( (t,i) => <li key={i} onClick={this.removeTag(t)}><Glyph icon="times" />{t}</li> )}
+                </ul>
+                <ul className="pool">
+                  {this.state.pool.map( (t,i) => <li key={i} onClick={this.addTag(t)}><Glyph icon="plus"/>{t}</li> )}
+                </ul>
+              </div>
+            : <Tags model={this.state.tags} />
+          }
+          {controls}
         </div>
       );
   }

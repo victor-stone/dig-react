@@ -4,7 +4,7 @@ import { mergeParams }   from '../../unicorns';
 
 import Playlist          from '../../stores/playlist';
 import { DynamicForm }   from '../../components/playlists/Edit';
-import EditableTitle     from '../../components/playlists/EditableTitle';
+import PageHeader        from '../../components/PageHeader';
 import env               from '../../services/env';
 
 var Edit = React.createClass({
@@ -25,7 +25,7 @@ var Edit = React.createClass({
     var store = this.props.store.model.tracks;
     return (
         <div className="edit-playlist-widget">
-          <EditableTitle store={this.props.store} />
+          <PageHeader icon="edit" title={this.props.store.model.head.name} />
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-8 col-md-offset-2">

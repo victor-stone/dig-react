@@ -94,15 +94,18 @@
 }
 
 .query-options-elements .artist-filter .artist-list {
-  background-color: white;
+  background-color: #EEE;;
+  border: 0px;
   padding-top: 12px;
   padding-bottom: 12px;
   border-radius: 6px;
+  overflow: hidden;
 }
 
 .query-options-elements .artist-list li:hover,
 .query-options-elements .tags-list li:hover {
-  background-color: #EEE;
+  background-color: #FFF;
+  border-radius: 8px;
 }
 
 .query-options-elements select#sort,
@@ -127,6 +130,12 @@
   font-weight: bold;
 }
 
+.edit-playlist-widget .track-list {
+  padding: 8px;
+  background-color: #EEE;
+  border-radius: 5px;
+  min-height: 300px;
+}
 .track-list > li > .name {
   font-weight: bold;
 }

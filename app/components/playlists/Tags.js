@@ -11,10 +11,9 @@ var Tags = React.createClass({
     if( !tags.length && !this.props.children ) {
       return null;
     }
-    var cls = 'playlist-tags' + (this.props.bg ? ' playlist-bg-color' : '');
 
     return (
-        <div className={cls}>
+        <div className="playlist-tags">
           <Glyph icon="tags" />
           {tags.map( t => {
               return(<Link key={t} className="playlist-tag" href={'/tags/' + t}>{t}</Link>);
