@@ -2,6 +2,7 @@ import React  from 'react';
 import Glyph  from '../Glyph';
 import Tags   from './Tags';
 
+import CCMixter         from '../../stores/ccmixter';
 import { PlaylistOwner,
          EditControls } from '../../mixins';
 
@@ -11,7 +12,9 @@ var EditableTags = React.createClass({
 
   getInitialState: function() {
     this.loading = false;
-    return { tags: this.props.store.model.head.tags, pool: null };
+    var tags = this.props.store.model.head.tags;
+
+    return { tags, pool: null, orgTags: tags.clone() };
   },
 
   componentWillMount: function() {
@@ -53,14 +56,26 @@ var EditableTags = React.createClass({
     };
   },
 
+  doneEdit: function() {
+    var tags = this.state.tags.toString();
+    var id   = this.props.store.model.head.id;
+    CCMixter.updatePlaylist(id,{tags}).then( model => {
+      this.setState( { model: model.tags } );
+    });
+  },
+
+  cancelEdit: function() {
+    this.setState( { tags: this.state.orgTags.clone() } );
+  },
+
   render: function() {
-    if( !this.state.tags.length && !this.state.isOwner ) {
+    var isDyn = this.props.store.model.head.isDynamic;
+    var hasControls = this.state.isOwner && !isDyn;
+
+    if( !this.state.tags.length && !hasControls ) {
       return null;
     }
     
-    var isDyn = this.props.store.model.head.isDynamic;
-    var controls = this.state.isOwner && !isDyn ? this.editControls({title:'edit tags'}) : null;
-
     return (
         <div className="static-playlist-tag-editor playlist-bg-color">
           {this.state.editing
@@ -74,7 +89,10 @@ var EditableTags = React.createClass({
               </div>
             : <Tags model={this.state.tags} />
           }
-          {controls}
+          {hasControls
+            ? this.editControls({title:'edit tags'})
+            : null
+          }
         </div>
       );
   }

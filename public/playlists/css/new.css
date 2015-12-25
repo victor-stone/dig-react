@@ -1,7 +1,11 @@
-/* new playlist css */
+/* new & edit playlist css */
 
 .query-options-elements {
   margin-top: 15px;
+  padding: 8px;
+  background-color: #EEE;
+  border-radius: 6px;
+  border: 1px solid black;
 }
 
 .query-options-elements > li {
@@ -111,12 +115,17 @@
 .query-options-elements select#sort,
 .query-options-elements select#lic {
   width: 80%;
+  margin: 0 auto;
 }
 
 .query-options-elements .lic-help {
   display: none;
 }
 
+.query-options-elements .form-control[for="instrumentalOnly"] {
+  width: 50%;
+  margin: 0 auto;
+}
 .query-options-elements input[type="checkbox"] {
   margin-left: 10px;
 }
@@ -130,12 +139,14 @@
   font-weight: bold;
 }
 
-.edit-playlist-widget .track-list {
+
+.track-list {
   padding: 8px;
   background-color: #EEE;
   border-radius: 5px;
   min-height: 300px;
 }
+
 .track-list > li > .name {
   font-weight: bold;
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Modal                    from '../../components/Modal';
-import Glyph                    from '../../components/Glyph';
-import QueryOptions             from '../../components/playlists/QueryOptions';
-import { ModelTracker }         from '../../mixins';
+import Modal             from '../../components/Modal';
+import Glyph             from '../../components/Glyph';
+import QueryOptions      from '../../components/playlists/QueryOptions';
+import { ModelTracker }  from '../../mixins';
 
-import CCMixter                 from '../../stores/ccmixter';
-import lookup                   from '../../services';
+import CCMixter          from '../../stores/ccmixter';
+import lookup            from '../../services';
 
 var TrackList = React.createClass({
 
@@ -79,7 +79,7 @@ var SaveDynamicPopup = React.createClass({
       } else {
         this.setState( { msg });
       }
-    }).catch( (e) => this.setState( { msg: msg + ' ' + e.message } ) );
+    });
   },
 
   genPopup: function() {

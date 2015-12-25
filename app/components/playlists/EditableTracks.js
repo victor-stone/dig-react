@@ -1,6 +1,7 @@
 import React          from 'react';
 import Tracks         from './Tracks';
 import { TrackList }  from  './Edit';
+import CCMixter       from '../../stores/ccmixter';
 
 import { PlaylistOwner,
          EditControls } from '../../mixins';
@@ -10,6 +11,12 @@ var EditableTracks = React.createClass({
   mixins: [ PlaylistOwner, EditControls ],
 
   doneEdit: function() {
+    /* globals $ */
+    var sortkeys = $('#fo').sortable( 'serialize' );
+    var id       = this.props.store.model.head.id;
+    CCMixter.reorderPlaylist(id,sortkeys).then( () => {
+      this.props.store.model.tracks.applySoftParams({});
+    });
   },
 
   render: function() {
@@ -25,7 +32,7 @@ var EditableTracks = React.createClass({
           : null
         }
         {this.state.editing 
-          ? <TrackList store={store} sortable />
+          ? <TrackList store={store} sortable id="tracks" />
           : <Tracks store={store} />
         }
       </div>

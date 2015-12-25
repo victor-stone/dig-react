@@ -45,7 +45,7 @@ const LicenseFilter = React.createClass({
         <select id="lic" ref="lic" value={this.state.lic} onChange={this.performQuery} className="form-control" >
           <option value="all">{"all licenses"}</option>
           <option value="open">{"free for commercial use"}</option>
-          <option value="ccplus">{"royalty free license"}</option>
+          <option value="ccplus">{"royalty free ccPlus license"}</option>
         </select>
         <LicenseInfoPopup />
       </div>

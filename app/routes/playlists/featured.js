@@ -18,7 +18,7 @@ function featured(props) {
 featured.title = 'Featured';
 
 featured.store = function(params,queryParams) {
-  var qparams = mergeParams( { type: 'featured' }, queryParams );
+  var qparams = mergeParams( { type: 'featured', minitems: '0' }, queryParams );
   return Playlists.storeFromQuery( qparams );
 };
 

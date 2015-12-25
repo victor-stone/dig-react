@@ -7,14 +7,14 @@ var Alert = React.createClass({
   getInitialState: function() {
     return { type:  this.props.type,
               id:   this.props.id || 'sys-alert',
-             cls:  'alert fade alert-' + this.props.type + ' ' + this.props.className,
+             cls:  'alert fade in alert-' + this.props.type + ' ' + this.props.className,
              text:  this.props.text };
   },
 
   componentDidMount: function() {
     var $e = $('#' + this.state.id);
     $e.show();
-    $e.on('closed.bs.alert', this.props.onClose);
+    $e.on('close.bs.alert', this.props.onClose);
   },
 
   render: function() {

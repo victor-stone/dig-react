@@ -37,7 +37,7 @@ var DeletePlaylist = React.createClass({
         $('.modal').modal('hide');
         env.alert('success','playlist has been deleted');
         window.history.back();
-      }).catch( (e) => this.setState( { msg: 'wups - ' + e.message, error: e } ) );
+      });
   },
 
   genPopup: function() {

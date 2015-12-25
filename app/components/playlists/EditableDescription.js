@@ -1,7 +1,6 @@
 /*eslint "react/no-danger":0 */
 import React      from 'react';
 import CCMixter   from '../../stores/ccmixter';
-import env        from '../../services/env';
 
 import { PlaylistOwner,
          EditControls } from '../../mixins';
@@ -31,8 +30,6 @@ var EditableDescription = React.createClass({
       var id = this.props.store.model.head.id;
       CCMixter.updatePlaylist( id, { description: this.state.raw } ).then( model => {
         this.setState( { text: model.description } );
-      }).catch( e => {
-        env.alert('warning','wups; ' + e.message);
       });
     });
   },

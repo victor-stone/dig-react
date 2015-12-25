@@ -272,6 +272,12 @@ TagString.prototype.anyInArray = function(arrayOfStringsToSearch) {
             .find( this.anyInString.bind(this) );
 };
 
+TagString.prototype.clone = function() {
+  var opts = this.copyOptions();
+  opts.src = this._tagsArray;
+  return new TagString( opts );
+};
+
 TagString.prototype.copyOptions = function() {
   return {
     ignore: this.ignore,
