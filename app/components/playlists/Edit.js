@@ -69,15 +69,14 @@ var SaveDynamicPopup = React.createClass({
   onSave: function() {
     var name    = this.refs['playlist-name'].value;
     var qstring = this.props.store.queryStringWithDefaults;
-    var msg     = 'wups - there was a problem saving your playlist';
-    CCMixter.saveDynamicPlaylist(name,qstring).then( playlist => {
+    CCMixter.createDynamicPlaylist(name,qstring).then( playlist => {
       if( playlist && playlist.id ) {
         /* globals $ */
         $('.modal').modal('hide');
         var router = lookup('router');
         router.navigateTo( '/playlist/browse/' + playlist.id );
       } else {
-        this.setState( { msg });
+        throw new Error('ccmixter service did not create a playlist');
       }
     });
   },
@@ -126,7 +125,7 @@ var DynamicForm = React.createClass({
             <h3>{"preview"}</h3>
             <TrackList store={store} />
             {this.props.onSave
-              ? <button className="btn btn-success"><Glyph icon="cloud-upload" onClick={this.props.onSave}/>{" Save"}</button>
+              ? <button className="btn btn-success save-button"><Glyph icon="cloud-upload" onClick={this.props.onSave}/>{" Save"}</button>
               : <SaveDynamicPopup store={store} />
             }
             

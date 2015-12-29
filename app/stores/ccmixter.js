@@ -5,6 +5,8 @@ import serialize    from '../models/serialize';
 import RPCAdapter   from '../services/rpc-adapter';
 import env          from '../services/env';
 
+const CHECK_STATUS = true;
+
 class CCMixter 
 {
   constructor() {
@@ -35,18 +37,24 @@ class CCMixter
     });
   }
 
-  saveDynamicPlaylist(name,queryParamsString) {
+  createDynamicPlaylist(name,queryParamsString) {
     var q = queryParamsString + '&title=' + name;
-    return this._call('playlist/save?' + q).then( serialize( ccmixter.Playlist ) );
+    return this._call('playlist/create/dynamic?' + q).then( serialize( ccmixter.Playlist ) );
   }
 
-  saveStaticPlaylist(name,description) {
+  updateDynamicPlaylist(id,queryParamsString) {
+    var q = queryParamsString;
+    return this._call('playlist/update/dynamic?' + q, CHECK_STATUS);
+  }
+
+  /* not used here (yet) */
+  createStaticPlaylist(name,description) {
     var q = 'name=' + name + '&cart_description=' + description;
     return this._call('playlist/create?' + q).then( serialize( ccmixter.Playlist ) );
   }
 
   deletePlaylist(id) {
-    return this._call('playlist/delete/' + id, true);
+    return this._call('playlist/delete/' + id, CHECK_STATUS);
   }
 
   updatePlaylist(id,fields) {
@@ -55,7 +63,7 @@ class CCMixter
   }
 
   reorderPlaylist(id,reorderSpec) {
-    return this._call('playlist/reorder/' + id + '?' + reorderSpec, true);
+    return this._call('playlist/reorder/' + id + '?' + reorderSpec, CHECK_STATUS);
   }
 }
 

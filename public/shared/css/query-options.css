@@ -1,3 +1,5 @@
+/* shared query-options css */
+
 .query-options-box.open {
   margin: 0px;
   padding: 0px;
@@ -90,14 +92,16 @@
 
 .query-options-box.open ul.query-options ul.query-options-elements > li .bpm-display {
   display: inline-block;
-  float: left;
-  background-color: #CCC;
   padding: 4px;
   margin-right: 1px;
-  width: 35px;
   text-align: center;
-  border-radius: 6px;
   vertical-align: middle;
+  /*
+  width: 35px;
+  float: left;
+  background-color: #CCC;
+  border-radius: 6px;
+  */  
 }
 
 

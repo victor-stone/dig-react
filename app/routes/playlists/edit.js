@@ -3,9 +3,11 @@ import React             from 'react';
 import { mergeParams }   from '../../unicorns';
 
 import Playlist          from '../../stores/playlist';
+import CCMixter          from '../../stores/ccmixter';
 import { DynamicForm }   from '../../components/playlists/Edit';
 import PageHeader        from '../../components/PageHeader';
 import env               from '../../services/env';
+import lookup            from '../../services';
 
 var Edit = React.createClass({
 
@@ -18,7 +20,12 @@ var Edit = React.createClass({
   },
   
   onSave: function() {
-
+    var qstring = this.props.store.queryStringWithDefaults;
+    var id      = this.props.store.model.head.id;
+    CCMixter.saveDynamicPlaylist(id,qstring).then( () => {
+        var router = lookup('router');
+        router.navigateTo( '/playlist/browse/' + id );
+    });
   },
 
   render: function() {

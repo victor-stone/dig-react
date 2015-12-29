@@ -72,6 +72,7 @@ const SortFilter = React.createClass({
           <option value={qc.magicSort.digrank}>{"magic sort"}</option>
           <option value={qc.recent.digrank}>{"recent"}</option>
           <option value={qc.alltime.digrank}>{"all time"}</option>
+          {this.props.children}
         </select>
       );
   }
