@@ -10,12 +10,6 @@ import { LicenseFilter,
 import { BPMDisplay,
          BPMSlider   } from '../BPM'; 
 
-function StemsSortFilter(props) {
-  return (<SortFilter {...props}>
-              <option value={"-1"}>{"today"}</option>
-          </SortFilter>);
-}
-
 var _StemsQueryOptions = React.createClass({
 
   render: function() {
@@ -28,7 +22,7 @@ var _StemsQueryOptions = React.createClass({
           <LicenseFilter store={store} />
         </li>
         <li>
-          <StemsSortFilter store={store} />
+          <SortFilter store={store} />
         </li>
         <li>
           <BPMDisplay store={store} />

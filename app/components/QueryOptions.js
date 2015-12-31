@@ -53,7 +53,7 @@ const LicenseFilter = React.createClass({
   }
 });
 
-const SortFilter = React.createClass({ 
+const SortFilterWrap = React.createClass({ 
 
   mixins: [QueryParamTracker],
 
@@ -69,15 +69,24 @@ const SortFilter = React.createClass({
   render: function() {
     return (
         <select ref="sort" id="sort" value={this.state.digrank} onChange={this.performQuery} className="form-control" >
-          <option value={qc.magicSort.digrank}>{"magic sort"}</option>
-          <option value={qc.recent.digrank}>{"recent"}</option>
-          <option value={qc.alltime.digrank}>{"all time"}</option>
           {this.props.children}
         </select>
       );
   }
 
 });
+
+function SortFilter(props) {
+  return (
+      <SortFilterWrap {...props}>
+          <option value={qc.magicSort.digrank}>{"magic sort"}</option>
+          <option value={qc.recent.digrank}>{"recent"}</option>
+          <option value={qc.alltime.digrank}>{"all time"}</option>
+          <option value={qc.latest.digrank}>{"latest"}</option>
+      </SortFilterWrap>
+    );
+}
+
 
 const ResetOptionsButton = React.createClass({
 
@@ -180,5 +189,6 @@ module.exports = {
   LicenseInfoPopup,
   LicenseFilter,
   OptionsWrap,
-  SortFilter
+  SortFilter,
+  SortFilterWrap
 };
