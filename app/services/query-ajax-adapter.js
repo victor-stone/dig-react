@@ -10,7 +10,6 @@ class QueryAjaxAdapter extends Eventer
     super(...arguments);
     this.ajax   = ajax;
     this._count = 0;
-    this.queryHost = env.queryHost || 'http://ccmixter.org/api/query?';
   }
 
   _inc() {
@@ -29,6 +28,10 @@ class QueryAjaxAdapter extends Eventer
 
   _query(qString,isSingleton) {
   
+    if( !this.queryHost ) {
+      this.queryHost = env.queryHost || 'http://ccmixter.org/api/query?';
+    }
+    
     var url = this.queryHost + qString;
 
     var opts = {

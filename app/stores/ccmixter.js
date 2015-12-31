@@ -42,11 +42,6 @@ class CCMixter
     return this._call('playlist/create/dynamic?' + q).then( serialize( ccmixter.Playlist ) );
   }
 
-  updateDynamicPlaylist(id,queryParamsString) {
-    var q = queryParamsString;
-    return this._call('playlist/update/dynamic?' + q, CHECK_STATUS);
-  }
-
   /* not used here (yet) */
   createStaticPlaylist(name,description) {
     var q = 'name=' + name + '&cart_description=' + description;
@@ -55,6 +50,11 @@ class CCMixter
 
   deletePlaylist(id) {
     return this._call('playlist/delete/' + id, CHECK_STATUS);
+  }
+
+  updateDynamicPlaylist(id,queryParamsString) {
+    var q = queryParamsString;
+    return this._call('playlist/update/dynamic/' + id + '?' + q, CHECK_STATUS);
   }
 
   updatePlaylist(id,fields) {

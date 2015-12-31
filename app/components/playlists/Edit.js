@@ -125,7 +125,7 @@ var DynamicForm = React.createClass({
             <h3>{"preview"}</h3>
             <TrackList store={store} />
             {this.props.onSave
-              ? <button className="btn btn-success save-button"><Glyph icon="cloud-upload" onClick={this.props.onSave}/>{" Save"}</button>
+              ? <button className="btn btn-success save-button" onClick={this.props.onSave}><Glyph icon="cloud-upload" />{" Save Changes"}</button>
               : <SaveDynamicPopup store={store} />
             }
             

@@ -9,7 +9,7 @@ var index = React.createClass({
           <div className="row">
             <div className="col-md-8 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-12">
               <h1>{"The 21st-century Indie Music Curation Project"}</h1>
-              <h3>{"Sharing the love one playlist at time."}</h3>
+              <h3>{"Sharing the love one playlist at a time."}</h3>
             </div>
           </div>
         </div>      

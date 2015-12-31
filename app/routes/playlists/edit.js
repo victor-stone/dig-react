@@ -20,9 +20,9 @@ var Edit = React.createClass({
   },
   
   onSave: function() {
-    var qstring = this.props.store.queryStringWithDefaults;
+    var qstring = this.props.store.model.tracks.queryStringWithDefaults;
     var id      = this.props.store.model.head.id;
-    CCMixter.saveDynamicPlaylist(id,qstring).then( () => {
+    CCMixter.updateDynamicPlaylist(id,qstring).then( () => {
         var router = lookup('router');
         router.navigateTo( '/playlist/browse/' + id );
     });
