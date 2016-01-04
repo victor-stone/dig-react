@@ -1,25 +1,29 @@
 import React from 'react';
 import Glyph from './Glyph';
 
-import { CurrentUserTracker } from '../mixins';
-
 const MAX_NAME_LEN = 15;
 
 const CurrentUserMenuHead = React.createClass({
 
-  mixins: [CurrentUserTracker],
+  getInitialState: function() {
+    return { loading: true };
+  },
+
+  componentWillReceiveProps: function(props) {
+    this.setState(props);
+  },
 
   render: function() {
 
-    if( this.state.userLoading ) {
+    if( this.state.loading) {
       return null;      
     }
 
-    if( !this.state.user ) {
+    if( !this.state.model ) {
       return (<a href="http://ccmixter.org/login"><Glyph icon="user" />{" log in"}</a>);
     }
 
-    var u = this.state.user;
+    var u = this.state.model;
     
     return (<a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <Glyph icon="user" />{" "}{u.name.ellipse(MAX_NAME_LEN)}{" "}<Glyph icon="chevron-down" />
@@ -30,11 +34,17 @@ const CurrentUserMenuHead = React.createClass({
 
 const CurrentUserMenu = React.createClass({
 
-  mixins: [CurrentUserTracker],
+  getInitialState: function() {
+    return { user: null };
+  },
+
+  componentWillReceiveProps: function(props) {
+    this.setState(props);
+  },
 
   render: function() {
 
-    if( !this.state.user ) {
+    if( !this.state.model ) {
       return null;
     }
 

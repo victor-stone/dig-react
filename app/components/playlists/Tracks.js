@@ -3,6 +3,7 @@ import { ModelTracker }   from '../../mixins';
 import AudioService       from '../../services/audio-player';
 import { UploadLink }     from '../ActionButtons';
 import { PlayButton }     from '../AudioPlayer';
+import People             from '../People';
 
 var Tracks = React.createClass({
 
@@ -30,7 +31,7 @@ var Tracks = React.createClass({
                 <UploadLink className="track-name" model={t} />
                 {skipUser
                   ? null
-                  : <a className="track-artist" href={'/people/' + t.artist.id}>{t.artist.name}</a>
+                  : <People.Link model={t.artist} className="track-artist" />
                 }
               </li>
             );

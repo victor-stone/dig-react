@@ -4,6 +4,7 @@ import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
 import rsvp        from 'rsvp';
 import events      from '../models/events';
+import env         from '../services/env';
 
 import { oassign,
          cleanSearchString }   from '../unicorns';
@@ -103,7 +104,18 @@ class Playlists extends Uploads {
       f: 'js',
       playlist: id
     };
-    return this.query(q).then( serialize( ccmixter.Upload ) );
+    return this.query(q)
+             .then( serialize( ccmixter.Upload ) )
+             .then( tracks => {
+                tracks.forEach( t => {
+                  try {
+                    t.mediaTags.playlist = id;
+                  } catch(e) {
+                    env.log( 'failed to set playlist on mediaTags for ', t.id );
+                  }
+                });
+                return tracks;
+              });
   }
   
   _filterGenreTags( models ) {

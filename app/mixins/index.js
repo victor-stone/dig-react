@@ -8,6 +8,7 @@ import EditControls from './edit-controls';
 import ModelTracker from './model-tracker';
 import NowPlayingTracker from './now-playing-tracker';
 import PlaylistOwner from './playlist-owner';
+import PlaylistTracker from './playlist-tracker';
 import QueryParamTracker from './query-param-tracker';
 import SelectedTagsTracker from './selected-tags-tracker';
 import StoreEvents from './store-events';
@@ -24,6 +25,7 @@ module.exports = {
     ModelTracker,
     NowPlayingTracker,
     PlaylistOwner,
+    PlaylistTracker,
     QueryParamTracker,
     SelectedTagsTracker,
     StoreEvents,

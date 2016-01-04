@@ -6,16 +6,17 @@ import RPCAdapter   from '../services/rpc-adapter';
 import env          from '../services/env';
 
 const CHECK_STATUS = true;
+const NOT_FETCHED  = -1;
 
 class CCMixter 
 {
   constructor() {
     this.adapter = RPCAdapter;
-    this._currentUser = null;
+    this._currentUser = NOT_FETCHED;
   }
 
   currentUser() {
-    if( this._currentUser ) {
+    if( this._currentUser !== NOT_FETCHED ) {
       return rsvp.resolve( this._currentUser );
     }
     return this.adapter.callOne('user/current')

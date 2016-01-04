@@ -8,6 +8,7 @@ import Glyph        from '../Glyph';
 
 import { CurrentUserTracker } from '../../mixins';
 
+
 import {  CurrentUserMenu,
           CurrentUserMenuHead }  from '../CurrentUserMenu';
 
@@ -16,16 +17,15 @@ var PlaylistUserMenu = React.createClass({
   mixins: [CurrentUserTracker],
 
   render: function() {
-    if( !this.state.user ) {
-      return null;
-    }
 
-    var id = this.state.user.id;
+    var user    = this.state.user;
+    var loading = this.state.userLoading;
+    var id      = user && user.id;
 
     return (
         <li>
-          <CurrentUserMenuHead />
-          <CurrentUserMenu>
+          <CurrentUserMenuHead model={user} loading={loading} />
+          <CurrentUserMenu model={user} >
             <li><Link href={'/people/' + id + '?minitems=0'}><Glyph fixed icon="music" />{" your playlists"}</Link></li>
             <li><Link href="/new"><Glyph fixed icon="bolt" />{" new dynamic playlist"}</Link></li>
           </CurrentUserMenu>

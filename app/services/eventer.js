@@ -5,6 +5,9 @@ import events       from '../models/events';
 
 var _knownEvents = null;
 function isValidEvent(event) {
+  if( event.charAt(0) === '_' ) {
+    return true;
+  }
   if( !_knownEvents ) {
     _knownEvents = Object.keys(events).map( e => events[e] );
   }

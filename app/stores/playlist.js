@@ -3,6 +3,7 @@ import Query            from './query';
 import Uploads          from './uploads';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
+import env              from '../services/env';
 
 class PlaylistTracks extends Uploads {
  fetch(queryParams) {
@@ -39,7 +40,17 @@ class Playlist extends Query {
 
     var model = {
       head:    this.queryOne(q).then( serialize( ccmixter.PlaylistHead ) ),
-      tracks:  this.uploads.getModel(pl).then( () => this.uploads )
+      tracks:  this.uploads.getModel(pl)
+                              .then( model => {
+                                  model.items.forEach( t => {
+                                    try {                                      
+                                      t.mediaTags.playlist = id;
+                                    } catch(e) {
+                                      env.log( 'could not set media tags for ', t.id);
+                                    }
+                                  });
+                                  return this.uploads;
+                              })
     };
 
     return rsvp.hash(model)

@@ -90,7 +90,7 @@ const AudioPlayer = React.createClass({
 
     return(
       <div className={articleClass} >
-        <PlayControls ref="controls" controls={controls} />
+        <PlayControls controls={controls} />
         <div className="clearfix">
           <PlaylistButton   media={nowPlaying} />
           <PlaybackScrubber media={nowPlaying} position={position} />
