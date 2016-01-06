@@ -39,6 +39,10 @@ const Link = React.createClass({
     var model = this.state.model;
     var href  = '/people/' + model.id;
 
+    if( this.props.suburl ) {
+      href += '/' + this.props.suburl;
+    }
+
     return( 
         <_Link {...this.props} href={href}>
           {this.props.avatar

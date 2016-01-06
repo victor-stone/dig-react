@@ -12,7 +12,7 @@ function Curators(props) {
   var store = props.store;
   return (
       <ul className="curators-list">
-        {store.model.map( c => <li key={c.id}><Link model={c} avatar /></li> )}
+        {store.model.map( c => <li key={c.id}><Link model={c} avatar suburl="playlists" /></li> )}
       </ul>
     );
 }

@@ -24,7 +24,6 @@ class Query extends Eventer
     var qparams = {
       u: id,
       dataview: 'user_basic',
-      f: 'js'
     };
     return this.queryOne(qparams).then( serialize( ccmixter.User ) );
   }
@@ -32,7 +31,6 @@ class Query extends Eventer
   findUsers(queryParams) {
     var qp = oassign( {
       t: 'user_list',
-      f: 'js',
     }, queryParams );
     return this.query(qp).then( serialize( ccmixter.User ) );
   }
@@ -40,7 +38,6 @@ class Query extends Eventer
   // search the entire user record
   searchUsers(params) {
     params.dataview ='user_basic';
-    params.f = 'js';
     return this.query(params).then( serialize( ccmixter.UserBasic ) );
   }
 
@@ -72,6 +69,9 @@ class Query extends Eventer
   }
 
   _clean(p) {
+    if( !('f' in p) && !('format' in p) ) {
+      p.f = 'jsex';
+    }
     var t = {};
     for( var k in p ) {
       if( !(typeof p[k] === 'undefined' || (typeof p[k] === 'string' && p[k].length === 0)) ) {

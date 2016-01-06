@@ -20,7 +20,6 @@ class Topics extends Query {
     id = Number(id) || Topics.namedTopics[id];
     
     var args = {
-      f: 'js',
       dataview: 'topics',
       ids: id
     };
@@ -31,7 +30,6 @@ class Topics extends Query {
 
   type(topicType) {
     var args = {
-      f: 'js',
       dataview: 'topics',
       type: topicType,
       limit: 10

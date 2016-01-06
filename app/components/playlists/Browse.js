@@ -1,5 +1,6 @@
 import React              from 'react';
 import Tags               from './Tags';
+import People             from '../People';
 import Link               from '../Link';
 import Paging             from '../Paging';
 import PageHeader         from '../PageHeader';
@@ -26,7 +27,7 @@ var Playlists = React.createClass({
           <PlayAllButton playlist={p.id} />
           <Link href={'/playlist/browse/'+p.id} className="playlist-link">{p.name}<span className="badge">{p.count}</span></Link>          
           {showUser
-            ? <div className="playlist-curator">{"curator: "}<Link href={'/people/' + p.curator.id}>{p.curator.name}</Link></div>
+            ? <div className="playlist-curator">{"curator: "}<People.Link model={p.curator} suburl="playlists" /></div>
             : null
           }          
           <Tags model={p.tags} />

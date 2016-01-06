@@ -81,9 +81,11 @@ class UploadList extends Query {
   }
 
   getModel(queryParams) {
-    queryParams.f        = 'js';
-    queryParams.dataview = 'links_by';
-    queryParams.offset   = queryParams.offset || 0;
+    if( !('dataview' in queryParams) && !('t' in queryParams) ) {
+      queryParams.dataview = 'links_by';
+    }
+    
+    queryParams.offset = queryParams.offset || 0;
 
     var hasSearch = 'searchp' in queryParams;
 
@@ -91,10 +93,12 @@ class UploadList extends Query {
       queryParams.searchp = cleanSearchString( queryParams.searchp );
     }
 
+    var user = queryParams.u || queryParams.user;
+
     var hash = {
       items:  this.fetch(queryParams),
       total:  this.count(queryParams),
-      artist: queryParams.u ? this.findUser(queryParams.u) : null,
+      artist: user ? this.findUser(user) : null,
     };
 
     if( hasSearch) {

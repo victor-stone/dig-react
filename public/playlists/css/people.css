@@ -1,0 +1,22 @@
+/* people css */
+
+.people-tracks-page .people-tracks {
+  padding: 0;
+  margin: 0px;
+}
+
+.people-tracks-page .people-tracks li {
+  margin-bottom: 12px;
+}
+
+.people-tracks-page .people-tracks li a {
+  font-size: 22px;
+  color: black;
+  margin-right: 12px;
+  font-weight: 300;
+}
+
+.people-tracks-page .people-tracks li span.badge {
+  vertical-align: top;
+  background-color: #9E8E71;
+}

@@ -36,7 +36,6 @@ class Playlists extends Uploads {
   getModel(queryParams) {
     var defaults =  { 
         dataview:  'playlists',
-        f:         'js',
         limit:     DEFAULT_LIMIT,
         offset:    0,
       };
@@ -101,11 +100,10 @@ class Playlists extends Uploads {
 
   tracksForPlaylist(id) {
     var q = {
-      f: 'js',
       playlist: id
     };
     return this.query(q)
-             .then( serialize( ccmixter.Upload ) )
+             .then( serialize( ccmixter.PlaylistTrack ) )
              .then( tracks => {
                 tracks.forEach( t => {
                   try {

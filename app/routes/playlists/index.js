@@ -1,5 +1,6 @@
 import credits     from '../credits';
 import curators    from './curators';
+import curator     from './curator';
 import index       from './home';
 import browse      from './browse';
 import playlist    from './playlist';
@@ -13,6 +14,7 @@ import edit        from './edit';
 
 module.exports = { 
   browse,
+  curator,
   curators,
   credits,
   edit,

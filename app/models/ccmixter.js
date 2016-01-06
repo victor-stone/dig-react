@@ -511,6 +511,13 @@ class PlaylistCurator extends Model {
   }
 }
 
+class PlaylistTrack extends Upload {
+  constructor() {
+    super(...arguments);
+    this.numPlaylistsBinding = 'upload_num_playlists';
+  }
+}
+
 class Playlist extends Model {
   constructor() {
     super(...arguments);
@@ -558,5 +565,6 @@ module.exports = {
   ACappella, 
   Sample,
   Playlist,
-  PlaylistHead
+  PlaylistHead,
+  PlaylistTrack,
 };

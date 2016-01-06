@@ -1,33 +1,58 @@
 import React              from 'react';
-import Playlists          from '../../stores/playlists';
+import { PlaylistTracks } from '../../stores/playlist';
 import { mergeParams }    from '../../unicorns';
-import { PlaylistWidget } from '../../components/playlists/Browse';
+import qc                 from '../../models/query-configs';
 
 
-import { Header }        from '../../components/People';
+import { Header }      from '../../components/People';
+import { UploadLink }  from '../../components/ActionButtons';
+import { Paging }      from '../../components';
+import { ModelTracker } from '../../mixins';
 
-function curator(props) {
-  var store = props.store;
-  return (        
-    <div className="container-fluid curator-detail-page">
-      <Header model={store.model.curator} />
-    <PlaylistWidget store={store} skipUser />
-    </div>
-  );
-}
+var people = React.createClass({
 
-curator.path = '/people/:userid';
+  mixins: [ ModelTracker ],
 
-curator.title = 'People';
+  stateFromStore: function(store) {
+    return { store };
+  },
 
-curator.store = function(params,queryParams) {
-  var q = mergeParams( { user: params.userid, minitems: '-1' }, queryParams );
-  return Playlists.storeFromQuery(q).then( store => {
-    curator.title = store.model.curator.name;
+  render: function() {
+    var store = this.state.store;
+    return (        
+      <div className="container-fluid people-tracks-page">      
+        <Header model={store.model.artist} />
+        <div className="row">
+          <div className="col-md-2 col-md-offset-2">
+            <Paging store={store} />
+          </div>
+          <div className="col-md-7">
+            <ul className="people-tracks">
+            {store.model.items.map( (t,i) => {
+              return <li key={i}><UploadLink model={t} /><span className="badge">{t.numPlaylists}</span></li>;
+            })}
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
+
+people.path = '/people/:userid';
+
+people.title = 'People';
+
+people.store = function(params,queryParams) {
+  var defaults = mergeParams( {}, qc.playlistTracks, { user: params.userid } );
+  var q = mergeParams( {}, defaults, queryParams );
+  return PlaylistTracks.storeFromQuery(q,defaults).then( store => {
+    people.title = store.model.artist.name;
     return store;
   });
 };
 
-module.exports = curator;
+module.exports = people;
 
 //

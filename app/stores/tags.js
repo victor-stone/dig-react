@@ -28,7 +28,6 @@ class Tags extends Query {
   // return a TagString object
   forCategory(category,pairWith) {
     var q = {   
-      f:         'js', 
       category:  category,
       pair:      pairWith,
       sort:      'name',
@@ -59,7 +58,6 @@ class Tags extends Query {
   // return an array of Tag models
   category(category,pairWith,minCount) {
     var q = {   
-      f:        'js', 
       category: category,
       pair:     pairWith,
       sort:     'name',

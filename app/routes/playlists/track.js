@@ -3,21 +3,19 @@ import Playlists          from '../../stores/playlists';
 import { PlaylistWidget } from '../../components/playlists/Browse';
 
 
-import Glyph             from '../../components/Glyph';
+import { Glyph, People } from '../../components';
 import { ExternalLink }  from '../../components/ActionButtons';
 
 function TrackHeader(props) {
   var upload  = props.store.model.upload;
   var ccmLink = upload.url; // 'http://ccmixter.org/files/' + upload.artist.id + '/' + upload.id;
-  var digLink  = 'http://dig.ccmixter.org/people/' + upload.artist.id;
-  var attr = 'artist: ' + upload.artist.name;
   return (
     <div className="page-header">
         <h1 className="center-text">
             <small><Glyph icon="music" /> {"playlists with "}</small> {'"' + upload.name + '"'}
         </h1>
         <div className="track-headinfo center-text">
-          <ExternalLink href={digLink} className="btn btn-info" text={attr} />
+          <People.Link model={upload.artist} className="btn btn-info"><Glyph icon="user" />{" "}{upload.artist.name}</People.Link>
           {" "}
           <ExternalLink href={ccmLink} className="btn btn-info" text="@ccMixter" />
         </div>

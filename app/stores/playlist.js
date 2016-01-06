@@ -6,10 +6,16 @@ import serialize        from '../models/serialize';
 import env              from '../services/env';
 
 class PlaylistTracks extends Uploads {
- fetch(queryParams) {
-    return this.query(queryParams).then( serialize(ccmixter.Upload) );
+  fetch(queryParams) {
+    return this.query(queryParams).then( serialize(ccmixter.PlaylistTrack) );
   }
 }
+
+PlaylistTracks.storeFromQuery = function(params,defaults) {
+  var pl = new PlaylistTracks(defaults);
+  return pl.getModel(params).then( () => pl );  
+};
+
 
 class Playlist extends Query {
 
@@ -28,7 +34,6 @@ class Playlist extends Query {
   find(id) {
 
     var q = {
-      f: 'js',
       dataview: 'playlist_head',
       ids: id,
     };
@@ -59,6 +64,8 @@ class Playlist extends Query {
               });
   }
 }
+
+Playlist.PlaylistTracks = PlaylistTracks;
 
 Playlist.storeFromQuery = function(id) {
   var pl = new Playlist();

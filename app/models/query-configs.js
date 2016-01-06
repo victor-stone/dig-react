@@ -34,6 +34,14 @@ module.exports = {
     oneof: 'sample,contest_source',
   },
   
+  playlistTracks: {
+    dataview: 'playlist_line',
+    sort: 'num_playlists',
+    ord:  'desc',
+    tags: '-bumper,-site_promo',
+    limit: 10,
+  },
+
   instrumental: {
     reqtags: 'instrumental,-vocals,-male_vocals,-female_vocals',
   },   
