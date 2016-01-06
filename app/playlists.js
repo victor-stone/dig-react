@@ -11,7 +11,7 @@ var rewriteRules = [
 env.set( {
   routes,
   rewriteRules,
-  //bannerTopic: 'playlistsBanner',
+  bannerTopic: 'playlistsBanner',
   supportPlaylist: true,
   supportWavImg: false,
   //rpcHost: 'http://ccm/api/',

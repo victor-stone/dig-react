@@ -56,6 +56,7 @@ Topics.namedTopics = {
   digBanner: 223608,
   pellsBanner: 225005,
   stemsBanner: 225957,
+  playlistsBanner: 226823,
   aboutFLAC: 225798,
 };
 
