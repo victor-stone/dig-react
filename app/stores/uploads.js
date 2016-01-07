@@ -5,6 +5,7 @@ import events      from '../models/events';
 import Tags        from './tags';
 
 import { oassign,
+         hashParams,
          cleanSearchString,
          TagString }   from '../unicorns';
 
@@ -14,6 +15,7 @@ class UploadList extends Query {
     super(...arguments);
     this.model         = {};
     this.defaultParams = defaultParams || {};
+    this.gotCache      = false;
     this._tags         = null;
     this.tagFields     = ['tags', 'reqtags', 'oneof'];
   }
@@ -96,7 +98,7 @@ class UploadList extends Query {
     var user = queryParams.u || queryParams.user;
 
     var hash = {
-      items:  this.fetch(queryParams),
+      items:  this.cachedFetch(queryParams),
       total:  this.count(queryParams),
       artist: user ? this.findUser(user) : null,
     };
@@ -146,6 +148,16 @@ class UploadList extends Query {
 
   promiseHash( hash /*, queryParams */) {
     return hash;
+  }
+
+  cachedFetch(queryParams) {
+    if( !this.gotCache ) {
+      var qp = oassign( {}, queryParams);
+      qp['cache'] = '_' + hashParams(queryParams).hashCode();
+      this.gotCache = true;
+      return this.fetch(qp);
+    }
+    return this.fetch(queryParams);
   }
 
   /* private */

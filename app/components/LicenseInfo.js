@@ -36,7 +36,7 @@ var LicenseInfoPopup = React.createClass({
 
   render: function() {
 
-    var popup = this.state.showModal ? this.genPopup() : null;
+    var popup = this.state.view ? this.genPopup() : null;
     return (
         <span>
           <LicenseInfoLink onShow={this.handleShowModal} />

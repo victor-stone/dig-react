@@ -2,7 +2,8 @@ import Query           from './query';
 import ccmixter        from '../models/ccmixter';
 import serialize       from '../models/serialize';
 import rsvp            from 'rsvp';
-import { TagString }   from '../unicorns';
+import { TagString,
+         hashParams }  from '../unicorns';
 
 const REMIX_CATEGORY_NAMES = ['genre', 'instr', 'mood'];
 
@@ -118,14 +119,8 @@ class Tags extends Query {
     return this.forCategory('genre','remix');
   }
 
-  _makeCacheKey(params) {
-    var keyo = {};
-    Object.keys(params).sort().forEach( k => keyo[k] = params[k] );    
-    return JSON.stringify(keyo);
-  }
-
   _checkCache(params) {
-    var key = this._makeCacheKey(params);
+    var key = hashParams(params);
     return { models: _tagsCache[ key ], key, category: params.category };
   }
 

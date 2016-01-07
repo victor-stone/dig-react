@@ -115,6 +115,20 @@ if( typeof String.prototype.ellipse === 'undefined' ) {
   };
 }
 
+if( typeof String.prototype.hashCode === 'undefined' ) {
+  const HASH_SHIFT = 5;
+  String.prototype.hashCode = function() {
+    var hash = 0, i, chr, len;
+    if (this.length === 0) return hash;
+    for (i = 0, len = this.length; i < len; i++) {
+      chr   = this.charCodeAt(i);
+      hash  = ((hash << HASH_SHIFT) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  };
+}
+
 function decamlize(str) {
   return str.replace(/::/g, '/')
             .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
@@ -177,6 +191,16 @@ var oassign = Object.assign || function (target,...sources)
   
   return target; 
 };
+
+function hashParams(params) {
+  var keys = Object.keys(params);
+  if( !keys.length ) {
+    return '';
+  }
+  var keyo = {};
+  keys.sort().forEach( k => keyo[k] = params[k] );    
+  return JSON.stringify(keyo);
+}
 
 function mergeParams( oldp, ...newPs ) {
   var target = oassign( {}, oldp );
@@ -258,6 +282,7 @@ module.exports = {
   debounce,
   decamlize,
   mergeParams,
+  hashParams,
   oassign,
   pagingStats,
   trim,
