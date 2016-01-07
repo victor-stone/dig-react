@@ -53,6 +53,10 @@ class CCMixter
     return this._call('playlist/delete/' + id, CHECK_STATUS);
   }
 
+  removeTrack(upload,id) {
+    return this._call('playlist/removetrack/' + upload + '/' + id, CHECK_STATUS);
+  }
+
   updateDynamicPlaylist(id,queryParamsString) {
     var q = queryParamsString;
     return this._call('playlist/update/dynamic/' + id + '?' + q, CHECK_STATUS);

@@ -20,20 +20,21 @@ var EditableTracks = React.createClass({
   },
 
   render: function() {
-    var model = this.props.store.model;
-    var store = model.tracks;
-    var isDyn = model.head.isDynamic;
-    var title = isDyn ? 'edit query' : 'edit order';
+    var model   = this.props.store.model;
+    var store   = model.tracks;
+    var isDyn   = model.head.isDynamic;
+    var title   = isDyn ? 'edit query' : 'edit order';
+    var staticOwned = this.state.isOwner && !isDyn;
 
     return (
       <div className="tracks-widget">
-        {this.state.isOwner && !isDyn
+        {staticOwned
           ? this.editControls( { title } )
           : null
         }
         {this.state.editing 
           ? <TrackList store={store} sortable id="tracks" />
-          : <Tracks store={store} />
+          : <Tracks store={store} editing={staticOwned} />
         }
       </div>
     );

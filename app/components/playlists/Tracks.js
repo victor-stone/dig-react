@@ -4,6 +4,26 @@ import AudioService       from '../../services/audio-player';
 import { UploadLink }     from '../ActionButtons';
 import { PlayButton }     from '../AudioPlayer';
 import People             from '../People';
+import Glyph              from  '../Glyph';
+
+import CCMixter         from '../../stores/ccmixter';
+
+var DeleteButton = React.createClass({
+
+  doDelete: function() {
+    var id     = this.props.playlist;
+    var upload = this.props.upload;
+    CCMixter.removeTrack( upload, id ).then( () => {
+      this.props.onDelete();
+    });
+  },
+
+  render: function() {
+    return (
+        <button className="btn btn-danger delete-track-button" onClick={this.doDelete}><Glyph icon="trash" /></button>
+      );
+  }
+});
 
 var Tracks = React.createClass({
 
@@ -19,6 +39,10 @@ var Tracks = React.createClass({
     AudioService.playlist = model.items;
   },
 
+  onTrackDelete: function() {
+    this.props.store.paginate(0);
+  },
+
   render: function() {
     var model    = this.state.model;
     var skipUser = this.props.skipUser;
@@ -27,7 +51,11 @@ var Tracks = React.createClass({
           {model.items.map( t => {
             return(
               <li key={t.id}>
-                <PlayButton className="play-button" onPlay={this.onPlay} model={t} />
+                {this.props.editing
+                  ? <DeleteButton playlist={model.queryParams.playlist} upload={t.id} onDelete={this.onTrackDelete} />
+                  : null
+                }
+                <PlayButton className="play-button" onPlay={this.onPlay} model={t} />                
                 <UploadLink className="track-name" model={t} />
                 {skipUser
                   ? null
