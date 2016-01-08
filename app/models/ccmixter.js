@@ -359,7 +359,9 @@ class User extends UserBasic {
   constructor() {
     super(...arguments);
     this.avatarURLBinding = 'user_avatar_url';
-
+    this.isAdminBinding = 'is_admin';
+    this.isSuperUser = 'is_super';
+    
     this.getUrl = function() {
       if( this.artist_page_url ) {
         return this.artist_page_url + '/profile';
@@ -548,6 +550,9 @@ class PlaylistHead extends Playlist {
     this.subTypeBinding = 'cart_subtype';
     this.descriptionBinding = 'cart_desc_html';
     this.descriptionRawBinding = 'cart_description';
+    this.getIsFeatured = function() {
+      return this.cart_subtype === 'featured';
+    };
   }
 }
 

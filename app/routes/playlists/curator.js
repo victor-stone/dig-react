@@ -21,7 +21,12 @@ curator.path = '/people/:userid/playlists';
 curator.title = 'People';
 
 curator.store = function(params,queryParams) {
-  var q = mergeParams( { user: params.userid, minitems: '-1' }, queryParams );
+  var opts = {
+    user: params.userid, 
+    minitems: '3', 
+    dynamic: 1
+  };
+  var q = mergeParams( opts, queryParams );
   return Playlists.storeFromQuery(q).then( store => {
     curator.title = store.model.curator.name;
     return store;

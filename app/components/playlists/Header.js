@@ -26,7 +26,7 @@ var PlaylistUserMenu = React.createClass({
         <li>
           <CurrentUserMenuHead model={user} loading={loading} />
           <CurrentUserMenu model={user} >
-            <li><Link href={'/people/' + id + '/playlists?minitems=0'}><Glyph fixed icon="music" />{" your playlists"}</Link></li>
+            <li><Link href={'/people/' + id + '/playlists?minitems=0&dynamic=1'}><Glyph fixed icon="music" />{" your playlists"}</Link></li>
             <li><Link href="/new"><Glyph fixed icon="bolt" />{" new dynamic playlist"}</Link></li>
           </CurrentUserMenu>
         </li>

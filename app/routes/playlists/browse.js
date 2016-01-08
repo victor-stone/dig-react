@@ -19,7 +19,7 @@ var browse = React.createClass({
 browse.title = 'Browse Playlists';
 
 browse.store = function(params,queryParams) {
-  var qparams = mergeParams( { }, queryParams );
+  var qparams = mergeParams( { dynamic: 1, minitems: 4 }, queryParams );
   return Playlists.storeFromQuery(qparams);
 };
 

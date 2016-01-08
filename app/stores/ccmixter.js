@@ -16,6 +16,10 @@ class CCMixter
   }
 
   currentUser() {
+    if( global.IS_SERVER_REQUEST ) {
+      return rsvp.resolve( null );
+    }
+
     if( this._currentUser !== NOT_FETCHED ) {
       return rsvp.resolve( this._currentUser );
     }
@@ -53,13 +57,17 @@ class CCMixter
     return this._call('playlist/delete/' + id, CHECK_STATUS);
   }
 
-  removeTrack(upload,id) {
+  removeTrackFromPlaylist(upload,id) {
     return this._call('playlist/removetrack/' + upload + '/' + id, CHECK_STATUS);
   }
 
   updateDynamicPlaylist(id,queryParamsString) {
     var q = queryParamsString;
     return this._call('playlist/update/dynamic/' + id + '?' + q, CHECK_STATUS);
+  }
+
+  toggleFeaturedPlaylist(id) {
+    return this._call('playlist/feature/' + id, CHECK_STATUS);
   }
 
   updatePlaylist(id,fields) {

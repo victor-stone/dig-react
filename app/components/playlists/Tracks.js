@@ -13,7 +13,7 @@ var DeleteButton = React.createClass({
   doDelete: function() {
     var id     = this.props.playlist;
     var upload = this.props.upload;
-    CCMixter.removeTrack( upload, id ).then( () => {
+    CCMixter.removeTrackFromPlaylist( upload, id ).then( () => {
       this.props.onDelete();
     });
   },

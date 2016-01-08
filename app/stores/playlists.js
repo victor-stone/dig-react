@@ -47,8 +47,10 @@ class Playlists extends Uploads {
         defaults.minitems = DEFAULT_UPLOAD_MINITEMS;
       } else if( queryParams.user ) {
         defaults.minitems = DEFAULT_USER_MINITEMS;
+        defaults.dynamic  = 1;
       } else if( hasSearch ) {
         defaults.minitems = DEFAULT_SEARCH_MINITEMS;
+        defaults.dynamic  = 1;
       } else {
         defaults.minitems = DEFAULT_MINITEMS;
       }
