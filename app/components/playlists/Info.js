@@ -88,10 +88,10 @@ var Info = React.createClass({
 
     return (
         <div className="playlist-info hidden-xs hidden-sm">
-          <Curator store={store} />
-          <ActionButtonBar store={store} />
-          <EditableTags store={store} />
           <EditableDescription store={store} />
+          <ActionButtonBar store={store} />
+          <Curator store={store} />
+          <EditableTags store={store} />
         </div>
       );
   }

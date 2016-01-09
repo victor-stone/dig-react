@@ -27,7 +27,9 @@ class Playlist extends Query {
   get uploads() {
     if( !this._uploads ) {
       this._uploads = new PlaylistTracks();
+      this._uploads.gotCache = true;
     }
+    
     return this._uploads;
   }
 

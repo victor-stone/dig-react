@@ -156,10 +156,9 @@
 }
 
 .playlist-detail-page .playlist-description a {
-  color: brown;
-  font-weight: 400;
-  text-shadow: 0 0 transparent;
-  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  text-decoration: underline;
 }
 
 .playlist-detail-page .playlist-description img {

@@ -55,7 +55,7 @@ module.exports = {
   }, 
 
   alltime: {
-    digrank: '1',
+    digrank: '0',
   },
 
   magicSort: {
