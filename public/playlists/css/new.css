@@ -112,11 +112,16 @@
   border-radius: 8px;
 }
 
-.query-options-elements select#sort,
+.query-options-elements select#typelist,
+.query-options-elements select#sort {
+  margin: 0 auto;
+  width: 130px;  
+}
 .query-options-elements select#lic {
-  width: 80%;
+  width: 180px;
   margin: 0 auto;
 }
+
 
 .query-options-elements .lic-help {
   display: none;
