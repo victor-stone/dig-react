@@ -16,7 +16,6 @@ PlaylistTracks.storeFromQuery = function(params,defaults) {
   return pl.getModel(params).then( () => pl );  
 };
 
-
 class Playlist extends Query {
 
   constructor() {
@@ -29,7 +28,7 @@ class Playlist extends Query {
       this._uploads = new PlaylistTracks();
       this._uploads.gotCache = true;
     }
-    
+
     return this._uploads;
   }
 
