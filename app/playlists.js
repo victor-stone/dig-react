@@ -2,10 +2,7 @@ import React  from 'react';
 import env    from './services/env';
 
 var rewriteRules = [
-/*
-  { regex: /^\/files\/([^\/]+)\/([^\/]+)/, now: '/playlists?ids=$2' },
-  { regex: /^\/people\/([^\/]+)\/.*$/,     now: '/people/$1' },
-*/
+  { regex: /^\/keep-ccmixter-open-and-free/, now: '/news/206102' },
 ];
 
 env.set( {

@@ -1,6 +1,7 @@
 import licenses from '../licenses';
 import nowplaying from '../nowplaying';
 import credits from '../credits';
+import news    from '../news';
 
 import ccplus from './ccplus';
 import dig from './tag-search';
@@ -26,6 +27,7 @@ module.exports = {
     index,
     latest,
     licenses,
+    news,
     nowplaying,
     people,
     search,

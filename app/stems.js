@@ -11,6 +11,7 @@ import {
 var rewriteRules = [
   { regex: /^\/files\/([^\/]+)\/([^\/]+)/, now: '/stems?ids=$2' },
   { regex: /^\/people\/([^\/]+)\/.*$/,     now: '/people/$1' },
+  { regex: /^\/keep-ccmixter-open-and-free/, now: '/news/206102' },
 ];
 
 env.set( {

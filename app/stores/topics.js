@@ -20,7 +20,7 @@ class Topics extends Query {
     id = Number(id) || Topics.namedTopics[id];
     
     var args = {
-      dataview: 'topics',
+      dataview: 'topics_dig',
       ids: id
     };
     return this.queryOne(args)

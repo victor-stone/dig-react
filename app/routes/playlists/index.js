@@ -1,4 +1,6 @@
 import credits     from '../credits';
+import news        from '../news';
+
 import curators    from './curators';
 import curator     from './curator';
 import index       from './home';
@@ -21,6 +23,7 @@ module.exports = {
   featured,
   index,
   newPlaylist,
+  news,
   people,
   playlist,
   search,

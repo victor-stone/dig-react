@@ -1,5 +1,6 @@
-import credits from '../credits';
+import credits  from '../credits';
 import licenses from '../licenses';
+import news     from '../news';
 
 import index  from './home';
 import pells  from './browse';
@@ -10,6 +11,7 @@ module.exports = {
   credits,
   index,
   licenses,
+  news,
   pells,
   people,
   search,
