@@ -55,7 +55,7 @@ const Header = React.createClass({
               </div>      
               <ul className="nav navbar-nav navbar-right">
                 <li><a href="#"><LoadingGlyph /></a></li>    
-                <li><a href="http://ccmixter.org/keep-ccmixter-open-and-free"><Glyph icon="heart" />{" donate"}</a></li>
+                <li><a href="/keep-ccmixter-open-and-free"><Glyph icon="heart" />{" donate"}</a></li>
                 <li>
                   <Link href="/featured">{"featured"}</Link>
                 </li>
