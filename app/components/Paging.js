@@ -89,7 +89,7 @@ const Paging = React.createClass({
   },
 
   onComponentUpdate: function() {
-    this.handleResize();
+    this.recalcBoundries();
   },
 
   stateFromStore: function(store) {

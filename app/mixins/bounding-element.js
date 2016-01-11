@@ -51,6 +51,9 @@ var BoundingMixin = {
     }
   },
 
+  recalcBoundries: function() {
+    this.onWinScroll();
+  }
 };
 
 module.exports = BoundingMixin;
