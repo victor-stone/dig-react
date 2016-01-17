@@ -1,4 +1,5 @@
 import querystring from 'querystring';
+import rsvp        from 'rsvp';
 import Eventer     from './eventer';
 import ajax        from './ajax';
 import events      from '../models/events';
@@ -26,13 +27,9 @@ class QueryAjaxAdapter extends Eventer
       }
     }
 
-  _query(qString,isSingleton) {
+  _query(qString,queryHost) {
   
-    if( !this.queryHost ) {
-      this.queryHost = env.queryHost || 'http://ccmixter.org/api/query?';
-    }
-    
-    var url = this.queryHost + qString;
+    var url = queryHost + qString;
 
     var opts = {
       url:      url,
@@ -42,9 +39,6 @@ class QueryAjaxAdapter extends Eventer
     };
 
     function _success(r) {
-      if( isSingleton ) {
-        r = r[0];
-      }
       return r;
     }
 
@@ -59,11 +53,28 @@ class QueryAjaxAdapter extends Eventer
   }
 
   query(params) {
-    return this._query(querystring.stringify(params),false);
+    if( !this.queryHost ) {
+      this.queryHost = env.queryHost || 'http://ccmixter.org/api/query?';
+    }
+    
+    return this._query(querystring.stringify(params),this.queryHost);
   }
   
-  queryOne    (params) {
-    return this._query(querystring.stringify(params),true);
+  queryOne(params) {
+    return this.query(params).then( r => r[0] );
+  }
+
+  hash( obj ) {
+    if( !this.queriesHost ) {
+      this.queriesHost = env.queriesHost || 'http://ccmixter.org/api/queries?';
+    }
+    var strs = [];
+    Object.keys(obj).forEach( k => strs.push( k + '=' + encodeURIComponent(querystring.stringify(obj[k]))) );
+    if( strs.length === 0 ) {
+      return rsvp.resolve(obj);
+    }
+    var qstring = strs.join('&');
+    return this._query(qstring,this.queriesHost).then( r => r[0] );
   }
 }
 

@@ -1,5 +1,5 @@
 import querystring from 'querystring';
-import rsvp        from 'rsvp';
+//import rsvp        from 'rsvp';
 import Query       from './query';
 import events      from '../models/events';
 import Tags        from './tags';
@@ -98,9 +98,9 @@ class UploadList extends Query {
     var user = queryParams.u || queryParams.user;
 
     var hash = {
-      items:  this.cachedFetch(queryParams),
-      total:  this.count(queryParams),
-      artist: user ? this.findUser(user) : null,
+      items:  this.cachedFetch(queryParams,'items'),
+      total:  this.count(queryParams,'total'),
+      artist: user ? this.findUser(user,'artist') : null,
     };
 
     if( hasSearch) {
@@ -114,8 +114,8 @@ class UploadList extends Query {
                     limit: 40,
                     remixmin: 1,
                     searchp: text
-                  });
-        hash.genres = this.tags.searchTags( text.split(/\s/).filter( t => t.length > 2 ) );
+                  },'artists');
+        hash.genres = this.tags.searchTags( text.split(/\s/).filter( t => t.length > 2 ), 'genres' );
       }
     }
 
@@ -123,7 +123,7 @@ class UploadList extends Query {
     
     this.error = null;
 
-    return rsvp.hash(hash).then( model => {
+    return this.flushDefers(hash).then( model => {
       this.model = model;
       model.queryParams = oassign( {}, queryParams );
       this.emit( events.MODEL_UPDATED, model );
@@ -150,14 +150,14 @@ class UploadList extends Query {
     return hash;
   }
 
-  cachedFetch(queryParams) {
+  cachedFetch(queryParams, deferName) {
     if( !this.gotCache ) {
       var qp = oassign( {}, queryParams);
       qp['cache'] = '_' + hashParams(queryParams).hashCode();
       this.gotCache = true;
-      return this.fetch(qp);
+      queryParams = qp;
     }
-    return this.fetch(queryParams);
+    return this.fetch(queryParams,deferName);
   }
 
   /* private */
@@ -203,8 +203,8 @@ class UploadList extends Query {
     return this.applyHardParams(qpc);
   }
 
-  _applySoftParams(queryParams) {
-    return this.fetch(queryParams).then( items => {
+  _applySoftParams(queryParams,deferName) {
+    return this.fetch(queryParams,deferName).then( items => {
       this.model.items = items;
       this.emit( events.MODEL_UPDATED );
       return this.model;

@@ -54,6 +54,7 @@
     "nouislider": "leongersen/noUiSlider",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
+    "react-tween-state": "^0.1.4",
     "route-recognizer": "^0.1.9",
     "rsvp": "^3.1.0",
     "serve-static": "^1.10.0"

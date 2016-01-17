@@ -14,12 +14,15 @@ var rewriteRules = [
   { regex: /^\/keep-ccmixter-open-and-free/, now: '/news/206102' },
 ];
 
-env.set( {
+env.set({
   routes,
   rewriteRules,
   bannerTopic: 'stemsBanner',
   supportPlaylist: false,
   supportWavImg: true,
+//  rpcHost: 'http://ccm/api/',
+//  queryHost: 'http://ccm/api/query?',
+//  queriesHost: 'http://ccm/api/queries?',
 });
 
 module.exports = function(props) { return <App {...props} header={Header} footer={Footer} />; };

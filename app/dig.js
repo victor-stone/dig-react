@@ -9,14 +9,14 @@ import {
         } from './components/dig';
 
 var rewriteRules = [
-  { regex: new RegExp(/^\/free_music/),                  now: '/free' },
-  { regex: new RegExp(/^\/music_for_film_and_video/),    now: '/film' },
-  { regex: new RegExp(/^\/video/),                       now: '/film' },
-  { regex: new RegExp(/^\/podcast_music/),               now: '/free'},
-  { regex: new RegExp(/^\/hot/),                         now: '/edpicks'},
-  { regex: new RegExp(/^\/top/),                         now: '/edpicks'},
-  { regex: new RegExp(/^\/dig\?u=([0-9a-zA-Z]+)/),       now: '/people/$1'},
-  { regex: new RegExp(/^\/keep-ccmixter-open-and-free/), now: '/news/206102' },
+  { regex: /^\/free_music/,                  now: '/free' },
+  { regex: /^\/music_for_film_and_video/,    now: '/film' },
+  { regex: /^\/video/,                       now: '/film' },
+  { regex: /^\/podcast_music/,               now: '/free'},
+  { regex: /^\/hot/,                         now: '/edpicks'},
+  { regex: /^\/top/,                         now: '/edpicks'},
+  { regex: /^\/dig\?u=([0-9a-zA-Z]+)/,       now: '/people/$1'},
+  { regex: /^\/keep-ccmixter-open-and-free/, now: '/news/206102' },
 ];
 
 env.set({
@@ -24,7 +24,11 @@ env.set({
   rewriteRules,
   supportPlaylist: true,
   supportWavImg: false,
-  bannerTopic: 'digBanner'
+  bannerTopic: 'digBanner',
+//  rpcHost: 'http://ccm/api/',
+//  queryHost: 'http://ccm/api/query?',
+//  queriesHost: 'http://ccm/api/queries?',
+
 });
 
 

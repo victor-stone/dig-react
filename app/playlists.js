@@ -11,8 +11,9 @@ env.set( {
   bannerTopic: 'playlistsBanner',
   supportPlaylist: true,
   supportWavImg: false,
-  //rpcHost: 'http://ccm/api/',
-  //queryHost: 'http://ccm/api/query?',
+ // rpcHost: 'http://ccm/api/',
+ // queryHost: 'http://ccm/api/query?',
+ // queriesHost: 'http://ccm/api/queries?',
 });
 
 import App    from './app';

@@ -5,8 +5,8 @@ import serialize   from '../models/serialize';
 
 class Remixes extends Uploads {
 
-  fetch(queryParams) {
-    return this.query(queryParams).then( serialize(ccmixter.Upload) );
+  fetch(queryParams,deferName) {
+    return this.query(queryParams,deferName).then( serialize(ccmixter.Upload) );
   }
 
 }

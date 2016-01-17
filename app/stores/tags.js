@@ -27,7 +27,7 @@ class Tags extends Query {
   }
 
   // return a TagString object
-  forCategory(category,pairWith) {
+  forCategory(category,pairWith,deferName) {
     var q = {   
       category:  category,
       pair:      pairWith,
@@ -39,7 +39,7 @@ class Tags extends Query {
     if( cached.models ) {
       return rsvp.resolve(cached.models);
     }
-    return this.query(q).then( r =>  {
+    return this.query(q,deferName).then( r =>  {
       var results = TagString.create( { source: r.map( t => t.tags_tag ) } );
       this._putCache(cached.key,results);
       return results;
@@ -47,8 +47,9 @@ class Tags extends Query {
   }
   
   forCategories(categories,pairWith) {
-    var arr = categories.map( c => this.forCategory(c,pairWith ) );
-    return rsvp.all( arr ).then( arr => {
+    var hash = {};
+    categories.forEach( c => { hash[c] = this.forCategory(c,pairWith,c); } );
+    return this.flushDefers(hash).then( arr => {
       var ts = arr[0];
       for( var i = 1; i < arr.length; i++ ) {
         ts.add(arr[i]);
@@ -57,7 +58,7 @@ class Tags extends Query {
     });
   }
   // return an array of Tag models
-  category(category,pairWith,minCount) {
+  category(category,pairWith,minCount,deferName) {
     var q = {   
       category: category,
       pair:     pairWith,
@@ -70,7 +71,7 @@ class Tags extends Query {
     if( cached.models ) {
       return rsvp.resolve(cached.models);
     }
-    return this.query(q)
+    return this.query(q,deferName)
             .then( serialize( ccmixter.Tag ) )
             .then( models => {
               this._putCache(cached.key,models);
@@ -83,23 +84,23 @@ class Tags extends Query {
   // serializing the json through the Tag models
   categories(categoryNames,pairWith,minCount) {
     var results = { };
-    categoryNames.forEach( k => { results[k] = this.category( k, pairWith, minCount ); } );
-    return rsvp.hash(results);
+    categoryNames.forEach( k => { results[k] = this.category( k, pairWith, minCount, k ); } );
+    return this.flushDefers(results);
   }
   
-  searchTags(tags) {
+  searchTags(tags,deferName) {
     var t = (new TagString(tags)).toArray();
     if( t.length === 0 ) {
       return rsvp.resolve([]);
     }
     var r = new RegExp('(' + t.join('|') + ')');
-    return this.remixCategories().then( cats => {
+    return this.remixCategories(deferName).then( cats => {
       return this._contactCats(cats).filter( t => t.id.match(r) );
     });
   }
 
-  sampleCategories() {
-    return this.categories( REMIX_CATEGORY_NAMES, 'sample', MIN_SAMPLE_TAG_PAIR )
+  sampleCategories(deferName) {
+    return this.categories( REMIX_CATEGORY_NAMES, 'sample', MIN_SAMPLE_TAG_PAIR , deferName )
       .then( cats => {
           var allTags = this._contactCats(cats);
           allTags.sort( function(a,b) { return a.id > b.id ? SORT_UP : SORT_DOWN; } );
@@ -107,16 +108,16 @@ class Tags extends Query {
         });
   }
 
-  remixCategories() {
-    return this.categories( REMIX_CATEGORY_NAMES, 'remix', MIN_REMIX_TAG_PAIR );
+  remixCategories(deferName) {
+    return this.categories( REMIX_CATEGORY_NAMES, 'remix', MIN_REMIX_TAG_PAIR, deferName );
   }
 
   remixCategoryNames() {
     return REMIX_CATEGORY_NAMES;
   }
 
-  remixGenres() {
-    return this.forCategory('genre','remix');
+  remixGenres(deferName) {
+    return this.forCategory('genre','remix',deferName);
   }
 
   _checkCache(params) {

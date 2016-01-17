@@ -6,8 +6,8 @@ import serialize        from '../models/serialize';
 import env              from '../services/env';
 
 class PlaylistTracks extends Uploads {
-  fetch(queryParams) {
-    return this.query(queryParams).then( serialize(ccmixter.PlaylistTrack) );
+  fetch(queryParams,deferName) {
+    return this.query(queryParams,deferName).then( serialize(ccmixter.PlaylistTrack) );
   }
 }
 

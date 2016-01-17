@@ -4,9 +4,9 @@ import serialize        from '../models/serialize';
 
 class Samples extends Uploads {   
 
-  fetch(queryParams) {
+  fetch(queryParams,deferName) {
     queryParams.dataview = 'default'; // links_by doesn't have bpm
-    return this.query(queryParams).then( serialize( ccmixter.Sample ) );
+    return this.query(queryParams,deferName).then( serialize( ccmixter.Sample ) );
   }
 }
 

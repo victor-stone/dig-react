@@ -2,7 +2,7 @@ import Query            from './query';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import events           from '../models/events';
-import rsvp             from 'rsvp';
+//import rsvp             from 'rsvp';
 
 function _fixFeaturing(model) {
   if( !model.upload.featuring && model.sources && model.upload.setFeatureSources ) {
@@ -29,18 +29,18 @@ class Upload extends Query {
     var model = null;
 
     var queries = {
-      upload:     this.info(id),
-      remixes:    flags & Upload.REMIXES    ? this.remixes(id)    : [],
-      trackbacks: flags & Upload.TRACKBACKS ? this.trackbacks(id) : [],
-      sources:    flags & Upload.SOURCES    ? this.sources(id)    : [],
-      artist:     userid ? this.findUser(userid) : null,
+      upload:     this.info(id,'upload'),
+      remixes:    flags & Upload.REMIXES    ? this.remixes(id,'remixes')    : [],
+      trackbacks: flags & Upload.TRACKBACKS ? this.trackbacks(id,'trackbacks') : [],
+      sources:    flags & Upload.SOURCES    ? this.sources(id,'sources')    : [],
+      artist:     userid ? this.findUser(userid,'artist') : null,
     };
 
     this.error = null;
 
     var _this = this;
 
-    return this.transaction(rsvp.hash(queries)
+    return this.flushDefers(queries)
 
       .then( record => {
         
@@ -76,12 +76,10 @@ class Upload extends Query {
         } else { 
           throw e;
         }
-      })
-
-    );
+      });
   }
   
-  trackbacks(forId) {
+  trackbacks(forId,deferName) {
     var trackbacksQ = {
       trackbacksof: forId,
       dataview: 'trackbacks',
@@ -89,34 +87,34 @@ class Upload extends Query {
       ord: 'desc',
       limit: Upload.MAX_TRACKBACK_FETCH
     };
-    return this.query(trackbacksQ).then( serialize( ccmixter.Trackback ) );
+    return this.query(trackbacksQ,deferName).then( serialize( ccmixter.Trackback ) );
   }
   
-  remixes(forId) {
+  remixes(forId,deferName) {
     var remixesQ = {
       remixes: forId,
       dataview: 'links_u',
       sort: 'date',
       ord: 'desc'
     };
-    return this.query(remixesQ).then( serialize( ccmixter.Remix ) );
+    return this.query(remixesQ,deferName).then( serialize( ccmixter.Remix ) );
   }
   
-  sources(forId) {
+  sources(forId,deferName) {
     var sourcesQ = {
       sources: forId,
       dataview: 'links_u',
       datasource: 'uploads'
     };
-    return this.query(sourcesQ).then( serialize( ccmixter.Source ) );
+    return this.query(sourcesQ,deferName).then( serialize( ccmixter.Source ) );
   }
   
-  info(id) {
+  info(id,deferName) {
     var uploadQ = {
       ids: id,
       dataview: 'default'
     };    
-    return this.queryOne(uploadQ).then( serialize( ccmixter.Detail ) );
+    return this.queryOne(uploadQ,deferName).then( serialize( ccmixter.Detail ) );
   }
   
 }

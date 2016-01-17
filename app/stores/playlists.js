@@ -2,7 +2,7 @@ import Uploads     from './uploads';
 import Upload      from './upload';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
-import rsvp        from 'rsvp';
+//import rsvp        from 'rsvp';
 import events      from '../models/events';
 import env         from '../services/env';
 
@@ -63,14 +63,14 @@ class Playlists extends Uploads {
     }
 
     var model = {
-      items:  this.fetch(q),
-      total:  this.count(q),
-      upload: q.upload ? this.uploadStore.info(q.upload) : null,
-      curator: q.user ? this.findUser(q.user) : null,
-      curators: hasSearch ? this.searchUsers( { limit: 40, searchp: q.search, minpl: 1 } ) : null
+      items:  this.fetch(q,'items'),
+      total:  this.count(q,'total'),
+      upload: q.upload ? this.uploadStore.info(q.upload,'upload') : null,
+      curator: q.user ? this.findUser(q.user,'curator') : null,
+      curators: hasSearch ? this.searchUsers( { limit: 40, searchp: q.search, minpl: 1 }, 'curators' ) : null
     };
 
-    return rsvp.hash(model).then( model => {
+    return this.flushDefers(model).then( model => {
       this.model = model;
       this.model.queryParams = oassign( {}, q );
       this.emit( events.MODEL_UPDATED, model );
@@ -78,13 +78,13 @@ class Playlists extends Uploads {
     });
   }
 
-  fetch(queryParams) {
-    return this.query(queryParams)
+  fetch(queryParams,deferName) {
+    return this.query(queryParams,deferName)
               .then( serialize( ccmixter.Playlist ) )
               .then( models => this._filterGenreTags(models) );
   }
 
-  count(queryParams) {
+  count(queryParams,deferName) {
     var q = {
       f: 'count',
       dataview: 'playlists',
@@ -97,14 +97,14 @@ class Playlists extends Uploads {
       }
     });
 
-    return this.queryOne(q);
+    return this.queryOne(q,deferName);
   }
 
-  tracksForPlaylist(id) {
+  tracksForPlaylist(id,deferName) {
     var q = {
       playlist: id
     };
-    return this.query(q)
+    return this.query(q,deferName)
              .then( serialize( ccmixter.PlaylistTrack ) )
              .then( tracks => {
                 tracks.forEach( t => {

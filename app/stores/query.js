@@ -1,3 +1,5 @@
+import rsvp             from 'rsvp';
+
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import Eventer          from '../services/eventer';
@@ -10,46 +12,48 @@ class Query extends Eventer
   constructor() {
     super(...arguments);
     this.adapter = queryAjaxAdapter;
+    this.defers = {};
   }
 
-  query(params) {
+  query(params, deferName) {
+    if( deferName ) {
+      var defer = rsvp.defer();
+      defer.params = this._clean(params);
+      this.defers[deferName] = defer;
+      return defer.promise;
+
+    }
     return this.adapter.query(this._clean(params));
   }
   
-  queryOne(params) {
-    return this.adapter.queryOne(this._clean(params));
+  queryOne(params,deferName) {
+    return this.query(params,deferName).then( r => r[0] );
   }
   
-  findUser(id) {
-    var qparams = {
-      u: id,
-      dataview: 'user_basic',
-    };
-    return this.queryOne(qparams).then( serialize( ccmixter.User ) );
+  flushDefers(hash) {
+    var h = {};
+    var keys = Object.keys(hash);
+    keys.forEach( k => {
+      var promise = hash[k];
+      if( promise && k in this.defers ) {
+        h[k] = this.defers[k].params;
+      }
+    });
+    return this.adapter.hash(h).then( results => {      
+      keys.forEach( k => {
+        var promise = hash[k];
+        if( promise && k in this.defers ) {
+          this.defers[k].resolve(results[k]);
+          delete this.defers[k];
+        }
+      });
+      return rsvp.hash(hash);
+    });
   }
 
-  findUsers(queryParams) {
-    var qp = oassign( {
-      t: 'user_list',
-    }, queryParams );
-    return this.query(qp).then( serialize( ccmixter.User ) );
-  }
-
-  // search the entire user record
-  searchUsers(params) {
-    params.dataview ='user_basic';
-    return this.query(params).then( serialize( ccmixter.UserBasic ) );
-  }
-
-  // only look at the beginning of the user_name or user_real_name  
-  lookUpUsers(str, queryParams) {
-    var q = mergeParams( { lookup: str }, queryParams || {} );
-    return this.searchUsers( q );
-  }
-  
-  count(qparams) {
+  count(qparams,deferName) {
     var countParams = this.countParams(qparams);
-    return this.queryOne(countParams);
+    return this.queryOne(countParams,deferName);
   }
 
   countParams(qparams) {
@@ -80,6 +84,36 @@ class Query extends Eventer
     }
     return t;
   }
+
+  // yea, these should definitely be somewhere else
+  findUser(id,deferName) {
+    var qparams = {
+      u: id,
+      dataview: 'user_basic',
+    };
+    return this.queryOne(qparams,deferName).then( serialize( ccmixter.User ) );
+  }
+
+  findUsers(queryParams,deferName) {
+    var qp = oassign( {
+      t: 'user_list',
+    }, queryParams );
+    return this.query(qp,deferName).then( serialize( ccmixter.User ) );
+  }
+
+  // search the entire user record
+  searchUsers(params,deferName) {
+    params.dataview ='user_basic';
+    return this.query(params,deferName).then( serialize( ccmixter.UserBasic ) );
+  }
+
+  // only look at the beginning of the user_name or user_real_name  
+  lookUpUsers(str, queryParams,deferName) {
+    var q = mergeParams( { lookup: str }, queryParams || {} );
+    return this.searchUsers( q, deferName );
+  }
+  
+
 }
 
 module.exports = Query;

@@ -44,11 +44,11 @@ class TotalsCache {
 
     PELL_FILTERS.forEach( f => {
       p.reqtags = reqtags.add(f).toString();
-      counts[f] = store.count(p);
+      counts[f] = store.count(p,f);
       reqtags.remove(f);
     });
 
-    return rsvp.hash(counts)
+    return store.flushDefers(counts)
             .then( r => {
               if( this._keys_count++ > MAX_CACHE_KEYS ) {
                 this._keys_count = 0;
@@ -87,9 +87,9 @@ class ACappellas extends Uploads {
     return super.getModel(queryParams);
   }
 
-  fetch(queryParams) {
+  fetch(queryParams,deferName) {
     queryParams.dataview = 'default'; // links_by doesn't have bpm
-    return this.query(queryParams).then( serialize( ccmixter.ACappella ) );
+    return this.query(queryParams,deferName).then( serialize( ccmixter.ACappella ) );
   }
 
   promiseHash( hash, queryParams ) {
