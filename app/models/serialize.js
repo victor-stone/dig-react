@@ -120,9 +120,11 @@ function _serialize(jsonData,model,bindParent) {
 
         if( propName2 !== null ) {
           var s = propName2[1];
-          propName2 = s[0].toLowerCase() + s.substr(1);
+          if( typeof s === 'string' ) {
+            propName2 = s[0].toLowerCase() + s.substr(1);
 
-          target[propName2] = model[k](target);
+            target[propName2] = model[k](target);
+          }
         }
     }
   }

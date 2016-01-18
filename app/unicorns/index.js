@@ -115,6 +115,21 @@ if( typeof String.prototype.ellipse === 'undefined' ) {
   };
 }
 
+/*
+var _oldLowerCase = String.prototype.toLowerCase;
+var __env;
+String.prototype.toLowerCase = function() {
+  if( typeof this !== 'string' ) {
+    throw new Error('bogus toLowerCase');
+  }
+  if( !__env ) {
+    __env = require('../services/env');
+  }
+  __env.log('lowering: ' + this);
+  return _oldLowerCase.apply(this);
+};
+*/
+
 if( typeof String.prototype.hashCode === 'undefined' ) {
   const HASH_SHIFT = 5;
   String.prototype.hashCode = function() {
@@ -130,6 +145,9 @@ if( typeof String.prototype.hashCode === 'undefined' ) {
 }
 
 function decamlize(str) {
+  if( !str ) {
+    return '';
+  }
   return str.replace(/::/g, '/')
             .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
             .replace(/([a-z\d])([A-Z])/g, '$1_$2')
@@ -146,6 +164,9 @@ function underscore(str) {
 }
 
 function camelize(str) {
+  if( !str ) {
+    return '';
+  }
   return str.toLowerCase()
             .split('_')
             .map( s => s.charAt(0).toUpperCase() + s.substr(1) )
