@@ -29,6 +29,9 @@ const Header = React.createClass({
               <ul className="nav navbar-nav navbar-right">
                 <li><Link href="#"><LoadingGlyph /></Link></li>
                 <li>
+                  <Link href="/tree">{"tree"}</Link>
+                </li>
+                <li>
                   <Link href="/licenses">{"licenses"}</Link>
                 </li>
                 <li>

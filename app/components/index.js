@@ -22,6 +22,7 @@ import Modal from './Modal';
 import NavbarHeader from './NavbarHeader';
 import PageHeader from './PageHeader';
 import Paging from './Paging';
+import PanelSlider from './PanelSlider';
 import pells from './pells';
 import People from './People';
 import playlists from './playlists';
@@ -63,6 +64,7 @@ module.exports = {
     NavbarHeader,
     PageHeader,
     Paging,
+    PanelSlider,
     pells,
     People,
     playlists,

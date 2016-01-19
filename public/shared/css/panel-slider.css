@@ -1,0 +1,21 @@
+/* panel-slider */
+
+.slider-col,
+.slider-col > .slideable {
+  height: 120px;
+}
+
+.slider-col > .slideable {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.slider-group-1 {
+  z-index: 4;
+}
+
+.slider-group-2 {
+  display: none;
+  z-index: 2;
+}
+
