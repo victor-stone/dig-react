@@ -33,11 +33,17 @@ function bundleFiles(arr,destination,sortpri,sep) {
   return fopen(destination, 'w')
     .then( function(fileDescriptor) {
         fd = fileDescriptor;
+        if( !fd ) {
+          throw new Error('bad fileDescriptor on open');
+        }
         var hash = {};
         arr.forEach( n => hash[n] = fread(n,'utf8') );
         return rsvp.hash(hash);
       })
     .then( function(hash) {
+        if( !fd ) {
+          throw new Error('bad fileDescriptor on hash read');
+        }
         var data = Object.keys(hash)
                          .sort( (a,b) => a.match(sortpri) !== null ? -1 : 1 )
                          .map( k => hash[k] )

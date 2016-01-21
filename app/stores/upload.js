@@ -59,6 +59,8 @@ class Upload extends Query {
         
         this.model = model;
 
+        this.emit( events.MODEL_UPDATED, model );
+        
         return model;
 
       }).catch( e => {

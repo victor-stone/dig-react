@@ -27,6 +27,7 @@ import pells from './pells';
 import People from './People';
 import playlists from './playlists';
 import QueryOptions from './QueryOptions';
+import RemixTree from './RemixTree';
 import SearchBox from './SearchBox';
 import SearchHeader from './SearchHeader';
 import SharePopup from './SharePopup';
@@ -69,6 +70,7 @@ module.exports = {
     People,
     playlists,
     QueryOptions,
+    RemixTree,
     SearchBox,
     SearchHeader,
     SharePopup,

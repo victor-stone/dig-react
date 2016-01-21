@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* eslint no-console:0 */
-process.env.NODE_DEBUG = fs;
+process.env.NODE_DEBUG = 'fs';
 var clog = console.log;
 
 var fs      = require('fs');

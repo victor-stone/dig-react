@@ -1,65 +1,17 @@
-/* globals $ */
+/* xglobals $ */
 import React      from 'react';
-import tweenState from 'react-tween-state';
-import env        from '../services/env';
+//import rsvp       from 'rsvp';
+//import tweenState from 'react-tween-state';
 
-import Glyph      from './Glyph';
+var PanelSlider = React.createClass({
 
-env.assert(tweenState,`no tweenState`);
-env.assert(tweenState.Mixin,`no tweenState`);
-
-function translateXStyle(left, width) {
-  return {
-    transform: 'translateZ(0) translateX(' + left + 'px)',
-    WebkitTransform: 'translateZ(0) translateX(' + left + 'px)',
-    width: width
-  };
-}
-
-var Slider = React.createClass({
-  mixins: [tweenState.Mixin],
-  
-  getInitialState() {
-    return {
-      leftA: 0,
-      widthA: 0,
-      };
-  },
-   componentDidMount() {
-    this._doState();
-  },
-
-  _doState() {
-    var w = $('.col-xs-4').outerWidth(true);
-    this.setState( { widthA: w, w: w }/*, function() {
-      console.log('set state');
-    }*/);
-  },
-
-  doSlide() {
-    var w = $('.col-xs-4').outerWidth(true);
-    this.tweenState('leftA', {
-      easing: tweenState.easingTypes.easeInOutQuad,
-      stackBehavior: tweenState.stackBehavior.ADDITIVE,
-      duration: 1000,
-      endValue: this.state.leftA === 0 ? w : 0,
-    });
-    this.tweenState('widthA', {
-      easing: tweenState.easingTypes.easeInOutQuad,
-      stackBehavior: tweenState.stackBehavior.ADDITIVE,
-      duration: 1000,
-      endValue: this.state.widthA === 0 ? w : 0,
-    });
-  },
-  
   render() {
-    var leftStyle = translateXStyle( this.getTweeningValue('leftA'),this.getTweeningValue('widthA'));
-    
+
     var children = React.Children.map( this.props.children, child => {
       return (
           <div className="col-xs-4 slider-col">
-            <div className="slideable slider-group-1" style={leftStyle}>
-              {child}
+            <div className="slideable slider-group-1" >
+              {React.cloneElement(child,{ transition: this.props.transition })}
             </div>
           </div>
         );
@@ -69,64 +21,102 @@ var Slider = React.createClass({
       <div className="row slider-row">
       {children}
       </div>
-      <div className="row">
-        <div className="col-md-6 offset-md-5">
-          <button className="btn btn-success" onClick={this.doSlide}>{"slide"}</button>
-        </div>
+    </div>);
+  }
+});
+
+
+/*
+function translateXStyle(left, width) {
+  return {
+    transform: 'translateZ(0) translateX(' + left + 'px)',
+    WebkitTransform: 'translateZ(0) translateX(' + left + 'px)',
+    width,
+  };
+}
+
+var PanelSlider = React.createClass({
+  mixins: [tweenState.Mixin],
+  
+  getInitialState() {
+    return {
+      leftA: 0,
+      widthA: 0,
+      direction: 'right'
+      };
+  },
+
+   componentDidMount() {
+    this._doState();
+  },
+
+  _doState() {
+    var w = $('.col-xs-4').outerWidth(true);
+    var s = { widthA: w, w: w };
+    this._setState( s );
+  },
+
+  _setState(state) {
+    var _this;
+    return new rsvp.Promise(function(success) {
+      _this.setState( state, success );
+    });
+  },
+
+  transition(direction,model) {    
+    return () =>
+      this._setState( { direction } )
+        .then( () => this.doSlide() )
+        .then( () => this.props.transition(model) )      
+        .then( () => this.doSlide() );
+  },
+
+  doSlide() {
+    return new rsvp.Promise( function(success) {
+      var w = $('.col-xs-4').outerWidth(true);
+      var leftTarget = ( this.state.direction === 'right') ? w : -w;
+      this.tweenState('leftA', {
+        easing: tweenState.easingTypes.easeInOutQuad,
+        stackBehavior: tweenState.stackBehavior.ADDITIVE,
+        duration: 1000,
+        endValue: this.state.leftA === 0 ? leftTarget : 0,
+      });
+      this.tweenState('widthA', {
+        easing: tweenState.easingTypes.easeInOutQuad,
+        stackBehavior: tweenState.stackBehavior.ADDITIVE,
+        duration: 1000,
+        endValue: this.state.widthA === 0 ? w : 0,
+        onEnd: success
+      });
+    });
+  },
+  
+  render() {
+    var leftStyle = translateXStyle( this.getTweeningValue('leftA'),
+                                     this.getTweeningValue('widthA'));
+    
+    var children = React.Children.map( this.props.children, child => {
+      return (
+          <div className="col-xs-4 slider-col">
+            <div className="slideable slider-group-1" style={leftStyle}>
+              {React.cloneElement(child,{ transition: this.transition })}
+            </div>
+          </div>
+        );
+      });
+      
+      // onClick={this.doSlide('left')}
+      // 
+    return (<div className="container-fluid">
+      <div className="row slider-row">
+      {children}
       </div>
     </div>);
   }
 });
 
-var SamplesFrom = React.createClass({
-  render() {
-    return(
-        <div>
-          <b>{"Samples are used from..."}</b>
-            <ul><li>{"item1"}</li><li>{"item2"}</li></ul>
-        </div>
-    );
-  }
-});
+*/
 
-var MainFile = React.createClass({
-  render() {
-    return(
-        <div>
-          <p>{"\"Hello father\" by Starving Artist"}</p>
-          <button className="btn btn-sm btn-warning">
-            <Glyph icon="play" />{" PlayIT"}
-          </button>
-        </div>
-    );
-  }
-});
-
-var SamplesUsedIn = React.createClass({
-  render() {
-    return(
-        <div>
-            <b>{"Samples are used in..."}</b>
-            <ul><li>{"item1"}</li><li>{"item2"}</li></ul>
-        </div>
-    );
-  }
-
-});
-
-var SliderRow = React.createClass({
-  render() {
-    return( <Slider>
-        <SamplesFrom />
-        <MainFile />
-        <SamplesUsedIn />
-    </Slider>);
-  }
-});
-
-module.exports = {
-  Slider,
-  SliderRow
-};
+module.exports = PanelSlider;
 
 //
