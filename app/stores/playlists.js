@@ -65,7 +65,7 @@ class Playlists extends Uploads {
     var model = {
       items:  this.fetch(q,'items'),
       total:  this.count(q,'total'),
-      upload: q.upload ? this.uploadStore.info(q.upload,'upload') : null,
+      upload: q.upload ? this.uploadStore.info(q.upload) : null,
       curator: q.user ? this.findUser(q.user,'curator') : null,
       curators: hasSearch ? this.searchUsers( { limit: 40, searchp: q.search, minpl: 1 }, 'curators' ) : null
     };
@@ -128,7 +128,7 @@ class Playlists extends Uploads {
 
 Playlists.storeFromQuery = function(queryParams) {
   var playlists = new Playlists();
-  return playlists.getModel(queryParams).then( () => { return playlists; } );  
+  return playlists.getModel(queryParams).then( () => playlists );  
 };
 
 module.exports = Playlists;
