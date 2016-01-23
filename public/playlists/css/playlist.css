@@ -94,15 +94,13 @@
 .playlist-detail-page .playlist-tags {
 }
 
-.playlist-detail-page .playlist-tags a {
-  color: black;
+.playlist-detail-page .playlist-tags > a {
+  color: #666;
 }
 
-.playlist-detail-page .playlist-tags a:hover {
-  color: white;
-  text-decoration: none;
+.playlist-detail-page .playlist-tags > a:hover {
+  color: #088;
 }
-
 
 .static-playlist-tag-editor ul {
   padding: 0px;
