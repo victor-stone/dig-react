@@ -62,7 +62,7 @@ function Curator(props) {
 
   return(
       <div className="playlist-curator playlist-bg-color">
-        <People.Link model={model.curator} avatar />
+        <People.Link model={model.curator} avatar suburl="playlists" />
       </div>
     );  
 }
