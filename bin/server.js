@@ -3,10 +3,11 @@
 global.IS_SERVER_REQUEST = true;
 //process.env.NODE_ENV = 'production';
 
-var http = require('http');
-var url  = require('url');
-var util = require('util');
-var argv = require('minimist')(process.argv.slice(2));
+var http    = require('http');
+var cluster = require('cluster');
+var url     = require('url');
+var util    = require('util');
+var argv    = require('minimist')(process.argv.slice(2));
 
 var LogWriter     = require('./log-writer');
 var ServerHook    = require('./server-hook');
@@ -50,6 +51,30 @@ class Server {
   }
 
   startServer() {
+    console.log('in start server');
+    if (cluster.isMaster) {
+        var numWorkers = require('os').cpus().length;
+        console.log("Master cluster is setting up " + numWorkers + "workers...");
+        
+        for (var i=0; i<numWorkers; i++) {
+          cluster.fork();
+        }
+
+        cluster.on("online", function(worker) {
+          log("Worker" + worker.process.pid + " is online");
+        });
+
+        cluster.on("exit", function(worker, code, signal) {
+          log("Worker " + worker.process.pid + "exited with code: " + code + " and signal: " + signal);
+          log("Starting a new worker");
+          cluster.fork();
+        });
+    } else {
+        this._startServer();
+    }
+  }
+
+  _startServer() {
     http.createServer(this.handleRequest.bind(this)).listen(port);
     console.log('listening on port ' + port);
   }
