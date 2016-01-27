@@ -14,6 +14,8 @@ var ServerHook    = require('./server-hook');
 var StaticRouter  = require('./static-router');
 var ReactServer   = require('./react-server-router');
 
+const USE_CLUSTERS = false;
+
 console.log( 'Server invoked with: ', argv )
 
 var appLog = null;
@@ -52,7 +54,7 @@ class Server {
 
   startServer() {
     console.log('in start server');
-    if (cluster.isMaster) {
+    if (USE_CLUSTERS && cluster.isMaster) {
         var numWorkers = require('os').cpus().length;
         console.log("Master cluster is setting up " + numWorkers + "workers...");
         
