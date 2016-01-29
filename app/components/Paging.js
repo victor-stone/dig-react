@@ -62,12 +62,16 @@ const LimitFilter = React.createClass({
 
   render: function() {
     var cls = 'limit-label ' + (this.props.className || '');
+    var opts = [];
+    //var limit = this.state.limit + '';
+    [ '10', '20', '40' ].forEach( value => {
+      opts.push( (<option key={value} value={value}>{value}</option>) );
+    });
+
     return (
         <label className={cls}>{"display "}
           <select ref="limit" id="limit" value={this.state.limit} onChange={this.performQuery} >
-            <option>{"10"}</option>
-            <option>{"20"}</option>
-            <option>{"40"}</option>
+            {opts}
           </select>
         </label>
       );    

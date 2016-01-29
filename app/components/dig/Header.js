@@ -29,8 +29,6 @@ const NavbarRight = (
           <li className="divider"></li>            
           <li><Link href="/free"><Glyph fixed icon="beer" />{" free for commercial use"}</Link></li>
           <li><Link href="/ccplus"><Glyph fixed icon="usd" /> {"royalty free licensed"}</Link></li>
-          <li className="divider"></li>            
-          <li><Link href="/edpicks"><Glyph fixed icon="thumbs-o-up" /> {" staff picks"}</Link></li>
         </ul>            
       </li>
     </ul>    

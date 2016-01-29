@@ -14,8 +14,6 @@ var ServerHook    = require('./server-hook');
 var StaticRouter  = require('./static-router');
 var ReactServer   = require('./react-server-router');
 
-const USE_CLUSTERS = false;
-
 console.log( 'Server invoked with: ', argv )
 
 var appLog = null;
@@ -25,6 +23,8 @@ var port   = argv.port || 3000;
 var logv   = (argv.log && argv.log.split(/,/)) || [];
 
 global.verbose = argv.v;
+
+const USE_CLUSTERS = argv.c || false;
 
 function log() {
   if( verbose ) {

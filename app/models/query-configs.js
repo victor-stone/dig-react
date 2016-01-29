@@ -4,7 +4,7 @@ var MAGIC_SORT_DIGRANK = '280';
 module.exports = {
 
   remixes: {  
-    limit:   10,
+    limit:   '40',
     digrank: MAGIC_SORT_DIGRANK,
     reqtags: 'remix',
     lic:     'all',

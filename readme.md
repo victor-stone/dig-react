@@ -1,6 +1,6 @@
 
 
-This project builds dig.ccmixter.org, pells.ccmixter.org, stems.ccmixter.org and some admin tools.
+This project builds dig.ccmixter.org, pells.ccmixter.org, stems.ccmixter.org, playlists.ccmixter.org and some admin tools.
 
 ## Build & Run
 
@@ -26,7 +26,7 @@ npm i uglify -g
 ./build --<appname>
 ```
 
-where <appname> is either `dig`, `pells` or `stems`
+where <appname> is either `dig`, `pells`, `playlists` or `stems`
 
 options:
 ```
@@ -60,8 +60,8 @@ options:
 
 ```
   --port=<port>    - default 3000
-  --mem            - display memory usage (must run with node with --expose-gc option)
   -v               - verbose print outs
+  -c               - use node clusters for multithreading
 ```
 
 examples:
@@ -69,7 +69,7 @@ examples:
 ```
   node dig
   node dig --port=4000
-  node --expose-gc pells -mem --port=3000
+  node dig -c
 ```
   
 ## Logs
