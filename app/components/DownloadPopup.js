@@ -57,11 +57,28 @@ var DownloadPopup = React.createClass({
   showDownload: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.setState( { showLicense: false } );
+    this.setState( { showLicense: false, showYTVideo: false } );
+  },
+
+  showYTVideo: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.setState( { showYTVideo: true } );
   },
 
   onDownloadClick: function(/*e*/) {
     env.emit( events.DOWNLOAD, this.state.fullUpload );
+  },
+
+  genYTVideo: function() {
+    var html = { __html: '<iframe width="560" height="315" src="https://www.youtube.com/embed/FZ9KcU9lUQQ" frameborder="0" allowfullscreen></iframe>' };
+    /*eslint "react/no-danger":0 */
+    return (
+      <div ref="yt-video" class="yt-video">
+        <a href="#" className="pull-left" onClick={this.showDownload}><Glyph icon="chevron-left" />{" back"}</a>
+        <div dangerouslySetInnerHTML={html} />
+      </div>
+      );
   },
 
   genPopup: function() {
@@ -76,7 +93,9 @@ var DownloadPopup = React.createClass({
               <div className="clearfix" />
               <LicenseInfo />
             </div>
-          : this.genDLPopup()
+          : this.state.showYTVideo 
+              ? this.genYTVideo()
+              : this.genDLPopup()
         }
         </Modal>
       );
@@ -115,6 +134,9 @@ var DownloadPopup = React.createClass({
                   <button className="btn btn-sm btn-info copy-to-clip" onClick={this.copyToClip}><Glyph icon="files-o" />{" Copy to Clipboard"}</button>
                 </div>
               </div>
+            </div>
+            <div className="watch-a-yt-video">
+              <a className="btn-sm" href="#" onClick={this.showYTVideo}>{"use this music at "}<Glyph x2 icon="youtube" /></a>
             </div>
           </div>          
           <div className="col-md-6">

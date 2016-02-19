@@ -1,3 +1,4 @@
+/* public shared css */
 
 body {
   font-family: Avenir Next, Verdana;
@@ -180,6 +181,11 @@ a > small:after {
 .download-popup a.btn img {
   margin-right: 8px;
   margin-left: -8px;
+}
+
+.watch-a-yt-video {
+  margin: 7px;
+  text-align: center;
 }
 
 .credits li {
