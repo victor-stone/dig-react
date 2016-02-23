@@ -74,7 +74,7 @@ var DownloadPopup = React.createClass({
     var html = { __html: '<iframe width="560" height="315" src="https://www.youtube.com/embed/FZ9KcU9lUQQ" frameborder="0" allowfullscreen></iframe>' };
     /*eslint "react/no-danger":0 */
     return (
-      <div ref="yt-video" class="yt-video">
+      <div ref="yt-video" className="yt-video">
         <a href="#" className="pull-left" onClick={this.showDownload}><Glyph icon="chevron-left" />{" back"}</a>
         <div dangerouslySetInnerHTML={html} />
       </div>

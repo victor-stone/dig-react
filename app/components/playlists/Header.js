@@ -6,9 +6,7 @@ import NavbarHeader from '../NavbarHeader';
 import services     from '../../services';
 import Glyph        from '../Glyph';
 
-import { CurrentUserTracker } from '../../mixins';
-
-
+import { CurrentUserTracker }    from '../../mixins';
 import {  CurrentUserMenu,
           CurrentUserMenuHead }  from '../CurrentUserMenu';
 

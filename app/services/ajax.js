@@ -24,11 +24,11 @@ function serverAjax(opts) {
       http.get(opts.url, function(res) {
         /* xeslint no-console:0 */
         //console.log( 'ajax response ',res.headers['x-json'] );
+        var data = '';
         if( opts.dataType === 'json') {
           if( res.headers['x-json'] ) {
             resolveWithJSON(resolve,reject,opts.url,res.headers['x-json']);
           } else {
-            var data = '';
             res.on('data', function (chunk) {
               data += chunk.toString();
             });
@@ -37,7 +37,12 @@ function serverAjax(opts) {
             });            
           }
         } else {
-          reject('only JSON supported for now');
+            res.on('data', function (chunk) {
+              data += chunk.toString();
+            });
+            res.on('end', function () {
+              resolve(data);
+            });            
         }
       }).on('error', reject );
     } else {
