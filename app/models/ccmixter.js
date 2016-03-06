@@ -401,6 +401,8 @@ class Detail extends Upload {
     this.licenseURLBinding = 'license_url';
     //this.featuringBinding = 'upload_extra.featuring';
 
+    this.dateBinding = 'upload_date_format';
+
     this.getTags = function() {
       return TagString(this.upload_tags);
     };

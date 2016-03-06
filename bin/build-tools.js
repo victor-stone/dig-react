@@ -25,22 +25,17 @@ function rename( from, to ) {
 }
 
 function bundleFiles(arr,destination,sortpri,sep) {
-  var fd = null;
+
   sep = sep || '';
   clog( 'creating bundle ', destination  );
   log( ' => ', arr );
-  
-  return fopen(destination, 'w')
-    .then( function(fileDescriptor) {
-        fd = fileDescriptor;
-        if( !fd ) {
-          throw new Error('bad fileDescriptor on open');
-        }
-        var hash = {};
-        arr.forEach( n => hash[n] = fread(n,'utf8') );
-        return rsvp.hash(hash);
-      })
-    .then( function(hash) {
+
+  var hash = {};
+  arr.forEach( n => hash[n] = fread(n,'utf8') );
+  return rsvp.hash(hash).then( function(hash) {
+
+    return fopen(destination, 'w').then( function(fd) {
+
         if( !fd ) {
           throw new Error('bad fileDescriptor on hash read');
         }
@@ -50,12 +45,10 @@ function bundleFiles(arr,destination,sortpri,sep) {
                          .join( `\n${sep}/* ccmbuildjoint */\n` );
         fs.write(fd,data);
         fs.close(fd);
-      })
-    .catch( e => {
-      clog( `Error trying to open ${destination}` );
-      err(e);
-    });
 
+    })
+    
+  });
 }
 
 function copy(src,dest) {

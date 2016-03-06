@@ -41,7 +41,7 @@ const ZIPContentPopup = React.createClass({
     var model   = this.props.model;
     var nicName = model.nicName ? ` [${model.nicName}]` : '';
     var title   = `${model.mediaTags.name} ${nicName}`;
-    var qp      = this.props.store.model.queryParams;    
+    var qp      = this.props.store ? this.props.store.model.queryParams : {};
     var tags    = qp.searchp 
                    ? new TagString(qp.searchp.replace(/\s/g,','))
                    : new TagString(qp.tags);

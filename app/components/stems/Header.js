@@ -34,8 +34,8 @@ var StemsUserMenu = React.createClass({
           <CurrentUserMenuHead model={user} loading={loading} />
           <CurrentUserMenu model={user} >
             <li><Link href={'/people/' + id}><Glyph fixed icon="music" />{" your stems"}</Link></li>
-            <li><a href="http://ccmixter.org/submit/samples"><Glyph fixed icon="bolt" />{" submit new samples"}</a></li>
-            <li><a href="http://ccmixter.org"><Glyph fixed icon="home" />{" ccMixter home"}</a></li>
+            <li><a target="_blank" href="http://ccmixter.org/submit/samples"><Glyph fixed icon="bolt" />{" submit new samples"}</a></li>
+            <li><a target="_blank" href="http://ccmixter.org"><Glyph fixed icon="home" />{" ccMixter home"}</a></li>
           </CurrentUserMenu>
         </li>
       );
@@ -63,6 +63,9 @@ const Header = React.createClass({
               </div>      
               <ul className="nav navbar-nav navbar-right">
                 <li><Link href="#"><LoadingGlyph /></Link></li>
+        <li>
+          <Link href="/tree/jlbrock44/52765">{"tree"}</Link>
+        </li>
                 <li>
                   <Link href="/licenses">{"licenses"}</Link>
                 </li>
