@@ -1,3 +1,5 @@
+/*eslint "react/no-danger":0 */
+
 import React       from 'react';
 import Link        from './Link';
 import { Accordian,
@@ -9,7 +11,9 @@ import {
 
 import Glyph       from './Glyph';
 
-import Files from './stems/Files';
+import Files   from './stems/Files';
+import Ratings from '../stores/ratings';
+import Topics  from '../stores/topics';
 
 var SamplesFrom = React.createClass({
 
@@ -60,12 +64,102 @@ var SamplesUsedIn = React.createClass({
 
 });
 
+var RecommendedBy = React.createClass({
+
+  getInitialState() {
+    return { model: null };
+  },
+
+  componentWillMount() {
+    this.fetchRecommends();
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if( this.props.model.id !== nextProps.model.id ) {
+      this.fetchRecommends();
+    }
+  },
+
+  fetchRecommends() {
+    if( !this.ratings ) {
+      this.ratings = new Ratings();
+    }
+    this.ratings.recommendedBy(this.props.model.id).then( model => this.setState( { model }) );
+  },
+
+  render() {
+    if( !this.state.model ) {
+      return null;
+    }
+    var model = this.state.model;
+    return (
+      <AccordianPanel title="Recommended by" id="recc">
+        <ul className="recommends-list">{model.map( (t,i) => <li key={i}>{t.name}</li> )}</ul>
+      </AccordianPanel>
+      );
+  }
+});
+
+var Reviews = React.createClass({
+
+  getInitialState() {
+    return { model: null };
+  },
+
+  componentWillMount() {
+    this.fetchReviews();
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if( this.props.model.id !== nextProps.model.id ) {
+      this.fetchReviews();
+    }
+  },
+
+  fetchReviews() {
+    if( !this.topics ) {
+      this.topics = new Topics();
+    }
+   this.topics.reviewsFor(this.props.model.id).then( model => this.setState( { model }) );
+  },
+
+  render() {
+    if( !this.state.model ) {
+      return null;
+    }
+    var model = this.state.model;
+    var reviews = model.map( (r,i) => (
+          <div className="form-group" key={i}>
+            <div className="col-md-12">
+              <div className="input-group">
+                <span className="input-group-addon">
+                  {r.indent 
+                    ? <span><Glyph icon="arrow-circle-right" />{r.author.name}</span>
+                    : <span><img src={r.author.avatarURL} />{r.author.name}</span>
+                  }
+                </span>
+                <div className="review-head">{r.date}</div>
+                <div dangerouslySetInnerHTML={ {__html: r.html} } />
+              </div>
+            </div>
+          </div>
+      ));
+    return (
+      <AccordianPanel title="Reviews" id="reviews">
+        <form className="form-horizontal">
+          {reviews}
+        </form>      
+      </AccordianPanel>
+      );
+  }
+});
+
 var MainFileOverview = React.createClass({
 
   render() {
     var model = this.props.model;
     return (
-      <AccordianPanel title="Overview">
+      <AccordianPanel title="Overview" id="overview">
           <form className="form-horizontal">
               {model.featuring
                 ? (
@@ -87,24 +181,59 @@ var MainFileOverview = React.createClass({
                   </div>
                 </div>
               </div>
-              <div className="form-group">
-                <div className="col-md-12">
-                  <div className="input-group">
-                    <span className="input-group-addon">{"info"}</span>
-                    <div className="form-control description">{model.description}</div>
-                  </div>
-                </div>
-              </div>
+              {model.description
+                ? (              
+                    <div className="form-group">
+                      <div className="col-md-12">
+                        <div className="input-group">
+                          <span className="input-group-addon">{"info"}</span>
+                          <div className="form-control description">{model.description}</div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                : null
+              }
               <div className="form-group">
                 <div className="col-md-12">
                   <div className="input-group">
                     <span className="input-group-addon">{"license"}</span>
                     <span className="form-control">
                       <a target="_blank" href={model.licenseURL}><img src={model.licenseLogoURL} /></a>
+                      {model.isCCPlus
+                        ? <a target="_blank" href={model.purchaseLogoURL}><img src={model.purchaseLicenseURL} /></a>
+                        : null
+                      }
                     </span>
                   </div>
                 </div>
               </div>
+              {model.bpm
+                ? (              
+                    <div className="form-group">
+                      <div className="col-md-12">
+                        <div className="input-group">
+                          <span className="input-group-addon">{"bpm"}</span>
+                          <div className="form-control description">{model.bpm}</div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                : null
+              }
+              {model.nsfw
+                ? (              
+                    <div className="form-group">
+                      <div className="col-md-12">
+                        <div className="input-group">
+                          <span className="input-group-addon">{"nsfw"}</span>
+                          <span className="form-control">{"This music may be NSFW"}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                : null
+              }
               <div className="form-group">
                 <div className="col-md-12">
                   <div className="input-group">
@@ -118,6 +247,13 @@ var MainFileOverview = React.createClass({
       );
   }
 });
+
+function FileSection(props) {
+  return ( <AccordianPanel title="Files" id="files">
+             <Files model={props.model} />
+            </AccordianPanel>
+        );
+}
 
 var MainFile = React.createClass({
   mixins: [ModelTracker],
@@ -180,9 +316,9 @@ wavImageURL*/
           </button>
           <Accordian>
             <MainFileOverview model={model} />
-            <AccordianPanel title="Files">
-              <Files model={model} />
-            </AccordianPanel>
+            <FileSection model={model} />
+            <RecommendedBy model={model} />
+            <Reviews model={model} />
           </Accordian>
         </div>
     );
@@ -199,15 +335,13 @@ var RemixTree = React.createClass({
           #accordion .form-control {
             height: initial;
           }
-          #accordion .form-control li {
+          #accordion .tags-list.form-control li {
             float: left;
             margin-left: 8px;
           }
       </style>
           `;
     var css  = { __html: cssText };
-    /*eslint "react/no-danger":0 */
-
     return( 
       <div className="container-fluid">
         <div dangerouslySetInnerHTML={css} />

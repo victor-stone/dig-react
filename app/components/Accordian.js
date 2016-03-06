@@ -1,16 +1,16 @@
-/* xglobals $ */
 import React      from 'react';
 
 var AccordianPanel = React.createClass({
   render() {
+    var id = this.props.id;
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
             <h4 className="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href={'#' + this.props.title}>{this.props.title}</a>
+              <a data-toggle="collapse" data-parent="#accordion" href={'#' + id}>{this.props.title}</a>
             </h4>
          </div>
-        <div id={this.props.title} className="panel-collapse collapse">
+        <div id={id} className="panel-collapse collapse">
           <div className="panel-body">
             {this.props.children}
           </div>

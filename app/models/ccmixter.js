@@ -349,8 +349,23 @@ class UserBasic extends Model {
 
     constructor() {
      super(...arguments);
-     this.nameBinding = 'user_real_name';
-      this.idBinding = 'user_name';
+     // this.nameBinding = 'user_real_name';
+     this.getName = function() {
+      return this.user_real_name || this.fancy_user_name;
+     };
+     // this.idBinding = 'user_name';
+     this.getId = function() {
+      if( this.user_name ) {
+        return this.user_name;
+      }
+      if( this.rater_page_url ) {
+        var match = this.rater_page_url.match( /\/people\/([^\/]+)\/recommends/ );
+        if( match ) {
+          return match[1];
+        }
+      }
+      return null;
+     };
     }
 }
 
@@ -416,6 +431,10 @@ class Detail extends Upload {
       return feat;
     };
     
+    this.getNsfw = function() {
+      return !!this.upload_extra.nsfw || false;
+    };
+
     this.setFeatureSources = function(sources) {
       if( !this.featuring && sources ) {
           var unique = [ ];
@@ -519,6 +538,24 @@ class Topic extends Model {
   }
 }
 
+class Review extends Model {
+  constructor() {
+    super(...arguments);
+    this._modelSubtree = {
+      author: DetailUploadUser,
+    };
+    this.idBinding = 'topic_id';
+    this.htmlBinding = 'topic_text_html';
+    this.dateBinding = 'topic_date_format';
+    this.getIndent = function() {
+      return parseInt(this.margin);
+      };
+    this.getIsReply = function() {
+      return this.is_reply !== '0';
+    };
+  }
+}
+
 class PlaylistCurator extends Model {
   constructor() {
     super(...arguments);
@@ -587,4 +624,5 @@ module.exports = {
   Playlist,
   PlaylistHead,
   PlaylistTrack,
+  Review,
 };

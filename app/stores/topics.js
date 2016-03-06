@@ -28,6 +28,14 @@ class Topics extends Query {
       .then( model => this.model = model );
   }
 
+  reviewsFor(id) {
+    var args = {
+      t: 'reviews_upload',
+      match: id
+    };
+    return this.query(args).then( serialize( ccmixter.Review) );
+  }
+
   type(topicType) {
     var args = {
       dataview: 'topics',

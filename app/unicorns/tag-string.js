@@ -369,7 +369,7 @@ TagString.toArray = function(source,useropts) {
     }
     // still not 100% because '-'
     var r = new RegExp(opts.separator,'g');
-    arr = source.replace(r,' ').split(/\s+/);
+    arr = source.replace(r,' ').split(/\s+/).filter( t => t.length && t );
   } else if( Array.isArray(source) ) {
     arr = source.slice();        
   } else if( source && (source instanceof TagString) )  {
