@@ -1,4 +1,5 @@
 import React      from 'react';
+import Glyph      from './Glyph';
 
 var AccordianPanel = React.createClass({
   render() {
@@ -7,6 +8,8 @@ var AccordianPanel = React.createClass({
       <div className="panel panel-default">
         <div className="panel-heading">
             <h4 className="panel-title">
+              <Glyph icon={this.props.icon} />
+              {" "}
               <a data-toggle="collapse" data-parent="#accordion" href={'#' + id}>{this.props.title}</a>
             </h4>
          </div>

@@ -15,6 +15,61 @@ import Files   from './stems/Files';
 import Ratings from '../stores/ratings';
 import Topics  from '../stores/topics';
 
+const MAX_LINKS_SHOW = 10;
+
+var TreeLinks = React.createClass({
+
+  getInitialState() {
+    return this.splitFiles(this.props.files);
+  },
+
+  componentWillReceiveProps(props) {
+    this.setState( this.splitFiles(props.files) );
+  },
+
+  splitFiles(files) {
+    if( files.length > MAX_LINKS_SHOW ) {
+      return { head: files.slice(0,MAX_LINKS_SHOW), tail: files.slice(MAX_LINKS_SHOW) };
+    }
+    return { head: files, tail: null };
+  },
+
+  render() {
+    var fileMapper = function( s ) {
+        return (
+        <li key={s.id}>
+          <Link href={'/tree/' + s.artist.id + '/' + s.id}>{s.name + ' ' + s.artist.name}</Link>
+        </li>      
+      );
+    };
+
+    return (
+        <div className="panel panel-info" id={this.props.id}>
+          <div className="panel-heading">
+            <h3 className="panel-title">{this.props.title}</h3>
+          </div>
+          <div className="panel-body">
+            <ul>
+              {this.state.head.map( fileMapper )}
+            </ul>
+            {this.state.tail
+              ? ( <div>
+                    <button data-toggle="collapse" data-parent={'#' + this.props.id} href={'#tail_' + this.props.id}>{"Show all"}</button>
+                    <ul className="collapse" id={'tail_' + this.props.id}>
+                      {this.state.tail.map( fileMapper )}
+                    </ul>
+                  </div>
+                )
+              : null
+            }
+          </div>
+          <div className="panel-footer"></div>
+        </div>
+
+      );
+  }
+});
+
 var SamplesFrom = React.createClass({
 
   mixins: [ModelTracker],
@@ -25,16 +80,7 @@ var SamplesFrom = React.createClass({
 
   render() {
     return(
-        <div>
-          <b>{"Samples are used from..."}</b>
-            <ul>
-              {this.state.sources.map( s => 
-                <li key={s.id}>
-                  <Link href={'/tree/' + s.artist.id + '/' + s.id}>{s.name + ' ' + s.artist.name}</Link>
-                </li>
-              )}
-            </ul>
-        </div>
+      <TreeLinks title="Samples are used from..." id="sources" files={this.state.sources} />
     );
   }
 });
@@ -49,19 +95,9 @@ var SamplesUsedIn = React.createClass({
 
   render() {
     return(
-        <div>
-            <b>{"Samples are used in..."}</b>
-            <ul>
-              {this.state.remixes.map( s => 
-                <li key={s.id}>
-                  <Link href={'/tree/' + s.artist.id + '/' + s.id}>{s.name + ' ' + s.artist.name}</Link>
-                </li>
-              )}
-            </ul>
-        </div>
+      <TreeLinks title="Samples are used in..." id="remixes" files={this.state.remixes} />
     );
   }
-
 });
 
 var RecommendedBy = React.createClass({
@@ -71,20 +107,18 @@ var RecommendedBy = React.createClass({
   },
 
   componentWillMount() {
-    this.fetchRecommends();
+    this.fetchRecommends(this.props.model.id);
   },
 
   componentWillReceiveProps(nextProps) {
-    if( this.props.model.id !== nextProps.model.id ) {
-      this.fetchRecommends();
-    }
+    this.fetchRecommends(nextProps.model.id);
   },
 
-  fetchRecommends() {
+  fetchRecommends(id) {
     if( !this.ratings ) {
       this.ratings = new Ratings();
     }
-    this.ratings.recommendedBy(this.props.model.id).then( model => this.setState( { model }) );
+    this.ratings.recommendedBy(id).then( model => this.setState( { model }) );
   },
 
   render() {
@@ -92,8 +126,9 @@ var RecommendedBy = React.createClass({
       return null;
     }
     var model = this.state.model;
+    var title = `Recommends (${this.props.numRecommends})`;
     return (
-      <AccordianPanel title="Recommended by" id="recc">
+      <AccordianPanel title={title} icon="thumbs-o-up" id="recc">
         <ul className="recommends-list">{model.map( (t,i) => <li key={i}>{t.name}</li> )}</ul>
       </AccordianPanel>
       );
@@ -107,20 +142,18 @@ var Reviews = React.createClass({
   },
 
   componentWillMount() {
-    this.fetchReviews();
+    this.fetchReviews(this.props.model.id);
   },
 
   componentWillReceiveProps(nextProps) {
-    if( this.props.model.id !== nextProps.model.id ) {
-      this.fetchReviews();
-    }
+    this.fetchReviews(nextProps.model.id);
   },
 
-  fetchReviews() {
+  fetchReviews(id) {
     if( !this.topics ) {
       this.topics = new Topics();
     }
-   this.topics.reviewsFor(this.props.model.id).then( model => this.setState( { model }) );
+   this.topics.reviewsFor(id).then( model => this.setState( { model }) );
   },
 
   render() {
@@ -129,26 +162,23 @@ var Reviews = React.createClass({
     }
     var model = this.state.model;
     var reviews = model.map( (r,i) => (
-          <div className="form-group" key={i}>
-            <div className="col-md-12">
-              <div className="input-group">
-                <span className="input-group-addon">
-                  {r.indent 
-                    ? <span><Glyph icon="arrow-circle-right" />{r.author.name}</span>
-                    : <span><img src={r.author.avatarURL} />{r.author.name}</span>
-                  }
-                </span>
-                <div className="review-head">{r.date}</div>
-                <div dangerouslySetInnerHTML={ {__html: r.html} } />
-              </div>
-            </div>
+        <div key={i} className={'panel panel-info panel-offset-' + r.indent}>
+          <div className="panel-heading">
+            <h3 className="panel-title">
+              {r.indent 
+                ? <span><Glyph icon="arrow-circle-right" />{' ' + r.author.name}</span>
+                : <span><img src={r.author.avatarURL} />{' ' + r.author.name}</span>
+              }
+            </h3>
           </div>
+          <div className="panel-body" dangerouslySetInnerHTML={{__html: r.html}} />
+          <div className="panel-footer">{r.date}</div>
+        </div>
       ));
+    var title = `Reviews (${this.props.numReviews})`;
     return (
-      <AccordianPanel title="Reviews" id="reviews">
-        <form className="form-horizontal">
-          {reviews}
-        </form>      
+      <AccordianPanel title={title} id="reviews" icon="pencil">
+        {reviews}
       </AccordianPanel>
       );
   }
@@ -159,7 +189,7 @@ var MainFileOverview = React.createClass({
   render() {
     var model = this.props.model;
     return (
-      <AccordianPanel title="Overview" id="overview">
+      <AccordianPanel title="Overview" id="overview" icon="info-circle">
           <form className="form-horizontal">
               {model.featuring
                 ? (
@@ -201,7 +231,7 @@ var MainFileOverview = React.createClass({
                     <span className="form-control">
                       <a target="_blank" href={model.licenseURL}><img src={model.licenseLogoURL} /></a>
                       {model.isCCPlus
-                        ? <a target="_blank" href={model.purchaseLogoURL}><img src={model.purchaseLicenseURL} /></a>
+                        ? <a target="_blank" href={model.purchaseLicenseURL}><img src={model.purchaseLogoURL} /></a>
                         : null
                       }
                     </span>
@@ -249,7 +279,8 @@ var MainFileOverview = React.createClass({
 });
 
 function FileSection(props) {
-  return ( <AccordianPanel title="Files" id="files">
+  var title = `Files (${props.model.files.length})`;
+  return ( <AccordianPanel title={title} id="files" icon="files-o">
              <Files model={props.model} />
             </AccordianPanel>
         );
@@ -261,40 +292,7 @@ var MainFile = React.createClass({
   stateFromStore(store) {
     return { model: store.model.upload };
   },
-/*
 
-artist: Object
-bpm: ""
-description: "This is the clarinet from the remix"the black&white of it".
-↵Hint:
-↵Ive  recorded  the clarinet with two microphones,one on the top (AKG C1000) and one below (sennheiser e845) because otherwise you have but a fraction of the consonance,very important!
-↵I've uploaded one file in mono and one in stereo.
-↵In stereo you can hear the difference of the mic.
-↵The left is AKG C1000  and the right is sennheiser e845.
-↵Enjoy it!"
-
-downloadSize: "7.14MB"
-featuring: ""
-fileInfo: Object
-files: Array[2]
-id: "9081"
-isCCPlus: false
-isOpen: true
-isSpecialLic: false
-licenseLogoURL: "https://licensebuttons.net/l/by/3.0/88x31.png"
-licenseName: "Attribution (3.0)"
-licenseURL: "http://creativecommons.org/licenses/by/3.0/"
-licenseYear: "2007"
-mediaTags: Object
-mediaURL: "http://ccmixter.org/content/stefsax/stefsax_-_Clarinet(the_black_white_on_it).mp3"
-name: "Clarinet(the black&white on it)"
-purchaseLicenseURL: undefined
-purchaseLogoURL: undefined
-setFeatureSources: (sources)
-tags: TagString
-url: "http://ccmixter.org/files/stefsax/9081"
-userTags: TagString
-wavImageURL*/
   render() {
     var model = this.state.model;
     return(
@@ -304,7 +302,7 @@ wavImageURL*/
               <div className="col-md-12">
                 <div className="input-group">
                   <span className="input-group-addon">{"by"}</span>
-                  <span className="form-control" placeholder="placeholder">
+                  <span className="form-control">
                     <Link className="artist" href={'/people/'+model.artist.id}>{model.artist.name}</Link>
                   </span>
                 </div>
@@ -317,8 +315,8 @@ wavImageURL*/
           <Accordian>
             <MainFileOverview model={model} />
             <FileSection model={model} />
-            <RecommendedBy model={model} />
-            <Reviews model={model} />
+            <RecommendedBy model={model} numRecommends={model.numRecommends} />
+            <Reviews model={model} numReviews={model.numReviews} />
           </Accordian>
         </div>
     );
@@ -338,6 +336,12 @@ var RemixTree = React.createClass({
           #accordion .tags-list.form-control li {
             float: left;
             margin-left: 8px;
+          }
+          .panel-offset-1 {
+            margin-left: 12px;
+          }
+          .panel-offset-2 {
+            margin-left: 32px;
           }
       </style>
           `;

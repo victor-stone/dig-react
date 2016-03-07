@@ -21,10 +21,12 @@ env.set({
   bannerTopic: 'stemsBanner',
   supportPlaylist: false,
   supportWavImg: true,
-//  rpcHost: 'http://ccm/api/',
-//  queryHost: 'http://ccm/api/query?',
-//  queriesHost: 'http://ccm/api/queries?',
+  /*
+  rpcHost: 'http://ccm/api/',
+  queryHost: 'http://ccm/api/query?',
+  queriesHost: 'http://ccm/api/queries?',
   pageHost: 'http://localhost:3000/',
+  */
 });
 
 module.exports = function(props) { return <App {...props} header={Header} footer={Footer} />; };

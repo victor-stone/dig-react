@@ -412,11 +412,8 @@ class Detail extends Upload {
       artist: DetailUploadUser,
     };
 
-    this.licenseNameBinding = 'license_name';
-    this.licenseURLBinding = 'license_url';
-    //this.featuringBinding = 'upload_extra.featuring';
-
-    this.dateBinding = 'upload_date_format';
+    this.numRecommendsBinding = 'upload_num_scores';
+        this.dateBinding = 'upload_date_format';
 
     this.getTags = function() {
       return TagString(this.upload_tags);
@@ -449,7 +446,14 @@ class Detail extends Upload {
         }  
     };
 
+    this.getNumReviews = function() {
+      return this.upload_extra.num_reviews || 0;
+    };
+
     // License stuff 
+    
+    this.licenseNameBinding = 'license_name';
+    this.licenseURLBinding = 'license_url';
     
     this.getIsCCPlus = function() {
       return this._hasTag('ccplus');
@@ -538,6 +542,8 @@ class Topic extends Model {
   }
 }
 
+const INDENT_CONSTANT = 30;
+
 class Review extends Model {
   constructor() {
     super(...arguments);
@@ -548,7 +554,7 @@ class Review extends Model {
     this.htmlBinding = 'topic_text_html';
     this.dateBinding = 'topic_date_format';
     this.getIndent = function() {
-      return parseInt(this.margin);
+      return parseInt(this.margin) / INDENT_CONSTANT;
       };
     this.getIsReply = function() {
       return this.is_reply !== '0';
