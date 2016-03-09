@@ -413,7 +413,8 @@ class Detail extends Upload {
     };
 
     this.numRecommendsBinding = 'upload_num_scores';
-        this.dateBinding = 'upload_date_format';
+    this.dateBinding = 'upload_date_format';
+    this.descriptionHTMLBinding = 'upload_description_html';
 
     this.getTags = function() {
       return TagString(this.upload_tags);

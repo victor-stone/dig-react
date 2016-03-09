@@ -211,19 +211,6 @@ var MainFileOverview = React.createClass({
                   </div>
                 </div>
               </div>
-              {model.description
-                ? (              
-                    <div className="form-group">
-                      <div className="col-md-12">
-                        <div className="input-group">
-                          <span className="input-group-addon">{"info"}</span>
-                          <div className="form-control description">{model.description}</div>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                : null
-              }
               <div className="form-group">
                 <div className="col-md-12">
                   <div className="input-group">
@@ -286,78 +273,165 @@ function FileSection(props) {
         );
 }
 
-var MainFile = React.createClass({
+const MAX_DESCRIPTION_LENGTH = 220;
+
+var Description = React.createClass({
+
+  mixins: [ModelTracker],
+
+  componentDidMount() {
+    if( global.IS_SERVER_REQUEST ) {
+      return;
+    }
+    /* globals $ */
+    this.isMounted = true;
+    $('#description-more')
+      .on('show.bs.collapse', () => $('#description-less').collapse('hide') )
+      .on('hide.bs.collapse', () => $('#description-less').collapse('show') );
+  },
+
+  componentWillUnmount() {
+    if( global.IS_SERVER_REQUEST ) {
+      return;
+    }
+    this.isMounted = false;
+    $('#description-more')
+      .off('show.bs.collapse')
+      .off('hide.bs.collapse');
+  },
+
+  stateFromStore(store) {
+    var model = store.model.upload;
+    var description = model.descriptionHTML;
+    var html      = { __html: description };
+    var plain     = '';
+    var more      = '';
+    if( description ) {
+      if( description.length > MAX_DESCRIPTION_LENGTH ) {
+        plain      = model.description.substr(0,MAX_DESCRIPTION_LENGTH);
+        more       = ' more...';
+      }
+    }
+    if( this.isMounted ) {
+      $('#description-more').collapse( plain ? 'hide' : 'show');
+      $('#description-less').collapse( plain ? 'show' : 'hide');
+    }
+    return { html, plain, more };
+  },
+
+  render() {
+
+    var s = this.state;
+
+    var clsPlain = s.plain ? 'collapse in' : 'collapse';
+    var clsHTML  = s.plain ? 'collapse' : 'collapse in';
+    return (
+      <div className="remix-tree-description" >
+        <div className={clsPlain} id="description-less" >{s.plain}</div>
+        <div className={clsHTML}  id="description-more" dangerouslySetInnerHTML={s.html} />
+        <a id="description-more-link" data-toggle="collapse" href="#description-more">{s.more}</a>
+      </div>
+      );
+  }
+
+});
+
+var RemixTreeHead = React.createClass({
   mixins: [ModelTracker],
 
   stateFromStore(store) {
-    return { model: store.model.upload };
+    return { 
+        store,
+        model: store.model.upload };
   },
 
   render() {
     var model = this.state.model;
+
     return(
-        <div>
-          <form className="form-horizontal">
-            <div className="form-group">
-              <div className="col-md-12">
-                <div className="input-group">
-                  <span className="input-group-addon">{"by"}</span>
-                  <span className="form-control">
-                    <Link className="artist" href={'/people/'+model.artist.id}>{model.artist.name}</Link>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </form>
-          <button className="btn btn-sm btn-warning">
-            <Glyph icon="play" />{" PlayIT"}
-          </button>
-          <Accordian>
-            <MainFileOverview model={model} />
-            <FileSection model={model} />
-            <RecommendedBy model={model} numRecommends={model.numRecommends} />
-            <Reviews model={model} numReviews={model.numReviews} />
-          </Accordian>
+        <div className="remix-tree-head">
+          <img className="img-circle" src={model.artist.avatarURL} /> 
+          <h3>{model.name}</h3>
+          <h4 className="clearfix"><Link className="artist" href={'/people/'+model.artist.id}>{model.artist.name}</Link></h4>
+          <Description store={this.state.store} />
         </div>
     );
   }
 });
 
+var InlineCSS = React.createClass({
+  /*eslint "react/no-danger":0 */
+  render() {
+    var css  = { __html: this.props.css };
+    return (<div dangerouslySetInnerHTML={css} />);
+  }
+});
 
 var RemixTree = React.createClass({
 
+  mixins: [ModelTracker],
+
+  stateFromStore(store) {
+    return { 
+        store,
+        upload: store.model.upload };
+  },
+
   render() {
-    var store = this.props.store;
-    var cssText = `
+    var store = this.state.store;
+    var upload = store.model.upload;
+
+    var css = `
       <style>
-          #accordion .form-control {
-            height: initial;
-          }
-          #accordion .tags-list.form-control li {
-            float: left;
-            margin-left: 8px;
-          }
-          .panel-offset-1 {
-            margin-left: 12px;
-          }
-          .panel-offset-2 {
-            margin-left: 32px;
-          }
+        .remix-tree-head img {
+          float: left;
+        }
+        .remix-tree-head {
+          margin: 22px;
+          padding: 12px;
+          background-color: #FF8;
+          border-radius: 15px;
+          box-shadow: 2px 2px brown;
+        }
+        #accordion .form-control {
+          height: initial;
+        }
+        #accordion .tags-list.form-control li {
+          float: left;
+          margin-left: 8px;
+        }
+        .panel-offset-1 {
+          margin-left: 12px;
+        }
+        .panel-offset-2 {
+          margin-left: 32px;
+        }
       </style>
           `;
-    var css  = { __html: cssText };
     return( 
       <div className="container-fluid">
-        <div dangerouslySetInnerHTML={css} />
+        <InlineCSS css={css} />
         <div className="row">  
-          <div className="col-md-4">
+          <div className="col-md-6 col-md-offset-3">
+            <RemixTreeHead store={store} />
+          </div>
+        </div>
+        <div className="row">  
+          <div className="col-md-4 col-md-offset-2">
             <SamplesFrom store={store} />
           </div>
           <div className="col-md-4">
-            <MainFile store={store} />
-          </div>
-          <div className="col-md-4">
             <SamplesUsedIn store={store} />
+          </div>
+        </div>
+        <div className="row">  
+          <div className="col-md-6 col-md-offset-3">
+            <Accordian>
+              <MainFileOverview model={upload} />
+              <FileSection model={upload} />
+              <RecommendedBy model={upload} numRecommends={upload.numRecommends} />
+              <Reviews model={upload} numReviews={upload.numReviews} />
+            </Accordian>
           </div>
         </div>
       </div>
