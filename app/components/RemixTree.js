@@ -1,4 +1,5 @@
 /*eslint "react/no-danger":0 */
+/* globals $ */
 
 import React       from 'react';
 import Link        from './Link';
@@ -27,6 +28,17 @@ var TreeLinks = React.createClass({
     this.setState( this.splitFiles(props.files) );
   },
 
+  componentDidMount() {
+    if( global.IS_SERVER_REQUEST ) {
+      return;
+    }
+    var linkID = '#link_' + this.props.id;
+    var tailID = '#tail_' + this.props.id;
+    $(tailID)
+      .on('show.bs.collapse', () => $(linkID).text('show less') )
+      .on('hide.bs.collapse', () => $(linkID).text('show all') );
+  },
+
   splitFiles(files) {
     if( files.length > MAX_LINKS_SHOW ) {
       return { head: files.slice(0,MAX_LINKS_SHOW), tail: files.slice(MAX_LINKS_SHOW) };
@@ -38,11 +50,17 @@ var TreeLinks = React.createClass({
     var fileMapper = function( s ) {
         return (
         <li key={s.id}>
-          <Link href={'/tree/' + s.artist.id + '/' + s.id}>{s.name + ' ' + s.artist.name}</Link>
+          <Link href={'/tree/' + s.artist.id + '/' + s.id}>
+            <span className="tree-link-name">{s.name}</span>
+            {' '}
+            <span className="tree-link-artist">{s.artist.name}</span>
+          </Link>
         </li>      
       );
     };
 
+    var tail = this.state.tail ? this.state.tail.map( fileMapper ) : null;
+    var cls  = this.state.tail ? '' : 'hidden';
     return (
         <div className="panel panel-info" id={this.props.id}>
           <div className="panel-heading">
@@ -52,18 +70,11 @@ var TreeLinks = React.createClass({
             <ul>
               {this.state.head.map( fileMapper )}
             </ul>
-            {this.state.tail
-              ? ( <div>
-                    <button data-toggle="collapse" data-parent={'#' + this.props.id} href={'#tail_' + this.props.id}>{"Show all"}</button>
-                    <ul className="collapse" id={'tail_' + this.props.id}>
-                      {this.state.tail.map( fileMapper )}
-                    </ul>
-                  </div>
-                )
-              : null
-            }
+            <ul className="collapse" id={'tail_' + this.props.id}>
+              {tail}
+            </ul>
+            <button id={'link_' + this.props.id} data-toggle="collapse" className={cls} href={'#tail_' + this.props.id}>{'show all'}</button>
           </div>
-          <div className="panel-footer"></div>
         </div>
 
       );
@@ -286,8 +297,8 @@ var Description = React.createClass({
     /* globals $ */
     this.isMounted = true;
     $('#description-more')
-      .on('show.bs.collapse', () => $('#description-less').collapse('hide') )
-      .on('hide.bs.collapse', () => $('#description-less').collapse('show') );
+      .on('show.bs.collapse', () => { $('#description-less').collapse('hide'); $('#description-more-link').text(' less...'); return true; } )
+      .on('hide.bs.collapse', () => { $('#description-less').collapse('show'); $('#description-more-link').text(' more...'); return true; } );
   },
 
   componentWillUnmount() {
@@ -405,6 +416,12 @@ var RemixTree = React.createClass({
         }
         .panel-offset-2 {
           margin-left: 32px;
+        }
+        .tree-link-name {
+          font-style: italic;
+        }
+        .tree-link-artist {
+          color: black;
         }
       </style>
           `;
