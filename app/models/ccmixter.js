@@ -433,6 +433,18 @@ class Detail extends Upload {
       return !!this.upload_extra.nsfw || false;
     };
 
+    this.getEdPick = function() {
+      if( this.upload_extra.edpicks ) {
+        /*
+          { edited: 2016-01-16 09:46:27,
+            review: '',
+            reviewer: '' }
+        */
+        return this.upload_extra.edpicks[ Object.keys(this.upload_extra.edpicks)[0] ];
+      }
+      return null;
+    };
+
     this.setFeatureSources = function(sources) {
       if( !this.featuring && sources ) {
           var unique = [ ];

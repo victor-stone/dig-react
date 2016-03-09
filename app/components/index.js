@@ -15,6 +15,7 @@ import EditDiv from './EditDiv';
 import ErrorDisplay from './ErrorDisplay';
 import Footer from './Footer';
 import Glyph from './Glyph';
+import InlineCSS from './InlineCSS';
 import InstrumentalOnlyFilter from './InstrumentalOnlyFilter';
 import LicenseInfo from './LicenseInfo';
 import Link from './Link';
@@ -59,6 +60,7 @@ module.exports = {
     ErrorDisplay,
     Footer,
     Glyph,
+    InlineCSS,
     InstrumentalOnlyFilter,
     LicenseInfo,
     Link,

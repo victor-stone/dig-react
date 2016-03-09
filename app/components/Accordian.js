@@ -3,6 +3,7 @@ import Glyph      from './Glyph';
 
 var AccordianPanel = React.createClass({
   render() {
+    var clsIn = this.props.open ? ' in' : '';
     var id = this.props.id;
     return (
       <div className="panel panel-default">
@@ -13,7 +14,7 @@ var AccordianPanel = React.createClass({
               <a data-toggle="collapse" data-parent="#accordion" href={'#' + id}>{this.props.title}</a>
             </h4>
          </div>
-        <div id={id} className="panel-collapse collapse">
+        <div id={id} className={'panel-collapse collapse' + clsIn} >
           <div className="panel-body">
             {this.props.children}
           </div>
