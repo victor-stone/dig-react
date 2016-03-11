@@ -1,3 +1,4 @@
+/*eslint "react/no-danger":0 */
 import React               from 'react';
 import { AccordianPanel }  from '../Accordian';
 import Glyph               from '../Glyph';

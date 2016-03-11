@@ -40,6 +40,7 @@ import TagsExtra from './TagsExtra';
 import TitleSetter from './TitleSetter';
 import Topic from './Topic';
 import TrackbackPopup from './TrackbackPopup';
+import Trackbacks from './Trackbacks';
 import UnmixedOnlyFilter from './UnmixedOnlyFilter';
 import ZIPContentPopup from './ZIPContentPopup';
 
@@ -85,6 +86,7 @@ module.exports = {
     TitleSetter,
     Topic,
     TrackbackPopup,
+    Trackbacks,
     UnmixedOnlyFilter,
     ZIPContentPopup 
 };

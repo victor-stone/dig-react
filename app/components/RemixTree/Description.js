@@ -14,7 +14,6 @@ var Description = React.createClass({
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
-    /* globals $ */
     this.isMounted = true;
     $('#description-more')
       .on('show.bs.collapse', () => { $('#description-less').collapse('hide'); $('#description-more-link').text(' less...'); return true; } )
@@ -43,7 +42,7 @@ var Description = React.createClass({
         more       = ' more...';
       }
     }
-    if( this.isMounted ) {
+    if( !global.IS_SERVER_REQUEST && this.isMounted ) {
       $('#description-more').collapse( plain ? 'hide' : 'show');
       $('#description-less').collapse( plain ? 'show' : 'hide');
     }

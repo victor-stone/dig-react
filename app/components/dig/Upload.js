@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Link            from '../Link';
-import TrackbackPopup  from '../TrackbackPopup';
+import TrackbackList   from '../Trackbacks';
 import People          from '../People';
 import SharePopup      from '../SharePopup';
 import LicenseInfo     from '../LicenseInfo'; 
@@ -10,8 +10,6 @@ import { PlayButton }  from '../AudioPlayer';
 
 import { AddTrackbackPopup, 
          ExternalLink } from '../ActionButtons';
-
-import UploadStore     from '../../stores/upload';
 
 var Actions = React.createClass({
 
@@ -119,41 +117,6 @@ var LicenseSection = React.createClass({
   }
 });
 
-
-var TracbackList = React.createClass({
-
-  render: function() {
-    var trackbacks = this.props.model || [];
-    var tooManyTBs = trackbacks.length >= UploadStore.MAX_TRACKBACK_FETCH;
-
-    function formatTB(tb) {
-      return( 
-        <li key={tb.id} className="list-group-item">
-          <div>
-            {tb.embed 
-                ? (<TrackbackPopup trackback={tb} />)
-                : (<ExternalLink href={tb.url} subname={tb.type} text={tb.name} />)
-            }
-            {' '}<span className="light-color">{tb.artist.name}</span>
-          </div>
-        </li>
-      );
-    }
-
-    var tbs = trackbacks.length 
-      ? trackbacks.map( formatTB )
-      : (<li><span className="light-color">{"No trackbacks yet. Add yours!"}</span></li>);
-
-    return (
-        <ul className="list-group remix-list">
-          {tbs}
-          {tooManyTBs ? <li key="toomany"><span className="light-color">{"too many to show here!"}</span></li> : null}
-        </ul>
-      );
-
-  },
-});
-
 var TrackbacksSection = React.createClass({
 
   render: function() {
@@ -164,7 +127,7 @@ var TrackbacksSection = React.createClass({
           <h3 className="inlined">{"Trackbacks"}</h3>
           <AddTrackbackPopup model={model.upload} />
         </div>
-        <TracbackList model={model.trackbacks} />
+        <TrackbackList model={model.trackbacks} />
       </div>
     );
   }
