@@ -186,7 +186,7 @@ var DownloadPopup = React.createClass({
     var popup = this.state.view.showModal ? this.genPopup() : null;
 
     return (
-      <span className="download-button-container">
+      <span className="download-button-container hidden-sm hidden-xs">
         <button className={cls} onClick={this.handleShowModal} ><Glyph fixed={fixed} sz={sz} icon="cloud-download" />{this.props.children}</button>
         {popup}
       </span>

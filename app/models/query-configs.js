@@ -68,7 +68,7 @@ module.exports = {
   },
 
   film: {
-    tags: 'soundtrack,ambient,music_for_film',
+    tags: 'soundtrack,ambient,music_for_film,music_for_video,dig_the_soundtrack',
     type: 'any'        
   },
 
