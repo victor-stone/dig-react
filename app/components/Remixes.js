@@ -36,11 +36,11 @@ var ArtistLink = React.createClass({
 var RemixLine = React.createClass({
 
   render: function() {
-    var u = this.props.upload;
+    var u     = this.props.upload;
     var skipU = this.props.skipUser;
-
+    var cls   = this.props.noClear ? '' : 'clearfix';
     return ( 
-      <li className="clearfix">
+      <li className={cls} >
         <PlayButton model={u} onPlay={this.props.onPlay}/> <DownloadPopup model={u} /> <SongLink model={u} /> <ArtistLink model={u.artist} skipUser={skipU} />
       </li>
     );
@@ -84,7 +84,7 @@ var NotALotHere = React.createClass({
   }
 });
 
-var Remixes = React.createClass({
+var RemixContainer = React.createClass({
 
   mixins: [ModelTracker],
 
@@ -103,32 +103,49 @@ var Remixes = React.createClass({
 
   render: function() {
 
-    var model = this.state.model;
+    var model   = this.state.model;
 
     var remixLines = model.items.map( upload =>
-      <RemixLine key      = {upload.id} 
-                 upload   = {upload} 
-                 skipUser = {this.props.skipUser} 
-                 onPlay   = {this.onPlay}
-      />
+        React.createElement(this.props.remixLine,
+                {
+                  key: upload.id,
+                  upload: upload,
+                  noClear: this.props.noClear,
+                  skipUser: this.props.skipUser,
+                  onPlay: this.onPlay
+                })
     );
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-9 col-md-offset-2 col-md-sm-12">
-            {this.props.children}
-            <ul className="play-list">
-              {remixLines}
-            </ul>
-          </div>
-        </div>
-      </div>      
+      <ul className="play-list">
+        {remixLines}
+      </ul>
     );
   }
 });
 
-Remixes.NotALotHere = NotALotHere;
+var Remixes = React.createClass({
+
+  render() {
+    return( 
+      <div className="container">
+        <div className="row">
+          <div className="col-md-9 col-md-offset-2 col-md-sm-12">
+            {this.props.children}
+            <RemixContainer remixLine={RemixLine}>
+              {this.props.children}
+            </RemixContainer>
+          </div>
+        </div>
+      </div>      
+      );
+  }
+});
+
+Remixes.NotALotHere    = NotALotHere;
+Remixes.SongLink       = SongLink;
+Remixes.ArtistLink     = ArtistLink;
+Remixes.RemixContainer = RemixContainer;
 
 module.exports = Remixes;
 

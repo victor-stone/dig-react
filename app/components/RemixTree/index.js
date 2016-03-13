@@ -17,7 +17,6 @@ import Overview    from './Overview';
 import Description from './Description';
 
 var css = `
-  <style>
 
     .remix-tree-head {
       margin: 22px;
@@ -123,7 +122,6 @@ var css = `
       font-style: italic;
       margin-left: 20px;
     }    
-  </style>
       `;
 
 function FileSection(props) {
@@ -179,7 +177,7 @@ var RemixTree = React.createClass({
 
   return( 
       <div className="container-fluid">
-        <InlineCSS css={css} />
+        <InlineCSS css={css} id="remix-tree"/>
         <div className="row">  
           <div className="col-md-6 col-md-offset-3">
             <RemixTreeHead store={store} />

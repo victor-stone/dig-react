@@ -71,7 +71,8 @@ var PlayButton = React.createClass({
 
   render() {
     var playStop = this.state.isPlaying ? 'stop' : 'play'; 
-    var cls      = 'btn btn-info btn-lg ' + (this.props.className || '');
+    var btnType  = 'btn-' + (this.props.btnType || 'info');
+    var cls      = 'btn ' + btnType + ' btn-lg ' + (this.props.className || '');
     var sz       = this.props.big ? 'x4' : '';
     var fixed    = this.props.fixed || false;
     return (<a className={cls} href="#" onClick={this.togglePlay}><Glyph fixed={fixed} sz={sz} icon={playStop} /></a>);
