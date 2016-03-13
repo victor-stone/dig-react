@@ -13,7 +13,7 @@ function TreeLink( props ) {
   var s = props.s;
   return (
         <li>
-          <Link href={'/tree/' + s.artist.id + '/' + s.id}>
+          <Link href={'/files/' + s.artist.id + '/' + s.id}>
             <span className="tree-link-name">{s.name}</span>
             {' '}
             <span className="tree-link-artist">{s.artist.name}</span>

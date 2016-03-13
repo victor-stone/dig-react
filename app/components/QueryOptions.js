@@ -35,7 +35,7 @@ const LicenseFilter = React.createClass({
 
   performQuery: function() {
     var lic = this.refs['lic'].value;
-    this.props.store.applyHardParams( { lic } );
+    this.props.store.refreshHard( { lic } );
   },
 
   render: function() {
@@ -63,7 +63,7 @@ const SortFilterWrap = React.createClass({
 
   performQuery: function() {
     var digrank = this.refs['sort'].value;
-    this.props.store.applySoftParams( { digrank } );
+    this.props.store.refresh( { digrank } );
   },
   
   render: function() {

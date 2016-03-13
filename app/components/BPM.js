@@ -120,7 +120,7 @@ const BPMSlider = React.createClass({
       var qptags  = this.props.store.queryParams.oneof;
       var oneof   = qptags.replace(old_tag,new_tag).toString();
 
-      this.applyHardParams( { oneof } );
+      this.refreshHard( { oneof } );
 
     }, DEBOUNCE_APPLY_BPM ),
 

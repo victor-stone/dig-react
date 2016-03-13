@@ -12,7 +12,7 @@ var globp   = rsvp.denodeify(glob);
 
 var bt = require('./bin/build-tools');
 
-var apps = [ 'dig', 'pells', 'stems', 'playlists' ];
+var apps = [ 'ccmixter', 'pells', 'stems', 'playlists', 'dig' ];
 
 var MODE     = argv.mode || (argv.p ? 'prod' : 'dev');
 var buildAll = argv.all || argv.a || argv.p || false;

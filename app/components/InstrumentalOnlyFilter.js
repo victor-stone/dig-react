@@ -24,7 +24,7 @@ const InstrumentalOnlyFilter = React.createClass({
     var val  = !this.state.toggle;
     var tags = this.props.store.model.queryParams.reqtags;
     var reqtags = (new TagString(tags)).toggle( qc.instrumental.reqtags, val).toString();
-    this.props.store.applyHardParams( { reqtags } );
+    this.props.store.refreshHard( { reqtags } );
   },
 
   render: function() {

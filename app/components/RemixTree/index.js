@@ -68,6 +68,13 @@ var css = `
       color: white;
     }
 
+    .remix-tree-play-button {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;  
+      border: 3px solid;
+    }
+    
     #description-less {
       font-size: 12px;
       font-style: italic;
@@ -150,6 +157,7 @@ var RemixTreeHead = React.createClass({
           <h4 className="clearfix"><Link className="artist" href={'/people/'+model.artist.id}>{model.artist.name}</Link></h4>
           <Description store={this.state.store} />
           <div className="clearfix" />
+          <PlayButton model={model} className="remix-tree-play-button"/>
         </div>
     );
   }
@@ -175,7 +183,6 @@ var RemixTree = React.createClass({
         <div className="row">  
           <div className="col-md-6 col-md-offset-3">
             <RemixTreeHead store={store} />
-            <PlayButton model={upload} className="remix-tree-play-button"/>
           </div>
         </div>
         <div className="row">  

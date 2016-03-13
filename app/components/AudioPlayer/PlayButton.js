@@ -6,30 +6,58 @@ import AudioService from '../../services/audio-player';
 
 var PlayButton = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
+    var media = this.bindToModel(this.props.model);
+    return this.stateFromMedia(media);
+  },
+
+  componentWillMount() {
+    this.hookEvents();
+  },
+
+  componentWillReceiveProps( nextProps ) {
+    var media = nextProps.model.media;
+    if( this.state.media ) {
+      if( media && this.state.media.url === media.url ) {
+        return;
+      }
+      this.unhookEvents();
+    }
+    media = this.bindToModel(nextProps.model);
+    this.setState( this.stateFromMedia(media), () => this.hookEvents() );
+  },
+
+  componentWillUnmount() {
+    this.unhookEvents();
+  },
+
+  bindToModel(model) {
     if( !global.IS_SERVER_REQUEST ) {
-      if( !AudioService.bindToNowPlaying(this.props.model) ) {
-        AudioService.attachMedia(this.props.model);
+      if( !AudioService.bindToNowPlaying(model) ) {
+        AudioService.attachMedia(model);
       }
     }
-    var media     = this.props.model.media;
+    return model.media;
+  },
+
+  stateFromMedia(media) {
     var isPlaying = media && media.isPlaying;
     return { isPlaying, media };
   },
 
-  componentWillMount: function() {
+  hookEvents() {
     if( this.state.media ) {
       this.state.media.on( events.CONTROLS, this.onControls );
     }
   },
 
-  componentWillUnmount: function() {
+  unhookEvents() {
     if( this.state.media ) {
       this.state.media.removeListener( events.CONTROLS, this.onControls );
     }
   },
 
-  togglePlay: function(e) {
+  togglePlay(e) {
     e.preventDefault();
     AudioService.togglePlay(this.props.model);
     if( this.props.onPlay ) {
@@ -37,11 +65,11 @@ var PlayButton = React.createClass({
     }
   },
 
-  onControls: function(media) {
+  onControls(media) {
     this.setState( { isPlaying: media.isPlaying } );
   },
 
-  render: function() {
+  render() {
     var playStop = this.state.isPlaying ? 'stop' : 'play'; 
     var cls      = 'btn btn-info btn-lg ' + (this.props.className || '');
     var sz       = this.props.big ? 'x4' : '';

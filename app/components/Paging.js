@@ -57,7 +57,7 @@ const LimitFilter = React.createClass({
 
   performQuery: function() {
     var limit = this.refs['limit'].value;
-    this.props.store.applyHardParams( { limit } );
+    this.props.store.refreshHard( { limit } );
   },
 
   render: function() {

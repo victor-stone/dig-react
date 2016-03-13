@@ -64,7 +64,7 @@ const Listing = React.createClass({
   onClose: function() {
     var qp = this.state.model.queryParams;
     delete qp['ids'];
-    this.props.store.applyHardParams(qp);
+    this.props.store.refreshHard(qp);
   },
 
   render: function() {

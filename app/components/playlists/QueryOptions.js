@@ -23,7 +23,7 @@ const TypeFilter = React.createClass({
     var tags    = new TagString(this.props.store.model.queryParams.reqtags)
                         .remove('remix,sample,acappella')
                         .add(typetag);
-    this.props.store.applySoftParams( { reqtags: tags.toString() } );
+    this.props.store.refresh( { reqtags: tags.toString() } );
   },
   
   render: function() {

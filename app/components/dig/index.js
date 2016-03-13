@@ -4,7 +4,6 @@ import FeaturedPage from './FeaturedPage';
 import Footer from './Footer';
 import Header from './Header';
 import QueryOptions from './QueryOptions';
-import Remixes from './Remixes';
 import TagSearch from './TagSearch';
 import Upload from './Upload';
 
@@ -14,7 +13,6 @@ module.exports = {
     Footer,
     Header,
     QueryOptions,
-    Remixes,
     TagSearch,
     Upload 
 };

@@ -1,13 +1,12 @@
 import React              from 'react';
-import Link               from '../Link';
-import DownloadPopup      from '../DownloadPopup';
-import People             from '../People';
-import { PlayButton }     from '../AudioPlayer';
-import QueryOptions       from './QueryOptions';
-import AudioPlayerService from '../../services/audio-player';
-import { ModelTracker }   from '../../mixins';
+import Link               from './Link';
+import DownloadPopup      from './DownloadPopup';
+import People             from './People';
+import { PlayButton }     from './AudioPlayer';
+import AudioPlayerService from '../services/audio-player';
+import { ModelTracker }   from '../mixins';
 
-import { ResetOptionsButton } from '../QueryOptions';
+import { ResetOptionsButton } from './QueryOptions';
 
 const MIN_LIMIT = 10;
 
@@ -118,7 +117,7 @@ var Remixes = React.createClass({
       <div className="container">
         <div className="row">
           <div className="col-md-9 col-md-offset-2 col-md-sm-12">
-            <QueryOptions store={this.props.store} />
+            {this.props.children}
             <ul className="play-list">
               {remixLines}
             </ul>

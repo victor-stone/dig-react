@@ -182,7 +182,7 @@ const MatchAllButton = React.createClass({
   performQuery: function() {
     // yes, we reverse it here
     var type = this.state.toggle ? 'any' : 'all';
-    this.props.store.applyHardParams( { type } );
+    this.props.store.refreshHard( { type } );
   },
 
   render: function() {

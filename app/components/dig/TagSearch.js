@@ -2,7 +2,8 @@ import React         from 'react';
 import Glyph         from '../Glyph'; 
 import Paging        from '../Paging'; 
 import Tags          from '../Tags';
-import Remixes       from './Remixes';
+import Remixes       from '../Remixes';
+import QueryOptions  from './QueryOptions';
 import events        from '../../models/events';
 
 const TagCategoryRow = React.createClass({
@@ -106,7 +107,9 @@ var TagSearch = React.createClass({
       <div>
         <RemixTagSelectionSection store={store}  />
         <Paging store={store} ref="paging"/>
-        <Remixes store={store} />   
+        <Remixes store={store}>   
+          <QueryOptions store={this.props.store} />
+        </Remixes>
         <Tags.NoTagHits store={store}  />     
       </div>
     );

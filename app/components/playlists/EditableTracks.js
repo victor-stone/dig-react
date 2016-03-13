@@ -15,7 +15,7 @@ var EditableTracks = React.createClass({
     var sortkeys = $('#fo').sortable( 'serialize' );
     var id       = this.props.store.model.head.id;
     CCMixter.reorderPlaylist(id,sortkeys).then( () => {
-      this.props.store.model.tracks.applySoftParams({});
+      this.props.store.model.tracks.refresh({});
     });
   },
 

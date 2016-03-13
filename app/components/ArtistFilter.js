@@ -77,7 +77,7 @@ const ArtistFilter = React.createClass({
   filter: function(u, isIcon, filterCB) {
     
     var kill = function() {
-      this.setState( { u: null }, () => this.applyHardParams( { u: null } ) );
+      this.setState( { u: null }, () => this.refreshHard( { u: null } ) );
     }.bind(this);
 
     if( isIcon ) {
@@ -92,7 +92,7 @@ const ArtistFilter = React.createClass({
   },
 
   artistSelect: function(a) {
-    this.applyHardParams( { u: a.id } );
+    this.refreshHard( { u: a.id } );
     this.refs['edit'].setState( { value: a.id } );
   },
 

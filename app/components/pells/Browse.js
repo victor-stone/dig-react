@@ -38,7 +38,7 @@ var PellsTabs = React.createClass({
     var tag     = filter === 'all' ? '' : filter;
     var qptags  = this.props.store.queryParams.reqtags;
     var reqtags = qptags.replace( this.state.tag, tag ).toString();
-    this.props.store.applyHardParams( { reqtags } );    
+    this.props.store.refreshHard( { reqtags } );    
   },
 
   checkActive: function(filter) {

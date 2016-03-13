@@ -59,7 +59,7 @@ Edit.store = function(params) {
       delete qp['user'];
     }
     delete qp['playlist'];
-    return store.model.tracks.applyHardParams( qp );
+    return store.model.tracks.refreshHard( qp );
   }).then( () => _store );
 };
 

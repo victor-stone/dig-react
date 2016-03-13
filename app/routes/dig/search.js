@@ -2,13 +2,15 @@ import React     from 'react';
 import qc        from '../../models/query-configs';
 import Rmx       from '../../stores/remixes';
 
+import { QueryOptions } from '../../components/dig';
+
 import { DidYouMean,
          Link,
          Glyph,
+         Remixes,
          SearchHeader,
          Paging }       from '../../components';
 import { mergeParams }  from '../../unicorns';
-import { Remixes }      from '../../components/dig';
 
 
 function NoHits() {
@@ -28,7 +30,9 @@ function search(props) {
       <SearchHeader store={store} />
       <DidYouMean store={store} artists genres ><NoHits /></DidYouMean>
       <Paging store={store} />
-      <Remixes store={store} />
+      <Remixes store={store}>
+        <QueryOptions store={this.props.store} />
+      </Remixes>
       <Remixes.NotALotHere store={store} />
     </div>
   );

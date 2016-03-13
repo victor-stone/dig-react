@@ -16,7 +16,7 @@ const DetailTags = React.createClass({
       e.preventDefault();
       var tags = _this.props.store.queryParams.tags;
       tags.add(tag);
-      _this.props.store.applyHardParams( { tags: tags.toString() } );
+      _this.props.store.refreshHard( { tags: tags.toString() } );
     };
   },
 

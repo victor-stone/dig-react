@@ -1,8 +1,8 @@
 
 import React             from 'react';
-import Upload            from '../stores/upload';
-import { RemixTree }     from '../components';
-import { ModelTracker }  from '../mixins';
+import Upload            from '../../stores/upload';
+import { RemixTree }     from '../../components';
+import { ModelTracker }  from '../../mixins';
 
 var Tree = React.createClass({
 
@@ -20,7 +20,7 @@ var Tree = React.createClass({
 
 });
 
-Tree.path = '/tree/:user/:id';
+Tree.path = '/files/:user/:id';
 
 Tree.store = function(params/*,queryParams*/) {
   return Upload.storeFromQuery(params.id,params.user,Upload.ALL);

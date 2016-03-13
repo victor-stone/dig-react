@@ -25,7 +25,7 @@ var TagsExtra = React.createClass({
     this.setState( { value: tags.toString() }, () => {
       var store   = this.props.store;
       var qptags  = store.queryParams.tags.replace( oldtags, this.state.value);
-      store.applyHardParams( { tags: qptags.toString() } );
+      store.refreshHard( { tags: qptags.toString() } );
     });
   },
 
@@ -34,7 +34,7 @@ var TagsExtra = React.createClass({
     this.setState( { value: '' }, () => {
       var store   = this.props.store;
       var qptags  = store.queryParams.tags.remove(oldtags);
-      store.applyHardParams( { tags: qptags.toString() } );
+      store.refreshHard( { tags: qptags.toString() } );
     });
   },
 

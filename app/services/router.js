@@ -107,7 +107,7 @@ class Router extends Eventer
     if( this.currentRoute.component &&
         !this.currentRoute.component.noReuse &&
         document.location.pathname === this.currentRoute.component.path &&
-        this.currentRoute.store.applyHardParams ) {
+        this.currentRoute.store.refreshHard ) {
 
           var store = this.currentRoute.store;
           this.ignoreEvents = true;

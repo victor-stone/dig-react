@@ -27,12 +27,12 @@ var QueryParamTracker = {
     this.setState( this.stateFromParams(queryParams) );
   },
 
-  applySoftParams: function(opts) {
-    this.props.store.applySoftParams(opts);
+  refresh: function(opts) {
+    this.props.store.refresh(opts);
   },
 
-  applyHardParams: function(opts) {
-    this.props.store.applyHardParams(opts);
+  refreshHard: function(opts) {
+    this.props.store.refreshHard(opts);
   },
   
 };

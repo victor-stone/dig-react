@@ -7,6 +7,7 @@ import ArtistFilter from './ArtistFilter';
 import AudioPlayer from './AudioPlayer';
 import Banner from './Banner';
 import BPM from './BPM';
+import ccmixter from './ccmixter';
 import CurrentUserMenu from './CurrentUserMenu';
 import DidYouMean from './DidYouMean';
 import dig from './dig';
@@ -29,6 +30,7 @@ import pells from './pells';
 import People from './People';
 import playlists from './playlists';
 import QueryOptions from './QueryOptions';
+import Remixes from './Remixes';
 import RemixTree from './RemixTree';
 import SearchBox from './SearchBox';
 import SearchHeader from './SearchHeader';
@@ -53,6 +55,7 @@ module.exports = {
     AudioPlayer,
     Banner,
     BPM,
+    ccmixter,
     CurrentUserMenu,
     DidYouMean,
     dig,
@@ -75,6 +78,7 @@ module.exports = {
     People,
     playlists,
     QueryOptions,
+    Remixes,
     RemixTree,
     SearchBox,
     SearchHeader,

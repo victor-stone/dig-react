@@ -24,7 +24,7 @@ const UnmixedOnlyFilter = React.createClass({
   },
 
   performQuery: function() {
-    this.applyHardParams( { remixmax: !this.state.toggle ? '0' : '' });
+    this.refreshHard( { remixmax: !this.state.toggle ? '0' : '' });
   },
 
   render: function() {

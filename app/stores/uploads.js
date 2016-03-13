@@ -44,24 +44,24 @@ class UploadList extends Query {
   }
 
   paginate(offset) {
-    return this._applySoftParams(this._qp({offset},events.PARAMS_CHANGED));
+    return this._refresh(this._qp({offset},events.PARAMS_CHANGED));
   }
 
   applyTags(tags) {
     var qp = { tags: tags.toString() };
-    return this.applyHardParams(qp);    
+    return this.refreshHard(qp);    
   }
 
   applyURIQuery(qp) {
-    return this.applyHardParams(qp);    
+    return this.refreshHard(qp);    
   }
 
-  applySoftParams(queryParams) {
+  refresh(queryParams) {
     queryParams.offset = 0;
-    return this._applySoftParams(this._qp(queryParams,events.PARAMS_CHANGED));
+    return this._refresh(this._qp(queryParams,events.PARAMS_CHANGED));
   }
 
-  applyHardParams(queryParams) {
+  refreshHard(queryParams) {
     queryParams.offset = 0;
     return this.getModel(this._qp(queryParams,events.PARAMS_CHANGED));
   }
@@ -200,10 +200,10 @@ class UploadList extends Query {
     var qpt = this._expandQP(qp);
     events.forEach( e => this.emit( e, qpt, this ) );
     var qpc = this.model.queryParams = this._contractQP( qpt, {} );
-    return this.applyHardParams(qpc);
+    return this.refreshHard(qpc);
   }
 
-  _applySoftParams(queryParams,deferName) {
+  _refresh(queryParams,deferName) {
     return this.fetch(queryParams,deferName).then( items => {
       this.model.items = items;
       this.emit( events.MODEL_UPDATED );
