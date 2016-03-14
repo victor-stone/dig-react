@@ -68,12 +68,22 @@ var css = `
 .remix-page .play-list li .artist-name a {
   font-weight: 100;
   color: yellow;
+  max-width: 120px;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.remix-page .play-list li.remix-line .tools {
+  width: 110px;
+  margin: 0 auto;
 }
 
 .remix-page .play-list li.remix-line .play-button {
-  display: block;
-  width: 50px;
-  margin: 0 auto;
+  margin-right: 10px;
+}
+
+.popover {
+  z-index: 5;
 }
 
 .remix-page  .remix-popover .form-control {
@@ -86,13 +96,16 @@ var css = `
   background-color: black;
   width: 100%;
   opacity: 0.9;
+  z-index: 11;
 }
-.paging {
+
+.remix-option-bar .paging {
   display: inline-block;
   margin-left: 18px;
   float: right;
 }
-.paging .pagination {
+
+.remix-option-bar .paging .pagination {
   margin-right: 8px;
   margin-top: 3px;
   margin-bottom: 3px;
@@ -100,7 +113,7 @@ var css = `
   float: left;
 }
 
-.paging-caption {
+.remix-option-bar .paging-caption {
   display: inline-block;
   margin-right: 8px;
   margin-top: 12px;
@@ -109,9 +122,30 @@ var css = `
   width: initial;
 }
 
-.limit-label {
+.remix-option-bar .limit-label {
   color: white;
 }
+
+@media screen and (max-width: 770px) {
+
+  .remix-page .play-list li.remix-line {
+    margin: 7px 3px;
+    width: 130px;
+  }
+
+  .remix-option-bar .paging {
+    position: absolute;
+    top: 47px;
+    right: 20px;
+  }
+
+  .remix-option-bar .paging > label.limit-label,
+  .remix-option-bar .paging > div.paging-caption {
+    display: none;
+  }
+
+}
+
 `;
 
 const REMIX_FILTER    = /^(editorial_pick|remix|sample|acappella)$/;
@@ -172,24 +206,29 @@ var RemixOptionBar = React.createClass({
 
 var RemixLine = React.createClass({
 
-  componentDidMount() {
-    if( global.IS_SERVER_REQUEST ) {
-      return;
-    }
-    var u = this.props.upload;
-    var id = '#remix-line-' + u.id;
-    var contentID = id + '-content';
-     $(id).popover({
-            content : `<div class="remix-popover" id=${contentID}></div>`,
+  _showInfo(id,html) {
+    html = `<div class="remix-popover">${html}</div>`;
+     $('#' + id).popover({
+            content : html,
             html: true,
             trigger: 'focus',
             placement: 'auto'
-        }).on('show.bs.popover', () => {
-          var upload = new Upload();
-          upload.info(u.id).then( model =>
-            ReactDOM.render( React.createElement(Overview.OverviewForm,{model}),  document.getElementById(contentID) )
-            );
-        });
+        }).popover('show');
+  },
+
+  showInfo() {
+    var u = this.props.upload;
+    var id = 'remix-line-' + u.id;
+    if( !$('#'+id).data('bs.popover') ) {
+      var contentID = 'popover-placeholder-' + u.id;
+      var upload = new Upload();
+      var me = this;
+      upload.info(u.id).then( model =>
+            ReactDOM.render( React.createElement(Overview.OverviewForm,{model}),  
+                             document.getElementById(contentID),
+                             function() { me._showInfo(id,ReactDOM.findDOMNode(this).innerHTML); } )
+        );
+    }
   },
 
   render() {
@@ -198,8 +237,11 @@ var RemixLine = React.createClass({
       <li className="remix-line" >
         <div className="content-wrapper">
           <SongLink model={u} /> 
-          <button id={'remix-line-' + u.id} className="pull-right btn-info"><Glyph icon="info-circle" /></button>
-          <PlayButton btnType="warning" className="play-button" model={u} onPlay={this.props.onPlay}/> 
+          <div className="tools">
+            <PlayButton btnType="warning" className="play-button" model={u} onPlay={this.props.onPlay}/> 
+            <div id={'popover-placeholder-' + u.id} className="hidden" />
+            <a id={'remix-line-' + u.id} tabIndex={this.props.index} onClick={this.showInfo} className="btn btn-lg btn-info"><Glyph icon="info-circle" /></a>
+          </div>
         </div>
         <ArtistLink model={u.artist} skipUser={this.props.skipUser} />
       </li>

@@ -105,14 +105,15 @@ var RemixContainer = React.createClass({
 
     var model   = this.state.model;
 
-    var remixLines = model.items.map( upload =>
+    var remixLines = model.items.map( (upload,index) =>
         React.createElement(this.props.remixLine,
                 {
                   key: upload.id,
                   upload: upload,
                   noClear: this.props.noClear,
                   skipUser: this.props.skipUser,
-                  onPlay: this.onPlay
+                  onPlay: this.onPlay,
+                  index
                 })
     );
 
