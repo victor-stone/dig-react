@@ -133,9 +133,7 @@ var Remixes = React.createClass({
         <div className="row">
           <div className="col-md-9 col-md-offset-2 col-md-sm-12">
             {this.props.children}
-            <RemixContainer remixLine={RemixLine}>
-              {this.props.children}
-            </RemixContainer>
+            <RemixContainer store={this.props.store} remixLine={RemixLine} />
           </div>
         </div>
       </div>      

@@ -7,10 +7,8 @@ import ArtistFilter from './ArtistFilter';
 import AudioPlayer from './AudioPlayer';
 import Banner from './Banner';
 import BPM from './BPM';
-import ccmixter from './ccmixter';
 import CurrentUserMenu from './CurrentUserMenu';
 import DidYouMean from './DidYouMean';
-import dig from './dig';
 import DownloadPopup from './DownloadPopup';
 import EditDiv from './EditDiv';
 import ErrorDisplay from './ErrorDisplay';
@@ -26,16 +24,13 @@ import NavbarHeader from './NavbarHeader';
 import PageHeader from './PageHeader';
 import Paging from './Paging';
 import PanelSlider from './PanelSlider';
-import pells from './pells';
 import People from './People';
-import playlists from './playlists';
 import QueryOptions from './QueryOptions';
 import Remixes from './Remixes';
 import RemixTree from './RemixTree';
 import SearchBox from './SearchBox';
 import SearchHeader from './SearchHeader';
 import SharePopup from './SharePopup';
-import stems from './stems';
 import TagFilter from './TagFilter';
 import Tags from './Tags';
 import TagsExtra from './TagsExtra';
@@ -55,10 +50,8 @@ module.exports = {
     AudioPlayer,
     Banner,
     BPM,
-    ccmixter,
     CurrentUserMenu,
     DidYouMean,
-    dig,
     DownloadPopup,
     EditDiv,
     ErrorDisplay,
@@ -74,16 +67,13 @@ module.exports = {
     PageHeader,
     Paging,
     PanelSlider,
-    pells,
     People,
-    playlists,
     QueryOptions,
     Remixes,
     RemixTree,
     SearchBox,
     SearchHeader,
     SharePopup,
-    stems,
     TagFilter,
     Tags,
     TagsExtra,

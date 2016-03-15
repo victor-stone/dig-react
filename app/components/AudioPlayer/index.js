@@ -22,7 +22,7 @@ var nullPosition = {
 
 const AudioPlayer = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return { 
       nowPlaying: null,
       controls: {          
@@ -35,19 +35,21 @@ const AudioPlayer = React.createClass({
     };
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     if( !global.IS_SERVER_REQUEST ) {
       AudioService.on( events.NOW_PLAYING ,this.onNowPlaying);
+      AudioService.on( events.PLAYLIST,    this.onPlaylist);
     }
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     if( !global.IS_SERVER_REQUEST ) {
       AudioService.removeListener( events.NOW_PLAYING ,this.onNowPlaying);
+      AudioService.removeListener( events.PLAYLIST,    this.onPlaylist);
     }
   },
 
-  onNowPlaying: function(nowPlaying) {
+  onNowPlaying(nowPlaying) {
     if( this.state.nowPlaying ) {
       this.state.nowPlaying.removeListener( events.CONTROLS, this.onControls );
       this.state.nowPlaying.removeListener( events.POSITION,  this.onPosition );
@@ -60,7 +62,18 @@ const AudioPlayer = React.createClass({
     this.setState( { nowPlaying } );
   },
 
-  onControls: function(nowPlaying) {
+  onPlaylist() {
+    var np = AudioService.nowPlaying;
+    var controls = {
+        isPaused:  np.isPaused,
+        isPlaying: np.isPlaying,
+        hasNext:   AudioService.hasNext(),
+        hasPrev:   AudioService.hasPrev()
+      };
+    this.setState( { controls } );
+  },
+
+  onControls(nowPlaying) {
     var controls = {
         isPaused:  nowPlaying.isPaused,
         isPlaying: nowPlaying.isPlaying,
@@ -74,11 +87,11 @@ const AudioPlayer = React.createClass({
     this.setState( state );
   },
 
-  onPosition: function(position) {
+  onPosition(position) {
     this.setState( { position } );
   },
 
-  render: function() {
+  render() {
     if( !this.state.nowPlaying ) {
       return null;
     }

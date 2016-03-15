@@ -2,10 +2,10 @@ import React            from 'react';
 import Samples          from '../../stores/samples';
 import qc               from '../../models/query-configs';
 import { mergeParams }  from '../../unicorns';
-import { stems }  from '../../components';
+import People           from '../../components/stems/People';
 
 function stemsPeople(props) {
-  return (<stems.People {...props} />);
+  return (<People {...props} />);
 }
 
 stemsPeople.title = 'People';

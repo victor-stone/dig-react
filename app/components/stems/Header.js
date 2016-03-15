@@ -6,15 +6,6 @@ import LoadingGlyph from '../LoadingGlyph';
 import NavbarHeader from '../NavbarHeader';
 import services     from '../../services';
 
-/*
-                <li>
-                  <Link href="/tree/jlbrock44/52765">{"tree"}</Link>
-                </li>
-                <li>
-                  <Link href="/dig-the-dubcatcher">{"vadim"}</Link>
-                </li>
-*/
-
 import { CurrentUserTracker }    from '../../mixins';
 import { CurrentUserMenu,
          CurrentUserMenuHead }   from '../CurrentUserMenu';
@@ -63,9 +54,6 @@ const Header = React.createClass({
               </div>      
               <ul className="nav navbar-nav navbar-right">
                 <li><Link href="#"><LoadingGlyph /></Link></li>
-        <li>
-          <Link href="/tree/grapes/16626">{"tree"}</Link>
-        </li>
                 <li>
                   <Link href="/licenses">{"licenses"}</Link>
                 </li>

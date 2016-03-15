@@ -23,7 +23,7 @@ var people = React.createClass({
         <People.Header model={store.model.artist} />
         <Paging store={store} />
         <Remixes store={store} skipUser>
-          <QueryOptions store={this.props.store} />
+          <QueryOptions store={store} />
         </Remixes>
         <Remixes.NotALotHere store={store} />
       </div>

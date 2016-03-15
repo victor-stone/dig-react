@@ -2,7 +2,6 @@ import credits from '../credits';
 import licenses from '../licenses';
 import aboutFLAC from '../aboutFLAC';
 import news from '../news';
-import tree from '../tree';
 import digTheDubCatcher from '../dig-the-dubcatcher';
 
 import index from './home';
@@ -20,6 +19,5 @@ module.exports = {
   people,
   search,
   stems,
-  tree,
 };
 

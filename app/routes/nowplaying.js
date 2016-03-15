@@ -2,9 +2,8 @@ import React      from 'react';
 import rsvp       from 'rsvp';
 import NowPlaying from '../stores/nowplaying';
 
-import { PageHeader } from '../components';
-import { Remixes }    from '../components/dig';
-
+import { PageHeader,
+         Remixes } from '../components';
 
 var nowplaying = React.createClass({
 

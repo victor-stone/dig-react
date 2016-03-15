@@ -2,7 +2,7 @@ import React            from 'react';
 import qc               from '../../models/query-configs';
 import Samples          from '../../stores/samples';
 import { mergeParams }  from '../../unicorns';
-import { stems }        from '../../components';
+import Browse           from '../../components/stems/Browse';
 
 var browse = React.createClass({
 
@@ -10,7 +10,7 @@ var browse = React.createClass({
     var store = this.props.store;
     return (
       <div className="container-fluid">
-        <stems.Browse store={store} />
+        <Browse store={store} />
       </div>
     );      
   },

@@ -18,7 +18,7 @@ const FeaturedPage = React.createClass({
         <PageHeader icon={icon} title={title} subTitle={subTitle} />
         <Paging store={store} />
         <Remixes store={store}>
-          <QueryOptions store={this.props.store} />
+          <QueryOptions store={store} />
         </Remixes>
         <Remixes.NotALotHere store={store} />
       </div>

@@ -133,7 +133,7 @@ function generateComponentIndex() {
 
   apps.forEach( _appName => all.push( bt.generateIndexJS('./app/components', _appName, n => n ) ) );
 
-  return rsvp.all(all).then( () => bt.generateIndexJS('./app', 'components', n => n ) );
+  return rsvp.all(all).then( () => bt.generateIndexJS('./app', 'components', n => n, apps ) );
 }
 
 function generateMixinsIndex() {

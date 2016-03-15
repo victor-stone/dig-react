@@ -108,7 +108,7 @@ var TagSearch = React.createClass({
         <RemixTagSelectionSection store={store}  />
         <Paging store={store} ref="paging"/>
         <Remixes store={store}>   
-          <QueryOptions store={this.props.store} />
+          <QueryOptions store={store} />
         </Remixes>
         <Tags.NoTagHits store={store}  />     
       </div>
