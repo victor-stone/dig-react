@@ -7,6 +7,7 @@ import ArtistFilter from './ArtistFilter';
 import AudioPlayer from './AudioPlayer';
 import Banner from './Banner';
 import BPM from './BPM';
+import CollapsingText from './CollapsingText';
 import CurrentUserMenu from './CurrentUserMenu';
 import DidYouMean from './DidYouMean';
 import DownloadPopup from './DownloadPopup';
@@ -50,6 +51,7 @@ module.exports = {
     AudioPlayer,
     Banner,
     BPM,
+    CollapsingText,
     CurrentUserMenu,
     DidYouMean,
     DownloadPopup,

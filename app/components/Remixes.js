@@ -16,7 +16,7 @@ var SongLink = React.createClass({
     var u = this.props.model;
     var href = '/files/' + u.artist.id + '/' + u.id;
 
-    return (<span className="song-title"><Link href={href}>{u.name}</Link></span> );
+    return (<span className="song-title"><Link id={'song-link-' + u.id} href={href}>{u.name}</Link></span> );
   }
 
 });

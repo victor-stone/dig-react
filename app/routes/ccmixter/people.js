@@ -1,12 +1,32 @@
 import React            from 'react';
-import { mergeParams }  from '../../unicorns';
-import qc               from '../../models/query-configs';
-import Rmx              from '../../stores/remixes';
+import User             from '../../stores/user';
 
-import {  Remixes }     from '../../components/dig'; 
-import {  People,
+import {  Remixes,
+          ActionButtons,
           Paging   }    from '../../components';
 
+var ExternalLink = ActionButtons.ExternalLink;
+
+const Header = React.createClass({
+
+  render: function() {
+    var model = this.props.model;
+
+    var homelink = model.homepage 
+            ? <ExternalLink className="btn btn-info" href={model.homepage} text="homepage" />
+            : null;
+
+    return (
+        <div className="page-header">
+          <h1 className="center-text"><img className="img-circle" src={model.avatarURL} /> {model.name}</h1>
+          <div className="center-text">
+            <ExternalLink className="btn btn-info" href={model.url} text="@ccMixter" /> {homelink}
+          </div>
+        </div>
+      );
+    },
+
+});
 
 var people = React.createClass({
 
@@ -19,7 +39,7 @@ var people = React.createClass({
     
     return  (
       <div>
-        <People.Header model={store.model.artist} />
+        <Header model={store.model.artist} />
         <Paging store={store} />
         <Remixes store={store} skipUser />
         <Remixes.NotALotHere store={store} />
@@ -33,14 +53,8 @@ people.path = '/people/:userid';
 
 people.title = 'People';
 
-people.store = function(params,queryParams) {
-  var opts    = mergeParams( {}, qc.remixes );
-  var qparams = mergeParams( {}, opts, { u: params.userid }, queryParams );
-  return Rmx.storeFromQuery(qparams,opts)
-          .then( store => {
-            people.title = !this.error && store.model.artist.name;
-            return store;
-          });
+people.store = function(params) {
+  return User.storeFromQuery(params);
 };
 
 module.exports = people;

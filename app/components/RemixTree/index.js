@@ -35,36 +35,42 @@ var css = `
 
     .remix-tree-head .img-circle {
         float: left;
-        box-shadow: 4px 4px 8px green;  
+        box-shadow: 4px 4px 8px #2E802F;  
     }
 
     .remix-tree-head h3 {
       color: white;
     }
 
-    .remix-tree-description {
-      color: yellow;
-    }
-
     .remix-tree-head a.artist {
       color: #DDD;
     }
 
-    #description-more-link {
+    .remix-tree-head > .collapse-text {
+      color: yellow;
+    }
+
+    .remix-tree-head .collapse-text-more-link {
       color: white;
       text-decoration: none;
     }
 
-    #description-more-link:hover {
+    .remix-tree-head .collapse-text-more-link:hover {
       text-decoration: none;
     }
-    #description-more-link:hover::after {
+
+    .remix-tree-head > .collapse-text-more-link:hover::after {
       content: ' ↕';
       font-weight: bold;
     }
     
-    .remix-tree-head .cc_format_link {
+    .remix-tree-head > .collapse-text .cc_format_link {
       color: white;
+    }
+
+    .remix-tree-head > .collapse-text .plain {
+      font-size: 12px;
+      font-style: italic;
     }
 
     .remix-tree-play-button {
@@ -74,10 +80,7 @@ var css = `
       border: 3px solid;
     }
     
-    #description-less {
-      font-size: 12px;
-      font-style: italic;
-    }
+
     span.ribbon.edpick {
       float: right;
       font-size: 12px;

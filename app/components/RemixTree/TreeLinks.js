@@ -101,7 +101,7 @@ var SamplesFrom = React.createClass({
 
   render() {
     return(
-      <TreeLinks title="Samples are used from..." id="sources" store={this.state.store} />
+      <TreeLinks title="Uses samples from..." id="sources" store={this.state.store} />
     );
   }
 });

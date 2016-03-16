@@ -14,6 +14,7 @@ import { SongLink,
 import { ModelTracker } from '../../mixins';
 import { TagString }    from '../../unicorns';
 import Upload           from '../../stores/upload';
+import lookup           from '../../services';
 import Overview         from '../RemixTree/Overview';
 
 var css = `
@@ -53,6 +54,14 @@ var css = `
   margin-top: 8px;
   margin-right: 8px;
   margin-left: 20%;
+}
+
+ .remix-page .play-list li.remix-line:hover .song-title {
+  text-decoration: underline;
+}
+
+.remix-page .play-list li.remix-line:hover {
+  cursor: pointer;
 }
 
 .remix-page .play-list li .artist-name {
@@ -216,7 +225,9 @@ var RemixLine = React.createClass({
         }).popover('show');
   },
 
-  showInfo() {
+  showInfo(e) {
+    e.stopPropagation();
+    e.preventDefault();
     var u = this.props.upload;
     var id = 'remix-line-' + u.id;
     if( !$('#'+id).data('bs.popover') ) {
@@ -231,11 +242,20 @@ var RemixLine = React.createClass({
     }
   },
 
+  onClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var id = this.props.upload.id;
+    var a  = this.props.upload.artist.id;
+    var href = `/files/${a}/${id}`;
+    lookup('router').navigateTo(href);
+  },
+
   render() {
     var u = this.props.upload;
     return(
       <li className="remix-line" >
-        <div className="content-wrapper">
+        <div className="content-wrapper" onClick={this.onClick} >
           <SongLink model={u} /> 
           <div className="tools">
             <PlayButton btnType="warning" className="play-button" model={u} onPlay={this.props.onPlay}/> 

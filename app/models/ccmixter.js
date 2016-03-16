@@ -395,6 +395,28 @@ class User extends UserBasic {
   }
 }
 
+class UserProfile extends User {
+  constructor() {
+    super(...arguments);
+    this.joinedBinding = 'user_date_format';
+    this.descriptionHTMLBinding = 'user_description_html';
+    this.key = 'user_id';
+    this.numUploads = 'user_num_uploads';
+    this.getTools = function() {
+      return new TagString(this.user_whatido);
+    };
+  }
+
+  /*
+    "user_num_posts" : "1816",
+    "user_num_remixed" : "156",
+    "user_num_remixes" : "141",
+    "user_num_reviewed" : "961",
+    "user_num_reviews" : "1478",
+    "user_whatilike" : "soul,bop,post_bop,ambient,Elvis_Costello,Roy_Budd,DJ_Krush,ColdCut"
+    "user_favorites" : "clayne,djperegrine,beatgorilla,lisadb,minuskelvin,teru,djlang59,ashwan,cdk,deutscheunschuld,mlinksva,shockshadow,Pitx,kcentric,ditto,omnivista,grapes,waldhorn33,Loveshadow",
+  */
+}
 
 class DetailUploadUser extends UploadUserBasic {
   constructor() {
@@ -628,20 +650,21 @@ class PlaylistHead extends Playlist {
 }
 
 module.exports = {
-  Remix,
-  Trackback,
-  Detail,
-  Upload,
-  UploadBasic,
-  User,
-  Tag,
-  UserBasic,
-  Source,
-  Topic,
   ACappella, 
-  Sample,
+  Detail,
   Playlist,
   PlaylistHead,
   PlaylistTrack,
+  Remix,
   Review,
+  Sample,
+  Source,
+  Tag,
+  Topic,
+  Trackback,
+  Upload,
+  UploadBasic,
+  User,
+  UserBasic,
+  UserProfile,
 };
