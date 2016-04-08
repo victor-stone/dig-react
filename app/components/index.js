@@ -14,6 +14,7 @@ import DownloadPopup from './DownloadPopup';
 import EditDiv from './EditDiv';
 import ErrorDisplay from './ErrorDisplay';
 import Footer from './Footer';
+import Form from './Form';
 import Glyph from './Glyph';
 import InlineCSS from './InlineCSS';
 import InstrumentalOnlyFilter from './InstrumentalOnlyFilter';
@@ -58,6 +59,7 @@ module.exports = {
     EditDiv,
     ErrorDisplay,
     Footer,
+    Form,
     Glyph,
     InlineCSS,
     InstrumentalOnlyFilter,

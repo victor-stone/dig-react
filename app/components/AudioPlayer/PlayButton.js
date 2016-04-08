@@ -59,6 +59,7 @@ var PlayButton = React.createClass({
 
   togglePlay(e) {
     e.preventDefault();
+    e.stopPropagation();
     AudioService.togglePlay(this.props.model);
     if( this.props.onPlay ) {
       this.props.onPlay();

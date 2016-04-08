@@ -3,13 +3,19 @@
 import ApplyOutletGutter from './ApplyOutletGutter';
 import Footer from './Footer';
 import Header from './Header';
+import People from './People';
+import Remix from './Remix';
 import Remixes from './Remixes';
+import Style from './Style';
 
 
 module.exports = {
     ApplyOutletGutter,
     Footer,
     Header,
-    Remixes 
+    People,
+    Remix,
+    Remixes,
+    Style 
 };
 

@@ -48,7 +48,7 @@ var CollapsingText = React.createClass({
     var more  = '';
     if( html ) {
       if( plain.length > MAX_PREVIEW_LENGTH ) {
-        plain = plain.substring(0,MAX_PREVIEW_LENGTH);
+        plain = plain.substring(0,MAX_PREVIEW_LENGTH) + '...';
         more = ' more...';
       } else {
         plain = '';

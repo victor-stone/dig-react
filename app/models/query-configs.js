@@ -10,6 +10,12 @@ module.exports = {
     lic:     'all',
   },
 
+  people: {
+    limit: '40',
+    digrank: -1,
+    lic: 'all'
+  },
+
   pells: {
     limit:   10,
     lic:     'all',
