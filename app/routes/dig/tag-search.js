@@ -14,7 +14,7 @@ tagSearch.title = 'Tag Search';
 tagSearch.path  = '/dig';
 
 tagSearch.store = function(params,queryParams) {
-  var opts = mergeParams( { type: 'any', tags: '-autoplay' }, qc.remixes, qc.magicSort );
+  var opts = mergeParams( { type: 'any', reqtags: '-autoplay' }, qc.remixes, qc.magicSort );
   var qparams = mergeParams( {}, opts, queryParams );
   return Remixes.storeFromQuery(qparams, opts);
 };
