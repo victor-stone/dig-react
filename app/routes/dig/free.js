@@ -17,7 +17,7 @@ var free = React.createClass({
 free.title = 'Free for Commercial Use';
 
 free.store = function(params,queryParams) {
-  var opts    = mergeParams( {}, qc.remixes, { lic: 'open' }, qc.recent );
+  var opts    = mergeParams( {}, qc.remixes, { lic: 'open', reqtags: '-autoplay' }, qc.magicSort );
   var qparams = mergeParams( {}, opts, queryParams );    
   return Remixes.storeFromQuery(qparams,opts);
 };
