@@ -16,7 +16,7 @@ const _RemixQueryOptions = React.createClass({
     return ( 
         <OptionsWrap>
           <li>
-            <LicenseFilter store={store} />
+            <LicenseFilter ccPlusFilter="ccplus_nostems" store={store} />
           </li>
           <li>
             <SortFilter store={store} />

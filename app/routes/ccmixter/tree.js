@@ -1,19 +1,33 @@
-import React       from 'react';
-import { Remixes } from '../../components/ccmixter/';
-import qc          from '../../models/query-configs';
-import Store       from '../../stores/remixes';
+import React             from 'react';
+import { Gallery,
+         GallerySubNav } from '../../components/ccmixter/';
+import qc                from '../../models/query-configs';
+import Store             from '../../stores/remixes';
 
-import { mergeParams, oassign } from '../../unicorns';
+import { mergeParams, 
+         oassign }       from '../../unicorns';
 
-function RemixPage(props) {
-  return (<Remixes {...props} />);
-}
+import { PushPeruseModel } from '../../mixins';
 
-RemixPage.title = 'Remix Tree';
+var TreePage = React.createClass({
 
-RemixPage.path  = '/tree';
+  mixins: [PushPeruseModel],
+  
+  render() {
+    return <Gallery {...this.props} />; 
+  }
+});
 
-RemixPage.store = function(params,queryParams) {
+
+TreePage.title = 'Remix Tree';
+
+TreePage.path  = '/tree';
+
+TreePage.subnav = function(props) {
+  return (<GallerySubNav paging store={props.store} />);
+};
+
+TreePage.store = function(params,queryParams) {
   var qopts = oassign({},qc.remixes);
   if( queryParams && 'reqtags' in queryParams ) {
     qopts.reqtags = queryParams.reqtags;
@@ -23,5 +37,5 @@ RemixPage.store = function(params,queryParams) {
   return Store.storeFromQuery(qparams, opts);
 };
 
-module.exports = RemixPage;
+module.exports = TreePage;
 

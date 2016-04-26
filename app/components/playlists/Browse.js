@@ -2,11 +2,13 @@ import React              from 'react';
 import Tags               from './Tags';
 import People             from '../People';
 import Link               from '../Link';
-import Paging             from '../Paging';
-import PageHeader         from '../PageHeader';
 import PlayAllButton      from './PlayAllButton';
-//import { TagString }      from '../../unicorns'; 
 import { ModelTracker }   from '../../mixins';
+
+import InlineCSS               from '../InlineCSS';
+import { browse as browseCSS,
+         tags   as tagsCSS }   from './style/browse';
+
 
 var Playlists = React.createClass({
 
@@ -44,11 +46,10 @@ var PlaylistWidget = React.createClass({
     var store = this.props.store;
     return (
       <div className="container playlist-browser">
+        <InlineCSS css={browseCSS} id="playlists-browse-css"/>
+        <InlineCSS css={tagsCSS}   id="playlists-tags-css"/>
         <div className="row">
-          <div className="col-md-2 col-md-offset-1">
-            <Paging store={store} disableBumping />
-          </div>
-          <div className="col-md-8">
+          <div className="col-md-8 col-md-offset-2">
             <Playlists store={store} skipUser={this.props.skipUser} />
           </div>
         </div>
@@ -57,24 +58,9 @@ var PlaylistWidget = React.createClass({
   }
 });
 
-var Browse = React.createClass({
-
-  render: function() {
-    var store = this.props.store;
-    return (
-      <div>
-        <PageHeader icon="music" title="Playlists" />
-        <PlaylistWidget store={store} />
-      </div>
-    );      
-  }
-
-});
-
-
 module.exports = {
   Playlists,
   PlaylistWidget,
-  Browse
+  Browse: PlaylistWidget
 };
 

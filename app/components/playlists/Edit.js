@@ -128,7 +128,6 @@ var DynamicForm = React.createClass({
               ? <button className="btn btn-success save-button" onClick={this.props.onSave}><Glyph icon="cloud-upload" />{" Save Changes"}</button>
               : <SaveDynamicPopup store={store} />
             }
-            
           </div>
         </div>
       );

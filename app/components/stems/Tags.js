@@ -7,7 +7,6 @@ import { TagString }    from '../../unicorns';
 import events           from '../../models/events';
 
 import { StoreEvents,
-         TopSideElement,
          SelectedTagsTracker }  from '../../mixins';
 
 const MIN_TAG_COUNT = 20;
@@ -18,7 +17,7 @@ const SELECTED_TAG_HEIGHT = 50;
 
 const SelectedTagSection = React.createClass({
 
-  mixins: [ TopSideElement, SelectedTagsTracker ],
+  mixins: [ SelectedTagsTracker ],
 
   componentDidMount: function() {
     this.doFadeAnimation();
@@ -66,7 +65,7 @@ function TagsLoading() {
 
 const TagsList = React.createClass({
 
-  mixins: [ StoreEvents, SelectedTagsTracker, TopSideElement ],
+  mixins: [ StoreEvents, SelectedTagsTracker ],
 
   getDefaultProps: function() {
     return { 

@@ -56,7 +56,7 @@ var Tracks = React.createClass({
                   : null
                 }
                 <PlayButton className="play-button" onPlay={this.onPlay} model={t} />                
-                <UploadLink className="track-name" model={t} />
+                <UploadLink className="track-name" model={t} base="/tracks/" />
                 {skipUser
                   ? null
                   : <People.Link model={t.artist} className="track-artist" />

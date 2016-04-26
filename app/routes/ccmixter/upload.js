@@ -2,11 +2,12 @@
 import React             from 'react';
 import Upload            from '../../stores/upload';
 import { RemixTree }     from '../../components';
-import { ModelTracker }  from '../../mixins';
+import { ModelTracker,
+         PopPeruseModel }  from '../../mixins';
 
 var Tree = React.createClass({
 
-  mixins: [ModelTracker],
+  mixins: [ModelTracker,PopPeruseModel],
 
   stateFromStore(store) {
     return { store };

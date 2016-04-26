@@ -1,7 +1,7 @@
 import React     from 'react';
 
 import { LicenseFilter,
-         QueryOptions,
+         QueryOptionsPanel,
          OptionsWrap }        from '../QueryOptions';
 
 import UnmixedOnlyFilter      from '../UnmixedOnlyFilter';
@@ -9,33 +9,28 @@ import UnmixedOnlyFilter      from '../UnmixedOnlyFilter';
 import { BPMDisplay,
          BPMSlider }          from '../BPM'; 
 
-function PellsQueryOptionsItems(props) {
+function PellsQueryOptions(props) {
   var store = props.store;
-
-  return ( 
-    <OptionsWrap >
-      <li>
-        <LicenseFilter store={store} />
-      </li>
-      <li>
-        <BPMDisplay store={store} />
-      </li>
-      <li>
-        <BPMSlider store={store} />
-      </li>
-      <li>
-        <UnmixedOnlyFilter store={store} />
-      </li>
-    </OptionsWrap>
+  return (
+    <QueryOptionsPanel store={props.store} show>
+      <OptionsWrap >
+        <li>
+          <LicenseFilter store={store} />
+        </li>
+        <li>
+          <BPMDisplay store={store} />
+        </li>
+        <li>
+          <BPMSlider store={store} />
+        </li>
+        <li>
+          <UnmixedOnlyFilter store={store} />
+        </li>
+      </OptionsWrap>
+    </QueryOptionsPanel>
   );
 }
 
-function PellsQueryOptions(props) {
-  return (
-        <QueryOptions store={props.store}>
-          <PellsQueryOptionsItems store={props.store} />
-        </QueryOptions>
-      );
-}
-
 module.exports = PellsQueryOptions;
+
+//

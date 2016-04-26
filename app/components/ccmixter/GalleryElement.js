@@ -8,19 +8,18 @@ import Overview         from '../RemixTree/Overview';
 import { PlayButton }   from '../AudioPlayer';
 import Glyph            from '../Glyph';
 
-import Upload           from '../../stores/upload';
+import UploadStore      from '../../stores/upload';
 import lookup           from '../../services';
 
-
-var Remix = React.createClass({
+var GalleryElement = React.createClass({
 
   _showInfo(id,html) {
-    html = `<div class="remix-popover">${html}</div>`;
+    html = `<div class="gallery-element-popover">${html}</div>`;
      $('#' + id).popover({
             content : html,
             html: true,
             trigger: 'focus',
-            placement: 'auto'
+            placement: 'bottom'
         }).popover('show');
   },
 
@@ -28,10 +27,10 @@ var Remix = React.createClass({
     e.stopPropagation();
     e.preventDefault();
     var u = this.props.upload;
-    var id = 'remix-line-' + u.id;
+    var id = 'gallery-element-' + u.id;
     if( !$('#'+id).data('bs.popover') ) {
       var contentID = 'popover-placeholder-' + u.id;
-      var upload = new Upload();
+      var upload = new UploadStore();
       var me = this;
       upload.info(u.id).then( model =>
             ReactDOM.render( React.createElement(Overview.OverviewForm,{model}),  
@@ -53,13 +52,16 @@ var Remix = React.createClass({
   render() {
     var u = this.props.upload;
     return(
-      <li className="remix-line" >
+      <li className="gallery-element" >
         <div className="content-wrapper" onClick={this.onClick} >
-          <SongLink model={u} /> 
+          <SongLink model={u} truncate /> 
           <div className="tools">
-            <PlayButton btnType="warning" className="play-button" model={u} onPlay={this.props.onPlay}/> 
             <div id={'popover-placeholder-' + u.id} className="hidden" />
-            <a id={'remix-line-' + u.id} tabIndex={this.props.index} onClick={this.showInfo} className="btn btn-lg btn-info"><Glyph icon="info-circle" /></a>
+            <a id={'gallery-element-' + u.id} tabIndex={this.props.index} onClick={this.showInfo} className="btn btn-lg btn-info"><Glyph icon="info-circle" /></a>
+            {u.fileInfo && u.fileInfo.isMP3
+              ? <PlayButton btnType="warning" className="play-button" model={u} onPlay={this.props.onPlay}/> 
+              : null
+            }            
           </div>
         </div>
         {this.props.skipUser
@@ -71,6 +73,6 @@ var Remix = React.createClass({
   }
 });
 
-module.exports = Remix;
+module.exports = GalleryElement;
 
 //

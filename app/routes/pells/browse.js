@@ -2,27 +2,18 @@ import React              from 'react';
 import qc                 from '../../models/query-configs';
 import Acappellas         from '../../stores/acappellas';
 import { mergeParams }    from '../../unicorns';
-import { Glyph }          from '../../components';
 import { Browse }         from '../../components/pells';
-
-function PellHeader() {
-  return (
-    <div className="page-header center-text">
-      <h1>
-        <Glyph icon="microphone" />
-        {" Pells"}
-      </h1>
-    </div>
-  );
-}
+import SubNav             from '../../components/pells/SubNav';
 
 function pells(props) {
-  return (<div><PellHeader /><Browse.PellsBrowser {...props} /></div>);
+  return (<Browse.PellsBrowser {...props} />);
 }
 
 pells.title = 'A Cappella Browser';
 
 pells.path = '/pells';
+
+pells.subnav = SubNav;
 
 pells.store = function(params,queryParams) {
   

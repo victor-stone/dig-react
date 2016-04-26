@@ -4,12 +4,14 @@ import Browse from './Browse';
 import Footer from './Footer';
 import Header from './Header';
 import QueryOptions from './QueryOptions';
+import SubNav from './SubNav';
 
 
 module.exports = {
     Browse,
     Footer,
     Header,
-    QueryOptions 
+    QueryOptions,
+    SubNav 
 };
 

@@ -111,8 +111,8 @@ var DownloadPopup = React.createClass({
     var url = upload.url.replace(/ccmixter\.org/, 'dig.ccmixter.org');
 
     var licenseTextTemplate = {
-      plain: `${upload.name} by ${upload.artist.name} (c) ${upload.licenseYear} Licensed under a Creative Commons ${upload.licenseName} license. ${url} ${featuring}`,
-      html: `<div class="attribution-block"><a href="${url}">${upload.name}</a> by ${upload.artist.name} (c) ${upload.licenseYear} Licensed under a Creative Commons <a href="${upload.licenseURL}">${upload.licenseName}</a> license. ${featuring}</div>`,
+      plain: `${upload.name} by ${upload.artist.name} (c) copyright ${upload.licenseYear} Licensed under a Creative Commons ${upload.licenseName} license. ${url} ${featuring}`,
+      html: `<div class="attribution-block"><a href="${url}">${upload.name}</a> by ${upload.artist.name} (c) copyright ${upload.licenseYear} Licensed under a Creative Commons <a href="${upload.licenseURL}">${upload.licenseName}</a> license. ${featuring}</div>`,
     };
 
     var licenseText = licenseTextTemplate[ plainSelected ? 'plain' : 'html' ];
@@ -156,13 +156,13 @@ var DownloadPopup = React.createClass({
                   </li>
                 : null
               }
-               {upload.isCCPlus ?
+               {dlRec.isCCPlus ?
                   <li>
                     <a href={upload.purchaseLicenseURL} className="btn btn-info btn-lg"><img src={upload.purchaseLogoURL} className="pull-left" />{"  Buy a License "}</a>
                   </li>
                   : null 
                 }
-               {upload.isCCPlus ?
+               {dlRec.isCCPlus ?
                   <li>
                     <p>{"to remove these restrictions"}</p>
                   </li> 

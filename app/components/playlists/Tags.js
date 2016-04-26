@@ -16,7 +16,7 @@ var Tags = React.createClass({
         <div className="playlist-tags">
           <Glyph icon="tags" />
           {tags.map( t => {
-              return(<Link key={t} className="playlist-tag" href={'/tags/' + t}>{t}</Link>);
+              return(<Link key={t} className="playlist-tag" href={'/playlists/tags/' + t}>{t}</Link>);
           })}
           {this.props.children}
         </div>

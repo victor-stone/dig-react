@@ -2,7 +2,6 @@
 import React            from 'react';
 import Link             from '../Link';
 import Glyph            from '../Glyph';
-import { ExternalLink }   from '../ActionButtons';
 import { browserScripts } from '../../unicorns';
 
 const SCROLL_OFFSET = 100;
@@ -47,12 +46,12 @@ const Detail = React.createClass({
   render: function() {
     var model   = this.state.model;
     var id      = 'upload-detail-' + model.id;
-    var ccmhref = `http://ccmixter.org/files/${model.artist.id}/${model.id}`;
+    var url     = `/files/${model.artist.id}/${model.id}`;
 
     return (
       <div className="stems-detail" id={id} >
         <DetailTags tags={model.userTags} store={this.props.store} />
-        <ExternalLink href={ccmhref} className="ccmixter-link btn btn-sm btn-warning" text="@ccMixter" />
+        <Link href={url} className="ccmixter-link btn btn-sm btn-warning"><Glyph icon="arrow-left" />{" Remix Tree "}<Glyph icon="arrow-right" /></Link>
         <div className="clearfix" ></div>
       </div>);
   }

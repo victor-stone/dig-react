@@ -17,10 +17,11 @@ env.set({
   supportPlaylist: true,
   supportWavImg: true,
 //  bannerTopic: 'digBanner',
+/*
   rpcHost: 'http://ccm/api/',
   queryHost: 'http://ccm/api/query?',
   queriesHost: 'http://ccm/api/queries?',
-
+*/
 });
 
 

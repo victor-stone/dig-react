@@ -8,6 +8,8 @@ import { DynamicForm }   from '../../components/playlists/Edit';
 import PageHeader        from '../../components/PageHeader';
 import env               from '../../services/env';
 import lookup            from '../../services';
+import InlineCSS         from '../../components/InlineCSS';
+import css               from '../../components/playlists/style/edit';
 
 var Edit = React.createClass({
 
@@ -32,6 +34,7 @@ var Edit = React.createClass({
     var store = this.props.store.model.tracks;
     return (
         <div className="edit-playlist-widget">
+          <InlineCSS css={css} id="edit-playlist-css" />
           <PageHeader icon="edit" title={this.props.store.model.head.name} />
           <div className="container-fluid">
             <div className="row">

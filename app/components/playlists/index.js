@@ -13,6 +13,7 @@ import Info from './Info';
 import PlayAllButton from './PlayAllButton';
 import Playlist from './Playlist';
 import QueryOptions from './QueryOptions';
+import SubNav from './SubNav';
 import Tags from './Tags';
 import Tracks from './Tracks';
 
@@ -31,6 +32,7 @@ module.exports = {
     PlayAllButton,
     Playlist,
     QueryOptions,
+    SubNav,
     Tags,
     Tracks 
 };

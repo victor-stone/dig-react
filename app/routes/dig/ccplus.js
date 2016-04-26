@@ -19,7 +19,7 @@ var ccplus = React.createClass({
 ccplus.title = 'Music Available for Royalty-Free License';
 
 ccplus.store = function(params,queryParams) {
-  var opts = mergeParams( {}, qc.remixes, { lic: 'ccplus' } );
+  var opts = mergeParams( {}, qc.remixes, { lic: 'ccplus', reqtags: '-ccplus_stem' } );
   var qparams = mergeParams( {}, opts, queryParams  );
   return Remixes.storeFromQuery(qparams,opts);
 };

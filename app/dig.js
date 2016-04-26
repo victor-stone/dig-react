@@ -25,9 +25,9 @@ env.set({
   supportPlaylist: true,
   supportWavImg: false,
   bannerTopic: 'digBanner',
-//  rpcHost: 'http://ccm/api/',
-//  queryHost: 'http://ccm/api/query?',
-//  queriesHost: 'http://ccm/api/queries?',
+  rpcHost: 'http://ccm/api/',
+  queryHost: 'http://ccm/api/query?',
+  queriesHost: 'http://ccm/api/queries?',
 
 });
 

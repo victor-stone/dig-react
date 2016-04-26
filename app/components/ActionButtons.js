@@ -27,7 +27,8 @@ var UploadLink = React.createClass({
   render: function() {
 
     var model = this.state.model;
-    var href = '/files/' + model.artist.id + '/' + model.id;
+    var base  = this.props.base || '/files/';
+    var href  = base + model.artist.id + '/' + model.id;
     return (
         <Link href={href} {...this.props}>{model.name}</Link>
       );

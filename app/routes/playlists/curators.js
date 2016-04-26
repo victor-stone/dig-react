@@ -1,10 +1,10 @@
-import React              from 'react';
-import Query              from '../../stores/query';
-import Blobs              from '../../stores/blobs';
-
-import PageHeader       from '../../components/PageHeader';
+import React            from 'react';
+import Query            from '../../stores/query';
+import Blobs            from '../../stores/blobs';
 import { Link }         from '../../components/People';
-import { ExternalLink } from '../../components/ActionButtons';
+import SubNav           from '../../components/playlists/SubNav';
+import css              from '../../components/playlists/style/curators';
+import InlineCSS        from '../../components/InlineCSS';
 
 const CURATORS_BLOB = 226312;
 
@@ -21,14 +21,19 @@ function curatorsPage(props) {
   var store = props.store;
   return (        
     <div className="container-fluid curators-page">
-      <PageHeader icon="hand-o-up" title={curatorsPage.title} />
-      <div className="curator-message playlist-bg-color">{"Interested in being a curator? Head on over to "}<ExternalLink href="http://ccmixter.org" text="ccMixter" />{" to create an account to create your own playlists."}</div>
+      <InlineCSS css={css} id="curators-css" />
       <Curators store={store} />
     </div>
   );
 }
 
 curatorsPage.title = 'Featured Curators';
+
+curatorsPage.subnav = function(props) {
+  return (<SubNav store={props.store} tab="curators"/>);
+};
+
+curatorsPage.path = '/playlists/curators';
 
 curatorsPage.store = function(/*params,queryParams */) {
   var blobs = new Blobs();

@@ -18,6 +18,7 @@ class UploadList extends Query {
     this.gotCache      = false;
     this._tags         = null;
     this.tagFields     = ['tags', 'reqtags', 'oneof'];
+    this.totalsCache   = null;
   }
 
   get supportsOptions() {
@@ -82,7 +83,24 @@ class UploadList extends Query {
     return isDirty.isDirty;
   }
 
-  getModel(queryParams) {
+  getModel( queryParams ) {
+    if( this.totalsCache ) {
+      var tags   = new TagString(queryParams.reqtags);
+      var filter = this.totalsCache.filter( tags );
+      if( filter.getLength() > 0 ) {
+        var tag = filter.toString();
+        return this.totalsCache.getTotals(queryParams,this).then( totals => {
+          if( !totals[tag] ) {
+            queryParams.reqtags = tags.remove(filter).toString();
+          }
+          return this._getModel(queryParams);
+        });
+      }
+    }
+    return this._getModel(queryParams);
+  }
+
+  _getModel(queryParams) {
     if( !('dataview' in queryParams) && !('t' in queryParams) ) {
       queryParams.dataview = 'links_by';
     }
@@ -119,6 +137,10 @@ class UploadList extends Query {
       }
     }
 
+    if( this.totalsCache ) {
+      hash.totals = this.totalsCache.getTotals(queryParams,this);
+    }
+    
     hash = this.promiseHash(hash,queryParams);
     
     this.error = null;

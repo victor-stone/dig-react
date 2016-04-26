@@ -13,7 +13,7 @@ const SCROLL_OFFSET = 100;
 
 const Listing = React.createClass({
 
-  mixins: [ ModelTracker, SelectedTagsTracker],
+  mixins: [ ModelTracker, SelectedTagsTracker ],
 
   getDefaultProps: function() {
     return { skipUser: false,

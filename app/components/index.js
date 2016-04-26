@@ -33,6 +33,7 @@ import RemixTree from './RemixTree';
 import SearchBox from './SearchBox';
 import SearchHeader from './SearchHeader';
 import SharePopup from './SharePopup';
+import SubNav from './SubNav';
 import TagFilter from './TagFilter';
 import Tags from './Tags';
 import TagsExtra from './TagsExtra';
@@ -78,6 +79,7 @@ module.exports = {
     SearchBox,
     SearchHeader,
     SharePopup,
+    SubNav,
     TagFilter,
     Tags,
     TagsExtra,

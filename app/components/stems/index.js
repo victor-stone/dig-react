@@ -8,6 +8,7 @@ import Header from './Header';
 import Listing from './Listing';
 import People from './People';
 import QueryOptions from './QueryOptions';
+import SubNav from './SubNav';
 import Tags from './Tags';
 
 
@@ -20,6 +21,7 @@ module.exports = {
     Listing,
     People,
     QueryOptions,
+    SubNav,
     Tags 
 };
 

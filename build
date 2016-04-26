@@ -130,10 +130,15 @@ function stageResults() {
 function generateComponentIndex() {
 
   var all = [];
+  var exceptions = ['style'];
 
-  apps.forEach( _appName => all.push( bt.generateIndexJS('./app/components', _appName, n => n ) ) );
+  apps.forEach( _appName => all.push( bt.generateIndexJS('./app/components', _appName, n => n, exceptions) ) );
 
-  return rsvp.all(all).then( () => bt.generateIndexJS('./app', 'components', n => n, apps ) );
+//  all.push( bt.generateIndexJS('./app/components', 'style', n => n ) );
+
+  exceptions = exceptions.concat(apps);
+  
+  return rsvp.all(all).then( () => bt.generateIndexJS('./app', 'components', n => n, exceptions ) );
 }
 
 function generateMixinsIndex() {
@@ -245,20 +250,20 @@ function bundleVendorJSFiles() {
     ]
   };
 
-  if( APP_NAME === 'pells' || APP_NAME === 'stems' || APP_NAME === 'playlists') {
-    vendorJSSources.dev. push( 'node_modules/nouislider/distribute/nouislider.js');
+  if( APP_NAME === 'pells' || APP_NAME === 'stems' || APP_NAME === 'playlists' || APP_NAME === 'ccmixter' ) {
+    vendorJSSources.dev .push( 'node_modules/nouislider/distribute/nouislider.js');
     vendorJSSources.prod.push( 'node_modules/nouislider/distribute/nouislider.min.js');
   }
   
-  if( APP_NAME === 'playlists') {
-    vendorJSSources.dev. push( 'vendor/jquery-ui-1.11.4.custom/jquery-ui.js');
+  if( APP_NAME === 'playlists' || APP_NAME === 'ccmixter') {
+    vendorJSSources.dev .push( 'vendor/jquery-ui-1.11.4.custom/jquery-ui.js');
     vendorJSSources.prod.push( 'vendor/jquery-ui-1.11.4.custom/jquery-ui.min.js');
   }
 
   if( APP_NAME === 'stems') {
-    vendorJSSources.dev. push( 'vendor/flacplayer/aurora/aurora.js');
+    vendorJSSources.dev .push( 'vendor/flacplayer/aurora/aurora.js');
     vendorJSSources.prod.push( 'vendor/flacplayer/aurora/aurora.min.js');
-    vendorJSSources.dev. push( 'vendor/flacplayer/flac/flac.js');
+    vendorJSSources.dev .push( 'vendor/flacplayer/flac/flac.js');
     vendorJSSources.prod.push( 'vendor/flacplayer/flac/flac.min.js');    
   }
 
@@ -298,12 +303,12 @@ function bundleVendorCSSFiles() {
     ]
   };
   
-  if( APP_NAME === 'pells' || APP_NAME === 'stems' || APP_NAME === 'playlists') {
+  if( APP_NAME === 'pells' || APP_NAME === 'stems' || APP_NAME === 'playlists' || APP_NAME === 'ccmixter') {
     vendorCSSSources.dev. push('node_modules/nouislider/distribute/nouislider.min.css');
     vendorCSSSources.prod.push('node_modules/nouislider/distribute/nouislider.min.css');
   }
 
-  if( APP_NAME === 'playlists') {
+  if( APP_NAME === 'playlists' || APP_NAME === 'ccmixter' ) {
     vendorCSSSources.dev. push('vendor/jquery-ui-1.11.4.custom/jquery-ui.css');
     vendorCSSSources.dev. push('vendor/jquery-ui-1.11.4.custom/jquery-ui.structure.css');
     vendorCSSSources.prod.push('vendor/jquery-ui-1.11.4.custom/jquery-ui.min.css');

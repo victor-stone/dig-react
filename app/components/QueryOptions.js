@@ -40,12 +40,14 @@ const LicenseFilter = React.createClass({
 
   render: function() {
 
+    var ccPlusFilter = this.props.ccPlusFilter || 'ccplus';
+
     return (
       <div>
         <select id="lic" ref="lic" value={this.state.lic} onChange={this.performQuery} className="form-control" >
           <option value="all">{"all licenses"}</option>
           <option value="open">{"free for commercial use"}</option>
-          <option value="ccplus">{"royalty free ccPlus license"}</option>
+          <option value={ccPlusFilter}>{"royalty free ccPlus license"}</option>
         </select>
         <LicenseInfoPopup />
       </div>
@@ -129,12 +131,14 @@ const QueryOptionsBox = React.createClass({
 
   render: function() {
     var cls  = 'query-options ' + (this.props.show ? 'open' : 'hidden');
-
     return (
         <ul className={cls}>
           <li className="btn-primary title" onClick={this.props.handleShowOptions} >
             <Glyph icon="gear" />{" filters"}
-            <CloseButton onClick={this.handleShowOptions} />
+            {this.props.handleShowOptions
+              ? <CloseButton onClick={this.handleShowOptions} />
+              : null
+            }
           </li>
           <li>{this.props.children}</li>
           <li>
@@ -144,6 +148,17 @@ const QueryOptionsBox = React.createClass({
       );
   }
 });
+
+function QueryOptionsPanel(props)
+{
+    return (
+      <div className="query-options-box open">
+        <QueryOptionsBox store={props.store} >
+          {props.children}
+        </QueryOptionsBox>
+      </div>
+    );
+}
 
 const QueryOptions = React.createClass({
 
@@ -185,6 +200,7 @@ const QueryOptions = React.createClass({
 module.exports = {
   QueryOptions,
   QueryOptionsBox,
+  QueryOptionsPanel,
   ResetOptionsButton,
   LicenseInfoPopup,
   LicenseFilter,

@@ -122,6 +122,19 @@ class Router extends Eventer
 
       handler.component.store(handler.params, handler.queryParams)
         .then( store => {
+    
+            var meta = {
+              store,              
+              name:        handler.component.displayName, 
+              component:   handler.component,
+              path:        handler.component.path,
+              params:      handler.params,
+              queryParams: handler.queryParams,
+              hash:        document.location.hash || ''
+            };
+            
+            this.emit( events.PRE_NAVIGATE, meta, this.currentRoute );
+
             var prevStore = this.currentRoute.store;
             if( prevStore && prevStore.removeListener ) {
               prevStore.removeListener( events.PARAMS_CHANGED, this.paramChanged.bind(this) );
@@ -134,9 +147,10 @@ class Router extends Eventer
               store.on( events.PARAMS_CHANGED, this.paramChanged.bind(this) );
             }
             this.emit( events.NAVIGATE_TO, {
-              store,
+              store,              
               name:        handler.component.displayName, 
               component:   handler.component,
+              path:        handler.component.path,
               params:      handler.params,
               queryParams: handler.queryParams,
               hash:        document.location.hash || ''

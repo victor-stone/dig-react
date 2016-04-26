@@ -56,6 +56,24 @@ if( typeof Array.prototype.find === 'undefined' ) {
   };
 }
 
+if( typeof Array.prototype.indexOfElement === 'undefined' ) {
+  Array.prototype.indexOfElement = function(key,value) {
+    var valIsDefined = typeof value !== 'undefined';
+    for( var i = 0; i < this.length; i++ ) {
+      if( valIsDefined ) {
+        if( this[i][key] === value ) {
+          return i;
+        }
+      } else {
+        if( this[i][key] ) {
+          return i;
+        }
+      }
+    }
+    return NOT_FOUND;
+  };
+}
+
 if( typeof Array.prototype.filter === 'undefined' ) {
   Array.prototype.filter = function(cb) {
     var results = [];

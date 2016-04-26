@@ -10,13 +10,26 @@ import { ResetOptionsButton } from './QueryOptions';
 
 const MIN_LIMIT = 10;
 
+const TRUNCATED_STRING_MAX = 10;
+const TRUNCATED_WORD_MAX   = 5;
+
+function sliceStr(str) {
+  return str
+          .trim()
+          .split(' ')
+          .slice( 0, TRUNCATED_WORD_MAX )
+          .map( s => s.length > TRUNCATED_STRING_MAX ? s.substr(0,TRUNCATED_STRING_MAX/2) + '...' : s )
+          .join(' ');
+}
+
 var SongLink = React.createClass({
 
   render: function() {
     var u = this.props.model;
     var href = '/files/' + u.artist.id + '/' + u.id;
+    var name = this.props.truncate ? sliceStr(u.name) : u.name;
 
-    return (<span className="song-title"><Link id={'song-link-' + u.id} href={href}>{u.name}</Link></span> );
+    return (<span className="song-title"><Link id={'song-link-' + u.id} href={href}>{name}</Link></span> );
   }
 
 });

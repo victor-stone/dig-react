@@ -1,6 +1,6 @@
-import React      from 'react';
-import Playlist   from '../../stores/playlist';
-
+import React        from 'react';
+import Playlist     from '../../stores/playlist';
+import SubNav       from '../../components/playlists/SubNav';
 import PlaylistPage from '../../components/playlists/Playlist';
 
 function playlist(props) {
@@ -10,6 +10,13 @@ function playlist(props) {
 playlist.path = '/playlist/browse/:id';
 
 playlist.title = 'Playlist';
+
+playlist.subnav = function(props) {
+  var paging = props.store.model.head.isDynamic;
+  var store  = paging ? props.store.model.tracks : null;
+  return (<SubNav store={store} tab="" paging={paging} />);
+};
+
 
 playlist.store = function(params /*,queryParams */) {
   var id = params.id;

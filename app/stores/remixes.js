@@ -11,12 +11,6 @@ class Remixes extends Uploads {
 
 }
 
-// performs the query but returns the store
-// from the promise (which contains the result
-// of the query in the .model property )
-//
-// very handy for routing
-//
 Remixes.storeFromQuery = function(params,defaults) {
   var pl = new Remixes(defaults);
   return pl.getModel(params).then( () => pl );  

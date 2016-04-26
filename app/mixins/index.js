@@ -9,6 +9,8 @@ import ModelTracker from './model-tracker';
 import NowPlayingTracker from './now-playing-tracker';
 import PlaylistOwner from './playlist-owner';
 import PlaylistTracker from './playlist-tracker';
+import PopPeruseModel from './pop-peruse-model';
+import PushPeruseModel from './push-peruse-model';
 import QueryParamTracker from './query-param-tracker';
 import SelectedTagsTracker from './selected-tags-tracker';
 import StoreEvents from './store-events';
@@ -26,6 +28,8 @@ module.exports = {
     NowPlayingTracker,
     PlaylistOwner,
     PlaylistTracker,
+    PopPeruseModel,
+    PushPeruseModel,
     QueryParamTracker,
     SelectedTagsTracker,
     StoreEvents,

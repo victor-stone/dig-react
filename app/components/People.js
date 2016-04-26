@@ -1,6 +1,7 @@
 import React         from 'react';
 import ActionButtons from './ActionButtons';
 import _Link         from './Link';
+import Glyph         from './Glyph';
 
 const ExternalLink = ActionButtons.ExternalLink;
 
@@ -13,11 +14,13 @@ const Header = React.createClass({
             ? <ExternalLink className="btn btn-info" href={model.homepage} text="homepage" />
             : null;
 
+    var url = '/people/' + model.id;
+
     return (
         <div className="page-header">
           <h1 className="center-text"><img className="img-circle" src={model.avatarURL} /> {model.name}</h1>
           <div className="center-text">
-            <ExternalLink className="btn btn-info" href={model.url} text="@ccMixter" /> {homelink}
+            <_Link className="btn btn-info" href={url}><Glyph icon="user" />{" profile"}</_Link> {homelink}
           </div>
         </div>
       );

@@ -1,16 +1,14 @@
-/* globals $ */
-
 import React     from 'react';
 
 import { LicenseFilter,
-         QueryOptionsBox,
+         QueryOptionsPanel,
          SortFilter,
          OptionsWrap } from '../QueryOptions';
          
 import { BPMDisplay,
          BPMSlider   } from '../BPM'; 
 
-var _StemsQueryOptions = React.createClass({
+var Options = React.createClass({
 
   render: function() {
 
@@ -35,38 +33,14 @@ var _StemsQueryOptions = React.createClass({
   },
 });
   
-const StemsQueryOptions = React.createClass({
-
-  getInitialState: function() {
-    return { collapsed: true };
-  },
-
-  handleShowOptions: function() {
-    this.setState( { collapsed: !this.state.collapsed }, this.doAnimation );
-  },
-
-  doAnimation: function() {
-    var target = this.state.collapsed ? '27px' : '280px';
-    $('.query-options').animate(
-        { height: target },
-        { duration: 'fast', 
-          easing: 'swing'
-        }
-      );
-    var selector = '.query-options-box.open ul.query-options > li.title .close';
-    $(selector).toggle( !this.state.collapsed );
-  },
-
-  render: function() {
+function StemsQueryOptions(props)
+{
     return (
-      <div className="query-options-box open">
-        <QueryOptionsBox store={this.props.store} handleShowOptions={this.handleShowOptions}>
-          <_StemsQueryOptions store={this.props.store} />
-        </QueryOptionsBox>
-      </div>
+      <QueryOptionsPanel store={props.store} >
+        <Options store={props.store} />
+      </QueryOptionsPanel>
     );
-  }
-});
+}
 
 module.exports = StemsQueryOptions;
 

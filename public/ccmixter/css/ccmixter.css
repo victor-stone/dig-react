@@ -1,3 +1,12 @@
+.page-header {
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+.page-header h1 {
+  margin-top: 0px;
+}
+
 .top-navbar {
   position: fixed;
   width: 100%;
@@ -5,10 +14,36 @@
   z-index: 1000;
   opacity: 0.9;
 }
+
 .navbar-brand {
   padding-top: 8px;
 }
+
 .outlet-wrap {
   padding-top: 70px;
 }
 
+.audio-player .waveimage {
+  width: 200px;
+}
+
+.audio-player .position.bar {
+  opacity: 0.5;
+}
+
+.audio-player .loaded.bar {
+  opacity: 0.3;
+  background-color: green;
+}
+
+.audio-player .bar.waveimage {
+  opacity: 1.0;
+}
+
+.audio-player polyline {
+  stroke: black;
+  stroke-opacity: 1.0;
+  stroke-width: 0.2;
+  fill:none;
+  stroke-linecap: round;
+}

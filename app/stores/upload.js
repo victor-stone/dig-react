@@ -99,7 +99,7 @@ class Upload extends Query {
       sort: 'date',
       ord: 'desc'
     };
-    return this.query(remixesQ,deferName).then( serialize( ccmixter.Remix ) );
+    return this.query(remixesQ,deferName).then( serialize( ccmixter.RemixOf ) );
   }
   
   sources(forId,deferName) {

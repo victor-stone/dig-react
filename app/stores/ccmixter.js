@@ -15,6 +15,29 @@ class CCMixter
     this._currentUser = NOT_FETCHED;
   }
 
+  _call(cmd,checkStatus) {
+    return this.adapter.callOne(cmd).then( result => {
+      if( checkStatus ) {
+        if( typeof result.status === 'undefined' || result.status !== 'ok' ) {
+          throw new Error('the request did not go through');
+        }
+      }
+      return result;
+    }).catch( e => {
+      env.alert('danger', 'wups, that didn\'t work so well because ' + e.message );
+    });
+  }
+
+  // USER 
+
+  login( /*username,password */) {
+
+  }
+
+  logout() {
+    return this._call('api/user/logout');
+  }
+
   currentUser() {
     if( global.IS_SERVER_REQUEST ) {
       return rsvp.resolve( null );
@@ -29,18 +52,7 @@ class CCMixter
               .catch( () => null );
   }
 
-  _call(cmd,checkStatus) {
-    return this.adapter.callOne(cmd).then( result => {
-      if( checkStatus ) {
-        if( typeof result.status === 'undefined' || result.status !== 'ok' ) {
-          throw new Error('the request did not go through');
-        }
-      }
-      return result;
-    }).catch( e => {
-      env.alert('danger', 'wups, that didn\'t work so well because ' + e.message );
-    });
-  }
+  // PLAYLISTS 
 
   createDynamicPlaylist(name,queryParamsString) {
     var q = queryParamsString + '&title=' + name;

@@ -125,6 +125,13 @@ class File extends Model {
       return null;
     };
 
+    this.getIsCCPlus = function() {
+      if( this._bindParent.upload_tags ) {
+        var uptags = new TagString(this._bindParent.upload_tags );
+        var mytags = this.getTags();
+        return mytags && ( (uptags.contains('ccplus_stem') && mytags.contains('sample,acappella')) || uptags.contains('ccplus') );
+      }
+    };
     /* required by audio player */
     
     this.getMediaTags = function() {
@@ -199,7 +206,7 @@ class Related  extends UploadBasic {
   }
 }
 
-class Remix  extends Related { }
+class RemixOf  extends Related { }
 
 class Source extends Related { }
 
@@ -379,9 +386,9 @@ class User extends UserBasic {
     
     this.getUrl = function() {
       if( this.artist_page_url ) {
-        return this.artist_page_url + '/profile';
+        return this.artist_page_url;
       } else {
-        return 'http://ccmixter.org/people/' + this.user_name + '/profile';
+        return '/people/' + this.user_name;
       }
     };
     
@@ -392,7 +399,11 @@ class User extends UserBasic {
       return this.user_homepage;
     };
 
+    this.getFollowsIDs = function() {
+      return new TagString(this.user_favorites);
+    };
   }
+
 }
 
 class UserProfile extends User {
@@ -405,6 +416,26 @@ class UserProfile extends User {
     this.getTools = function() {
       return new TagString(this.user_whatido);
     };
+    this.getFollows = function() {
+      var favs = this._getTagLinks().findBy( 'label', 'str_favorites');
+      if( favs ) {
+        return favs.value.map( f => {
+          return {
+            name: f.tag.replace(/(&[a-z]+;|\.)/g,' '),
+            url: f.tagurl.replace(/http:\/\/ccmixter.org/,'')
+          };            
+        });
+      }
+      return [];
+    };
+  }
+
+  _getTagLinks() {
+    if( !this._fectchedTagLinks ) {
+      this._tagLinks = this.user_tag_links && Object.keys(this.user_tag_links).map( k => this.user_tag_links[k] );
+      this._fectchedTagLinks = true;
+    }
+    return this._tagLinks || [];
   }
 
   /*
@@ -491,7 +522,7 @@ class Detail extends Upload {
     this.licenseURLBinding = 'license_url';
     
     this.getIsCCPlus = function() {
-      return this._hasTag('ccplus');
+      return this._hasTag('ccplus') && (!this._hasTag('remix') || !this._hasTag('ccplus_stem'));
     };
 
     this.getIsOpen = function() {
@@ -655,7 +686,7 @@ module.exports = {
   Playlist,
   PlaylistHead,
   PlaylistTrack,
-  Remix,
+  RemixOf,
   Review,
   Sample,
   Source,
