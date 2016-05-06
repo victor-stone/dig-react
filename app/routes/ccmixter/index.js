@@ -6,6 +6,7 @@ import nowplaying from '../nowplaying';
 import people    from  './people';
 import upload    from  './upload';
 import index     from  './home';
+import login     from  './login';
 
 import tree      from  './tree';
 
@@ -27,6 +28,7 @@ module.exports = {
     credits,
     index,
     licenses,
+    login,
     news,
     nowplaying,
     people,

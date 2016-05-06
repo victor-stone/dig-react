@@ -15,6 +15,14 @@
   opacity: 0.9;
 }
 
+@media screen and (max-width: 770px) {
+  .navbar-nav {
+     background-color: black;
+     background-image: linear-gradient(to bottom, #3c3c3c 0%, #222 100%);
+     background-repeat-x: 100px;
+  }
+}
+
 .navbar-brand {
   padding-top: 8px;
 }

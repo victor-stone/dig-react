@@ -78,6 +78,8 @@ const Overview = React.createClass({
 
   render() {
     var a = this.props.store.model.artist;
+    var showFollow = this.state.user && !this.state.isSelf;
+    var doFollows = a.follows.length || showFollow;
     return (
       <HorizontalForm>
           <FormItem title="member since" wrap>{a.joined}</FormItem>
@@ -85,16 +87,19 @@ const Overview = React.createClass({
             ? <FormItem title="homepage" wrap><ExternalLink href={a.homepage} text={a.name} /></FormItem>
             : null
           }
-          <FormItem title="follows" wrap>
-            {a.follows.map( (u,i) => <Link key={i} className="follows" href={u.url}>{u.name}</Link>)}
-            {this.state.user && !this.state.isSelf
-              ? <button className="btn btn-sm follows" onClick={this.followUnfollow}>
-                  <Glyph icon={this.state.followingIcon} />
-                  {' ' + this.state.followingText}
-                </button>
-              : null
-            }
-          </FormItem>
+          {doFollows
+            ? <FormItem title="follows" wrap>
+                {a.follows.map( (u,i) => <Link key={i} className="follows" href={u.url}>{u.name}</Link>)}
+                {this.state.user && !this.state.isSelf
+                  ? <button className="btn btn-sm follows" onClick={this.followUnfollow}>
+                      <Glyph icon={this.state.followingIcon} />
+                      {' ' + this.state.followingText}
+                    </button>
+                  : null
+                }
+              </FormItem>
+            : null
+          }
       </HorizontalForm>
       );
   }
@@ -117,7 +122,9 @@ var People = React.createClass({
       return (<div className="well"><h1>{"wups, can't find that artist"}</h1></div>);
     }
     
-    var showHeader = !TagString.filter(store.model.queryParams.reqtags, UPLOAD_FILTER).getLength();
+    var qp = store.model.queryParams;
+    var showHeader = !(('offset' in qp) && parseInt(qp.offset) > 0) &&
+                     !TagString.filter(qp.reqtags, UPLOAD_FILTER).getLength();
 
     return  (
       <div className="people container-fluid">

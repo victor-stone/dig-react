@@ -81,10 +81,10 @@ const Header = React.createClass({
                 <li  id="tree_menu_tab" >
                   <Link href="/tree">{"remix tree"}</Link>
                 </li>
-                <li id="stems_menu_tab">
+                <li id="stems_menu_tab" className="hidden-xs hidden-sm">
                   <Link href="/stems">{"stems"}</Link>
                 </li>
-                <li id ="pells_menu_tab">
+                <li id ="pells_menu_tab" className="hidden-xs hidden-sm">
                   <Link href="/pells">{"pells"}</Link>
                 </li>
                 <li id="playlists_menu_tab">

@@ -5,6 +5,7 @@ class RPCAdapter
 {
   constructor() {
     this.ajax   = ajax;
+    this._cache  = true;
   }
 
   call(cmd,isSingleton) {
@@ -17,7 +18,7 @@ class RPCAdapter
       url:      url,
       dataType: 'json',
       method:   'GET',
-      cache:    false, 
+      cache:    this._cache, 
       xhrFields: { withCredentials: true },
       _ccmClientOnly: true
     };
@@ -39,6 +40,14 @@ class RPCAdapter
 
   callOne(cmd) {
     return this.call(cmd,true);
+  }
+
+  set cache(value) {
+    this._cache = value;
+  }
+
+  get cache() {
+    return this._cache;
   }
 }
 

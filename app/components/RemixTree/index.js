@@ -53,7 +53,10 @@ var TreeHead = React.createClass({
           <h4 className="clearfix"><Link className="artist" href={'/people/'+model.artist.id}>{model.artist.name}</Link></h4>
           <Description store={this.state.store} />
           <div className="clearfix" />
-          <PlayButton model={model} className="tree-play-button"/>
+          {model.fileInfo && model.fileInfo.isMP3
+            ? <PlayButton model={model} className="tree-play-button"/>
+            : null
+          }
         </div>
     );
   }

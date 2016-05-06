@@ -51,8 +51,8 @@ var css = `
 
   .subnav-option-bar .paging {
     position: absolute;
-    top: 47px;
-    right: 20px;
+    top: 10px;
+    right: 20px;    
   }
 
   .subnav-option-bar .paging > label.limit-label,

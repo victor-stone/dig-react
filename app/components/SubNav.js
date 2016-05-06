@@ -101,7 +101,9 @@ var SubNav = React.createClass({
           ? <Paging {...this.props} disableBumping />
           : null
         }        
-        {this.props.children}
+        <div className="subnav-wrapper hidden-xs hidden-sm">
+          {this.props.children}
+        </div>
       </div>
       );
   }

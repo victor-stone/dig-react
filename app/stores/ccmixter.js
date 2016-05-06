@@ -6,13 +6,27 @@ import RPCAdapter   from '../services/rpc-adapter';
 import env          from '../services/env';
 
 const CHECK_STATUS = true;
-const NOT_FETCHED  = -1;
+
+const USER_NOT_FETCHED   = -1;
+const USER_FETCHING      = -2;
+const USER_CACHED        = -3;
+const USER_NOT_LOGGED_IN = -4;
+
+/*
+  states 
+    not fetched
+    current fetching
+    fetched/cache
+    not_logged in
+*/
 
 class CCMixter 
 {
   constructor() {
     this.adapter = RPCAdapter;
-    this._currentUser = NOT_FETCHED;
+    this._userState = USER_NOT_FETCHED;
+    this._currentUser = null;
+    this._userPromises = [ ];
   }
 
   _call(cmd,checkStatus) {
@@ -30,28 +44,44 @@ class CCMixter
 
   // USER 
 
-  login( /*username,password */) {
-
+  login( username,password ) {
+    return this._call('user/login?username=' +  username + '&password=' + password );
   }
 
   logout() {
-    return this._call('api/user/logout');
+    return this._call('user/logout');
   }
 
   currentUser() {
-    if( global.IS_SERVER_REQUEST ) {
+    if( global.IS_SERVER_REQUEST || this._userState === USER_NOT_LOGGED_IN ) {
       return rsvp.resolve( null );
     }
 
-    if( this._currentUser !== NOT_FETCHED ) {
+    if( this._userState === USER_CACHED ) {
       return rsvp.resolve( this._currentUser );
     }
+
+    if( this._userState === USER_FETCHING ) {
+      var deferred = rsvp.defer();
+      this._userPromises.push(deferred);
+      return deferred.promise;
+    }
+
+    this._userState = USER_FETCHING;
+
     return this.adapter.callOne('user/current')
               .then( serialize( ccmixter.User) )
-              .then( model => this._currentUser = model )
-              .catch( () => null );
+              .then( model => this._setCurrentUser(model) )
+              .catch( () => this._setCurrentUser(null) );
   }
 
+  _setCurrentUser(model) {
+    this._userState = model ? USER_CACHED : USER_NOT_LOGGED_IN;
+    this._currentUser = model;
+    this._userPromises.forEach( p => p.resolve(model) );
+    this._userPromises = [ ];
+    return model;
+  }
   // PLAYLISTS 
 
   createDynamicPlaylist(name,queryParamsString) {

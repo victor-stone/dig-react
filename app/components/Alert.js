@@ -7,8 +7,12 @@ var Alert = React.createClass({
   getInitialState: function() {
     return { type:  this.props.type,
               id:   this.props.id || 'sys-alert',
-             cls:  'alert fade in alert-' + this.props.type + ' ' + this.props.className,
+             cls:  'alert fade in alert-' + this.props.type + ' ' + (this.props.className || ''),
              text:  this.props.text };
+  },
+
+  componentWillReceiveProps: function(props) {
+    this.setState( { type: props.type, text: props.text } );
   },
 
   componentDidMount: function() {
@@ -29,7 +33,7 @@ var Alert = React.createClass({
     return (
       <div className={this.state.cls} id={this.state.id} >
         <a href="#" className="close" data-dismiss="alert" dangerouslySetInnerHTML={times}></a>
-        <strong>{title}</strong>{text}
+        <strong>{title}</strong> {text}
       </div>      
     );
   }
