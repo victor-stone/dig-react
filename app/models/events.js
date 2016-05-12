@@ -1,6 +1,6 @@
 
 var Events = {
-  ERROR:             'error',
+  ERROR:              'error',
   LOADING:            'loading',
   PRE_NAVIGATE:       'pre_navigate',
   NAVIGATE_TO:        'navigate_to',
@@ -23,7 +23,10 @@ var Events = {
   DOWNLOAD:           'download',
   USER_SEARCH:        'user_search',
   ERROR_IN_JSON:      'json_error',
-  APP_ALERT:           'app_alert'
+  APP_ALERT:          'app_alert',
+  USER_LOGIN:         'user_login',
+  REQUEST_MODAL:      'request_modal'
+
 };
 
 module.exports = Events;

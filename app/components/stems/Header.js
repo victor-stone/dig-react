@@ -7,8 +7,7 @@ import NavbarHeader from '../NavbarHeader';
 import services     from '../../services';
 
 import { CurrentUserTracker }    from '../../mixins';
-import { CurrentUserMenu,
-         CurrentUserMenuHead }   from '../CurrentUserMenu';
+import CurrentUserMenu           from '../CurrentUserMenu';
 
 var StemsUserMenu = React.createClass({
 
@@ -22,17 +21,17 @@ var StemsUserMenu = React.createClass({
 
     return (
         <li>
-          <CurrentUserMenuHead model={user} loading={loading} />
-          <CurrentUserMenu model={user} >
-            <li><Link href={'/people/' + id}><Glyph fixed icon="music" />{" your stems"}</Link></li>
-            <li><a target="_blank" href="http://ccmixter.org/submit/samples"><Glyph fixed icon="bolt" />{" submit new samples"}</a></li>
-            <li><a target="_blank" href="http://ccmixter.org"><Glyph fixed icon="home" />{" ccMixter home"}</a></li>
+          <CurrentUserMenu model={user} loading={loading} >
+            <Link href={'/people/' + id}><Glyph fixed icon="music" />{" your stems"}</Link>
+            <a target="_blank" href="http://ccmixter.org/submit/samples"><Glyph fixed icon="bolt" />{" submit new samples"}</a>
+            <a target="_blank" href="http://ccmixter.org"><Glyph fixed icon="home" />{" ccMixter home"}</a>
           </CurrentUserMenu>
         </li>
       );
   }
 
 });
+
 const Header = React.createClass({
 
   displayName: 'Header',

@@ -16,7 +16,8 @@ var Login = React.createClass({
     CCMixter.login(this.refs['login-name'].value,this.refs['password'].value)
       .then( result => {
         if( result['status'] === 'ok') {
-          lookup('env').alert('success', 'logged in');
+          var env = lookup('env');
+          env.alert('success', 'logged in');
           this.setState( { show: false, error: '' } );
         } else {
           this.setState( { error: result['status'] } );
@@ -25,6 +26,10 @@ var Login = React.createClass({
   },
 
   onCancel() {
+    if( this.props.onCancel ) {
+      this.props.onCancel();
+    }
+
     this.setState( {
       error: '',
       show: false

@@ -37,16 +37,20 @@ var UploadLink = React.createClass({
 
 var DeadLink = React.createClass({
 
+  getInitialState() {
+    return { onClick: this.props.onClick };
+  },
+
   onClick: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    if( this.props.onClick ) {
-      this.props.onClick(e);
+    if( this.state.onClick ) {
+      this.state.onClick(e);
     }
   },
 
   render: function() {
-    return (<a href="#" {...this.props}>{this.props.children}</a>);
+    return (<a {...this.props} href="#" onClick={this.onClick} >{this.props.children}</a>);
   }
 });
 

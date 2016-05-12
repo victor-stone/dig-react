@@ -1,55 +1,53 @@
 import querystring  from 'querystring';
 import rsvp         from 'rsvp';
+import events       from '../models/events';
 import ccmixter     from '../models/ccmixter';
 import serialize    from '../models/serialize';
 import RPCAdapter   from '../services/rpc-adapter';
 import env          from '../services/env';
-
-const CHECK_STATUS = true;
+import Eventer      from '../services/eventer';
 
 const USER_NOT_FETCHED   = -1;
 const USER_FETCHING      = -2;
 const USER_CACHED        = -3;
 const USER_NOT_LOGGED_IN = -4;
 
-/*
-  states 
-    not fetched
-    current fetching
-    fetched/cache
-    not_logged in
-*/
-
-class CCMixter 
+class CCMixter extends Eventer
 {
   constructor() {
+    super(...arguments);
     this.adapter = RPCAdapter;
+
     this._userState = USER_NOT_FETCHED;
     this._currentUser = null;
     this._userPromises = [ ];
   }
 
-  _call(cmd,checkStatus) {
+  _call(cmd) {
     return this.adapter.callOne(cmd).then( result => {
-      if( checkStatus ) {
-        if( typeof result.status === 'undefined' || result.status !== 'ok' ) {
-          throw new Error('the request did not go through');
-        }
+      if( typeof result.status === 'undefined' || result.status === 'error' ) {
+        throw new Error('the request did not go through ' + (result.errmsg || 'because error'));
       }
-      return result;
+      return (result.data && result.data.length && result.data[0]) || result;
     }).catch( e => {
-      env.alert('danger', 'wups, that didn\'t work so well because ' + e.message );
+      env.alert('danger', 'wups, that didn\'t work so well: ' + e.message );
     });
   }
 
   // USER 
 
   login( username,password ) {
-    return this._call('user/login?username=' +  username + '&password=' + password );
+    function _debugResult(result) {
+      env.emit( events.USER_LOGIN, result );
+      return result;
+    }
+    return this._call('user/login?username=' +  username + '&password=' + password )
+      .then( _debugResult );
   }
 
   logout() {
-    return this._call('user/logout');
+    return this._call('user/logout')
+              .then( result => { this._userState = USER_NOT_LOGGED_IN; return result; } );
   }
 
   currentUser() {
@@ -69,7 +67,7 @@ class CCMixter
 
     this._userState = USER_FETCHING;
 
-    return this.adapter.callOne('user/current')
+    return this._call('user/current')
               .then( serialize( ccmixter.User) )
               .then( model => this._setCurrentUser(model) )
               .catch( () => this._setCurrentUser(null) );
@@ -96,20 +94,20 @@ class CCMixter
   }
 
   deletePlaylist(id) {
-    return this._call('playlist/delete/' + id, CHECK_STATUS);
+    return this._call('playlist/delete/' + id);
   }
 
   removeTrackFromPlaylist(upload,id) {
-    return this._call('playlist/removetrack/' + upload + '/' + id, CHECK_STATUS);
+    return this._call('playlist/removetrack/' + upload + '/' + id);
   }
 
   updateDynamicPlaylist(id,queryParamsString) {
     var q = queryParamsString;
-    return this._call('playlist/update/dynamic/' + id + '?' + q, CHECK_STATUS);
+    return this._call('playlist/update/dynamic/' + id + '?' + q);
   }
 
   toggleFeaturedPlaylist(id) {
-    return this._call('playlist/feature/' + id, CHECK_STATUS);
+    return this._call('playlist/feature/' + id);
   }
 
   updatePlaylist(id,fields) {
@@ -118,7 +116,7 @@ class CCMixter
   }
 
   reorderPlaylist(id,reorderSpec) {
-    return this._call('playlist/reorder/' + id + '?' + reorderSpec, CHECK_STATUS);
+    return this._call('playlist/reorder/' + id + '?' + reorderSpec);
   }
 }
 

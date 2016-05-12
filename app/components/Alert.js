@@ -11,14 +11,14 @@ var Alert = React.createClass({
              text:  this.props.text };
   },
 
-  componentWillReceiveProps: function(props) {
-    this.setState( { type: props.type, text: props.text } );
-  },
-
   componentDidMount: function() {
     var $e = $('#' + this.state.id);
     $e.show();
     $e.on('close.bs.alert', this.props.onClose);
+  },
+
+  componentWillReceiveProps: function(props) {
+    this.setState( { type: props.type, text: props.text } );
   },
 
   render: function() {

@@ -9,6 +9,7 @@ import { browserScripts } from './unicorns';
 import { Banner,
          TitleSetter,
          Alert,
+         Modal,
          ErrorDisplay,
          AudioPlayer }    from './components';
 
@@ -121,6 +122,7 @@ const App = React.createClass({
     var title  = comp && comp.title;
     return (
       <div>
+        <Modal.Container />
         <div id="wrap">
           <TitleSetter title={title} />
           <Banner />

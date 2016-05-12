@@ -2,8 +2,10 @@ import React    from 'react';
 import ReactDOM from 'react-dom';
 import Glyph    from './Glyph';
 import { CloseButton } from './ActionButtons';
+import env      from '../services/env';
+import events   from '../models/events';
 
-let Modal = React.createClass({
+const Modal = React.createClass({
 
   propTypes: {
     handleHideModal: React.PropTypes.func.isRequired
@@ -13,7 +15,10 @@ let Modal = React.createClass({
     /* globals $ */
     var d = $(ReactDOM.findDOMNode(this));
     d.modal('show');
-    d.on('hidden.bs.modal', this.props.handleHideModal);
+    d.on ('hidden.bs.modal', () => {
+      this.props.handleHideModal(...arguments);
+      env.emit(events.REQUEST_MODAL);
+    });
   },
 
   render(){
@@ -47,6 +52,39 @@ let Modal = React.createClass({
     );
   },
 });
+
+const ModalContainer = React.createClass({
+
+  getInitialState() {
+    return { modalComponent: null };
+  },
+
+  componentDidMount() {
+    env.on(events.REQUEST_MODAL,this.onRequest);
+  },
+
+  componentWillUnmount() {
+    env.removeListener(events.REQUEST_MODAL,this.onRequest);    
+  },
+
+  onRequest(comp,props) {
+    this.setState( { modalComponent: comp, 
+                     componentProps: props } );
+  },
+
+  render() { 
+    return(
+        <div id="modal-container">
+          {this.state.modalComponent
+            ? React.createElement(this.state.modalComponent,this.state.componentProps)
+            : null
+          }
+        </div>
+      );
+  }
+});
+
+Modal.Container = ModalContainer;
 
 module.exports = Modal;
 

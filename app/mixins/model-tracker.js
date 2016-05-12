@@ -14,10 +14,12 @@ var ModelTracker = {
   },
 
   componentWillMount: function() {
+    this._modelTrackMounted = this;
     this.props.store.on( events.MODEL_UPDATED, this.onModelUpdate );
   },
 
   componentWillUnmount: function() {
+    this._modelTrackMounted = false;
     this.props.store.removeListener( events.MODEL_UPDATED, this.onModelUpdate );
   },
 
@@ -32,7 +34,9 @@ var ModelTracker = {
   },
 
   onModelUpdate: function() {
-    this.setState( this.stateFromStore(this.props.store) );
+    if( this._modelTrackMounted ) {
+      this.setState( this.stateFromStore(this.props.store) );
+    }
   },
 };
 

@@ -35,7 +35,7 @@ class QueryAjaxAdapter extends Eventer
       url:      url,
       dataType: 'json',
       method:   'GET',
-      cache:    true, // (typeof env.cacheRequests === 'undefined') ? env.cacheRequests : true
+      cache:    false, //true, // (typeof env.cacheRequests === 'undefined') ? env.cacheRequests : true
     };
 
     function _success(r) {

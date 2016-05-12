@@ -7,8 +7,7 @@ import services     from '../../services';
 import Glyph        from '../Glyph';
 
 import { CurrentUserTracker }    from '../../mixins';
-import {  CurrentUserMenu,
-          CurrentUserMenuHead }  from '../CurrentUserMenu';
+import CurrentUserMenu           from '../CurrentUserMenu';
 
 var PlaylistUserMenu = React.createClass({
 
@@ -22,10 +21,9 @@ var PlaylistUserMenu = React.createClass({
 
     return (
         <li>
-          <CurrentUserMenuHead model={user} loading={loading} />
-          <CurrentUserMenu model={user} >
-            <li><Link href={'/people/' + id + '/playlists?minitems=0&dynamic=1'}><Glyph fixed icon="music" />{" your playlists"}</Link></li>
-            <li><Link href="/new"><Glyph fixed icon="bolt" />{" new dynamic playlist"}</Link></li>
+          <CurrentUserMenu model={user} loading={loading} >
+            <Link href={'/people/' + id + '/playlists?minitems=0&dynamic=1'}><Glyph fixed icon="music" />{" your playlists"}</Link>
+            <Link href="/new"><Glyph fixed icon="bolt" />{" new dynamic playlist"}</Link>
           </CurrentUserMenu>
         </li>
       );

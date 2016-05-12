@@ -94,12 +94,15 @@ var css = `
 .playlist-detail-page .playlist-tags {
 }
 
-.playlist-detail-page .playlist-tags > a {
-  color: #666;
+.playlist-detail-page .playlist-tags .playlist-tag {
+  display: inline-block;
+  margin-left: 8px;
+  color: yellow;
+  background: transparent;
 }
 
-.playlist-detail-page .playlist-tags > a:hover {
-  color: #088;
+.playlist-detail-page .playlist-tags .playlist-tag:hover {
+  color: white;
 }
 
 .static-playlist-tag-editor ul {
