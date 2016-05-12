@@ -28,7 +28,7 @@ class CCMixter extends Eventer
       if( typeof result.status === 'undefined' || result.status === 'error' ) {
         throw new Error('the request did not go through ' + (result.errmsg || 'because error'));
       }
-      return (result.data && result.data.length && result.data[0]) || result;
+      return (result.data && Array.isArray(result.data) && result.data.length && result.data[0]) || result;
     }).catch( e => {
       env.alert('danger', 'wups, that didn\'t work so well: ' + e.message );
     });
@@ -38,7 +38,7 @@ class CCMixter extends Eventer
 
   login( username,password ) {
     function _debugResult(result) {
-      env.emit( events.USER_LOGIN, result );
+      this.emit( events.USER_LOGIN, result );
       return result;
     }
     return this._call('user/login?username=' +  username + '&password=' + password )
@@ -47,7 +47,11 @@ class CCMixter extends Eventer
 
   logout() {
     return this._call('user/logout')
-              .then( result => { this._userState = USER_NOT_LOGGED_IN; return result; } );
+              .then( result => { 
+                  this._userState = USER_NOT_LOGGED_IN; 
+                  this.emit( events.USER_LOGIN, null );
+                  return result; 
+                });
   }
 
   currentUser() {
@@ -68,18 +72,21 @@ class CCMixter extends Eventer
     this._userState = USER_FETCHING;
 
     return this._call('user/current')
-              .then( serialize( ccmixter.User) )
-              .then( model => this._setCurrentUser(model) )
-              .catch( () => this._setCurrentUser(null) );
+              .then( this._setCurrentUser.bind(this) );
   }
 
-  _setCurrentUser(model) {
-    this._userState = model ? USER_CACHED : USER_NOT_LOGGED_IN;
-    this._currentUser = model;
-    this._userPromises.forEach( p => p.resolve(model) );
-    this._userPromises = [ ];
-    return model;
+  profile() {
+    return this._call('user/profile').then( serialize( ccmixter.UserProfile ) );
   }
+
+  _setCurrentUser(status) {
+    this._userState = status.status === 'ok' ? USER_CACHED : USER_NOT_LOGGED_IN;
+    this._currentUser = status.data; // might be 'undefined'
+    this._userPromises.forEach( p => p.resolve(this._currentUser) );
+    this._userPromises = [ ];
+    return this._currentUser;
+  }
+
   // PLAYLISTS 
 
   createDynamicPlaylist(name,queryParamsString) {

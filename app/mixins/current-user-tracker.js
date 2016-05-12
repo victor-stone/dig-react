@@ -29,13 +29,21 @@ const CurrentUserTracker = {
   },
 
   checkForUser() {
-    return  CCMixter.currentUser().then( user => {
-      if( this.thisIsMounted ) {
+    var handler = function(user) {
         var state = this.stateFromUser ? this.stateFromUser(user,this.props) : { user };
         state.userLoading = false;
         this.setState( state );
+    }.bind(this);
+
+    return  CCMixter.currentUser().then( username => {
+      if( this.thisIsMounted ) {
+        if( username ) {
+          CCMixter.profile(username).then( handler );
+        } else {
+          handler(null);
+        }
       }
-      return user;
+      return username;
     });
   },
 
