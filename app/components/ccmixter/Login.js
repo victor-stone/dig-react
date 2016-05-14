@@ -1,4 +1,5 @@
 import React            from 'react';
+import ReactDOM         from 'react-dom';
 import CCMixter         from '../../stores/ccmixter';
 import lookup           from '../../services';
 import Modal            from '../Modal';
@@ -16,9 +17,10 @@ var Login = React.createClass({
     CCMixter.login(this.refs['login-name'].value,this.refs['password'].value)
       .then( result => {
         if( result['status'] === 'ok') {
-          var env = lookup('env');
-          env.alert('success', 'logged in');
-          this.setState( { show: false, error: '' } );
+          /* globals $ */
+          var d = $(ReactDOM.findDOMNode(this));
+          d.modal('hide');
+          lookup('env').alert('success', 'logged in');
         } else {
           this.setState( { error: result['status'] } );
         }
@@ -42,6 +44,10 @@ var Login = React.createClass({
     }
     return (
       <Modal action={this.onLogin} handleHideModal={this.onCancel} title="Login" icon="sign-in" buttonText="Login">
+          {this.state.error
+            ? <Alert type="danger" text={this.state.error} />
+            : null
+          }
           <div className="form-group">
               <label htmlFor="login-name">{"login name"}</label>
               <input type="email" className="form-control" ref="login-name" placeholder="login name" />
@@ -50,13 +56,6 @@ var Login = React.createClass({
               <label htmlFor="password">{"password"}</label>
               <input type="password" className="form-control" ref="password" placeholder="password" />
           </div>
-          <div className="checkbox">
-              <label><input type="checkbox" /> {"remember me"}</label>
-          </div>
-          {this.state.error
-            ? <Alert type="danger" text={this.state.error} />
-            : null
-          }
       </Modal>
       );
   }  

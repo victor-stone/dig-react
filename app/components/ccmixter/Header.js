@@ -18,7 +18,9 @@ const UserMenu = React.createClass({
   mixins: [CurrentUserTracker],
 
   onLogout() {
-    ccMixter.logout();
+    ccMixter.logout().then( () => {
+      lookup('env').alert('success', 'you are now logged out');
+    });
   },
 
   onLogin() {

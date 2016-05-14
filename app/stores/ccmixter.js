@@ -6,6 +6,7 @@ import serialize    from '../models/serialize';
 import RPCAdapter   from '../services/rpc-adapter';
 import env          from '../services/env';
 import Eventer      from '../services/eventer';
+import { cookies }  from '../unicorns';
 
 const USER_NOT_FETCHED   = -1;
 const USER_FETCHING      = -2;
@@ -20,6 +21,7 @@ class CCMixter extends Eventer
 
     this._userState = USER_NOT_FETCHED;
     this._currentUser = null;
+    this._currentProfile = null;
     this._userPromises = [ ];
   }
 
@@ -37,17 +39,19 @@ class CCMixter extends Eventer
   // USER 
 
   login( username,password ) {
-    function _debugResult(result) {
-      this.emit( events.USER_LOGIN, result );
-      return result;
-    }
-    return this._call('user/login?username=' +  username + '&password=' + password )
-      .then( _debugResult );
+    return this._call('user/login?remember=1&username=' +  username + '&password=' + password )
+      .then( (result) => {
+        cookies.create( 'username', result.data );
+        this._setCurrentUser(result);
+        this.emit( events.USER_LOGIN, result );
+        return result;
+      });
   }
 
   logout() {
     return this._call('user/logout')
               .then( result => { 
+                  cookies.remove( 'username' );
                   this._userState = USER_NOT_LOGGED_IN; 
                   this.emit( events.USER_LOGIN, null );
                   return result; 
@@ -57,6 +61,14 @@ class CCMixter extends Eventer
   currentUser() {
     if( global.IS_SERVER_REQUEST || this._userState === USER_NOT_LOGGED_IN ) {
       return rsvp.resolve( null );
+    }
+
+    if( document.cookie ) {
+      var id = cookies.value('username');
+      if( id ) {
+        this._setCurrentUser( { status: 'ok', data: id } );
+        return rsvp.resolve( id );
+      }
     }
 
     if( this._userState === USER_CACHED ) {
@@ -75,8 +87,16 @@ class CCMixter extends Eventer
               .then( this._setCurrentUser.bind(this) );
   }
 
-  profile() {
-    return this._call('user/profile').then( serialize( ccmixter.UserProfile ) );
+  profile(id) {
+    if( this._currentProfile && this._currentProfile.id === id ) {
+      return rsvp.resolve(this._currentProfile);
+    }
+    return this._call('user/profile/' + id)
+                  .then( serialize( ccmixter.UserProfile ) )
+                  .then( profile => {
+                    this._currentProfile = profile;
+                    return profile;
+                  });
   }
 
   _setCurrentUser(status) {

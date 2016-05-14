@@ -54,7 +54,9 @@ span.light-color a {
 
 .system-alert.alert {
   width: 60%;
-  margin: 10px auto;
+  margin-left: 20%;
+  position: fixed;
+  z-index: 10000;
 }
 
 .system-alert.alert strong {
