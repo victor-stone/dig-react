@@ -19,6 +19,7 @@ class UploadList extends Query {
     this._tags         = null;
     this.tagFields     = ['tags', 'reqtags', 'oneof'];
     this.totalsCache   = null;
+    this.autoFetchUser = true;
   }
 
   get supportsOptions() {
@@ -118,7 +119,7 @@ class UploadList extends Query {
     var hash = {
       items:  this.cachedFetch(queryParams,'items'),
       total:  this.count(queryParams,'total'),
-      artist: user ? this.findUser(user,'artist') : null,
+      artist: (user && this.autoFetchUser) ? this.findUser(user,'artist') : null,
     };
 
     if( hasSearch) {

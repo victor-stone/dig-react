@@ -7,6 +7,7 @@ import people    from  './people';
 import upload    from  './upload';
 import index     from  './home';
 import login     from  './login';
+import feed      from  './feed';
 
 import tree      from  './tree';
 
@@ -26,7 +27,8 @@ import pells     from '../pells/browse';
 
 module.exports = { 
     credits,
-    index,
+    feed,
+    index,    
     licenses,
     login,
     news,

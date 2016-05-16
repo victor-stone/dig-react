@@ -37,6 +37,7 @@ const UserMenu = React.createClass({
 
     return (
         <CurrentUserMenu model={user} loading={loading} onLogin={this.onLogin} >
+          <Link href={'/feed/' + id}><Glyph fixed icon="feed" />{" your feed"}</Link>
           <Link href={'/people/' + id}><Glyph fixed icon="circle" />{" your profile"}</Link>
           <a target="_blank" href="http://ccmixter.org/submit"><Glyph fixed icon="cloud-upload" />{" submit files"}</a>
           <CurrentUserMenu.Divider />

@@ -680,6 +680,29 @@ class PlaylistHead extends Playlist {
   }
 }
 
+class UserFeedItemArtist extends Model {
+  constructor() {
+    super(...arguments);
+    this.avatarURLBinding =  '_bindParent.user_avatar_url';
+    this.nameBinding = '_bindParent.user_real_name';
+    this.idBinding = '_bindParent.user_name';
+  }
+}
+
+class UserFeedItem extends Model {
+  constructor() {
+    super(...arguments);
+    this._modelSubtree = {
+      artist: UserFeedItemArtist
+    };
+    this.typeBinding = 'feed_type';
+    this.dateBinding = 'feed_date_format';
+    this.nameBinding = 'item_name';
+    this.idBinding   = 'feed_id';
+  }
+
+}
+
 module.exports = {
   ACappella, 
   Detail,
@@ -697,5 +720,6 @@ module.exports = {
   UploadBasic,
   User,
   UserBasic,
+  UserFeedItem,
   UserProfile,
 };
