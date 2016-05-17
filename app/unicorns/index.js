@@ -92,7 +92,17 @@ if( typeof Array.prototype.filter === 'undefined' ) {
     }
     return results;
   };
+}
 
+if( typeof Array.prototype.match === 'undefined' ) {
+  Array.prototype.match = function(regex) {
+    for( var n = 0; n < this.length; n++ ) {
+      if( this[n].match(regex) ) {
+        return this[n];
+      }
+    }
+    return null;
+  };
 }
 
 if( typeof Array.prototype.filterBy === 'undefined' ) {

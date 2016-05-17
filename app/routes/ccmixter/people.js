@@ -23,8 +23,9 @@ people.subnav = function(props) {
 };
 
 people.store = function(params,queryParams) {
-  var qparams = mergeParams( {}, qc.people, { u: params.userid }, queryParams );
-  return User.storeFromQuery(qparams, qc.people)
+  var defopts = mergeParams( {}, qc.people, { u: params.userid } );
+  var qparams = mergeParams( {}, defopts, queryParams );
+  return User.storeFromQuery(qparams, defopts )
           .then( store => {
             people.title = !this.error && store.model.artist.name;
             return store;

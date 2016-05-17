@@ -207,7 +207,12 @@ a > small:after {
 
 .well.error-page {
   width: 50%;
-  margin: 30px auto;
+  position: fixed;
+  z-index: 250000;
+  top: 30px;
+  left: 25%;
+  border: 2px dotted black;
+  border-radius: 20px;
 }
 
 div.well.error-page > code {

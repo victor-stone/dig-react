@@ -1,5 +1,6 @@
 import ajax  from './ajax';
-import env   from './env';
+//import env   from './env';
+import rsvp  from 'rsvp';
 
 class ErrorReport
 {
@@ -9,10 +10,9 @@ class ErrorReport
   }
 
   report() {
-  
-    var url = /*env.debugMode 
-                ? 'http://localhost:3000/api/report'
-                : */ 'http://' + env.appName + '.ccmixter.org/api/report';
+    return rsvp.resolve('noted');
+    /*
+    var url = 'http://' + env.appName + '.ccmixter.org/api/report';
 
     var eq = encodeURIComponent(this.err+'');
     var es = encodeURIComponent(this.err.stack);
@@ -33,8 +33,8 @@ class ErrorReport
       throw err;
     }
 
-    return this.ajax(opts)
-              .then( _success, _error );
+    return this.ajax(opts).then( _success, _error );
+    */
   }
 
 }

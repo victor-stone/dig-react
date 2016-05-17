@@ -14,13 +14,17 @@ class Router extends Eventer
 
     this.routes = null;
     this.rewrites = [];
-    this.currentRoute = {};
+    this.__currRoute = {};
 
     if( typeof window !== 'undefined' ) {
       window.onpopstate = this.updateURL.bind(this);
     }
   }
   
+  get _currentRoute() {
+    return this.__currRoute;
+  }
+
   addRoutes(routes, rewrites) {
 
     this.routes = routes;
@@ -39,7 +43,8 @@ class Router extends Eventer
       if( !component.store ) {
         component.store = function() { return rsvp.resolve({}); };
       }
-      this.recognizer.add( [ { path: component.path, handler } ] );
+      var paths = Array.isArray( component.path ) ? component.path : [ component.path ];
+      paths.forEach( path => this.recognizer.add( [ { path, handler } ] ) );
     }
   }
   
@@ -104,12 +109,12 @@ class Router extends Eventer
     }
     var handler = handlers[0];
 
-    if( this.currentRoute.component &&
-        !this.currentRoute.component.noReuse &&
-        document.location.pathname === this.currentRoute.component.path &&
-        this.currentRoute.store.refreshHard ) {
+    if( this.__currRoute.component &&
+        !this.__currRoute.component.noReuse &&
+        document.location.pathname === this.__currRoute.component.path &&
+        this.__currRoute.store.refreshHard ) {
 
-          var store = this.currentRoute.store;
+          var store = this.__currRoute.store;
           this.ignoreEvents = true;
           if( q ) {
             var qp = querystring.parse(q.substr(1));
@@ -133,13 +138,13 @@ class Router extends Eventer
               hash:        document.location.hash || ''
             };
             
-            this.emit( events.PRE_NAVIGATE, meta, this.currentRoute );
+            this.emit( events.PRE_NAVIGATE, meta, this.__currRoute );
 
-            var prevStore = this.currentRoute.store;
+            var prevStore = this.__currRoute.store;
             if( prevStore && prevStore.removeListener ) {
               prevStore.removeListener( events.PARAMS_CHANGED, this.paramChanged.bind(this) );
             }
-            this.currentRoute = {
+            this.__currRoute = {
               component: handler.component,
               store
             };
@@ -165,7 +170,7 @@ class Router extends Eventer
     if( !this.ignoreEvents ) {
       var str = store.queryString;
       if( str.length === 0 ) {
-        str = this.currentRoute.component.path;
+        str = this.__currRoute.component.path;
       } else {
         str = '?' + str;
       }

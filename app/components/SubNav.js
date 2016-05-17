@@ -18,7 +18,8 @@ var SubNavTabsMixin = {
   },
 
   checkActive(tab) {
-    return tab === this.state.tab ? 'active' : '';
+    var active = this.props.checkActive ? this.props.checkActive(tab) : tab === this.state.tab;
+    return  active ? 'active' : '';
   },
 
   render() {
