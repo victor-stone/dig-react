@@ -30,7 +30,7 @@ var SubNavTabsMixin = {
     return (
       <ul className="nav nav-tabs subnav-tabs">
       {Object.keys(tabs).map( t => {
-        if( badges && !badges[t] ) {
+        if( badges && !badges[t] && !this.props.allowEmptyBadges ) {
           return null;
         }
         return (
