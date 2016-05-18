@@ -3,6 +3,7 @@ import querystring from 'querystring';
 import Query       from './query';
 import events      from '../models/events';
 import Tags        from './tags';
+import env         from '../services/env';
 
 import { oassign,
          hashParams,
@@ -174,7 +175,7 @@ class UploadList extends Query {
   }
 
   cachedFetch(queryParams, deferName) {
-    if( !this.gotCache ) {
+    if( !env.debugMode && !this.gotCache ) {
       var qp = oassign( {}, queryParams);
       qp['cache'] = '_' + hashParams(queryParams).hashCode();
       this.gotCache = true;

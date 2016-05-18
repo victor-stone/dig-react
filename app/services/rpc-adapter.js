@@ -5,7 +5,7 @@ class RPCAdapter
 {
   constructor() {
     this.ajax   = ajax;
-    this._cache  = true;
+    this._cache  = false; // true;
   }
 
   call(cmd,isSingleton) {

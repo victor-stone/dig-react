@@ -95,13 +95,15 @@ var SubNav = React.createClass({
 
   render() {
     var cls = 'subnav-option-bar ' + (this.props.className || '');
+    var options = this.props.options ? React.createElement( this.props.options, this.props ) : null;
     return(
       <div className={cls}>
         <InlineCSS css={css} id="subnav-option-bar-css" />
         {this.props.paging
           ? <Paging {...this.props} disableBumping />
           : null
-        }        
+        }
+        {options}
         <div className="subnav-wrapper hidden-xs hidden-sm">
           {this.props.children}
         </div>

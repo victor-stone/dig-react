@@ -4,7 +4,54 @@ import InlineCSS        from '../InlineCSS';
 import css              from './style/subnav';
 import lookup           from '../../services';
 import { CurrentUserTracker,
+         QueryParamTracker,
+         DirtyParamTracker,
+         DefaultParamTracker,
          ModelTracker } from '../../mixins';
+
+const UnseenFilter = React.createClass({
+
+  mixins: [QueryParamTracker, DirtyParamTracker, DefaultParamTracker],
+
+  stateFromParams: function(queryParams) {
+    var toggle = queryParams.unseen === '1';
+    return { toggle };
+  },
+
+  onAreParamsDirty: function(queryParams,defaults,isDirty) {
+    if( !isDirty.isDirty) {
+      isDirty.isDirty = queryParams.unseen === '1';
+    }
+  },
+
+  onGetParamsDefault: function(queryParams) {
+    queryParams.unseen = '1';
+  },
+
+  performQuery: function() {
+    this.refreshHard( { unseen: !this.state.toggle ? '1' : '0' });
+  },
+
+  render: function() {
+    return (
+        <label className="form-control input-sm" htmlFor="unseen">{"hide seen items "}<input onChange={this.performQuery} checked={this.state.toggle} type="checkbox" id="unseen" /></label>
+      );
+  }
+});
+
+const FeedOptions = React.createClass({
+
+  render() {
+    return (
+      <form className="ffeed-query-options form-inline navbar-search pull-right">
+      <div className="form-group form-group-sm">
+        <UnseenFilter store={this.props.store} />
+      </div>
+      </form>
+    );
+  }
+
+});
 
 var FeedTabs = React.createClass({
 
@@ -67,7 +114,7 @@ var FeedSubNav = React.createClass({
     }
     var props = this.props;
     return (
-        <SubNav {...props}>
+        <SubNav {...props} options={FeedOptions}>
           <InlineCSS css={css} id="feed-subnav-css" />
           <FeedTabs store={props.store}  />
         </SubNav>

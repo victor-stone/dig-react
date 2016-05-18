@@ -1,16 +1,25 @@
 var css = `
 
+.feed-query-options  {
+ margin-bottom: 0px;
+ margin-top: 5px; 
+}
+
 .user-feed .user-feed-items > li {
-  margin-bottom: 15px;
-  font-size: 20px;
-  padding-left: 10px;
+  position: relative;
+  min-height: 70px;
+  margin-bottom: 25px;
+  padding-left: 31px;
   padding-top: 10px;
   padding-bottom: 12px;
-  min-height: 70px;
-  position: relative;
+
+
+  font-size: 20px;
+
+  color: #333;
   box-shadow: #999 2px 2px 8px;
   border-radius: 5px;
-  color: #333;
+
   background-image: -webkit-linear-gradient(top, #e8e8e8 0%, #eeeeee 100%);
   background-image: -o-linear-gradient(top, #e8e8e8 0%, #eeeeee 100%);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#e8e8e8), to(#eeeeee));
@@ -20,9 +29,14 @@ var css = `
   background-repeat: repeat-x;
 }
 
+.user-feed .user-feed-items > li.seen {
+  opacity: 0.5;
+}
+
 .user-feed .user-feed-items > li:hover {
   cursor: pointer;
   background: white;
+  opacity: 1.0;
 }
 .user-feed .user-feed-items > li img {
   border-radius: 50%;
@@ -79,18 +93,18 @@ var css = `
 /* glyphs */
 
 .user-feed .user-feed-items > li .text i.fa {
-    /* margin-right: 18px; */
-    /* margin-top: 4px; */
-    /* min-width: 25px; */
-    /* float: left; */
-    display: inline-block;
-    padding: 4px;
-    color: #a94442; // #cfc
-    float: right;
-    right: 5;
-    position: absolute;
-    top: 5;
-  }
+  position: absolute;
+  left: -10;
+  top: -10;
+  display: inline-block;
+
+  padding: 4px;
+  
+  color: #a94442;
+  background-color: white;
+  border: 1px solid;
+  border-radius: 4px;
+}
 
 
 .user-feed .user-feed-items > li.recommend.unseen .text > i.fa {

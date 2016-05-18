@@ -1,4 +1,5 @@
-import Model          from '../model';
+import Model                from '../model';
+import { DetailUploadUser } from './user';
 
 const BB_FORMAT = 0;
 const HTML_FORMAT = 1;

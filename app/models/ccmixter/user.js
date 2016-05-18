@@ -124,6 +124,7 @@ class DetailUploadUser extends UploadUserBasic {
 
 
 module.exports = {
+  DetailUploadUser,
   UploadUserBasic,
   User,
   UserBasic,

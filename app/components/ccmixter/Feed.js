@@ -6,6 +6,8 @@ import InlineCSS        from '../InlineCSS';
 import Glyph            from '../Glyph';
 import css              from './style/feed';
 import lookup           from '../../services';
+import ccMixter         from '../../stores/ccmixter';
+
 var FeedHeaders = {};
 
 [
@@ -24,6 +26,8 @@ var FeedHeaders = {};
 
 Object.keys(UserFeedTypes).forEach( key => FeedHeaders[UserFeedTypes[key]].cls = key.replace(/UserFeedTypes\./, '').toLowerCase() );
 
+
+
 var FeedItem = React.createClass({
 
   getInitialState() {
@@ -39,6 +43,7 @@ var FeedItem = React.createClass({
   onClick(e) {
     e.stopPropagation();
     e.preventDefault();
+    ccMixter.markItemAsSeen(this.state.model.id);
     lookup('router').navigateTo( this.state.model.navigationURL );
   },
 
@@ -52,7 +57,7 @@ var FeedItem = React.createClass({
       msg = { __html: msg};
       var url = item.artist.avatarURL.replace(/ccm/,'ccmixter.org');
 
-      return (<li key={item.id} className={cls} onClick={this.onClick} >
+      return (<li className={cls} onClick={this.onClick} >
                 <div className="date">{item.date}</div>
                 <div className="img-container"><img src={url} className="avatar" /></div>
                 <div className="text">
@@ -79,7 +84,7 @@ var Feed = React.createClass({
           <div className="col-md-offset-2 col-md-8">
             <InlineCSS css={css} id="feed-css" />
             <ul className="user-feed-items">
-            {this.state.store.model.items.map( item => <FeedItem model={item} /> ) }
+            {this.state.store.model.items.map( item => <FeedItem key={item.id} model={item} /> )}
             </ul>
           </div>
         </div>

@@ -107,6 +107,12 @@ class CCMixter extends Eventer
     return this._currentUser;
   }
 
+  // USER FEED
+
+  markItemAsSeen(feeditemid) {
+    return this._call('user/feed/markseen/' + feeditemid);
+  }
+
   // PLAYLISTS 
 
   createDynamicPlaylist(name,queryParamsString) {

@@ -1,7 +1,7 @@
 import Model          from '../model';
 import querystring    from 'querystring';
 import { TagString }  from '../../unicorns';
-
+import { Upload }     from './upload';
 
 class PlaylistCurator extends Model {
   constructor() {

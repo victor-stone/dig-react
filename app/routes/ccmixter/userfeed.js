@@ -18,7 +18,7 @@ UserFeedPage.subnav = function(props) {
   };
 
 UserFeedPage.store = function(params,queryParams) {  
-  var defopts = {limit: 10, dataview: 'userfeed', datasource: 'feed'};
+  var defopts = {limit: 10, dataview: 'userfeed', datasource: 'feed', unseen: '0' };
   if( params.user ) {
     defopts.user = params.user;
   } else {
