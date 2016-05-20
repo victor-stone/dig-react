@@ -1,5 +1,5 @@
 import Model from '../Model';
-import UserFeedTypes from '../user-feed-types';
+import {UserFeedObjTypes} from '../user-feed-types';
 
 class UserFeedItemArtist extends Model {
   constructor() {
@@ -10,20 +10,51 @@ class UserFeedItemArtist extends Model {
   }
 }
 
+class UserFeedItemActor extends Model {
+  constructor() {
+    super(...arguments);
+    this.avatarURLBinding =  '_bindParent.user_avatar_url';
+    this.nameBinding = '_bindParent.actor_real_name';
+    this.idBinding = '_bindParent.actor_user_name';
+  }
+}
+
+/*
+  "verb": "3",
+  "objtype": "2",
+  "sticky": "0",
+  "reason": "5",
+  "name": "Face in the Crowd",
+  "topic_id": "230006",
+  "topic_thread": null,
+  "upload_id": "53753",
+  "date_format": "Friday, May 20, 2016 @ 12:23 PM",
+  "actor_user_name": "Loveshadow",
+  "actor_real_name": "Loveshadow",
+  "user_name": "scomber",
+  "user_real_name": "Scomber"
+*/
+
 class UserFeedItemBase extends Model {
   constructor() {
     super(...arguments);
     this._modelSubtree = {
-      artist: UserFeedItemArtist
+      artist: UserFeedItemArtist,
+      actor: UserFeedItemActor
     };
-    this.typeBinding       = 'feed_type';
-    this.dateBinding       = 'feed_date_format';
-    this.nameBinding       = 'item_name';
-    this.idBinding         = 'feed_id';
-    this.targetBinding     = 'target_id';   
-    this.targetUserIDBinding = 'target_user_name'; 
-    this.getSeen = function() {
-      return this.feed_seen === '1';
+    this.nameBinding = 'name';
+    this.dateBinding = 'date_format';
+    this.getObjType = function() {
+      return parseInt(this.objtype);
+    };
+    this.getVerb = function() {
+      return parseInt(this.verb);
+    };
+    this.getSticky = function() {
+      return this.sticky === '1';
+    };
+    this.getReason = function() {
+      return parseInt(this.reason);
     };
   }
 
@@ -33,7 +64,7 @@ class UserFeedItemUpload extends UserFeedItemBase {
   constructor() {
     super(...arguments);
     this.getNavigationURL = function() {
-      return '/files/' + this.target_user_name + '/' + this.target_id;
+      return '/files/' + this.user_name + '/' + this.upload_id;
     };
   }
 }
@@ -42,7 +73,7 @@ class UserFeedItemReview extends UserFeedItemBase {
   constructor() {
     super(...arguments);
     this.getNavigationURL = function() {
-      return '/files/' + this.target_user_name + '/' + this.target_id + '#' + this.feed_key;
+      return '/files/' + this.user_name + '/' + this.upload_id + '#' + this.topic_id;
     };
   }
 }
@@ -51,32 +82,20 @@ class UserFeedItemThreadTopic extends UserFeedItemBase {
   constructor() {
     super(...arguments);
     this.getNavigationURL = function() {
-      return '/thread/' + this.target_id + '#' + this.feed_key;
+      return '/thread/' + this.topic_thread + '#' + this.topic_id;
     };
   }
 }
 
-var UserFeedModelMap = {};
+var  UserFeedModelMap = [];
 
-[ 
-  [ UserFeedTypes.FOLLOWER_UPLOAD , UserFeedItemUpload ],
-  [ UserFeedTypes.FOLLOWER_UPDATE , UserFeedItemUpload ],
-  [ UserFeedTypes.RECOMMEND       , UserFeedItemUpload ],
-  [ UserFeedTypes.REMIXED         , UserFeedItemUpload ],
-  [ UserFeedTypes.EDPICK          , UserFeedItemUpload ],
-  [ UserFeedTypes.EDPICK_YOU      , UserFeedItemUpload ],
-
-  [ UserFeedTypes.REVIEW          , UserFeedItemReview ],
-  [ UserFeedTypes.REPLY_REV       , UserFeedItemReview  ],
-
-  [ UserFeedTypes.ADMIN_MSG       , UserFeedItemThreadTopic  ],
-  [ UserFeedTypes.REPLY           , UserFeedItemThreadTopic  ],
-
-].forEach( uf => UserFeedModelMap[uf[0]] = uf[1] );
+UserFeedModelMap[ UserFeedObjTypes.UPLOAD ]    = UserFeedItemUpload;
+UserFeedModelMap[ UserFeedObjTypes.REVIEW ]    = UserFeedItemReview;
+UserFeedModelMap[ UserFeedObjTypes.FORM_POST ] = UserFeedItemThreadTopic;
 
 
 function UserFeedItem(jsonData) {
-  var model = UserFeedModelMap[jsonData.feed_type];
+  var model = UserFeedModelMap[parseInt(jsonData.objtype)];
   return new model(...arguments);
 }
 

@@ -1,31 +1,32 @@
 /*eslint "react/no-danger":0 */
 import React            from 'react';
-import UserFeedTypes    from '../../models/user-feed-types';
+import {UserFeedVerbs,
+        UserFeedReasons}  from '../../models/user-feed-types';
 import { ModelTracker } from '../../mixins';
 import InlineCSS        from '../InlineCSS';
 import Glyph            from '../Glyph';
 import css              from './style/feed';
 import lookup           from '../../services';
-import ccMixter         from '../../stores/ccmixter';
+//import ccMixter         from '../../stores/ccmixter';
 
-var FeedHeaders = {};
+var FeedVerbs = [];
 
-[
-  [ UserFeedTypes.FOLLOWER_UPLOAD, '%user% uploaded %name%',           'music'],
-  [ UserFeedTypes.FOLLOWER_UPDATE, '%user% made changes to %name%',    'refresh'],
-  [ UserFeedTypes.REVIEW,          '%name% was reviewed by %user%',    'edit'],
-  [ UserFeedTypes.RECOMMEND,       '%user% recommended %name%',        'heart'],
-  [ UserFeedTypes.REMIXED,         '%user% remixed %name%',            'recycle'],
-  [ UserFeedTypes.REPLY,           '%user% replied to you',            'comments'],
-  [ UserFeedTypes.REPLY_REV,       '%user% replied to your review',    'comments'],
-  [ UserFeedTypes.ADMIN_MSG,       'From the admins: %name%',          'bullhorn'],
-  [ UserFeedTypes.EDPICK,          '%name% by %user% was Ed Picked',   'star'],
-  [ UserFeedTypes.EDPICK_YOU,      '%name% was Ed Picked',             'star'],
-].forEach( fh => FeedHeaders[fh[0]] = { msg: fh[1],
-                                        icon: fh[2] } );
+FeedVerbs[ UserFeedVerbs.NEW_UPLOAD     ] = { cls: 'new',     t: '%user% uploaded %name%' };
+FeedVerbs[ UserFeedVerbs.UPDATE_UPLOAD  ] = { cls: 'edit',    t: '%user% made changes to %name%' };
+FeedVerbs[ UserFeedVerbs.REVIEW         ] = { cls: 'review',  t: '%user% reviewed %name% by %artist%' };
+FeedVerbs[ UserFeedVerbs.RECOMMEND      ] = { cls: 'rate',    t: '%user% recommended %name% by %artist%'  };
+FeedVerbs[ UserFeedVerbs.TOPIC_REPLY    ] = { cls: 'reply',   t: '%user% replied to a topic' };
+FeedVerbs[ UserFeedVerbs.FORUM_POST     ] = { cls: 'post',    t: 'From the admins: %name%' };
+FeedVerbs[ UserFeedVerbs.EDPICK         ] = { cls: 'edpick',  t: '%name% by %user% was ed picked' };
 
-Object.keys(UserFeedTypes).forEach( key => FeedHeaders[UserFeedTypes[key]].cls = key.replace(/UserFeedTypes\./, '').toLowerCase() );
+var FeedReasons = [];
 
+FeedReasons[ UserFeedReasons.REMIXED ]     = { cls: 'you',     i: 'recycle',     t: 'You\'ve been remixed' };
+FeedReasons[ UserFeedReasons.REVIEWED ]    = { cls: 'you',     i: 'edit' ,       t: 'You\'ve been reviewed' };
+FeedReasons[ UserFeedReasons.REPLIED_TO ]  = { cls: 'you',     i: 'comments',    t: 'Reply to your comments' };
+FeedReasons[ UserFeedReasons.EDPICKED ]    = { cls: 'you',     i: 'star',        t: 'You\'ve been EdPicked' };
+FeedReasons[ UserFeedReasons.FOLLOWING ]   = { cls: 'follow',  i: 'arrow-right', t: null };
+FeedReasons[ UserFeedReasons.RECOMMENDED ] = { cls: 'you',     i: 'heart',       t: 'You\'ve been recommended' };
 
 
 var FeedItem = React.createClass({
@@ -43,25 +44,30 @@ var FeedItem = React.createClass({
   onClick(e) {
     e.stopPropagation();
     e.preventDefault();
-    ccMixter.markItemAsSeen(this.state.model.id);
+    //ccMixter.markItemAsSeen(this.state.model.id);
     lookup('router').navigateTo( this.state.model.navigationURL );
   },
 
   render() {
-      var item = this.state.model;
-      var fh  = FeedHeaders[item.type];
-      var cls = fh.cls + ' ' + (item.seen ? 'seen' : 'unseen');
-      var msg = fh.msg
-                  .replace( /%user%/, `<strong>${item.artist.name}</strong>` )
-                  .replace( /%name%/, `<i>${item.name}</i>` );
+      var item   = this.state.model;
+      var verb   = FeedVerbs[item.verb];
+      var reason = FeedReasons[item.reason];
+      var cls    = verb.cls + ' ' + reason.cls;
+      var head   = reason.t;
+      var msg = verb.t
+                  .replace( /%user%/,   `<strong class="user">${item.actor.name}</strong>` )
+                  .replace( /%artist%/, `<strong class="artist">${item.artist.name}</strong>` )
+                  .replace( /%name%/,   `<i class="name">${item.name}</i>` );                  
       msg = { __html: msg};
-      var url = item.artist.avatarURL.replace(/ccm/,'ccmixter.org');
 
       return (<li className={cls} onClick={this.onClick} >
+                <Glyph icon={reason.i} />
+                {head 
+                  ? <div className="head">{head}</div>
+                  : null
+                }
                 <div className="date">{item.date}</div>
-                <div className="img-container"><img src={url} className="avatar" /></div>
-                <div className="text">
-                  <Glyph icon={fh.icon} />
+                <div className="msg">
                   <span dangerouslySetInnerHTML={msg} />
                 </div>
              </li>);
@@ -84,7 +90,7 @@ var Feed = React.createClass({
           <div className="col-md-offset-2 col-md-8">
             <InlineCSS css={css} id="feed-css" />
             <ul className="user-feed-items">
-            {this.state.store.model.items.map( item => <FeedItem key={item.id} model={item} /> )}
+            {this.state.store.model.items.map( (item,i) => <FeedItem key={i} model={item} /> )}
             </ul>
           </div>
         </div>

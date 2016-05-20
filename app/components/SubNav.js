@@ -37,7 +37,7 @@ var SubNavTabsMixin = {
           <li key={t} className={this.checkActive(t)} >
             <a href="#" onClick={this.onSelect(t)}>
               {tabs[t]}
-              {badges
+              {badges && badges[t] > 0
                 ? <span className="badge">{badges[t]}</span>
                 : null
               }
