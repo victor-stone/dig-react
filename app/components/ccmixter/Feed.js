@@ -21,12 +21,12 @@ FeedVerbs[ UserFeedVerbs.EDPICK         ] = { cls: 'edpick',  t: '%name% by %use
 
 var FeedReasons = [];
 
-FeedReasons[ UserFeedReasons.REMIXED ]     = { cls: 'you',     i: 'recycle',     t: 'You\'ve been remixed' };
-FeedReasons[ UserFeedReasons.REVIEWED ]    = { cls: 'you',     i: 'edit' ,       t: 'You\'ve been reviewed' };
-FeedReasons[ UserFeedReasons.REPLIED_TO ]  = { cls: 'you',     i: 'comments',    t: 'Reply to your comments' };
-FeedReasons[ UserFeedReasons.EDPICKED ]    = { cls: 'you',     i: 'star',        t: 'You\'ve been EdPicked' };
-FeedReasons[ UserFeedReasons.FOLLOWING ]   = { cls: 'follow',  i: 'arrow-right', t: null };
-FeedReasons[ UserFeedReasons.RECOMMENDED ] = { cls: 'you',     i: 'heart',       t: 'You\'ve been recommended' };
+FeedReasons[ UserFeedReasons.REMIXED ]     = { cls: 'you remix',  i: 'recycle',     t: 'You\'ve been remixed' };
+FeedReasons[ UserFeedReasons.REVIEWED ]    = { cls: 'you',        i: 'edit' ,       t: 'You\'ve been reviewed' };
+FeedReasons[ UserFeedReasons.REPLIED_TO ]  = { cls: 'you',        i: 'comments',    t: 'Reply to your comments' };
+FeedReasons[ UserFeedReasons.EDPICKED ]    = { cls: 'you',        i: 'star',        t: 'You\'ve been EdPicked' };
+FeedReasons[ UserFeedReasons.FOLLOWING ]   = { cls: 'follow',     i: 'arrow-right', t: null };
+FeedReasons[ UserFeedReasons.RECOMMENDED ] = { cls: 'you',        i: 'heart',       t: 'You\'ve been recommended' };
 
 
 var FeedItem = React.createClass({

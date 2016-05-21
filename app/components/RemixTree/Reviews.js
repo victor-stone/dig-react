@@ -1,35 +1,30 @@
 /*eslint "react/no-danger":0 */
 import React               from 'react';
-import { AccordianPanel }  from '../Accordian';
+import { LazyAccordianPanel }  from '../Accordian';
 import Glyph               from '../Glyph';
 import Topics              from '../../stores/topics';
 
-var Reviews = React.createClass({
-
-  getInitialState() {
-    return { model: null };
-  },
-
-  componentWillMount() {
-    this.fetchReviews(this.props.model.id);
-  },
+class Reviews extends LazyAccordianPanel {
+  constructor(props) {
+    super(props);
+    this.title = `Reviews (${props.numReviews})`;
+    this.icon = 'pencil';
+    this.id = 'reviews';
+  }
 
   componentWillReceiveProps(nextProps) {
-    this.fetchReviews(nextProps.model.id);
-  },
+    this.title = `Reviews (${nextProps.numReviews})`;
+    super.componentWillReceiveProps(...arguments);
+  }
 
-  fetchReviews(id) {
+  getModel(props) {
     if( !this.topics ) {
       this.topics = new Topics();
     }
-   this.topics.reviewsFor(id).then( model => this.setState( { model }) );
-  },
+    return this.topics.reviewsFor(props.model.id);    
+  }
 
-  render() {
-    if( !this.state.model ) {
-      return null;
-    }
-    var model = this.state.model;
+  renderChildren(model) {
     var reviews = model.map( (r,i) => (
         <div key={i} className={'panel panel-info panel-offset-' + r.indent}>
           <div className="panel-heading">
@@ -44,14 +39,10 @@ var Reviews = React.createClass({
           <div className="panel-footer">{r.date}</div>
         </div>
       ));
-    var title = `Reviews (${this.props.numReviews})`;
-    return (
-      <AccordianPanel title={title} id="reviews" icon="pencil">
-        {reviews}
-      </AccordianPanel>
-      );
+    return reviews;
   }
-});
+
+}
 
 module.exports = Reviews;
 

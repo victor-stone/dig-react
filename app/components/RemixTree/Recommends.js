@@ -1,42 +1,32 @@
 import React               from 'react';
-import { AccordianPanel }  from '../Accordian';
+import { LazyAccordianPanel }  from '../Accordian';
 import Ratings             from '../../stores/ratings';
 
 
-var Recommends = React.createClass({
-
-  getInitialState() {
-    return { model: null };
-  },
-
-  componentWillMount() {
-    this.fetchRecommends(this.props.model.id);
-  },
+class Recommends extends LazyAccordianPanel {
+  constructor(props) {
+    super(props);
+    this.title = `Recommends (${props.numRecommends})`;
+    this.icon = 'thumbs-o-up';
+    this.id = 'recc';
+  }
 
   componentWillReceiveProps(nextProps) {
-    this.fetchRecommends(nextProps.model.id);
-  },
+    this.title = `Recommends (${nextProps.numRecommends})`;
+    super.componentWillReceiveProps(...arguments);
+  }
 
-  fetchRecommends(id) {
+  getModel(props) {
     if( !this.ratings ) {
       this.ratings = new Ratings();
     }
-    this.ratings.recommendedBy(id).then( model => this.setState( { model }) );
-  },
-
-  render() {
-    if( !this.state.model ) {
-      return null;
-    }
-    var model = this.state.model;
-    var title = `Recommends (${this.props.numRecommends})`;
-    return (
-      <AccordianPanel title={title} icon="thumbs-o-up" id="recc">
-        <ul className="recommends-list">{model.map( (t,i) => <li key={i}>{t.name}</li> )}</ul>
-      </AccordianPanel>
-      );
+    return this.ratings.recommendedBy(props.model.id);
   }
-});
+
+  renderChildren(model) {
+    return <ul className="recommends-list">{model.map( (t,i) => <li key={i}>{t.name}</li> )}</ul>;
+  }
+}
 
 module.exports = Recommends;
 
