@@ -88,7 +88,7 @@ class UserProfile extends User {
         return favs.value.map( f => {
           return {
             name: f.tag.replace(/(&[a-z]+;|\.)/g,' '),
-            url: f.tagurl.replace(/http:\/\/ccmixter.org/,'')
+            url: f.tagurl.replace(/.*(\/people\/.*)/,'$1')
           };            
         });
       }
