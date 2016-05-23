@@ -7,7 +7,8 @@ import InlineCSS        from '../InlineCSS';
 import Glyph            from '../Glyph';
 import css              from './style/feed';
 import lookup           from '../../services';
-//import ccMixter         from '../../stores/ccmixter';
+import ccMixter         from '../../stores/ccmixter';
+import events           from '../../models/events';
 
 var FeedVerbs = [];
 
@@ -44,7 +45,6 @@ var FeedItem = React.createClass({
   onClick(e) {
     e.stopPropagation();
     e.preventDefault();
-    //ccMixter.markItemAsSeen(this.state.model.id);
     lookup('router').navigateTo( this.state.model.navigationURL );
   },
 
@@ -78,6 +78,16 @@ var FeedItem = React.createClass({
 var Feed = React.createClass({
 
   mixins: [ModelTracker],
+
+  componentDidMount() {
+    if( global.IS_SERVER_REQUEST ) {
+      return;
+    }
+    var u = this.props.store.model.queryParams.user;
+    if( u ) {
+      ccMixter.markFeedAsSeen(u).then( () => this.props.store.emit(events.FEED_SEEN) );
+    }
+  },
 
   stateFromStore(store) {
     return {store};

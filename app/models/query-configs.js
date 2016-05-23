@@ -78,4 +78,8 @@ module.exports = {
     type: 'any'        
   },
 
+  userfeed: {
+    limit: 40
+  }
+
 };

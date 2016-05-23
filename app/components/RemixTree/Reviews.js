@@ -7,13 +7,13 @@ import Topics              from '../../stores/topics';
 class Reviews extends LazyAccordianPanel {
   constructor(props) {
     super(props);
-    this.title = `Reviews (${props.numReviews})`;
     this.icon = 'pencil';
     this.id = 'reviews';
+    this._setTitle(props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.title = `Reviews (${nextProps.numReviews})`;
+    this._setTitle(nextProps);
     super.componentWillReceiveProps(...arguments);
   }
 
@@ -24,6 +24,10 @@ class Reviews extends LazyAccordianPanel {
     return this.topics.reviewsFor(props.model.id);    
   }
 
+  _setTitle(props) {
+    this.title = `Reviews (${props.numItems})`;
+  }
+  
   renderChildren(model) {
     var reviews = model.map( (r,i) => (
         <div key={i} className={'panel panel-info panel-offset-' + r.indent}>

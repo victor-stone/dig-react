@@ -116,6 +116,11 @@ span.ribbon.edpick {
   float: left;
   margin-left: 8px;
 }
+
+#accordion .panel-title > a.deadlink:hover {
+  text-decoration: none;
+  cursor: default;
+}
 .edpick-author {
   text-align: right;
   font-style: italic;

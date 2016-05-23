@@ -1,11 +1,15 @@
 import Uploads         from './uploads';
 import ccmixter        from '../models/ccmixter';
 import serialize       from '../models/serialize';
+import { oassign }     from '../unicorns';
 
 class UserFeed extends Uploads {
 
-  constructor() {
-    super(...arguments);
+  constructor(defaults) {
+    var defs = defaults || {};
+    defs.dataview = 'userfeed';
+    defs.datasource = 'feed';
+    super(defs);
     this.autoFetchUser = false;
   }
 
@@ -13,11 +17,14 @@ class UserFeed extends Uploads {
     return this.query(queryParams,deferName).then( serialize(ccmixter.UserFeedItem) );
   }
 
+  lastSeenCount(userid) {
+    var params = oassign( {}, this.defaultParams, { sinced: 'lastseen', user: userid } );
+    return this.count(params);
+  }
+
 }
 
-UserFeed.storeFromQuery = function(params,defaults) {
-  var pl = new UserFeed(defaults);
-  return pl.getModel(params).then( () => pl );  
-};
+// don't do StoreFromQuery
+// get the userfeed from ./services instead
 
 module.exports = UserFeed;

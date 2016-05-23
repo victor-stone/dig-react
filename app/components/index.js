@@ -13,6 +13,7 @@ import DidYouMean from './DidYouMean';
 import DownloadPopup from './DownloadPopup';
 import EditDiv from './EditDiv';
 import ErrorDisplay from './ErrorDisplay';
+import FeedBadge from './FeedBadge';
 import Footer from './Footer';
 import Form from './Form';
 import Glyph from './Glyph';
@@ -59,6 +60,7 @@ module.exports = {
     DownloadPopup,
     EditDiv,
     ErrorDisplay,
+    FeedBadge,
     Footer,
     Form,
     Glyph,

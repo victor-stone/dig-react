@@ -183,8 +183,8 @@ var Tree = React.createClass({
             <Accordian>
               <Overview model={upload} />
               <FileSection model={upload} />
-              <Recommends model={upload} numRecommends={upload.numRecommends} />
-              <Reviews model={upload} numReviews={upload.numReviews} />
+              <Recommends model={upload} numItems={upload.numRecommends} />
+              <Reviews model={upload} numItems={upload.numReviews} />
             </Accordian>
           </div>
         </div>

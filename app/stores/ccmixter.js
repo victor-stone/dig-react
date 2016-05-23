@@ -109,8 +109,8 @@ class CCMixter extends Eventer
 
   // USER FEED
 
-  markItemAsSeen(feeditemid) {
-    return this._call('user/feed/markseen/' + feeditemid);
+  markFeedAsSeen(userid) {
+    return this._call('feed/lastseen/' + userid);
   }
 
   // PLAYLISTS 

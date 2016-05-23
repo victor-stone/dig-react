@@ -1,8 +1,8 @@
 import React             from 'react';
 import { Feed,
          FeedSubNav }    from '../../components/ccmixter/';
-import Store             from '../../stores/userfeed';
-
+import UserFeed          from '../../services/userfeed';
+import qc                from '../../models/query-configs';
 import { mergeParams }   from '../../unicorns';
 
 function UserFeedPage(props) {
@@ -18,14 +18,9 @@ UserFeedPage.subnav = function(props) {
   };
 
 UserFeedPage.store = function(params,queryParams) {  
-  var defopts = {limit: 10, dataview: 'userfeed', datasource: 'feed', unseen: '1' };
-  if( params.user ) {
-    defopts.user = params.user;
-  } else {
-    defopts.sticky = 1;
-  }
-  var qparams = mergeParams( {}, params, defopts, queryParams );
-  return Store.storeFromQuery(qparams, defopts );
+  var qparams = mergeParams( {}, params, qc.userfeed, queryParams );
+  var service = UserFeed(qc.userfeed);
+  return service.getModel(mergeParams(qparams,service.defaultParams)).then( () => service );
 };
 
 module.exports = UserFeedPage;

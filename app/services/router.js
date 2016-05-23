@@ -81,9 +81,14 @@ class Router extends Eventer
 
   /* in browser methods */
   navigateTo(url,stateObj) {
-    url = this.runRewrites(url);
-    this.setBrowserAddressBar(url,stateObj);
-    this.updateURL();
+    try {
+      url = this.runRewrites(url);
+      this.setBrowserAddressBar(url,stateObj);
+      this.updateURL();
+    } 
+    catch(e) {
+      env.error(e);
+    }
   }
 
   setBrowserAddressBar(url,stateObj) {

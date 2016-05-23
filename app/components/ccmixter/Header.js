@@ -6,6 +6,7 @@ import { CurrentUserTracker } from '../../mixins';
 
 import Link            from '../Link';
 import Glyph           from '../Glyph';
+import FeedBadge       from '../FeedBadge';
 import LoadingGlyph    from '../LoadingGlyph';
 import NavbarHeader    from '../NavbarHeader';
 import { DeadLink }    from '../ActionButtons';
@@ -37,7 +38,7 @@ const UserMenu = React.createClass({
 
     return (
         <CurrentUserMenu model={user} loading={loading} onLogin={this.onLogin} >
-          <Link href={'/feed/' + id}><Glyph fixed icon="feed" />{" your feed"}</Link>
+          <Link href={'/feed/' + id}><Glyph fixed icon="feed" />{" your feed "}<FeedBadge /></Link>
           <Link href={'/people/' + id}><Glyph fixed icon="circle" />{" your profile"}</Link>
           <a target="_blank" href="http://ccmixter.org/submit"><Glyph fixed icon="cloud-upload" />{" submit files"}</a>
           <CurrentUserMenu.Divider />
@@ -83,7 +84,7 @@ const Header = React.createClass({
 
               <ul className="nav navbar-nav navbar-right">
                 <li>
-                  <Link href="#"><LoadingGlyph /></Link>
+                  <DeadLink><LoadingGlyph /></DeadLink>
                 </li>
                 <li  id="tree_menu_tab" >
                   <Link href="/tree">{"remix tree"}</Link>

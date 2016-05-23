@@ -50,7 +50,7 @@ var DeadLink = React.createClass({
   },
 
   render: function() {
-    return (<a {...this.props} href="#" onClick={this.onClick} >{this.props.children}</a>);
+    return (<a className="deadlink" {...this.props} href="#" onClick={this.onClick} >{this.props.children}</a>);
   }
 });
 

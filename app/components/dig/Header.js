@@ -4,6 +4,7 @@ import SearchBox from '../SearchBox';
 
 import Glyph        from '../Glyph';
 import LoadingGlyph from '../LoadingGlyph';
+import { DeadLink } from '../ActionButtons';
 import NavbarHeader from '../NavbarHeader';
 import serviceLookup from '../../services';
 
@@ -48,7 +49,7 @@ const Header = React.createClass({
             <NavbarHeader title="dig.ccMixter" />
             <div className="collapse navbar-collapse" id="dig-collapse">
               <ul className="nav navbar-nav">
-                <li><LoadingGlyph /></li>    
+                <li><DeadLink><LoadingGlyph /></DeadLink></li>    
               </ul>
               <div role="search" className="navbar-form navbar-right">
                 <SearchBox submitSearch={this.submitSearch}/>

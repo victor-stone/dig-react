@@ -29,7 +29,7 @@ const LoadingGlyph = React.createClass({
     if( !this.state.loading ) {
       return null;
     }
-    return( <Glyph icon="spinner" pulse /> );
+    return( <Glyph {...this.props} icon="spinner" pulse /> );
   }  
 });
 

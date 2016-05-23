@@ -25,7 +25,8 @@ var Events = {
   ERROR_IN_JSON:      'json_error',
   APP_ALERT:          'app_alert',
   USER_LOGIN:         'user_login',
-  REQUEST_MODAL:      'request_modal'
+  REQUEST_MODAL:      'request_modal',
+  FEED_SEEN:          'feedseen'
 
 };
 

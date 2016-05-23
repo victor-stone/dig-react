@@ -6,16 +6,19 @@ import Ratings             from '../../stores/ratings';
 class Recommends extends LazyAccordianPanel {
   constructor(props) {
     super(props);
-    this.title = `Recommends (${props.numRecommends})`;
     this.icon = 'thumbs-o-up';
     this.id = 'recc';
+    this._setTitle(props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.title = `Recommends (${nextProps.numRecommends})`;
+    this._setTitle(nextProps);
     super.componentWillReceiveProps(...arguments);
   }
 
+  _setTitle(props) {
+    this.title = `Recommends (${props.numItems})`;
+  }
   getModel(props) {
     if( !this.ratings ) {
       this.ratings = new Ratings();
