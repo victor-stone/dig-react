@@ -28,6 +28,7 @@ var FeedTabs = React.createClass({
     var u = user || this.state.user;
     if( u) {
       tabs['/feed/' +  u.id] = u.name;
+      tabs['/feed/' +  u.id + '/following'] = 'following';
     }
     return tabs;    
   },

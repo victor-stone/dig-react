@@ -17,7 +17,7 @@ FeedVerbs[ UserFeedVerbs.UPDATE_UPLOAD  ] = { cls: 'edit',    t: '%user% made ch
 FeedVerbs[ UserFeedVerbs.REVIEW         ] = { cls: 'review',  t: '%user% reviewed %name% by %artist%' };
 FeedVerbs[ UserFeedVerbs.RECOMMEND      ] = { cls: 'rate',    t: '%user% recommended %name% by %artist%'  };
 FeedVerbs[ UserFeedVerbs.TOPIC_REPLY    ] = { cls: 'reply',   t: '%user% replied to a topic' };
-FeedVerbs[ UserFeedVerbs.FORUM_POST     ] = { cls: 'post',    t: 'From the admins: %name%' };
+FeedVerbs[ UserFeedVerbs.FORUM_POST     ] = { cls: 'post',    t: '%name%' };
 FeedVerbs[ UserFeedVerbs.EDPICK         ] = { cls: 'edpick',  t: '%name% by %user% was ed picked' };
 
 var FeedReasons = [];
@@ -54,6 +54,7 @@ var FeedItem = React.createClass({
       var reason = FeedReasons[item.reason];
       var cls    = verb.cls + ' ' + reason.cls;
       var head   = reason.t;
+      var icon   = item.sticky ? 'bullhorn' : reason.i;
       var msg = verb.t
                   .replace( /%user%/,   `<strong class="user">${item.actor.name}</strong>` )
                   .replace( /%artist%/, `<strong class="artist">${item.artist.name}</strong>` )
@@ -61,7 +62,7 @@ var FeedItem = React.createClass({
       msg = { __html: msg};
 
       return (<li className={cls} onClick={this.onClick} >
-                <Glyph icon={reason.i} />
+                <Glyph icon={icon} />
                 {head 
                   ? <div className="head">{head}</div>
                   : null
@@ -94,8 +95,9 @@ var Feed = React.createClass({
   },
 
   render() {
+    var cls = 'user-feed container-fluid ' + this.props.className;
     return (
-      <div className="user-feed container-fluid">
+      <div className={cls}>
         <div className="row">
           <div className="col-md-offset-2 col-md-8">
             <InlineCSS css={css} id="feed-css" />

@@ -35,7 +35,7 @@ const CurrentUserMenu = React.createClass({
     return (
       <li className="dropdown">
         <a href="#" id="user-menu" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <Glyph icon="user" />{" "}{u.name.ellipse(MAX_NAME_LEN)}{this.props.feedbagde ? <FeedBadge />: null}{" "}<Glyph icon="chevron-down" />
+            <Glyph icon="user" />{" "}{u.name.ellipse(MAX_NAME_LEN)}{" "}{this.props.feedbadge ? <FeedBadge />: null}{" "}<Glyph icon="chevron-down" />
         </a>
         <ul id="user-menu-items" className="dropdown-menu">{children}</ul>
       </li>

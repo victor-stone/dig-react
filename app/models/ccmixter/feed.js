@@ -91,7 +91,7 @@ var  UserFeedModelMap = [];
 
 UserFeedModelMap[ UserFeedObjTypes.UPLOAD ]    = UserFeedItemUpload;
 UserFeedModelMap[ UserFeedObjTypes.REVIEW ]    = UserFeedItemReview;
-UserFeedModelMap[ UserFeedObjTypes.FORM_POST ] = UserFeedItemThreadTopic;
+UserFeedModelMap[ UserFeedObjTypes.FORUM_POST ] = UserFeedItemThreadTopic;
 
 
 function UserFeedItem(jsonData) {

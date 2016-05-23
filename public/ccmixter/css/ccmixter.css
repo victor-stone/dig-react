@@ -22,7 +22,9 @@
      background-repeat-x: 100px;
   }
 }
-
+.feedbadge {
+  background: red;
+}
 .navbar-brand {
   padding-top: 8px;
 }

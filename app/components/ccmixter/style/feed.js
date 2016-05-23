@@ -20,17 +20,12 @@ var css = `
 .user-feed-items li.you {
   margin: 10px 0px;
   padding: 9px;
-  border: 1px solid green;
 }
 
 .user-feed-items li.you .head {
-  width: 100%;
-  background-color: #444;
-  color: white;
-  text-align: center;
+  color: #3c763d;
   padding: 4px;
-  border-radius: 4px;
-  margin-bottom: 8px;
+  font-weight: 300;
 }
 
 .user-feed-items li i.fa {
@@ -42,7 +37,10 @@ var css = `
 .user-feed-items li.you i.fa {
   float: left;
   margin: 8px;
-  color: white;
+}
+
+.user-feed-items li.you i.fa-heart {
+  color: red;
 }
 
 .user-feed-items li .date {
@@ -50,6 +48,26 @@ var css = `
   font-size: 11px;
 }
 
+.sticky .user-feed-items {
+  border: 1px solid green;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 15px;
+}
+
+.sticky .user-feed-items .name {
+  font-style: normal;
+  font-weight: 500;
+  margin-left: 15px;
+}
+
+.sticky .user-feed-items li i.fa-bullhorn {
+  background: #fcf8e3;
+  color: black;
+  padding: 3px;
+  border-radius: 6px;
+  box-shadow: #ccc 3px 3px;
+}
 `;
 
 module.exports = css;

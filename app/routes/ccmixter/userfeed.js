@@ -1,27 +1,23 @@
 import React             from 'react';
-import { Feed,
-         FeedSubNav }    from '../../components/ccmixter/';
 import UserFeed          from '../../services/userfeed';
 import qc                from '../../models/query-configs';
 import { mergeParams }   from '../../unicorns';
+import { FeedPage,
+         FeedSubNav }    from '../../components/ccmixter/';
 
-function UserFeedPage(props) {
-    return <Feed {...props} />; 
-}
+FeedPage.title = 'Feed';
 
-UserFeedPage.title = 'Feed';
+FeedPage.path  = [ '/feed', '/feed/:user', '/feed/:user/:following' ];
 
-UserFeedPage.path  = [ '/feed', '/feed/:user' ];
-
-UserFeedPage.subnav = function(props) {
+FeedPage.subnav = function(props) {
     return (<FeedSubNav paging store={props.store} />);
   };
 
-UserFeedPage.store = function(params,queryParams) {  
-  var qparams = mergeParams( {}, params, qc.userfeed, queryParams );
+FeedPage.store = function(params,queryParams) {  
+  var qparams = mergeParams( {}, qc.userfeed, params, queryParams );
   var service = UserFeed(qc.userfeed);
   return service.getModel(mergeParams(qparams,service.defaultParams)).then( () => service );
 };
 
-module.exports = UserFeedPage;
+module.exports = FeedPage;
 
