@@ -1,6 +1,8 @@
 
+NOTE - the current repo is in a major overhaul - very unstable right now.
 
-This project builds dig.ccmixter.org, pells.ccmixter.org, stems.ccmixter.org, playlists.ccmixter.org and some admin tools.
+This project builds web front ends for ccmixter, dig.ccmixter and satellite (landing pages) for stems, playlists and pells.
+
 
 ## Build & Run
 
@@ -8,54 +10,46 @@ This project builds dig.ccmixter.org, pells.ccmixter.org, stems.ccmixter.org, pl
 
 build and run requires node >= 4
 
-we're building with command line tools (for now)
-
-required tools for building:
-
-```bash
-npm i browserify -g
-npm i babel -g 
-npm i eslint -g 
-npm i eslint-plugin-react -g
-npm i uglify -g
-```
+Not totally sure what global command line tools are required !!
 
 ### Build
 
-```
-./build --<appname>
-```
+Using gulp for building
 
-where <appname> is either `dig`, `pells`, `playlists` or `stems`
+To build an app:
+
+```
+gulp server-js
+gulp --<appname>
+```
+Note that you only have to build server-js 
+
+where <appname> is either `dig` or `ccmixter` 
+
+it could also be one of the satellites `pells`, `playlists` or `stems`
 
 options:
 ```
   -v    - verbose
-  -a    - build all
-  -p    - production (implies build all)
-  -d    - development (default)
+  -p    - production
 ```
 
-example: this builds dig for production
-
-```
-./build --dig -vp
-```
 
 ### Run
 
+The satellites are static web pages.
+
+`dig` and `ccmixter` run under node
+
+
 ```
-node dig
+node dist/dig
 ```
 and 
 ```
-node pells
+node dist/ccmixter
 ```
 
-and 
-```
-node stems
-```
 options:
 
 ```
