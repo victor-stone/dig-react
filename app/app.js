@@ -15,11 +15,11 @@ import { Banner,
 
 const App = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return { component: null };
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     function createDressing() {
       this.setState( {
         header: React.createElement(this.props.header),
@@ -43,26 +43,26 @@ const App = React.createClass({
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.postUpdate();
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     this.postUpdate();
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     if( !global.IS_SERVER_REQUEST ) {
       ajaxAdapter.removeListener( events.LOADING,     this.onLoading );
       router     .removeListener( events.NAVIGATE_TO, this.onNavigateTo );
     }
   },
 
-  onNavigateTo: function(specs) {
+  onNavigateTo(specs) {
     this.setState( specs, this.onNavigateToThis );
   },
 
-  onNavigateToThis: function() {
+  onNavigateToThis() {
     if( !this.state.hash ) {
       if( !env.disableAutoScroll ) {
         browserScripts.scrollToTop();
@@ -70,15 +70,15 @@ const App = React.createClass({
     }
   },
 
-  onLoading: function(loading) {
+  onLoading(loading) {
     $('.outlet-wrap').toggleClass('loading-screen fade',loading);
   },
 
-  onAppAlert: function(alertType,alert) {
+  onAppAlert(alertType,alert) {
     this.setState( { alertType, alert } );
   },
 
-  onAlertClosed: function() {
+  onAlertClosed() {
     this.setState( { alert: null } );
   },
 
@@ -88,7 +88,7 @@ const App = React.createClass({
     }
   },
 
-  scrollToHash: function() {
+  scrollToHash() {
 
     var hash = this.state.hash;
     if( hash ) {
@@ -97,7 +97,7 @@ const App = React.createClass({
 
   },
 
-  render: function() {
+  render() {
 
     var elem   = null;
     var subnav = null;

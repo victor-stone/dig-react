@@ -39,13 +39,31 @@ var css = `
   margin: 8px;
 }
 
-.user-feed-items li.you i.fa-heart {
+.user-feed-items i.name {
+  font-weight: 600;
+  color: #a94442;
+}
+
+.user-feed-items li i.fa.fa-heart {
   color: red;
+}
+
+.user-feed-items li i.fa.fa-recycle {
+  color: green;
+}
+
+.user-feed-items li i.fa.fa-comments {
+  color: blue;
 }
 
 .user-feed-items li .date {
   float: right;
   font-size: 11px;
+}
+
+.user-feed-items i.name {
+  font-weight: 600;
+  color: #a94442;
 }
 
 .sticky .user-feed-items {

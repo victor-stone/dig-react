@@ -1,49 +1,55 @@
 import Model from '../Model';
 import {UserFeedObjTypes} from '../user-feed-types';
 
+/*
+  There are 3 potential players in a feed item. One scenario:
+
+  The ItemUser is following the ItemActor who recommends a track by ItemArist
+*/
+/*
+  e.g. the musician who uploaded the track
+*/
 class UserFeedItemArtist extends Model {
   constructor() {
     super(...arguments);
-    this.avatarURLBinding =  '_bindParent.user_avatar_url';
     this.nameBinding = '_bindParent.user_real_name';
     this.idBinding = '_bindParent.user_name';
   }
 }
 
+/*
+  e.g. the author of a review of a track made by 'artist'
+*/
 class UserFeedItemActor extends Model {
   constructor() {
     super(...arguments);
-    this.avatarURLBinding =  '_bindParent.user_avatar_url';
     this.nameBinding = '_bindParent.actor_real_name';
     this.idBinding = '_bindParent.actor_user_name';
   }
 }
 
 /*
-  "verb": "3",
-  "objtype": "2",
-  "sticky": "0",
-  "reason": "5",
-  "name": "Face in the Crowd",
-  "topic_id": "230006",
-  "topic_thread": null,
-  "upload_id": "53753",
-  "date_format": "Friday, May 20, 2016 @ 12:23 PM",
-  "actor_user_name": "Loveshadow",
-  "actor_real_name": "Loveshadow",
-  "user_name": "scomber",
-  "user_real_name": "Scomber"
+  e.g. someone following the 'actor'
 */
+class UserFeedItemUser extends Model {
+  constructor() {
+    super(...arguments);
+    this.nameBinding = '_bindParent.feeder_real_name';
+    this.idBinding = '_bindParent.feeder_user_name';
+  }
+}
+
 
 class UserFeedItemBase extends Model {
   constructor() {
     super(...arguments);
     this._modelSubtree = {
       artist: UserFeedItemArtist,
-      actor: UserFeedItemActor
+      actor: UserFeedItemActor,
+      user: UserFeedItemUser
     };
     this.nameBinding = 'name';
-    this.dateBinding = 'date_format';
+    this.rawDateBinding = 'action_date';
     this.getObjType = function() {
       return parseInt(this.objtype);
     };
@@ -87,11 +93,21 @@ class UserFeedItemThreadTopic extends UserFeedItemBase {
   }
 }
 
+class UserFeedItemPerson extends UserFeedItemBase {
+  constructor() {
+    super(...arguments);
+    this.getNavigationURL = function() {
+      return '/people/' + this.actor_user_name;
+    };
+  }
+}
+
 var  UserFeedModelMap = [];
 
 UserFeedModelMap[ UserFeedObjTypes.UPLOAD ]    = UserFeedItemUpload;
 UserFeedModelMap[ UserFeedObjTypes.REVIEW ]    = UserFeedItemReview;
 UserFeedModelMap[ UserFeedObjTypes.FORUM_POST ] = UserFeedItemThreadTopic;
+UserFeedModelMap[ UserFeedObjTypes.USER ]       = UserFeedItemPerson;
 
 
 function UserFeedItem(jsonData) {

@@ -49,37 +49,58 @@ const Header = React.createClass({
   }
 });
 
-const Overview = React.createClass({
-  
+const FollowButton = React.createClass({
+
   mixins: [CurrentUserTracker],
 
-  stateFromUser(user,props) {
-    var state = { user };
-    if( user ) {
-      var a = props.store.model.artist;
-      state.isSelf = a.id === user.id;
-      if( !state.isSelf ) {
-        state.following = user.followsIDs.contains(a.id);
-        state.followingText = state.following ? 'following' : 'follow';
-        state.followingIcon = state.following ? 'check-square-o' : 'square-o';
-      }
+  stateFromUser(user) {
+    var otherId = this.props.model.id;
+    if( user && otherId !== user.id ) {
+      return { show: true, 
+               toggle: user.following.findBy( 'id', otherId ) !== null,
+               follower: user.id,
+               followee: otherId };
     }
-    return state;
+    return { show: false };
   },
 
-  followUnfollow(e) {
-    e.preventDefault();
-    var state = {};
-    state.following = !this.state.following;
-    state.followingText = state.following ? 'following' : 'follow';
-    state.followingIcon = state.following ? 'check-square-o' : 'square-o';
-    this.setState( state );
+  toggleFollow(e) {
+    e.stopPropagation();
+    e.preventDefault();    
+    this.setState( { toggle: !this.state.toggle } );
   },
 
   render() {
+    if( !this.state.show ) {
+      return null;
+    }
+    return (
+      <button className="btn btn-sm follows" onClick={this.toggleFollow}>
+          <Glyph icon={this.state.toggle ? 'check-square-o' : 'square-o'} />
+          {' ' + (this.state.toggle ? 'following' : 'follow')}
+      </button>
+    );
+  }
+
+});
+
+const Followers = React.createClass({
+
+  render() {
+    return (
+      this.props.model.length
+        ? <FormItem title={this.props.title} wrap>
+            {this.props.model.map( (u,i) => <Link key={i} className="follows" href={u.url}>{u.name}</Link>)}
+          </FormItem>
+        : null 
+      );
+  }
+});
+
+const Overview = React.createClass({
+  
+  render() {
     var a = this.props.store.model.artist;
-    var showFollow = this.state.user && !this.state.isSelf;
-    var doFollows = a.follows.length || showFollow;
     return (
       <HorizontalForm>
           <FormItem title="member since" wrap>{a.joined}</FormItem>
@@ -87,19 +108,9 @@ const Overview = React.createClass({
             ? <FormItem title="homepage" wrap><ExternalLink href={a.homepage} text={a.name} /></FormItem>
             : null
           }
-          {doFollows
-            ? <FormItem title="follows" wrap>
-                {a.follows.map( (u,i) => <Link key={i} className="follows" href={u.url}>{u.name}</Link>)}
-                {this.state.user && !this.state.isSelf
-                  ? <button className="btn btn-sm follows" onClick={this.followUnfollow}>
-                      <Glyph icon={this.state.followingIcon} />
-                      {' ' + this.state.followingText}
-                    </button>
-                  : null
-                }
-              </FormItem>
-            : null
-          }
+          <Followers model={a.following} title="follows" />
+          <Followers model={a.followers} title="followers" />
+          <FollowButton model={a} />
       </HorizontalForm>
       );
   }

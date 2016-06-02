@@ -78,41 +78,23 @@ class UserProfile extends User {
     this.joinedBinding = 'user_date_format';
     this.descriptionHTMLBinding = 'user_description_html';
     this.key = 'user_id';
-    this.numUploads = 'user_num_uploads';
-    this.getTools = function() {
-      return new TagString(this.user_whatido);
+
+    this.getFollowers = function() {
+        return this._mapFollow('followers');
     };
-    this.getFollows = function() {
-      var favs = this._getTagLinks().findBy( 'label', 'str_favorites');
-      if( favs ) {
-        return favs.value.map( f => {
-          return {
-            name: f.tag.replace(/(&[a-z]+;|\.)/g,' '),
-            url: f.tagurl.replace(/.*(\/people\/.*)/,'$1')
-          };            
-        });
-      }
-      return [];
+
+    this.getFollowing = function() {
+      return this._mapFollow('following');
     };
   }
 
-  _getTagLinks() {
-    if( !this._fectchedTagLinks ) {
-      this._tagLinks = this.user_tag_links && Object.keys(this.user_tag_links).map( k => this.user_tag_links[k] );
-      this._fectchedTagLinks = true;
-    }
-    return this._tagLinks || [];
+  _mapFollow(field) {
+    return this[field].map( f => { return {
+      id: f.user_name,
+      name: f.user_real_name,
+      url: '/people/' + f.user_name
+    };});
   }
-
-  /*
-    "user_num_posts" : "1816",
-    "user_num_remixed" : "156",
-    "user_num_remixes" : "141",
-    "user_num_reviewed" : "961",
-    "user_num_reviews" : "1478",
-    "user_whatilike" : "soul,bop,post_bop,ambient,Elvis_Costello,Roy_Budd,DJ_Krush,ColdCut"
-    "user_favorites" : "clayne,djperegrine,beatgorilla,lisadb,minuskelvin,teru,djlang59,ashwan,cdk,deutscheunschuld,mlinksva,shockshadow,Pitx,kcentric,ditto,omnivista,grapes,waldhorn33,Loveshadow",
-  */
 }
 
 class DetailUploadUser extends UploadUserBasic {

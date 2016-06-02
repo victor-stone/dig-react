@@ -11,6 +11,7 @@ import { ResetOptionsButton } from './QueryOptions';
 const MIN_LIMIT = 10;
 
 const TRUNCATED_STRING_MAX = 10;
+const TRUNCATED_STRING_MAX_HALF = 5;
 const TRUNCATED_WORD_MAX   = 5;
 
 function sliceStr(str) {
@@ -18,7 +19,7 @@ function sliceStr(str) {
           .trim()
           .split(' ')
           .slice( 0, TRUNCATED_WORD_MAX )
-          .map( s => s.length > TRUNCATED_STRING_MAX ? s.substr(0,TRUNCATED_STRING_MAX/2) + '...' : s )
+          .map( s => s.length > TRUNCATED_STRING_MAX ? s.substr(0,TRUNCATED_STRING_MAX_HALF) + '...' : s )
           .join(' ');
 }
 

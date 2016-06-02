@@ -1,0 +1,2 @@
+#!/bin/bash
+ln -s lib/server node_modules/server-runtime

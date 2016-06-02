@@ -26,7 +26,7 @@ class UserFeed extends Uploads {
       sticky: 1,
       limit: numItems || DEFAULT_STICKY_ITEMS
     };
-    return this.fetch(params).then (items => this.model = { items, total: items.length } );
+    return this.getModel(params);
   }
   
   lastSeenCount(userid) {

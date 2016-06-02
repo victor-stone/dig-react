@@ -38,7 +38,7 @@ const CurrentUserTracker = {
     return  CCMixter.currentUser().then( id => {
       if( this.thisIsMounted ) {
         if( id ) {
-            CCMixter.profile(id).then( profileHandler );
+            CCMixter.currentUserProfile().then( profileHandler );
         } else {
           profileHandler(null);
         }

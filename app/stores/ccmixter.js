@@ -1,5 +1,6 @@
 import querystring  from 'querystring';
 import rsvp         from 'rsvp';
+import User         from './user';
 import events       from '../models/events';
 import ccmixter     from '../models/ccmixter';
 import serialize    from '../models/serialize';
@@ -7,6 +8,10 @@ import RPCAdapter   from '../services/rpc-adapter';
 import env          from '../services/env';
 import Eventer      from '../services/eventer';
 import { cookies }  from '../unicorns';
+
+/*
+  TODO: Move this ./services and refactor
+*/
 
 const USER_NOT_FETCHED   = -1;
 const USER_FETCHING      = -2;
@@ -87,16 +92,20 @@ class CCMixter extends Eventer
               .then( this._setCurrentUser.bind(this) );
   }
 
-  profile(id) {
-    if( this._currentProfile && this._currentProfile.id === id ) {
+  currentUserProfile() {
+    if( this._currentProfile ) {
       return rsvp.resolve(this._currentProfile);
     }
-    return this._call('user/profile/' + id)
-                  .then( serialize( ccmixter.UserProfile ) )
+    var user = new User();
+    return user.findUser(this._currentUser)
                   .then( profile => {
                     this._currentProfile = profile;
                     return profile;
                   });
+  }
+
+  toggleFollow(follower,followee) {
+    return this._call(`user/follow/${follower}/${followee}`);
   }
 
   _setCurrentUser(status) {
@@ -104,6 +113,7 @@ class CCMixter extends Eventer
     this._currentUser = status.data; // might be 'undefined'
     this._userPromises.forEach( p => p.resolve(this._currentUser) );
     this._userPromises = [ ];
+    this._currentProfile = null;
     return this._currentUser;
   }
 

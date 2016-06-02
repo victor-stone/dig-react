@@ -15,8 +15,7 @@ class User extends Remixes {
   findUser(id,deferName) {
     var queryParams = {
       u: id,
-      datasource: 'user',
-      t: 'user_profile',
+      dataview: 'user_info',
     };
     return this.queryOne(queryParams,deferName)
       .then( serialize(ccmixter.UserProfile) );

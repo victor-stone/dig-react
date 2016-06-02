@@ -1,4 +1,3 @@
-/*eslint "react/no-danger":0 */
 import React            from 'react';
 import InlineCSS        from '../InlineCSS';
 import css              from './style/feed';
@@ -7,17 +6,21 @@ import StickyStore       from '../../stores/userfeed';
 
 var StickyFeed = React.createClass({
   getInitialState() {
-    return { sticky: null };
+    return { store: null };
   },
 
   componentWillMount() {
-    var stickyStore = new StickyStore();
-    stickyStore.getStickyItems().then( () => this.setState({sticky:stickyStore}));
+    var store = new StickyStore();
+    store.getStickyItems().then( () => this.setState({store}) );
+  },
+
+  shouldComponentUpdate(nextProps,nextState) {
+    return this.state.store !== nextState.store;
   },
 
   render() {
-      return (this.state.sticky
-        ? <Feed className="sticky" store={this.state.sticky} />
+      return (this.state.store
+        ? <Feed className="sticky" store={this.state.store} />
         : null 
       );
   }

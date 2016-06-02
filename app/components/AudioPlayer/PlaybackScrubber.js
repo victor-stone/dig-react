@@ -6,43 +6,43 @@ const ONE_HUNDRED = 100;
 
 const PlaybackScrubber = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return {
         position: this.props.position,
         media:    this.props.media
       };
   },
 
-  componentWillReceiveProps: function(props) {
+  componentWillReceiveProps(props) {
     this.setState( {
       position: props.position,
       media:    props.media,
     });
   },
 
-  click: function(e) {
+  click(e) {
     e.stopPropagation();
     e.preventDefault();
   },
 
   _isMouseDown: false,
 
-  mouseDown: function() {
+  mouseDown() {
     this._isMouseDown = true;
   },
 
-  mouseUp: function(evt) {
+  mouseUp(evt) {
     this._isMouseDown = false;
     this.sendPostion(evt.clientX);
   },
 
-  mouseMove: function(evt) {
+  mouseMove(evt) {
     if( this._isMouseDown ) {
       this.sendPostion(evt.clientX);
     }
   },
 
-  sendPostion: function(offset) {
+  sendPostion(offset) {
     var $e = $(this.refs['container']);
     var width = $e.width();
     offset -= $e.position().left;
@@ -50,7 +50,7 @@ const PlaybackScrubber = React.createClass({
     this.state.media.setPositionPercentage(ratio);
   },
 
-  loadingWidth: function() {
+  loadingWidth() {
 
     if( this.state.position.percentLoaded ) {
       return this.state.position.percentLoaded + '';
@@ -65,7 +65,7 @@ const PlaybackScrubber = React.createClass({
     
   },
 
-  positionWidth: function() {
+  positionWidth() {
 
     var position = this.state.position.position;
     var duration = this.state.position.duration;
@@ -77,7 +77,7 @@ const PlaybackScrubber = React.createClass({
 
   },
 
-  render: function() {
+  render() {
     var loadCss = { width: this.loadingWidth() + '%' };
     var posCss  = { width: this.positionWidth() + '%' };
 

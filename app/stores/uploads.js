@@ -10,6 +10,8 @@ import { oassign,
          cleanSearchString,
          TagString }   from '../unicorns';
 
+const MIN_GENRE_TAG_SIZE = 2;
+
 class UploadList extends Query {
 
   constructor(defaultParams) {
@@ -135,7 +137,7 @@ class UploadList extends Query {
                     remixmin: 1,
                     searchp: text
                   },'artists');
-        hash.genres = this.tags.searchTags( text.split(/\s/).filter( t => t.length > 2 ), 'genres' );
+        hash.genres = this.tags.searchTags( text.split(/\s/).filter( t => t.length > MIN_GENRE_TAG_SIZE ), 'genres' );
       }
     }
 

@@ -3,14 +3,9 @@
 # compiled output
 /dist
 /tmp
-/built
+/app/index.js
+
 /logs
-/app/dig-browser.js
-/dig
-/pells
-/ccmixter
-/stems
-/playlists
 /bpm
 
 # dependencies

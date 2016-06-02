@@ -55,13 +55,17 @@ var ContentSection = React.createClass({
         <li>
           {"In celebration of the popularilty of our music discovery site "}
           <a href="http://dig.ccmixter.org"><img src="http://dig.ccmixter.org/images/logo.png" /></a> 
-          {" "}{` and the release of the `}
+          {" "}{` and the release of the 
+            `}
           <a className="ext" href="https://soundcloud.com/dj-vadim/sets/dubcatcher2">{"DubCatcher 2"}</a>
-          {` ccMixter and DJ Vadim have joined forces again to create a call for remixes. `}
-          <Link className="ext" href="#download">{`Download`}</Link>
-          {` the stems and pells from below and then `}
+          {` ccMixter and DJ Vadim have joined forces again to create a call for remixes. 
+            `}
+          <Link className="ext" href="#download">{"Download"}</Link>
+          {` the stems and pells from below and then 
+            `}
           <a className="ext" href="http://ccmixter.org/submit">{"submit your remixes to ccMixter"}</a>
-          {` and watch as our sharing eco-system places your music into videos across the web. `}
+          {` and watch as our sharing eco-system places your music into videos across the web. 
+            `}
         </li>
         <li>
           {`Vadim is going to be listening to the remixes posted here at ccMixter and will incorporate his

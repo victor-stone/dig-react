@@ -117,7 +117,7 @@ class LazyAccordianPanel extends React.Component {
 
   // override this
   getModel() {
-    return { then: function() {} };
+    return { then: () => { throw ('virtual method not implemented'); } }; 
   }
 
   onOpen() {

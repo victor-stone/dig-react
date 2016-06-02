@@ -3,7 +3,10 @@
         "comma-dangle": 0,
         "jsx-quotes": 1,
         "eqeqeq": 2,
-        "no-magic-numbers": 2,
+        "no-magic-numbers": [ 
+            "error", 
+            { "ignore": [ -1, 0, 1, 2 ] } 
+        ],
         "quotes": [
             2,
             "single"
@@ -51,11 +54,14 @@
         "browser": true
     },
     "extends": "eslint:recommended",
-    "ecmaFeatures": {
-        "jsx": true,
-        "experimentalObjectRestSpread": true,
-        modules: true
-    },
+    "parserOptions": {
+            "sourceType": "module",
+                "ecmaFeatures": {
+                    "jsx": true,
+                    "experimentalObjectRestSpread": true,
+                    modules: true
+                },
+        },    
     "plugins": [
         "react"
     ]

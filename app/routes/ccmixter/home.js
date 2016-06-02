@@ -675,8 +675,9 @@ var css2 = `.signUp, .signUpBasic {
 `;
 
 /*eslint "react/no-danger":0 */
-var fbLoginButton  = `<fb:login-button scope="public_profile,email" onlogin="fb_check_login_state();"></fb:login-button>`;
-var fbLoginButton1 = ` OR ` + fbLoginButton;
+var fbLoginButton  = `<fb:login-button scope="public_profile,email" 
+                                       onlogin="fb_check_login_state();"></fb:login-button>`;
+var fbLoginButton1 = ' OR ' + fbLoginButton;
 
 const homePage = (
   <div>

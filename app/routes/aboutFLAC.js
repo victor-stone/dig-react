@@ -193,8 +193,10 @@ const aboutFLAC = React.createClass({
            {` is an audio coding format for lossless compression of digital audio. Many of
             our artists use it to upload samples because it is the best quality 
             at the smallest possible size.`}</p>
-        <p>{`Unfortunately many browsers can not play FLAC files -- but yours might!`}</p>
-        <p>{``}</p>
+        <p>{`Unfortunately many browsers can not play FLAC files -- 
+              but yours might!`}</p>
+        <p>{`
+            `}</p>
         <FLACTest />
       </Topic.TopicPage>
       );

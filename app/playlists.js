@@ -10,10 +10,7 @@ env.set( {
   rewriteRules,
   bannerTopic: 'playlistsBanner',
   supportPlaylist: true,
-  supportWavImg: false,
- // rpcHost: 'http://ccm/api/',
- // queryHost: 'http://ccm/api/query?',
- // queriesHost: 'http://ccm/api/queries?',
+  supportWavImg: false
 });
 
 import App    from './app';

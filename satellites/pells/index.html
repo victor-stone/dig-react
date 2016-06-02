@@ -1,0 +1,153 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="pells.ccMixter A Cappella discovery site operated by ArtisTech Media, founded by Creative Commons">
+    <title>Pells.ccMixter</title>
+    <meta name="google-site-verification" content="GwK6_cxs1RSrlToijWOW5CApaA_Q_photR4s6gktnYA">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="free,music,pells,remix,a cappella,acapella,royalty free,media">
+    <script src="./pells_files/vendor.js"></script>
+    <link rel="stylesheet" type="text/css" href="./pells_files/vendor.css">
+    <link rel="stylesheet" type="text/css" href="./pells_files/pells.css">
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "url": "http://pells.ccmixter.org",
+        "name": "pells.ccMixter",
+        "alternateName": "ccMixter A Cappella Browser",
+        "logo": "http://pells.ccmixter.org/images/logo-black.png",
+        "sameAs": [
+            "https://twitter.com/ccmixtermusic",
+            "https://www.youtube.com/channel/UCU7QBXVX4gcePOcEyha7yng",
+            "https://www.facebook.com/CCMixter",
+            "http://instagram.com/ccmixter"
+        ],
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://pells.ccmixter.org/search?searchp={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+</head>
+
+<body>
+    <div id="content">
+        <div >
+            <div id="modal-container" ></div>
+            <div id="wrap" >
+                <nav class="navbar navbar-inverse" >
+                    <div class="container-fluid" >
+                        <div class="navbar-header" >
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#dig-collapse" aria-expanded="false" ><span class="sr-only" >Toggle navigation</span><span class="icon-bar" ></span><span class="icon-bar" ></span><span class="icon-bar" ></span></button>
+                            <a href="http://<%= satellite_host %>/" class="navbar-brand" ><img src="./pells_files/logo.png" ></a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="dig-collapse" >
+                            <ul class="nav navbar-nav" >
+                                <li >
+                                    <noscript ></noscript>
+                                </li>
+                            </ul>
+                            <div role="search" class="navbar-form navbar-right" >
+                                <form id="search" method="GET" action="http://<%= satellite_host %>/stems/search" class="form-group input-group input-group-sm" >
+                                    <input type="text" class="form-control" value="" placeholder="genre, title, etc." size="30" id="searchText" ><span class="input-group-addon" ><a href="#" onclick="document.getElementById('search').submit(); return true;" ><i class="fa fa-search" ></i></a></span></form>
+                            </div>
+                            <ul class="nav navbar-nav navbar-right" >
+                                <li ><a href="http://<%= satellite_host %>/pells" >browse</a></li>
+                                <!--li ><a href="http://<%= satellite_host %>/licenses" >licenses</a></li -->
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <noscript ></noscript>
+                <div class="outlet-wrap" >
+                    <div >
+                        <div class="pells-img container" >
+                            <div class="row" >
+                                <div class="col-md-8 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-12" >
+                                    <h1 >Ask Not For Whom the Pells Toll</h1>
+                                    <h3 ><span >Now serving </span><span >4,961</span><span > Creative Commons a cappellas </span></h3></div>
+                            </div>
+                        </div>
+                        <div class="row gso-links panel-group" >
+                            <div class="col-md-4" >
+                                <div class="panel" >
+                                    <div class="panel-heading" >
+                                        <h1 class="panel-title" >For Remixers and Producers</h1></div>
+                                    <div class="panel-body" >Find that perfect 'pell for your audio project, download into your DAW and get mixing!</div>
+                                    <div class="panel-footer center-text" ><a href="http://<%= satellite_host %>/pells" class="btn btn-default" >Go!</a></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" >
+                                <div class="panel" >
+                                    <div class="panel-heading" >
+                                        <h1 class="panel-title" >Free for Commerical Projects</h1></div>
+                                    <div class="panel-body" >Thousands of hours of amazing pells - all you have to do is give credit to the singer.</div>
+                                    <div class="panel-footer center-text" ><a href="http://<%= satellite_host %>/pells" class="btn btn-default" >Go!</a></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" >
+                                <div class="panel" >
+                                    <div class="panel-heading" >
+                                        <h1 class="panel-title" >For Singers, Rappers, Poets: Join Us!</h1></div>
+                                    <div class="panel-body" >Create an account at ccMixter, start uploading and watch what happens!</div>
+                                    <div class="panel-footer center-text" ><a href="http://ccmixter.org/" class="btn btn-default" target="_blank" ><span class="light-color" ></span><span > </span><span >ccMixter</span><span > </span><i class="fa fa-external-link" ></i></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid footer footer-pad" >
+                <div class="row" >
+                    <div class="col-md-3" >
+                        <h1 >Here</h1>
+                        <ul >
+                            <li ><a href="http://<%= satellite_host %>/licenses" >Licenses</a></li>
+                            <li ><a href="http://ccmixter.org/privacy" >Privacy</a></li>
+                            <li ><a href="http://ccmixter.org/terms" >Terms</a></li>
+                            <li ><a href="http://<%= satellite_host %>/keep-ccmixter-open-and-free" ><i class="fa fa-heart" ></i><span > Donate(!)</span></a></li>
+                            <li ><a href="http://<%= satellite_host %>/credits#credits" >Credits</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3" >
+                        <h1 >There</h1>
+                        <ul >
+                            <li ><a href="http://dig.ccmixter.org/" >Music for Video</a></li>
+                            <li ><a href="http://stems.ccmixter.org/" >Stems and Samples</a></li>
+                            <li ><a href="http://ccmixter.org/" >ccMixter</a></li>
+                            <li ><a href="http://tunetrack.net/artistech/" >ArtIsTech</a></li>
+                            <li ><a href="http://tunetrack.net/" >TuneTrack</a></li>
+                            <li ><a href="http://creativecommons.org/" >Creative Commons</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3" >
+                        <h1 >Everywhere</h1>
+                        <ul >
+                            <li ><a href="https://twitter.com/ccmixtermusic" ><i class="fa fa-twitter" ></i><span > Twitter</span></a></li>
+                            <li ><a href="https://www.youtube.com/channel/UCU7QBXVX4gcePOcEyha7yng" ><i class="fa fa-youtube" ></i><span > YouTube</span></a></li>
+                            <li ><a href="https://vimeo.com/ccmixter" ><i class="fa fa-vimeo" ></i><span > Vimeo</span></a></li>
+                            <li ><a href="https://www.facebook.com/CCMixter" ><i class="fa fa-facebook" ></i><span > Facebook</span></a></li>
+                            <li ><a href="http://instagram.com/ccmixter" ><i class="fa fa-instagram" ></i><span > Instagram</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3" >
+                        <h1 >Resources</h1>
+                        <ul >
+                            <li ><a href="https://github.com/victor-stone/dig-react" ><i class="fa fa-github" ></i><span > GitHub</span></a></li>
+                            <li ><a href="http://ccmixter.org/query-api" >Query API</a></li>
+                            <li ><a href="https://ccmixter.org/forum" >Forums</a></li>
+                            <li ><a href="http://ccmixter.org/media/people/contact/admin" >Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <noscript ></noscript>
+        </div>
+    </div>
+</body>
+
+</html>
