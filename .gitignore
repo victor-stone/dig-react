@@ -4,6 +4,13 @@
 /dist
 /tmp
 /app/index.js
+app/mixins/index.js
+app/components/index.js
+app/components/stems/index.js
+app/components/ccmixter/index.js
+app/components/dig/index.js
+app/components/pells/index.js
+app/components/playlists/index.js
 
 /logs
 /bpm
@@ -19,3 +26,4 @@ npm-debug.log
 testem.log
 .DS_Store
 build.log
+
