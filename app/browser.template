@@ -15,9 +15,9 @@ env.set( {
   browser: true,
   server: false,
   appName: '<%= app %>',
-  rpcHost: 'http://<%= host %>/api/',
-  queryHost: 'http://<%= host %>/api/query?',
-  queriesHost: 'http://<%= host %>/api/queries?'
+  rpcHost: 'http://<%= apihost %>/api/',
+  queryHost: 'http://<%= apihost %>/api/query?',
+  queriesHost: 'http://<%= apihost %>/api/queries?'
 });
 
 var app = require('./<%= app%>');

@@ -24,7 +24,7 @@ gulp --<appname>
 ```
 Note that you only have to build server-js 
 
-where <appname> is either `dig` or `ccmixter` 
+where `<appname>` is either `dig` or `ccmixter` 
 
 it could also be one of the satellites `pells`, `playlists` or `stems`
 

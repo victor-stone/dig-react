@@ -1,30 +1,71 @@
-/* eslint no-console:0 */
+/*
+
+  This file knows how to build 2 web apps:
+    ccmixter.org (front-end)
+    dig.ccmixter.org
+
+  It also builds 3 so-called satellite websites:
+    pells.ccmixter.org
+    stems.ccmixter.org
+    playlists.ccmixter.org
+
+  A satellite is a static HTML landling page that has no 
+  back-end and links into the main ccmixter.org site
+
+*/
+
 var gulp       = require('gulp');
 var template   = require('gulp-template');
 var rename     = require('gulp-rename');
 var source     = require('vinyl-source-stream');
+var buffer     = require('vinyl-buffer');
 var browserify = require('browserify');
 var babel      = require('gulp-babel');
 var eslint     = require('gulp-eslint');
 var concat     = require('gulp-concat');
 var chmod      = require('gulp-chmod');
+var uglify     = require('gulp-uglify');
+var cssmin     = require('gulp-clean-css');
+var gutil      = require('gulp-util');
+var log        = gutil.log;
 var argv       = require('minimist')(process.argv.slice(2));
 
 const DEFAULT_WEB_SHARE = 755;
-const LOCALHOST = 'ccm'; // change this to something like localhost:8000
-const SATELLITE_HOST = 'localhost:3000';
 
-var host = argv.host === true ? LOCALHOST : (argv.host || false);
+/************************* 
+  COMMAND LINE DEFAULTS
+*************************/
+
+/*
+  --apihost=<api-query-host-domain> 
+      Default: ccmixter.org
+      Future: api.ccmixter.org
+*/
+const QUERY_HOST = 'ccmixter.org'; 
+
+
+/*
+  --sathost=<ccmixter-front-end-domain>
+      Default: beta.ccmixter.org
+      Future: ccmixter.org
+*/
+const SATELLITE_HOST = 'beta.ccmixter.org';
+
+/**************************** 
+     CONFIG FOR THIS RUN
+*****************************/
+
+var apihost   = argv.apihost || QUERY_HOST;
+var sathost = argv.sathost || SATELLITE_HOST;
 
 var config = {
   debug: !argv.p,
-  verbose: argv.v || false,
-  host: host || 'ccmixter.org',
-  satellite_host: argv.sathost || SATELLITE_HOST,
+  apihost: apihost || 'ccmixter.org',
+  satellite_host: sathost,
   buildDate: new Date() + '',
   app: 'ccmixter',
   apps: [ 'ccmixter', 'dig' ],
-  satellites: [ 'pells', 'stems', 'playlists',  ]
+  satellites: [ 'pells', 'stems', 'playlists' ]
 };
 
 config.apps = config.apps.concat(config.satellites);
@@ -37,7 +78,7 @@ config.apps.forEach( a => {
 
 config.isSatellite = config.satellites.indexOf( config.app ) !== -1;
 
-console.log( 'config:\n', config );
+gutil.log( gutil.colors.blue.bgWhite('config:'), '\n', config );
 
 /*************** 
       TOOLS 
@@ -47,12 +88,6 @@ var fs         = require('fs');
 var glob       = require('glob');
 var del        = require('del');
 var path       = require('path');
-
-function log(str) {
-  if( config.verbose ) {
-    console.log(str);
-  }
-}
 
 function camelize(str) {
 
@@ -135,18 +170,23 @@ function task_clean() {
 function task_satellite_stub() {
   return gulp.src(`satellites/${config.app}/index.html`)
           .pipe(template(config))
-          //.pipe(rename('index.js'))
-          //.pipe(chmod(DEFAULT_WEB_SHARE))
           .pipe(gulp.dest(`./dist/${config.app}/`));
 }
 
 function task_satellite_files() {
   gulp.src( 'node_modules/font-awesome/fonts/*.*' )
-    //.pipe(chmod(DEFAULT_WEB_SHARE))
     .pipe(gulp.dest(`./dist/${config.app}/fonts`));
-  gulp.src( [ `satellites/${config.app}/**/*`, `!satellites/${config.app}/index.html`] )
-    //.pipe(chmod(DEFAULT_WEB_SHARE))
+  gulp.src( [ `satellites/${config.app}/**/*`, `!satellites/${config.app}/index.html`, `!satellites/${config.app}/**/*.css`] )
     .pipe(gulp.dest(`./dist/${config.app}/`));  
+  gulp.src(`satellites/${config.app}/**/*.css`)
+    .pipe( cssmin() )
+    .pipe(gulp.dest(`./dist/${config.app}/`));  
+}
+
+function task_satellite_chmod() {
+  return gulp.src(`dist/${config.app}/**/*`)
+          .pipe(chmod(DEFAULT_WEB_SHARE))
+          .pipe(gulp.dest(`dist/${config.app}`));
 }
 
 function task_browser_stub() {
@@ -168,12 +208,15 @@ function task_browser_js() {
     .external(['react','react-dom'])
     .bundle()
     .pipe(source(`${config.app}.js`))
+    .pipe(config.debug ? gutil.noop() : buffer()) 
+    .pipe(config.debug ? gutil.noop() : uglify())
     .pipe(gulp.dest(`./dist/${config.app}/browser/js`));
 }
 
 function task_browser_css() {
   return gulp.src( `public/{shared,${config.app}}/css/*.css` )
           .pipe(concat(`${config.app}.css`))
+          .pipe(config.debug ? gutil.noop() : cssmin() )
           .pipe(gulp.dest(`./dist/${config.app}/browser/css`));
 }
 
@@ -229,7 +272,6 @@ function task_vendor_css() {
 
   return gulp.src( vendorCSSSources[mode] )
             .pipe(concat('vendor.css'))
-            //.pipe(chmod(DEFAULT_WEB_SHARE))
             .pipe(gulp.dest(dest));  
 }
 
@@ -269,7 +311,6 @@ function task_vendor_js() {
 
   return gulp.src( vendorJSSources[mode] )
           .pipe(concat('vendor.js'))
-          //.pipe(chmod(DEFAULT_WEB_SHARE))
           .pipe(gulp.dest(dest));
 }
 
@@ -290,14 +331,9 @@ gulp.task('server-clean',   task_server_clean );
 gulp.task('clean',          task_clean );
 
 gulp.task('satellite-clean', task_satellite_clean );
-gulp.task('satellite-stub', task_satellite_stub );
+gulp.task('satellite-stub',  task_satellite_stub );
 gulp.task('satellite-files', task_satellite_files );
-gulp.task('satellite-chmod', ['satellite-stub','satellite-files','vendor-css', 'vendor-js'], () => 
-    gulp.src(`dist/${config.app}/**/*`)
-          .pipe(chmod(DEFAULT_WEB_SHARE))
-          .pipe(gulp.dest(`dist/${config.app}`))
-  );
-gulp.task('satellite', ['satellite-chmod']);
+gulp.task('satellite',       ['satellite-stub','satellite-files','vendor-css', 'vendor-js'], task_satellite_chmod );
 
 gulp.task('server-stub', task_server_stub);
 
