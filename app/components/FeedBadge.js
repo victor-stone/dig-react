@@ -1,5 +1,4 @@
 import React            from 'react';
-
 import { CurrentUserTracker,
           StoreEvents } from '../mixins';
 import events           from '../models/events';
@@ -20,8 +19,12 @@ var FeedBadge = React.createClass({
 
   stateFromUser(user) {
     if( user ) {
-      this.props.store.lastSeenCount(user.id).then( feedcount => this.setState( {feedcount} ) );
+      if( !this.state  || !this.state.user || user.id !== this.state.user.id ) {
+        this.props.store.lastSeenCount(user.id).then( feedcount => this.setState( {feedcount} ) );
+        return { user };
+      }
     }
+    return { user: null };
   },
 
   render() {

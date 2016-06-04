@@ -1,4 +1,4 @@
-import Uploads          from './uploads';
+import Query            from './query';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import TotalsCache      from './totals';
@@ -7,7 +7,7 @@ const PELL_FILTERS      = [ 'featured', 'spoken_word', 'melody', 'rap' ];
 
 var totals = new TotalsCache(PELL_FILTERS);
 
-class ACappellas extends Uploads {
+class ACappellas extends Query {
 
   constructor() {
     super(...arguments);

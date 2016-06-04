@@ -1,6 +1,6 @@
 import React from 'react';
 import qc    from '../../models/query-configs';
-import Query from '../../stores/query';
+import Query from '../../stores/query-basic';
 
 import { commaize }     from '../../unicorns';
 import { ExternalLink } from '../../components/ActionButtons';

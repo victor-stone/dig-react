@@ -9,7 +9,7 @@ import { camelize } from '../unicorns';
   Event name(s) can be setup in 
 
     getDefaultProps: function() {
-      return { storeEvent: 'selectedTags' };
+      return { storeEvent: events.SELECTED_TAGS };
     }
 
     onSelectedTags: function() {}

@@ -79,12 +79,12 @@ parameter in the store
 
 ```javascript
 store.model = {
-  playlist: [],          // array of uploads - .length should be the same as limit= parameter
+  items: [],             // array of uploads - .length should be the same as limit= parameter
   total: Number(),       // total number records that matches the original query
   queryParams: {},       // the query params used to create this model
   artist: {},            // the full artist record if the query had a u= parameter
-  totals: {              // for pells: a hash with the totals for each type of pell
-     featured: Number(), 
+  totals: {              // (if requested): a hash with the totals for each type of pell
+     featured: Number(), // the actual keys are based on the reqtags into the query
      rap: Number(),
      spoken_word: Number(),
      melody: Number()

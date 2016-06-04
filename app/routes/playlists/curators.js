@@ -1,5 +1,5 @@
 import React            from 'react';
-import Query            from '../../stores/query';
+import Query            from '../../stores/query-basic';
 import Blobs            from '../../stores/blobs';
 import { Link }         from '../../components/People';
 import SubNav           from '../../components/playlists/SubNav';

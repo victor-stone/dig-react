@@ -2,17 +2,22 @@ import React   from 'react';
 import Gallery from './Gallery';
 import css     from './style/people';
 
+import events  from '../../models/events';
+
 import { TagString } from '../../unicorns';
 
 import {  ModelTracker,
+          StoreEvents,
           CurrentUserTracker } from '../../mixins';
 
 import {  ActionButtons,
           InlineCSS,
           Glyph,
-          Link,
+          People,
           CollapsingText,
           Form   }        from '../../components';
+
+import api from '../../stores/ccmixter';          
 
 var ExternalLink   = ActionButtons.ExternalLink;
 var HorizontalForm = Form.HorizontalForm;
@@ -51,22 +56,36 @@ const Header = React.createClass({
 
 const FollowButton = React.createClass({
 
-  mixins: [CurrentUserTracker],
+  mixins: [CurrentUserTracker,ModelTracker],
+
+  stateFromStore(store) {
+    var state = this._calcState(this.state && this.state.follower,store.model.artist);
+    state.store = store;
+    return state;
+  },
 
   stateFromUser(user) {
-    var otherId = this.props.model.id;
-    if( user && otherId !== user.id ) {
+    return this._calcState(user,this.state.store.model.artist);
+  },
+
+  _calcState(follower,followee) {
+    if( follower && followee && followee.id !== follower.id ) {
       return { show: true, 
-               toggle: user.following.findBy( 'id', otherId ) !== null,
-               follower: user.id,
-               followee: otherId };
+               toggle: follower.social.following.findBy( 'id', followee.id ) !== null,
+               follower: follower,
+               followerId: follower.id,
+               followeeId: followee.id };
     }
-    return { show: false };
+    return { show: false, follower: follower };
   },
 
   toggleFollow(e) {
     e.stopPropagation();
-    e.preventDefault();    
+    e.preventDefault();
+    api.follow(this.state.toggle ? 'unfollow' : 'follow',this.state.followerId,this.state.followeeId)
+      .then( () => 
+          this.state.store.followers(this.state.followeeId) 
+        ); 
     this.setState( { toggle: !this.state.toggle } );
   },
 
@@ -86,11 +105,29 @@ const FollowButton = React.createClass({
 
 const Followers = React.createClass({
 
+  mixins: [StoreEvents],
+
+  getDefaultProps: function() {
+    return { storeEvent: events.FOLLOW_CHANGED };
+  },
+
+  getInitialState: function() {
+    return this._model();
+  },
+
+  onFollowChanged: function() {
+    this.setState( this._model() );
+  } ,
+
+  _model() {
+    return { model: this.props.store.model.artist.social[this.props.followType] };
+  },
+
   render() {
     return (
-      this.props.model.length
+      this.state.model.length
         ? <FormItem title={this.props.title} wrap>
-            {this.props.model.map( (u,i) => <Link key={i} className="follows" href={u.url}>{u.name}</Link>)}
+            <People.List className="follow" icon model={this.state.model} />
           </FormItem>
         : null 
       );
@@ -101,6 +138,7 @@ const Overview = React.createClass({
   
   render() {
     var a = this.props.store.model.artist;
+    var s = this.props.store;
     return (
       <HorizontalForm>
           <FormItem title="member since" wrap>{a.joined}</FormItem>
@@ -108,9 +146,9 @@ const Overview = React.createClass({
             ? <FormItem title="homepage" wrap><ExternalLink href={a.homepage} text={a.name} /></FormItem>
             : null
           }
-          <Followers model={a.following} title="follows" />
-          <Followers model={a.followers} title="followers" />
-          <FollowButton model={a} />
+          <Followers store={s} followType="following" title="follows" />
+          <Followers store={s} followType="followers" title="followers" />
+          <FollowButton store={s} />
       </HorizontalForm>
       );
   }
@@ -118,7 +156,7 @@ const Overview = React.createClass({
 
 const UPLOAD_FILTER = /(remix|editorial_pick|sample|acappella)/;
 
-var People = React.createClass({
+var PeoplePage = React.createClass({
 
   mixins: [ModelTracker],
 
@@ -155,5 +193,5 @@ var People = React.createClass({
 
 });
 
-module.exports = People;
+module.exports = PeoplePage;
 

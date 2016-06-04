@@ -1,11 +1,11 @@
 import rsvp             from 'rsvp';
+import QueryBasic       from './query-basic';
 import Query            from './query';
-import Uploads          from './uploads';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import env              from '../services/env';
 
-class PlaylistTracks extends Uploads {
+class PlaylistTracks extends Query {
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName).then( serialize(ccmixter.PlaylistTrack) );
   }
@@ -16,7 +16,7 @@ PlaylistTracks.storeFromQuery = function(params,defaults) {
   return pl.getModel(params).then( () => pl );  
 };
 
-class Playlist extends Query {
+class Playlist extends QueryBasic {
 
   constructor() {
     super(...arguments);

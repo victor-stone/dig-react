@@ -74,6 +74,12 @@ var css =
   float: right;
 }
 
+.people-head a.follow {
+  font-weight: 300;
+}
+.people-head a.follow i.fa {
+  opacity: 0.5;
+}
 `;
 
 module.exports = css;

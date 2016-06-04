@@ -1,8 +1,7 @@
-import Uploads     from './uploads';
+import Query       from './query';
 import Upload      from './upload';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
-//import rsvp        from 'rsvp';
 import events      from '../models/events';
 import env         from '../services/env';
 
@@ -15,7 +14,7 @@ const DEFAULT_SEARCH_MINITEMS = 1;
 const DEFAULT_USER_MINITEMS   = '-1';
 const DEFAULT_MINITEMS        = 5;
 
-class Playlists extends Uploads {
+class Playlists extends Query {
 
   constructor() {
     super(...arguments);

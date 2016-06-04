@@ -26,8 +26,8 @@ var Events = {
   APP_ALERT:          'app_alert',
   USER_LOGIN:         'user_login',
   REQUEST_MODAL:      'request_modal',
-  FEED_SEEN:          'feedseen'
-
+  FEED_SEEN:          'feedseen',
+  FOLLOW_CHANGED:     'follow_changed'
 };
 
 module.exports = Events;

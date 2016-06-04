@@ -205,7 +205,7 @@ function task_browser_js() {
   })
     .exclude('http')
     .exclude('stream-http')
-    .external(['react','react-dom'])
+    .external(['react','react-dom','underscore'])
     .bundle()
     .pipe(source(`${config.app}.js`))
     .pipe(config.debug ? gutil.noop() : buffer()) 
@@ -284,6 +284,7 @@ function task_vendor_js() {
         'node_modules/react/dist/react.js',
         'node_modules/react-dom/dist/react-dom.js',
         'node_modules/nouislider/distribute/nouislider.js',
+        'node_modules/underscore/underscore.js',
         'vendor/jquery-ui-1.11.4.custom/jquery-ui.js',
         ],
     prod: [
@@ -293,6 +294,7 @@ function task_vendor_js() {
         'node_modules/react/dist/react.min.js',
         'node_modules/react-dom/dist/react-dom.min.js',
         'node_modules/nouislider/distribute/nouislider.min.js',
+        'node_modules/underscore/underscore-min.js',
         'vendor/jquery-ui-1.11.4.custom/jquery-ui.min.js',
     ]
   };
@@ -341,6 +343,8 @@ gulp.task('server-js',   ['server-clean'], () => {
     task_make_indecies();
     return task_server_js();
 });
+
+gulp.task('js', ['server-js', 'browser-js'] );
 
 gulp.task('browser-stub',   task_browser_stub );
 gulp.task('browser-js',     ['make-indecies','browser-stub'], task_browser_js );

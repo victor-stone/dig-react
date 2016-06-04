@@ -1,5 +1,6 @@
 import querystring  from 'querystring';
 import rsvp         from 'rsvp';
+import _            from 'underscore';
 import User         from './user';
 import events       from '../models/events';
 import ccmixter     from '../models/ccmixter';
@@ -10,24 +11,16 @@ import Eventer      from '../services/eventer';
 import { cookies }  from '../unicorns';
 
 /*
-  TODO: Move this ./services and refactor
+  TODO: Move this to ./services and refactor
 */
 
-const USER_NOT_FETCHED   = -1;
-const USER_FETCHING      = -2;
-const USER_CACHED        = -3;
-const USER_NOT_LOGGED_IN = -4;
+const NOT_LOGGED_IN = null;
 
 class CCMixter extends Eventer
 {
   constructor() {
     super(...arguments);
     this.adapter = RPCAdapter;
-
-    this._userState = USER_NOT_FETCHED;
-    this._currentUser = null;
-    this._currentProfile = null;
-    this._userPromises = [ ];
   }
 
   _call(cmd) {
@@ -45,10 +38,9 @@ class CCMixter extends Eventer
 
   login( username,password ) {
     return this._call('user/login?remember=1&username=' +  username + '&password=' + password )
-      .then( (result) => {
+      .then( result => {
         cookies.create( 'username', result.data );
-        this._setCurrentUser(result);
-        this.emit( events.USER_LOGIN, result );
+        this.emit( events.USER_LOGIN, this._setCurrentUser(result) );
         return result;
       });
   }
@@ -56,65 +48,67 @@ class CCMixter extends Eventer
   logout() {
     return this._call('user/logout')
               .then( result => { 
-                  cookies.remove( 'username' );
-                  this._userState = USER_NOT_LOGGED_IN; 
-                  this.emit( events.USER_LOGIN, null );
+                  this._currentUser = NOT_LOGGED_IN;
+                  this._currentProfile = NOT_LOGGED_IN;
+                  this.emit( events.USER_LOGIN, NOT_LOGGED_IN );
                   return result; 
                 });
   }
 
   currentUser() {
-    if( global.IS_SERVER_REQUEST || this._userState === USER_NOT_LOGGED_IN ) {
-      return rsvp.resolve( null );
+    if( global.IS_SERVER_REQUEST  ) {
+      return rsvp.resolve( NOT_LOGGED_IN );
+    }
+
+    if( !_.isUndefined(this._currentUser) ) {
+      return rsvp.resolve( this._currentUser );
     }
 
     if( document.cookie ) {
       var id = cookies.value('username');
       if( id ) {
-        this._setCurrentUser( { status: 'ok', data: id } );
+        this._setCurrentUser( { data: id } );
         return rsvp.resolve( id );
       }
     }
 
-    if( this._userState === USER_CACHED ) {
-      return rsvp.resolve( this._currentUser );
+    if( this._currentUserPromise ) {
+      return this._currentUserPromise;
     }
 
-    if( this._userState === USER_FETCHING ) {
-      var deferred = rsvp.defer();
-      this._userPromises.push(deferred);
-      return deferred.promise;
-    }
+    this._currentUserPromise = this._call('user/current')
+                                      .then( this._setCurrentUser.bind(this) );
 
-    this._userState = USER_FETCHING;
-
-    return this._call('user/current')
-              .then( this._setCurrentUser.bind(this) );
+    return this._currentUserPromise;                                      
   }
 
   currentUserProfile() {
-    if( this._currentProfile ) {
+    if( !_.isUndefined(this._currentProfile) ) {
       return rsvp.resolve(this._currentProfile);
     }
-    var user = new User();
-    return user.findUser(this._currentUser)
-                  .then( profile => {
-                    this._currentProfile = profile;
-                    return profile;
-                  });
-  }
 
-  toggleFollow(follower,followee) {
-    return this._call(`user/follow/${follower}/${followee}`);
+    if( this._currentProfilePromise ) {
+      return this._currentProfilePromise;
+    }
+
+    var user = new User();
+    this._currentProfilePromise = user.findUser(this._currentUser)
+                                        .then( profile => {
+                                          this._currentProfile = profile || NOT_LOGGED_IN;
+                                          this._currentProfilePromise = null;
+                                          return profile;
+                                        });
+    return this._currentProfilePromise;                                  
   }
 
   _setCurrentUser(status) {
-    this._userState = status.status === 'ok' ? USER_CACHED : USER_NOT_LOGGED_IN;
-    this._currentUser = status.data; // might be 'undefined'
-    this._userPromises.forEach( p => p.resolve(this._currentUser) );
-    this._userPromises = [ ];
-    this._currentProfile = null;
+    this._currentUser = status.data || NOT_LOGGED_IN; // might be 'undefined'
+    this._currentUserPromise = null;
     return this._currentUser;
+  }
+
+  follow(type,follower,followee) {
+    return this._call(`user/follow/${type}/${follower}/${followee}`);
   }
 
   // USER FEED

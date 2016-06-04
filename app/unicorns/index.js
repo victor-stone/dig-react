@@ -1,17 +1,18 @@
 import pagingStats    from './paging-stats';
 import TagString      from './tag-string';
 import browserScripts from './browser-scripts';
+import _              from 'underscore';
 
 const NOT_FOUND = -1;
 
 if (!Array.isArray) {
-  Array.isArray = function(arg) {
-    return Object.prototype.toString.call(arg) === '[object Array]';
-  };
+  Array.isArray = _.isArray;
 }
 
 if( typeof Array.prototype.includes === 'undefined' ) {
-  Array.prototype.includes = function(v) { return this.indexOf(v) !== NOT_FOUND; };
+  Array.prototype.includes = function(v) { 
+    return this.indexOf(v) !== NOT_FOUND; 
+  };
 }
 
 if( typeof Array.prototype.contains === 'undefined' ) {

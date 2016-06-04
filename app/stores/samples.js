@@ -1,8 +1,8 @@
-import Uploads          from './uploads';
+import Query            from './query';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 
-class Samples extends Uploads {   
+class Samples extends Query {   
 
   fetch(queryParams,deferName) {
     queryParams.dataview = 'default'; // links_by doesn't have bpm

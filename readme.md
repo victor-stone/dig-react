@@ -1,5 +1,5 @@
 
-NOTE - the current repo is in a major overhaul - very unstable right now.
+NOTE - the current repo is in a major overhaul - somewhat unstable right now. See the `TODO` file for what's going on.
 
 This project builds web front ends for ccmixter, dig.ccmixter and satellite (landing pages) for stems, playlists and pells.
 
@@ -8,30 +8,62 @@ This project builds web front ends for ccmixter, dig.ccmixter and satellite (lan
 
 ### Prerequisites
 
-build and run requires node >= 4
-
-Not totally sure what global command line tools are required !!
+build and run requires node >= 4 and gulp command line.
 
 ### Build
 
-Using gulp for building
+See the bash script `build` for full production build.
 
-To build an app:
+Recommended: use the `build` bash script to populate the `/dist` directory, then use gulp to repopulate stuff you're working on.
 
+Options to gulp:
 ```
-gulp server-js
-gulp --<appname>
+  --<name>         - app or satellite name (valid names: dig, ccmixter, stems, playlists, pells)
+                       Default: ccmixter
+  -p               - production build, minifies js/css
+                       Default: off
+  --apihost=<host> - host domain for Query API. Only applies to apps. 
+                       Current default: ccmixter.org
+                       Future: api.ccmixter.org
+  --sathost=<host> - host domain for links in static landing pages. Only applies to satellites.
+  					   Current default: beta.ccmixter.org
+  					   Future: ccmixter.org
+```               
+
+N.B. The app build will *only* build the browser app. To sync the server JS use:
 ```
-Note that you only have to build server-js 
-
-where `<appname>` is either `dig` or `ccmixter` 
-
-it could also be one of the satellites `pells`, `playlists` or `stems`
-
-options:
+gulp server-js --<appname>
 ```
-  -v    - verbose
-  -p    - production
+
+See `gulpfile.js` for all possible tasks. It's all very atomic. So for example if you make a change to one of the public css files in ccmixter you can just:
+```
+gulp browser-css
+```
+or added an image to dig
+```
+gulp browser-static --dig
+```
+
+
+
+### Watch
+
+To rebuild ccmixter on the fly install `watchify` and run
+```
+watchify app/index.js -o dist/ccmixter/browser/js/ccmixter.js
+```
+or for dig
+```
+watchify app/index.js -o dist/ccmixter/browser/js/dig.js
+```
+N.B. as of this writing the file `app/index.js` needs to be rebult if you switch between apps. (Yea, sorry.) 
+The way to do that is with:
+```
+gulp server-stub --ccmixter
+```
+or
+```
+gulp server-stub --dig
 ```
 
 

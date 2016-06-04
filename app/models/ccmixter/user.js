@@ -1,6 +1,4 @@
-import Model          from '../model';
-import { TagString }  from '../../unicorns';
-
+import Model from '../model';
 
 class UploadUserBasic extends Model {
   constructor() {
@@ -18,15 +16,34 @@ class UploadUserBasic extends Model {
   }
 }
 
+class Followers extends Model {
+  constructor() {
+    super(...arguments);
+
+    this.getFollowers = function() {
+        return this._mapFollow((this._bindParent || this).followers);
+    };
+
+    this.getFollowing = function() {
+      return this._mapFollow((this._bindParent || this).following);
+    };
+  }
+
+  _mapFollow(field) {
+    return field.map( f => { return {
+      id: f.user_name,
+      name: f.user_real_name,
+      url: '/people/' + f.user_name
+    };});
+  }
+}
 class UserBasic extends Model {
 
     constructor() {
      super(...arguments);
-     // this.nameBinding = 'user_real_name';
      this.getName = function() {
       return this.user_real_name || this.fancy_user_name;
      };
-     // this.idBinding = 'user_name';
      this.getId = function() {
       if( this.user_name ) {
         return this.user_name;
@@ -65,9 +82,6 @@ class User extends UserBasic {
       return this.user_homepage;
     };
 
-    this.getFollowsIDs = function() {
-      return new TagString(this.user_favorites);
-    };
   }
 
 }
@@ -75,25 +89,12 @@ class User extends UserBasic {
 class UserProfile extends User {
   constructor() {
     super(...arguments);
+    this._modelSubtree = {
+          social: Followers
+        };
     this.joinedBinding = 'user_date_format';
     this.descriptionHTMLBinding = 'user_description_html';
     this.key = 'user_id';
-
-    this.getFollowers = function() {
-        return this._mapFollow('followers');
-    };
-
-    this.getFollowing = function() {
-      return this._mapFollow('following');
-    };
-  }
-
-  _mapFollow(field) {
-    return this[field].map( f => { return {
-      id: f.user_name,
-      name: f.user_real_name,
-      url: '/people/' + f.user_name
-    };});
   }
 }
 
@@ -107,6 +108,7 @@ class DetailUploadUser extends UploadUserBasic {
 
 module.exports = {
   DetailUploadUser,
+  Followers,
   UploadUserBasic,
   User,
   UserBasic,

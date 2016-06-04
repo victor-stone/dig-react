@@ -35,59 +35,15 @@
   outside the ctor is a helper used during serialization then discarded.
   
 */
+import PlaylistModels from './playlist';
+import UserModels     from './user';
+import TopicModels    from './topic';
+import FeedModels     from './feed';
+import UploadModels   from './upload';
+import TagModels      from './tags';
 
-import {  
-        Playlist,
-        PlaylistHead,
-        PlaylistTrack
-      }                from './playlist';
-      
-import {
-        User,
-        UserBasic,
-        UserProfile  
-      }                from './user';
-      
-import {
-        Topic,
-        Review
-      }                from './topic';
+var Models = {};
+[ PlaylistModels, UserModels, TopicModels, FeedModels, UploadModels, TagModels ].forEach( m => Object.keys(m).forEach( k => Models[k] = m[k]) );
 
-import {
-        UserFeedItem   
-       }              from './feed';
+module.exports = Models;
 
-
-import {
-        ACappella, 
-        Detail,
-        RemixOf,
-        Sample,
-        Source,
-        Trackback,
-        Upload,
-        UploadBasic  
-      }                 from './upload';
-
-import { Tag }          from './tags';
-
-module.exports = {
-  ACappella, 
-  Detail,
-  Playlist,
-  PlaylistHead,
-  PlaylistTrack,
-  RemixOf,
-  Review,
-  Sample,
-  Source,
-  Tag,
-  Topic,
-  Trackback,
-  Upload,
-  UploadBasic,
-  User,
-  UserBasic,
-  UserFeedItem,
-  UserProfile,
-};

@@ -1,11 +1,11 @@
-import Uploads         from './uploads';
+import Query           from './query';
 import ccmixter        from '../models/ccmixter';
 import serialize       from '../models/serialize';
 import { oassign }     from '../unicorns';
 
 const DEFAULT_STICKY_ITEMS = 4;
 
-class UserFeed extends Uploads {
+class UserFeed extends Query {
 
   constructor(defaults) {
     var defs = defaults || {};

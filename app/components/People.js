@@ -7,7 +7,7 @@ const ExternalLink = ActionButtons.ExternalLink;
 
 const Header = React.createClass({
 
-  render: function() {
+  render() {
     var model = this.props.model;
 
     var homelink = model.homepage 
@@ -30,7 +30,7 @@ const Header = React.createClass({
 
 const Link = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return { model: this.props.model };
   },
   
@@ -38,7 +38,7 @@ const Link = React.createClass({
     this.setState( { model: props.model } );
   },
 
-  render: function() {
+  render() {
     var model = this.state.model;
     var href  = '/people/' + model.id;
 
@@ -46,18 +46,38 @@ const Link = React.createClass({
       href += '/' + this.props.suburl;
     }
 
+    var icon = this.props.icon === true ? 'user' : this.props.icon;
+
     return( 
         <_Link {...this.props} href={href}>
           {this.props.avatar
             ? <span><img className="img-circle" src={model.avatarURL} />{model.name}</span>
-            : this.props.children || model.name
+            : icon
+              ? <span><Glyph icon={icon} />{' ' + model.name}</span>
+              : this.props.children || model.name
           }
         </_Link>
       );
   }
 });
 
+const List = React.createClass({
+  getInitialState() {
+    return { model: this.props.model };
+  },
+  
+  componentWillReceiveProps(props) {
+    this.setState( { model: props.model } );
+  },
+
+  render() {
+    return (
+      <div>{this.state.model.map( (u,i) => <Link {...this.props} key={i} model={u} />)}</div>
+      );
+  }  
+});
 module.exports = {
   Header,
-  Link
+  Link,
+  List
 };

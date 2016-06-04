@@ -28,7 +28,8 @@
   },
   "browserify-shim": {
     "react": "global:React",
-    "react-dom": "global:ReactDOM"
+    "react-dom": "global:ReactDOM",
+    "underscore": "global:_"
   },
   "contributors": [
     {
@@ -76,6 +77,7 @@
     "soundmanager2": "^2.97.20150601",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0",
     "webpack": "^1.13.1"
   },
   "dependencies": {
@@ -86,6 +88,7 @@
     "react-tween-state": "^0.1.4",
     "route-recognizer": "^0.1.9",
     "rsvp": "^3.1.0",
-    "serve-static": "^1.10.0"
+    "serve-static": "^1.10.0",
+    "underscore": "^1.8.3"
   }
 }
