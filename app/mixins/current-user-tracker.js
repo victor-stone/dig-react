@@ -1,4 +1,4 @@
-import CCMixter from '../stores/ccmixter';
+import api      from '../services/ccmixter';
 import events   from '../models/events';
 
 const CurrentUserTracker = {
@@ -7,15 +7,17 @@ const CurrentUserTracker = {
     return { user: null, userLoading: true };
   },
 
-  componentDidMount() {
-    this.thisIsMounted = true;
-    CCMixter.on(events.USER_LOGIN,this.onUserLogin);
+  componentWillMount() {
+    if( global.IS_SERVER_REQUEST ) {
+      return;
+    }
+    this.setState({_userMounting:true});
+    api.on(events.USER_LOGIN,this.onUserLogin);
     this.checkForUser();
   },
 
   componentWillUnmount() {
-    CCMixter.removeListener(events.USER_LOGIN,this.onUserLogin);
-    this.thisIsMounted = false;
+    api.removeListener(events.USER_LOGIN,this.onUserLogin);
   },
 
   componentWillReceiveProps( props ) {
@@ -35,13 +37,11 @@ const CurrentUserTracker = {
         this.setState( state );
     }.bind(this);
 
-    return  CCMixter.currentUser().then( id => {
-      if( this.thisIsMounted ) {
-        if( id ) {
-            CCMixter.currentUserProfile().then( profileHandler );
-        } else {
-          profileHandler(null);
-        }
+    return  api.user.currentUser().then( id => {
+      if( id ) {
+          api.user.currentUserProfile().then( profileHandler );
+      } else {
+        profileHandler(null);
       }
       return id;
     });

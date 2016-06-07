@@ -13,6 +13,10 @@ var FeedBadge = React.createClass({
              store:  UserFeed() };
   },
 
+  shouldComponentUpdate(nextProps,nextState) {
+    return this.state.feedcount !== nextState.feedcount;
+  },
+
   onFeedseen() {
     this.setState( { feedcount: 0 } );
   },

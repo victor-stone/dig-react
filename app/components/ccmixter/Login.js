@@ -1,6 +1,6 @@
 import React            from 'react';
 import ReactDOM         from 'react-dom';
-import CCMixter         from '../../stores/ccmixter';
+import api              from '../../services/ccmixter';
 import lookup           from '../../services';
 import Modal            from '../Modal';
 import Alert            from '../Alert';
@@ -14,7 +14,7 @@ var Login = React.createClass({
 
   onLogin() {
     this.setState( { error: '' } );
-    CCMixter.login(this.refs['login-name'].value,this.refs['password'].value)
+    api.user.ogin(this.refs['login-name'].value,this.refs['password'].value)
       .then( result => {
         if( result['status'] === 'ok') {
           /* globals $ */

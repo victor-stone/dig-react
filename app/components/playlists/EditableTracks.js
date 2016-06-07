@@ -1,7 +1,7 @@
 import React          from 'react';
 import Tracks         from './Tracks';
 import { TrackList }  from  './Edit';
-import CCMixter       from '../../stores/ccmixter';
+import api           from '../../services/ccmixter';
 
 import { PlaylistOwner,
          EditControls } from '../../mixins';
@@ -14,7 +14,7 @@ var EditableTracks = React.createClass({
     /* globals $ */
     var sortkeys = $('#fo').sortable( 'serialize' );
     var id       = this.props.store.model.head.id;
-    CCMixter.reorderPlaylist(id,sortkeys).then( () => {
+    api.playlist.reorder(id,sortkeys).then( () => {
       this.props.store.model.tracks.refresh({});
     });
   },

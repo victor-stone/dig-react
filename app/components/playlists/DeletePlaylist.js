@@ -3,7 +3,7 @@ import React      from 'react';
 import Glyph      from '../../components/Glyph';
 import Modal      from '../../components/Modal';
 
-import CCMixter            from '../../stores/ccmixter';
+import api                 from '../../services/ccmixter';
 import { PlaylistOwner }   from '../../mixins';
 import env                 from '../../services/env';
 
@@ -30,7 +30,7 @@ var DeletePlaylist = React.createClass({
 
   doDelete: function() {
     var id = this.props.store.model.head.id;
-    CCMixter.deletePlaylist(id)
+    api.playlist.deletePlaylist(id)
       .then( () => {
         /* global $ */
         this.manualHide = true;

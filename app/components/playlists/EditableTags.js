@@ -1,8 +1,7 @@
 import React  from 'react';
 import Glyph  from '../Glyph';
 import Tags   from './Tags';
-
-import CCMixter         from '../../stores/ccmixter';
+import api    from '../../services/ccmixter';
 import { PlaylistOwner,
          EditControls } from '../../mixins';
 
@@ -59,7 +58,7 @@ var EditableTags = React.createClass({
   doneEdit: function() {
     var tags = this.state.tags.toString();
     var id   = this.props.store.model.head.id;
-    CCMixter.updatePlaylist(id,{tags}).then( model => {
+    api.playlist.update(id,{tags}).then( model => {
       this.setState( { model: model.tags } );
     });
   },

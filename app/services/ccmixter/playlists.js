@@ -1,0 +1,47 @@
+import querystring  from 'querystring';
+import API          from './api';
+import ccmixter     from '../../models/ccmixter';
+import serialize    from '../../models/serialize';
+
+
+class Playlists extends API
+{
+  createDynamic(name,queryParamsString) {
+    var q = queryParamsString + '&title=' + name;
+    return this.call('playlist/create/dynamic?' + q).then( serialize( ccmixter.Playlist ) );
+  }
+
+  /* not used here (yet) */
+  createStatic(name,description) {
+    var q = 'name=' + name + '&cart_description=' + description;
+    return this.call('playlist/create?' + q).then( serialize( ccmixter.Playlist ) );
+  }
+
+  deletePlaylist(id) {
+    return this.call('playlist/delete/' + id);
+  }
+
+  removeTrack(upload,id) {
+    return this.call('playlist/removetrack/' + upload + '/' + id);
+  }
+
+  updateDynamic(id,queryParamsString) {
+    var q = queryParamsString;
+    return this.call('playlist/update/dynamic/' + id + '?' + q);
+  }
+
+  toggleFeatured(id) {
+    return this.call('playlist/feature/' + id);
+  }
+
+  update(id,fields) {
+    var q = querystring.stringify(fields);
+    return this.call('playlist/update/' + id + '?' + q).then( serialize(ccmixter.PlaylistHead) );
+  }
+
+  reorder(id,reorderSpec) {
+    return this.call('playlist/reorder/' + id + '?' + reorderSpec);
+  }
+}
+
+module.exports = Playlists;

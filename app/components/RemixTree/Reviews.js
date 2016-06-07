@@ -1,35 +1,41 @@
 /*eslint "react/no-danger":0 */
 import React               from 'react';
-import { LazyAccordianPanel }  from '../Accordian';
+import { AccordianPanel }  from '../Accordian';
 import Glyph               from '../Glyph';
 import Topics              from '../../stores/topics';
+import { ModelTracker,
+        CollapsingModel }    from '../../mixins';
 
-class Reviews extends LazyAccordianPanel {
-  constructor(props) {
-    super(props);
-    this.icon = 'pencil';
-    this.id = 'reviews';
-    this._setTitle(props);
-  }
+var  Reviews = React.createClass({
+
+  mixins: [ModelTracker,CollapsingModel],
+
+  getInitialState() {
+    return { numItems: this.props.numItems };
+  },
 
   componentWillReceiveProps(nextProps) {
-    this._setTitle(nextProps);
-    super.componentWillReceiveProps(...arguments);
-  }
+    this.setState({ numItems: nextProps.numItems });
+  },
 
-  getModel(props) {
+  speakNow(nextProps,nextState) {
+    return this.state.numItems !== nextState.numItems;
+  },
+
+  stateFromStore(store) {
+    return { id: store.model.upload.id };
+  },
+  
+  refreshModel(props) {
     if( !this.topics ) {
       this.topics = new Topics();
     }
-    return this.topics.reviewsFor(props.model.id);    
-  }
+    var id = props ? props.store.model.upload.id : this.state.id;
+    return this.topics.reviewsFor(id);
+  },
 
-  _setTitle(props) {
-    this.title = `Reviews (${props.numItems})`;
-  }
-  
-  renderChildren(model) {
-    var reviews = model.map( (r,i) => (
+  _renderReview(r,i) {
+    return (
         <div key={i} className={'panel panel-info panel-offset-' + r.indent}>
           <div className="panel-heading">
             <h3 className="panel-title">
@@ -42,11 +48,22 @@ class Reviews extends LazyAccordianPanel {
           <div className="panel-body" dangerouslySetInnerHTML={{__html: r.html}} />
           <div className="panel-footer">{r.date}</div>
         </div>
-      ));
-    return reviews;
+      );
+  },
+
+  render() {
+    var title = `Reviews (${this.state.numItems})`;
+    return (
+        <AccordianPanel title={title} id="reviews" icon="pencil" onOpen={this.onOpen} onClose={this.onClose} >
+        {this.state.model 
+          ? this.state.model.map( this._renderReview )
+          : null
+        }
+        </AccordianPanel>
+      );
   }
 
-}
+});
 
 module.exports = Reviews;
 

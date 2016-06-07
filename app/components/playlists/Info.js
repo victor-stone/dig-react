@@ -3,6 +3,7 @@ import People     from '../People';
 import SharePopup from '../SharePopup';
 import Glyph      from '../../components/Glyph';
 import Link       from '../../components/Link';
+import api        from '../../services/ccmixter';
 
 import EditableDescription from './EditableDescription';
 import EditableTags        from './EditableTags';
@@ -11,7 +12,6 @@ import lookup              from '../../services';
 
 import { PlaylistOwner,
          CurrentUserTracker }   from '../../mixins';
-import CCMixter                 from '../../stores/ccmixter';
 
 var EditQueryLink = React.createClass({
 
@@ -38,7 +38,7 @@ var FeatureLink = React.createClass({
 
   toggleFeatured: function() {
     var id = this.props.store.model.head.id;
-    CCMixter.toggleFeaturedPlaylist( id ).then( () => lookup('router').navigateTo('/playlist/browse/' + id) );
+    api.playlist.toggleFeatured( id ).then( () => lookup('router').navigateTo('/playlist/browse/' + id) );
   },
 
   render: function() {

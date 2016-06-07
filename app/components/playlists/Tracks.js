@@ -1,19 +1,19 @@
 import React              from 'react';
 import { ModelTracker }   from '../../mixins';
 import AudioService       from '../../services/audio-player';
+import api                from '../../services/ccmixter';
 import { UploadLink }     from '../ActionButtons';
 import { PlayButton }     from '../AudioPlayer';
 import People             from '../People';
 import Glyph              from  '../Glyph';
 
-import CCMixter         from '../../stores/ccmixter';
 
 var DeleteButton = React.createClass({
 
   doDelete: function() {
     var id     = this.props.playlist;
     var upload = this.props.upload;
-    CCMixter.removeTrackFromPlaylist( upload, id ).then( () => {
+    api.playlist.removeTrack( upload, id ).then( () => {
       this.props.onDelete();
     });
   },

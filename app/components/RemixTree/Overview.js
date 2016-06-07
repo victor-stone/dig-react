@@ -6,7 +6,7 @@ import { HorizontalForm, FormItem } from '../Form';
 var OverviewForm = React.createClass({
 
   render() {
-    var model = this.props.model;
+    var model = this.props.store.model.upload;
     var cls   = this.props.lineCls || '';
     return (
       <HorizontalForm>

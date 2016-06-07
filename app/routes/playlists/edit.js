@@ -3,7 +3,7 @@ import React             from 'react';
 import { mergeParams }   from '../../unicorns';
 
 import Playlist          from '../../stores/playlist';
-import CCMixter          from '../../stores/ccmixter';
+import api               from '../../services/ccmixter';
 import { DynamicForm }   from '../../components/playlists/Edit';
 import PageHeader        from '../../components/PageHeader';
 import env               from '../../services/env';
@@ -24,7 +24,7 @@ var Edit = React.createClass({
   onSave: function() {
     var qstring = this.props.store.model.tracks.queryStringWithDefaults;
     var id      = this.props.store.model.head.id;
-    CCMixter.updateDynamicPlaylist(id,qstring).then( () => {
+    api.playlist.updateDynamic(id,qstring).then( () => {
         var router = lookup('router');
         router.navigateTo( '/playlist/browse/' + id );
     });

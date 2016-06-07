@@ -1,23 +1,17 @@
 import React   from 'react';
 import Gallery from './Gallery';
 import css     from './style/people';
-
-import events  from '../../models/events';
+import { Followers,
+         FollowButton } from './Follow';
 
 import { TagString } from '../../unicorns';
 
-import {  ModelTracker,
-          StoreEvents,
-          CurrentUserTracker } from '../../mixins';
+import {  ModelTracker} from '../../mixins';
 
 import {  ActionButtons,
           InlineCSS,
-          Glyph,
-          People,
           CollapsingText,
           Form   }        from '../../components';
-
-import api from '../../stores/ccmixter';          
 
 var ExternalLink   = ActionButtons.ExternalLink;
 var HorizontalForm = Form.HorizontalForm;
@@ -51,86 +45,6 @@ const Header = React.createClass({
           <Overview store={this.props.store} />
         </div>
     );
-  }
-});
-
-const FollowButton = React.createClass({
-
-  mixins: [CurrentUserTracker,ModelTracker],
-
-  stateFromStore(store) {
-    var state = this._calcState(this.state && this.state.follower,store.model.artist);
-    state.store = store;
-    return state;
-  },
-
-  stateFromUser(user) {
-    return this._calcState(user,this.state.store.model.artist);
-  },
-
-  _calcState(follower,followee) {
-    if( follower && followee && followee.id !== follower.id ) {
-      return { show: true, 
-               toggle: follower.social.following.findBy( 'id', followee.id ) !== null,
-               follower: follower,
-               followerId: follower.id,
-               followeeId: followee.id };
-    }
-    return { show: false, follower: follower };
-  },
-
-  toggleFollow(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    api.follow(this.state.toggle ? 'unfollow' : 'follow',this.state.followerId,this.state.followeeId)
-      .then( () => 
-          this.state.store.followers(this.state.followeeId) 
-        ); 
-    this.setState( { toggle: !this.state.toggle } );
-  },
-
-  render() {
-    if( !this.state.show ) {
-      return null;
-    }
-    return (
-      <button className="btn btn-sm follows" onClick={this.toggleFollow}>
-          <Glyph icon={this.state.toggle ? 'check-square-o' : 'square-o'} />
-          {' ' + (this.state.toggle ? 'following' : 'follow')}
-      </button>
-    );
-  }
-
-});
-
-const Followers = React.createClass({
-
-  mixins: [StoreEvents],
-
-  getDefaultProps: function() {
-    return { storeEvent: events.FOLLOW_CHANGED };
-  },
-
-  getInitialState: function() {
-    return this._model();
-  },
-
-  onFollowChanged: function() {
-    this.setState( this._model() );
-  } ,
-
-  _model() {
-    return { model: this.props.store.model.artist.social[this.props.followType] };
-  },
-
-  render() {
-    return (
-      this.state.model.length
-        ? <FormItem title={this.props.title} wrap>
-            <People.List className="follow" icon model={this.state.model} />
-          </FormItem>
-        : null 
-      );
   }
 });
 

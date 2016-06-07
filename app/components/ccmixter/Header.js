@@ -1,7 +1,7 @@
 import React                  from 'react';
 import events                 from '../../models/events';
 import lookup                 from '../../services';
-import ccMixter               from '../../stores/ccmixter';
+import api                    from '../../services/ccmixter';
 import { CurrentUserTracker } from '../../mixins';
 
 import Link            from '../Link';
@@ -19,7 +19,7 @@ const UserMenu = React.createClass({
   mixins: [CurrentUserTracker],
 
   onLogout() {
-    ccMixter.logout().then( () => {
+    api.user.logout().then( () => {
       lookup('env').alert('success', 'you are now logged out');
     });
   },

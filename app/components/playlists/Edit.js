@@ -5,7 +5,7 @@ import Glyph             from '../../components/Glyph';
 import QueryOptions      from '../../components/playlists/QueryOptions';
 import { ModelTracker }  from '../../mixins';
 
-import CCMixter          from '../../stores/ccmixter';
+import api               from '../../services/ccmixter';
 import lookup            from '../../services';
 
 var TrackList = React.createClass({
@@ -56,8 +56,14 @@ var SaveDynamicPopup = React.createClass({
     return { showModal: false };
   },
   
+  componentWillUnmount() {
+    this.unMounting = true;
+  },
+  
   handleHideModal: function() {
-    this.setState({ showModal: false, msg: null });
+    if( !this.unMounting ) {
+      this.setState({ showModal: false, msg: null });
+    }
   },
 
   handleShowModal: function(e){
@@ -69,7 +75,7 @@ var SaveDynamicPopup = React.createClass({
   onSave: function() {
     var name    = this.refs['playlist-name'].value;
     var qstring = this.props.store.queryStringWithDefaults;
-    CCMixter.createDynamicPlaylist(name,qstring).then( playlist => {
+    api.playlists.createDynamic(name,qstring).then( playlist => {
       if( playlist && playlist.id ) {
         /* globals $ */
         $('.modal').modal('hide');

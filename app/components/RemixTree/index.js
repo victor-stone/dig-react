@@ -2,16 +2,15 @@ import React       from 'react';
 import Glyph       from '../Glyph';
 import Link        from '../Link';
 import InlineCSS   from '../InlineCSS';
-import { Accordian,
-         AccordianPanel 
+import { Accordian
                }   from '../Accordian';
-import Files       from '../stems/Files';
 
 import { ModelTracker }    from '../../mixins';
 import { PlayButton }      from '../AudioPlayer';
 import { SamplesFrom, 
          SamplesUsedIn }   from './TreeLinks';
 
+import FileSection from './Files';
 import Recommends  from './Recommends';
 import Reviews     from './Reviews';
 import Overview    from './Overview';
@@ -21,14 +20,6 @@ import css         from './style/tree';
 import lookup  from '../../services';
 
 const NOT_FOUND = -1;
-
-function FileSection(props) {
-  var title = `Files (${props.model.files.length})`;
-  return ( <AccordianPanel title={title} id="files" icon="files-o" className="stems-browser">
-             <Files model={props.model} />
-            </AccordianPanel>
-        );
-}
 
 var TreeHead = React.createClass({
   mixins: [ModelTracker],
@@ -181,10 +172,10 @@ var Tree = React.createClass({
         <div className="row">  
           <div className="col-md-6 col-md-offset-3">
             <Accordian>
-              <Overview model={upload} />
-              <FileSection model={upload} />
-              <Recommends model={upload} numItems={upload.numRecommends} />
-              <Reviews model={upload} numItems={upload.numReviews} />
+              <Overview store={store} />
+              <FileSection store={store} />
+              <Recommends store={store} numItems={upload.numRecommends} />
+              <Reviews store={store} numItems={upload.numReviews} />
             </Accordian>
           </div>
         </div>

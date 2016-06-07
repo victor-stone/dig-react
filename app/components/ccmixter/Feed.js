@@ -8,7 +8,7 @@ import InlineCSS        from '../InlineCSS';
 import Glyph            from '../Glyph';
 import css              from './style/feed';
 import lookup           from '../../services';
-import ccMixter         from '../../stores/ccmixter';
+import api              from '../../services/ccmixter';
 import events           from '../../models/events';
 
 var FeedVerbs = [];
@@ -147,7 +147,7 @@ var Feed = React.createClass({
     }
     var u = this.props.store.model.queryParams.user;
     if( u ) {
-      ccMixter.markFeedAsSeen(u).then( () => this.props.store.emit(events.FEED_SEEN) );
+      api.feed.markAsSeen(u).then( () => this.props.store.emit(events.FEED_SEEN) );
     }
   },
 

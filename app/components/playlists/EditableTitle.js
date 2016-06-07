@@ -1,6 +1,6 @@
-import React      from 'react';
-import Glyph      from '../Glyph';
-import CCMixter   from '../../stores/ccmixter';
+import React  from 'react';
+import Glyph  from '../Glyph';
+import api    from '../../services/ccmixter';
 
 import { PlaylistOwner,
         EditControls } from '../../mixins';
@@ -17,7 +17,7 @@ var EditableTitle = React.createClass({
   doneEdit: function() {
     var name = this.refs.ptitle.value;
     var id   = this.props.store.model.head.id;
-    CCMixter.updatePlaylist(id,{name}).then( model=> {
+    api.playlist.update(id,{name}).then( model=> {
       this.setState( { text: model.name, 
                        editing: false } );
     });
