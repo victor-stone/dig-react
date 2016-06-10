@@ -146,11 +146,48 @@ span.ribbon.edpick {
 .tree-link-artist {
   color: black;
 }
+.panel.panel-default i.fa-spinner {
+  color: green;
+  font-size: large;
+  margin: 8px 48%;
+}
+
+#recc_heading,
+#reviews_heading {
+  position: relative;
+}
+
+#reviews_heading button.review, 
+#recc_heading button.ratings {
+  background-color: #006d80;
+  color: rgba(255, 255, 255, 0.86);
+  border-radius: 8px;
+  margin-right: 10px;
+  margin-bottom: 5px!important;
+  float: none!important;
+  right: 30px;
+  top: 6px;
+  position: absolute;
+}
+
 #reviews span.quote {
   display: block;
   font-style: italic;
   margin-left: 20px;
-}    
+}
+
+a.recommends-list {
+    padding: 2px 0.3em;
+    display: inline-block;
+    margin: 0px;    
+}
+
+a.recommends-list:hover {
+    text-decoration: none;
+    border-radius: 3px;
+    background-color: rgba(186, 226, 183, 0.68);
+}
+
 `;
 
 module.exports = css;

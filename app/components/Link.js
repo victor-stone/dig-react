@@ -7,6 +7,7 @@ var Link = React.createClass({
   
   handleClick: function(e) {
     e.preventDefault();
+    e.stopPropagation();
     if( typeof this.props.href === 'string' && this.props.href !== '#') {
       var router = serviceLookup('router');
       router.navigateTo( this.props.href );

@@ -1,12 +1,9 @@
 import React       from 'react';
-import Glyph       from '../Glyph';
-import Link        from '../Link';
 import InlineCSS   from '../InlineCSS';
 import { Accordian
                }   from '../Accordian';
 
 import { ModelTracker }    from '../../mixins';
-import { PlayButton }      from '../AudioPlayer';
 import { SamplesFrom, 
          SamplesUsedIn }   from './TreeLinks';
 
@@ -17,130 +14,15 @@ import Overview    from './Overview';
 import Description from './Description';
 import css         from './style/tree';
 
-import lookup  from '../../services';
-
-const NOT_FOUND = -1;
-
-var TreeHead = React.createClass({
-  mixins: [ModelTracker],
-
-  stateFromStore(store) {
-    return { 
-        store,
-        model: store.model.upload };
-  },
-
-  render() {
-    var model = this.state.model;
-
-    return(
-        <div className="tree-head">
-          {model.edPick
-            ? <span className="ribbon orange edpick">{"\ned\npick\n"}</span>
-            : null
-          }
-          <img className="img-circle" src={model.artist.avatarURL} /> 
-          <h3>{model.name}</h3>
-          <h4 className="clearfix"><Link className="artist" href={'/people/'+model.artist.id}>{model.artist.name}</Link></h4>
-          <Description store={this.state.store} />
-          <div className="clearfix" />
-          {model.fileInfo && model.fileInfo.isMP3
-            ? <PlayButton model={model} className="tree-play-button"/>
-            : null
-          }
-        </div>
-    );
-  }
-});
-
-var NextPeruse = React.createClass({
-
-  getInitialState() {
-    return this.getNextTrack(this.props);
-  },
-
-  componentWillReceiveProps(props) {
-    this.setState( this.getNextTrack(props) );
-  },
-
-  getNextTrack(props) {
-    var nullState = { model: null };
-    var peruseModel = lookup('env').perusingModel;
-    if( !peruseModel ) {
-      return nullState;
-    }
-    var index = peruseModel.indexOfElement('id',props.store.model.upload.id);
-    if( index === NOT_FOUND || index === peruseModel.length - 1 ) {
-      return nullState;
-    }
-    return { model: peruseModel[index+1] };
-  },
-
-  render() {
-    var m = this.state.model;
-    if( !m ) {
-      return null;
-    }
-    var url = '/files/' + m.artist.id + '/' + m.id;
-    return (
-      <div className="tree-perusal tree-next">
-        <Link href={url}>
-          {m.name}
-          <Glyph icon="chevron-right" x4 />
-        </Link>
-      </div>
-    );
-  }
-});
-
-var PrevPeruse = React.createClass({
-
-  getInitialState() {
-    return this.getPrevTrack(this.props);
-  },
-
-  componentWillReceiveProps(props) {
-    this.setState( this.getPrevTrack(props) );
-  },
-
-  getPrevTrack(props) {
-    var nullState = { model: null };
-    var peruseModel = lookup('env').perusingModel;
-    if( !peruseModel ) {
-      return nullState;
-    }
-    var index = peruseModel.indexOfElement('id',props.store.model.upload.id);
-    if( index === NOT_FOUND || !index ) {
-      return nullState;
-    }
-    return { model: peruseModel[index-1] };
-  },
-
-  render() {
-    var m = this.state.model;
-    if( !m ) {
-      return null;
-    }
-    var url = '/files/' + m.artist.id + '/' + m.id;
-    return (
-      <div className="tree-perusal tree-prev">
-        <Link href={url}>
-          {m.name}
-          <Glyph icon="chevron-left" x4 />
-        </Link>
-      </div>
-    );
-  }
-});
+import { PrevPeruse,
+        NextPeruse } from '../PeruseNavigation';
 
 var Tree = React.createClass({
 
   mixins: [ModelTracker],
 
   stateFromStore(store) {
-    return { 
-        store,
-        upload: store.model.upload };
+    return { store };
   },
 
   render() {
@@ -155,7 +37,7 @@ var Tree = React.createClass({
             <PrevPeruse store={store}/>
           </div>
           <div className="col-md-6 col-md-offset-1">
-            <TreeHead store={store} />
+            <Description store={store} />
           </div>
           <div className="col-md-2 col-md-offset-1">
             <NextPeruse store={store}/>

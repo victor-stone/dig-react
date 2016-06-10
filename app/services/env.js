@@ -27,6 +27,10 @@ class Env extends Eventer {
     this.emit( events.APP_ALERT, type, message );
   }
 
+  showPopup( component, props ) {
+    this.emit( events.REQUEST_MODAL, component, props );
+  }
+  
   error(e) {
     this.error = e;
     this.log('caught error',e.stack);

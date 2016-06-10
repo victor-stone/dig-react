@@ -7,16 +7,18 @@ import events   from '../models/events';
 
 const Modal = React.createClass({
 
+  /*
   propTypes: {
     handleHideModal: React.PropTypes.func.isRequired
   },
+  */
 
   componentDidMount: function() {
     /* globals $ */
     var d = $(ReactDOM.findDOMNode(this));
     d.modal('show');
     d.on ('hidden.bs.modal', () => {
-      this.props.handleHideModal(...arguments);
+      this.props.handleHideModal && this.props.handleHideModal(...arguments);
       env.emit(events.REQUEST_MODAL);
     });
   },
@@ -27,6 +29,8 @@ const Modal = React.createClass({
     var action   = this.props.action;
     var icon     = this.props.icon || 'share';
     var text     = ' ' + (this.props.buttonText || 'Submit');
+    var close    = ' ' + (this.props.closeText || 'Close');
+    var disabled = this.props.submitDisabler && this.props.submitDisabler() || false; 
 
     return (
       <div className="modal fade">
@@ -40,9 +44,9 @@ const Modal = React.createClass({
             {this.props.children}
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-default" data-dismiss="modal">{"Close"}</button>
+            <button type="button" className="btn btn-default" data-dismiss="modal">{close}</button>
             {action 
-              ? <button className="btn btn-primary btn-success" onClick={action}><Glyph icon={icon} />{text}</button>
+              ? <button disabled={disabled} className="btn btn-primary btn-success" onClick={action}><Glyph icon={icon} />{text}</button>
               : null
             }
           </div>
@@ -68,6 +72,7 @@ const ModalContainer = React.createClass({
   },
 
   onRequest(comp,props) {
+    // null 'comp' means Modal was closed 
     this.setState( { modalComponent: comp, 
                      componentProps: props } );
   },
@@ -84,7 +89,21 @@ const ModalContainer = React.createClass({
   }
 });
 
+class ModalPopup extends React.Component {
+  manualClose() {
+    /* globals $ */
+    var d = $(ReactDOM.findDOMNode(this));
+    d.modal('hide');    
+  }
+}
+
+ModalPopup.show = function(comp,props) {
+  env.showPopup(comp,props);
+};
+
+
 Modal.Container = ModalContainer;
+Modal.Popup     = ModalPopup;
 
 module.exports = Modal;
 

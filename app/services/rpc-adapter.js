@@ -1,5 +1,6 @@
-import ajax  from './ajax';
-import env   from './env';
+import querystring from 'querystring';
+import ajax        from './ajax';
+import env         from './env';
 
 class RPCAdapter 
 {
@@ -8,7 +9,19 @@ class RPCAdapter
     this._cache  = false; // true;
   }
 
+  post(cmd,args) {
+    return this._call(cmd,true,'POST',args);
+  }
+
   call(cmd,isSingleton) {
+    return this._call(cmd,isSingleton,'GET');
+  }
+
+  callOne(cmd) {
+    return this._call(cmd,true,'GET');
+  }
+
+  _call(cmd,isSingleton,method,args) {
     if( !this.rpcHost ) {
       this.rpcHost = env.rpcHost || 'http://ccmixter.org/api/';
     }
@@ -17,12 +30,15 @@ class RPCAdapter
     var opts = {
       url:      url,
       dataType: 'json',
-      method:   'GET',
+      method:   method,
       cache:    this._cache, 
       xhrFields: { withCredentials: true },
       _ccmClientOnly: true
     };
 
+    if( args ) {
+      opts.data = querystring.stringify(args);
+    }
 
     function _success(r) {
       if( isSingleton ) {
@@ -36,10 +52,6 @@ class RPCAdapter
     }
 
     return this.ajax(opts).then( _success, _error );
-  }
-
-  callOne(cmd) {
-    return this.call(cmd,true);
   }
 
   set cache(value) {

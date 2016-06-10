@@ -20,16 +20,16 @@ var CollapsingModel = {
     return { model: null };
   },
 
-  componentWillReceiveProps(nextProps) {
-    if( this.state.model && this.state.open ) {
-        this.refreshModel(nextProps).then( model => this.setState({model}));
+  componentWillReceiveProps(props) {
+    if( this.state.open ) {
+      this.refreshModel(props.store).then( model => this.setState( { model } ) ); 
     } else {
       this.setState({ model: null });
     }
   },
 
   shouldComponentUpdate(nextProps,nextState) {
-    return this.state.model !== nextState.model || this.state.open !== nextState.open || this.speakNow(nextProps,nextState);
+    return this.state.model !== nextState.model || this.state.open !== nextState.open || this.speakNow && this.speakNow(nextProps,nextState);
   },
 
 };

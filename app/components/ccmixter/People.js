@@ -1,3 +1,4 @@
+  /*eslint "react/no-danger":0 */
 import React   from 'react';
 import Gallery from './Gallery';
 import css     from './style/people';
@@ -36,10 +37,11 @@ const Header = React.createClass({
 
   render: function() {
     var a = this.props.store.model.artist;
+    var html = { __html: a.name };
     return(
         <div className="people-head">
           <img className="img-circle" src={a.avatarURL} /> 
-          <h3>{a.name}</h3>
+          <h3 dangerouslySetInnerHTML={html} />
           <Description store={this.props.store} />
           <div className="clearfix" />
           <Overview store={this.props.store} />

@@ -30,6 +30,14 @@ class Query extends Eventer
     return this.query(params,deferName).then( r => r[0] );
   }
   
+  performAction( action ) {
+    return action.then( result => { this.refresh(result.queryParams || this.model.queryParams); return result; } );
+  }
+
+  refresh() {
+    // define in derivations
+  }  
+  
   flushDefers(hash) {
     var h = {};
     var keys = Object.keys(hash);

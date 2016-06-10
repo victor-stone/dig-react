@@ -21,10 +21,10 @@ class CCMixter extends Eventer
     this.uploads = this.upload;
   }
 
-  _call(cmd) {
-    return this.adapter.callOne(cmd).then( result => {
+  _call_wrap(promise) {
+    return promise.then( result=> {
       if( typeof result.status === 'undefined' || result.status === 'error' ) {
-        throw new Error('the request did not go through ' + (result.errmsg || 'because error'));
+        throw new Error(result.errmsg || 'because error');
       }
       return (result.data || result);
     }).catch( e => {
@@ -32,6 +32,13 @@ class CCMixter extends Eventer
     });
   }
 
+  _call(cmd) {
+    return this._call_wrap(this.adapter.callOne(cmd));
+  }
+
+  _post(cmd,args) {
+    return this._call_wrap(this.adapter.post(cmd,args));
+  }
 }
 
 module.exports = new CCMixter();

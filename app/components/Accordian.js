@@ -1,7 +1,7 @@
 /* globals $*/
 import React      from 'react';
 import Glyph      from './Glyph';
-//import LoadingGlyph from './LoadingGlyph';
+import LoadingGlyph from './LoadingGlyph';
 import { DeadLink } from './ActionButtons';
 
 var AccordianButton = React.createClass({
@@ -66,7 +66,10 @@ class AccordianPanel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState( { disabled: nextProps.disabled, beenOpened: false } );
+    this.setState( { disabled: nextProps.disabled, beenOpened: false }, () => {
+      if( this.state.open && nextProps.disabled )
+        { $('#'+this.props.id).collapse('hide'); }
+      });
   }
 
   onOpen() {
@@ -104,7 +107,8 @@ class AccordianPanel extends React.Component {
               {p.headerContent}
             </h4>
          </div>
-        <div id={id} className={'panel-collapse collapse' + clsIn} >          
+        <div id={id} className={'panel-collapse collapse' + clsIn} > 
+          <LoadingGlyph />
           {this.state.open 
             ? <div className={clsChild}>{p.children}</div>
             : null

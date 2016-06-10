@@ -19,15 +19,15 @@ const SelectedTagSection = React.createClass({
 
   mixins: [ SelectedTagsTracker ],
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.doFadeAnimation();
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     this.doFadeAnimation();
   },
 
-  doFadeAnimation: function() {
+  doFadeAnimation() {
     if( !global.IS_SERVER_REQUEST ) {
       var hasTags = this.state.selectedTags.getLength() > 0;
       if( !hasTags ) {
@@ -38,7 +38,7 @@ const SelectedTagSection = React.createClass({
     }
   },
 
-  render: function() {
+  render() {
     var hasTags = this.state.selectedTags.getLength() > 0;
     var style   = { display: 'none' };
 
@@ -67,7 +67,7 @@ const TagsList = React.createClass({
 
   mixins: [ StoreEvents, SelectedTagsTracker ],
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return { 
         topMargin: SELECTED_TAG_HEIGHT,
         keepAbove: '.footer',
@@ -75,7 +75,7 @@ const TagsList = React.createClass({
       };
   },
   
-  getInitialState: function() {
+  getInitialState() {
     return { 
       tab: 'all', 
       related: [], 
@@ -85,21 +85,21 @@ const TagsList = React.createClass({
     };
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     this.getModel();
   },
 
-  onModelUpdated: function() {
+  onModelUpdated() {
     this.getModel();
   },
 
-  getModel: function() {
+  getModel() {
     if( !global.IS_SERVER_REQUEST ) {
       this.getAllTags();
     }
   },
 
-  getAllTags: function() {
+  getAllTags() {
     if( this.allTags ) {
       this.setState( { related: this.getRelatedTags(),
                        loading: false } );
@@ -115,7 +115,7 @@ const TagsList = React.createClass({
     }
   },
 
-  getRelatedTags: function() {
+  getRelatedTags() {
     var store    = this.props.store;
     var seltags  = (store.model.queryParams.tags || '').toString();
     if( seltags.length > 0 && store.model.total ) {
@@ -133,7 +133,7 @@ const TagsList = React.createClass({
     return [];
   },
 
-  filter: function(filter, isIcon, filterCB) {
+  filter(filter, isIcon, filterCB) {
     if( isIcon ) {
       filterCB('');
       this.setState( { filtered: [] } );
@@ -146,11 +146,11 @@ const TagsList = React.createClass({
     }
   },
 
-  checkActive: function(tab) {
+  checkActive(tab) {
     return tab === this.state.tab ? 'active' : '';
   },
 
-  onTab: function(tab) {
+  onTab(tab) {
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
@@ -158,11 +158,11 @@ const TagsList = React.createClass({
     };
   },
 
-  _currentTags: function() {
+  _currentTags() {
     return this.state.tab === 'related' ? this.state.related : this.state.tags;
   },
 
-  render: function() {
+  render() {
 
     if( global.IS_SERVER_REQUEST ) {
       return null;

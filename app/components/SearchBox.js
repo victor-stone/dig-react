@@ -29,13 +29,13 @@ const RETURN_KEY = 13;
 */
 const SearchBox = React.createClass({
 
- getInitialState: function() {
+ getInitialState() {
     return {
       value: this.props.defaultValue || ''
     };
   },
 
-  handleChange: function(event) {
+  handleChange(event) {
     this.setState({value: event.target.value},function() {
       if( this.props.anyKey ) {
         this.submitSearch();
@@ -43,26 +43,26 @@ const SearchBox = React.createClass({
     });
   },
 
-  onKey: function(e) {
+  onKey(e) {
     if( e.keyCode === RETURN_KEY ) {
       this.submitSearch();
     }
   },
 
-  submitSearch: function(isIcon) {
+  submitSearch(isIcon) {
     var text = cleanSearchString(this.state.value);
     this.props.submitSearch( text, isIcon || false, (newText) => {
       this.setState({value: newText});
     });
   },
 
-  onIcon: function(e) {
+  onIcon(e) {
     e.preventDefault();
     e.stopPropagation();
     this.submitSearch(true);
   },
 
-  render: function() {
+  render() {
 
     var pholder = this.props.placeholder || 'genre, instrument, etc.';
     var icon    = this.props.icon || 'search';

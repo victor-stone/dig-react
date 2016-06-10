@@ -1,4 +1,4 @@
-import Query            from './query-basic';
+import QueryBasic       from './query-basic';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import events           from '../models/events';
@@ -11,7 +11,7 @@ function _fixFeaturing(model) {
   return model;
 }
 
-class Upload extends Query {
+class Upload extends QueryBasic {
 
   constructor() {
     super(...arguments);
@@ -119,9 +119,14 @@ class Upload extends Query {
     return this.queryOne(uploadQ,deferName).then( serialize( ccmixter.Detail ) );
   }
   
+  refresh() {
+    return this.info( this.model.upload.id )
+            .then( info => {
+              this.model.upload = info;
+              this.emit( events.MODEL_UPDATED, this.model );
+            });
+  }
 }
-
-Upload.service = new Upload();
 
 Upload.MAX_TRACKBACK_FETCH = 25;
 

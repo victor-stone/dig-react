@@ -64,23 +64,19 @@ const FollowButton = React.createClass({
 
 const Followers = React.createClass({
 
-  mixins: [StoreEvents],
+  mixins: [StoreEvents,ModelTracker],
 
   getDefaultProps: function() {
     return { storeEvent: events.FOLLOW_CHANGED };
   },
 
-  getInitialState: function() {
-    return this._model();
+  stateFromStore(store) {
+    return { store, model: store.model.artist.social[this.props.followType] };
   },
 
   onFollowChanged: function() {
-    this.setState( this._model() );
+    this.setState( this.stateFromStore(this.state.store) );
   } ,
-
-  _model() {
-    return { model: this.props.store.model.artist.social[this.props.followType] };
-  },
 
   render() {
     return (

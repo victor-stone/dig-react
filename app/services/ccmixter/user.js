@@ -10,7 +10,7 @@ const NOT_LOGGED_IN = null;
 class User extends API
 {
   login( username,password ) {
-    return this._call('user/login?remember=1&username=' +  username + '&password=' + password )
+    return this.call('user/login?remember=1&username=' +  username + '&password=' + password )
       .then( result => {
         cookies.create( 'username', result.data );
         this.emit( events.USER_LOGIN, this._setCurrentUser(result) );
@@ -19,7 +19,7 @@ class User extends API
   }
 
   logout() {
-    return this._call('user/logout')
+    return this.call('user/logout')
               .then( result => { 
                   this._currentUser = NOT_LOGGED_IN;
                   this._currentProfile = NOT_LOGGED_IN;
@@ -50,7 +50,7 @@ class User extends API
       return this._currentUserPromise;
     }
 
-    this._currentUserPromise = this._call('user/current')
+    this._currentUserPromise = this.call('user/current')
                                       .then( this._setCurrentUser.bind(this) );
 
     return this._currentUserPromise;                                      
@@ -76,7 +76,7 @@ class User extends API
   }
 
   follow(type,follower,followee) {
-    return this._call(`user/follow/${type}/${follower}/${followee}`);
+    return this.call(`user/follow/${type}/${follower}/${followee}`);
   }
 
   _setCurrentUser(status) {

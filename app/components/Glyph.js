@@ -23,7 +23,7 @@ const Glyph = React.createClass({
       cls += ' fa-pull-right';
     }
     return  (
-      <i className={cls}></i>
+      <i className={cls} />
     );
   },
 

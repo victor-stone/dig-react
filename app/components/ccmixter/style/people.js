@@ -77,8 +77,20 @@ var css =
 .people-head a.follow {
   font-weight: 300;
 }
-.people-head a.follow i.fa {
-  opacity: 0.5;
+
+.people-head button.follows {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  background-color: #18634f;
+  color: #eee;
+  border: 1px solid #dff0d8;
+  font-weight: 600;
+  text-shadow: #333 1px 1px;
+} 
+
+.people-head button.follows:hover {
+    box-shadow: #DDD 1px 1px;
 }
 `;
 
