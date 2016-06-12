@@ -53,11 +53,11 @@ class Query extends QueryBasic {
 
   applyTags(tags) {
     var qp = { tags: tags.toString() };
-    return this.refreshHard(qp);    
+    return this.refreshModel(qp);    
   }
 
   applyURIQuery(qp) {
-    return this.refreshHard(qp);    
+    return this.refreshModel(qp);    
   }
 
   refresh(queryParams) {
@@ -65,7 +65,7 @@ class Query extends QueryBasic {
     return this._refresh(this._qp(queryParams,events.PARAMS_CHANGED));
   }
 
-  refreshHard(queryParams) {
+  refreshModel(queryParams) {
     queryParams.offset = 0;
     return this.getModel(this._qp(queryParams,events.PARAMS_CHANGED));
   }
@@ -225,7 +225,7 @@ class Query extends QueryBasic {
     var qpt = this._expandQP(qp);
     events.forEach( e => this.emit( e, qpt, this ) );
     var qpc = this.model.queryParams = this._contractQP( qpt, {} );
-    return this.refreshHard(qpc);
+    return this.refreshModel(qpc);
   }
 
   _refresh(queryParams,deferName) {

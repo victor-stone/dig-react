@@ -37,7 +37,7 @@ const NavbarRight = (
 
 const Header = React.createClass({
 
-  submitSearch: function(text) {
+  submitSearch(text) {
     var router = serviceLookup('router');
     router.navigateTo( '/search?searchp=' + text );
   },

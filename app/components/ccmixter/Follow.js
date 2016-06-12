@@ -82,7 +82,7 @@ const Followers = React.createClass({
     return (
       this.state.model.length
         ? <FormItem title={this.props.title} wrap>
-            <People.List className="follow" icon model={this.state.model} />
+            <People.List className="follow" thumb model={this.state.model} />
           </FormItem>
         : null 
       );

@@ -11,7 +11,7 @@ var FeedTabs = React.createClass({
   mixins: [ CurrentUserTracker, SubNav.TabsMixin ],
 
   getDefaultProps() { 
-    return { checkActive: function(tab) {
+    return { checkActive(tab) {
                   return tab === document.location.pathname;
                 },
              allowEmptyBadges: true }; 

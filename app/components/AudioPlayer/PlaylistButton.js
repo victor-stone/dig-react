@@ -24,7 +24,7 @@ const PlaylistButton = React.createClass({
     }
   },
 
-  onPlaylist: function(playlist) {
+  onPlaylist(playlist) {
     this.setState( { hasPlaylist: !!playlist,
                      url: AudioService.playlistURL } );
   },

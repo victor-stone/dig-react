@@ -4,14 +4,13 @@ import events   from '../models/events';
 const CurrentUserTracker = {
 
   getInitialState() {
-    return { user: null, userLoading: true };
+    return { user: null, userLoading: !global.IS_SERVER_REQUEST };
   },
 
   componentWillMount() {
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
-    this.setState({_userMounting:true});
     api.on(events.USER_LOGIN,this.onUserLogin);
     this.checkForUser();
   },
@@ -19,14 +18,6 @@ const CurrentUserTracker = {
   componentWillUnmount() {
     api.removeListener(events.USER_LOGIN,this.onUserLogin);
   },
-
-  /*
-  componentWillReceiveProps( props ) {
-    if( this.state.user && this.stateFromUser ) {
-      this.setState( this.stateFromUser( this.state.user, props ) );
-    }
-  },
-  */
 
   onUserLogin( /*result */ ) {
     this.checkForUser();

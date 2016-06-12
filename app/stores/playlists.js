@@ -4,6 +4,7 @@ import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
 import events      from '../models/events';
 import env         from '../services/env';
+import rsvp        from 'rsvp';
 
 import { oassign,
          cleanSearchString }   from '../unicorns';
@@ -19,6 +20,16 @@ class Playlists extends Query {
   constructor() {
     super(...arguments);
     this.tagFields = [ 'tags' ];
+    this._autoFilterTags = true;
+    this._prevQueryParams = {};
+  }
+
+  get autoFilterTags() {
+    return this._autoFilterTags;
+  }
+
+  set autoFilterTags(value) {
+    this._autoFilterTags = value;
   }
 
   get tagFilter() {
@@ -33,6 +44,8 @@ class Playlists extends Query {
   }
 
   getModel(queryParams) {
+    Object.assign(this._prevQueryParams,queryParams);
+
     var defaults =  { 
         dataview:  'playlists',
         limit:     DEFAULT_LIMIT,
@@ -99,6 +112,10 @@ class Playlists extends Query {
     return this.queryOne(q,deferName);
   }
 
+  refresh() {
+    return this.getModel(this._prevQueryParams);
+  }
+  
   tracksForPlaylist(id,deferName) {
     var q = {
       playlist: id
@@ -118,10 +135,13 @@ class Playlists extends Query {
   }
   
   _filterGenreTags( models ) {
-    return this.tagFilter.then( tags => {
-      models.forEach( m => m.tags = m.tags.intersection(tags) );
-      return models;
-    });
+    if( this._autoFilterTags ) {
+      return this.tagFilter.then( tags => {
+        models.forEach( m => m.tags = m.tags.intersection(tags) );
+        return models;
+      });
+    }
+    return rsvp.resolve(models);
   }
 }
 

@@ -2,6 +2,7 @@
 /* globals $ */
 
 import React from 'react';
+import MoreOrLessLink from './MoreOrLessLink';
 
 var next_id = 0;
 
@@ -21,10 +22,14 @@ var CollapsingText = React.createClass({
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
+    var toggleText = function (cmd) {
+      $('#' + this.props.id + '-collapse-text-less').collapse(cmd);
+    }.bind(this);
+
     this.isMounted = true;
     $('#' + this.props.id + '-collapse-text-more')
-      .on('show.bs.collapse', () => { $('#' + this.props.id + '-collapse-text-less').collapse('hide'); $('#' + this.props.id + '-collapse-text-more-link').text(' less...'); return true; } )
-      .on('hide.bs.collapse', () => { $('#' + this.props.id + '-collapse-text-less').collapse('show'); $('#' + this.props.id + '-collapse-text-more-link').text(' more...'); return true; } );
+      .on('show.bs.collapse', () => {  toggleText('hide'); this.showMoreOrLess('less'); return true; } )
+      .on('hide.bs.collapse', () => {  toggleText('show'); this.showMoreOrLess('more'); return true; } );
   },
 
   componentWillReceiveProps(nextProps) {
@@ -43,13 +48,19 @@ var CollapsingText = React.createClass({
       .off('hide.bs.collapse');
   },
 
+  showMoreOrLess(moreOrLess) {
+    this.setState({
+      showLess: moreOrLess === 'less',
+    });
+  },
+
   stateFromHTML(html) {
     var plain = this._htmlToPlain(html);
-    var more  = '';
+    var hideMoreButton  = true;
     if( html ) {
       if( plain.length > MAX_PREVIEW_LENGTH ) {
         plain = plain.substring(0,MAX_PREVIEW_LENGTH) + '...';
-        more = ' more...';
+        hideMoreButton = false;
       } else {
         plain = '';
       }
@@ -59,7 +70,7 @@ var CollapsingText = React.createClass({
       $('#' + this.props.id + '-collapse-text-less').collapse( plain ? 'show' : 'hide');
     }
     html = { __html: html };
-    return { html, plain, more };
+    return { html, plain, hideMoreButton };
   },
 
   _htmlToPlain(html) {
@@ -81,7 +92,11 @@ var CollapsingText = React.createClass({
       <div className="collapse-text" >
         <div className={clsPlain} id={this.props.id + '-collapse-text-less'} >{s.plain}</div>
         <div className={clsHTML}  id={this.props.id + '-collapse-text-more'} dangerouslySetInnerHTML={s.html} />
-        <a id={this.props.id + '-collapse-text-more-link'} className="collapse-text-more-link" data-toggle="collapse" href={'#' + this.props.id + '-collapse-text-more'}>{s.more}</a>
+        {s.hideMoreButton
+          ? null
+          : <MoreOrLessLink targetId={this.props.id + '-collapse-text-more'} less={s.showLess}/>
+        }
+        
       </div>
       );
   }

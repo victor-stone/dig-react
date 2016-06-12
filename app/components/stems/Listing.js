@@ -20,7 +20,7 @@ const Listing = React.createClass({
              noHitsComp: NoTagHits };
   },
  
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     var model       = store.model;
     var queryParams = model.queryParams;
     var expanded    = 0;
@@ -33,7 +33,7 @@ const Listing = React.createClass({
   },
 
   /* globals $ */
-  onNameClick: function(id) {
+  onNameClick(id) {
     var _this = this;
 
     return function(e) {
@@ -64,7 +64,7 @@ const Listing = React.createClass({
   onClose: function() {
     var qp = this.state.model.queryParams;
     delete qp['ids'];
-    this.props.store.refreshHard(qp);
+    this.props.store.refreshModel(qp);
   },
 
   render: function() {

@@ -35,7 +35,7 @@ const Files = React.createClass({
     return highlights;
   },
 
-  oneFile: function(f,cls,model) {
+  oneFile(f,cls,model) {
       cls = `stem-files-line ${cls}`;
 
       return (

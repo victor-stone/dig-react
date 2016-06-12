@@ -76,7 +76,7 @@ var CcPlusLink = React.createClass({
     return { model: this.props.model };
   },
 
-  componentWillReceiveProps: function(props) {
+  componentWillReceiveProps(props) {
     this.setState( { model: props.model } );
   },
 

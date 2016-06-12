@@ -21,7 +21,7 @@ const ErrorDisplay = React.createClass({
     }
   },
 
-  doReport: function(error) {
+  doReport(error) {
     this.setState( {error}, () => {
       var errorReport = new ErrorReport(error);
       errorReport.report()

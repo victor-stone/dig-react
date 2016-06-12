@@ -5,7 +5,7 @@ import serviceLookup from '../services';
 
 var Link = React.createClass({
   
-  handleClick: function(e) {
+  handleClick(e) {
     e.preventDefault();
     e.stopPropagation();
     if( typeof this.props.href === 'string' && this.props.href !== '#') {

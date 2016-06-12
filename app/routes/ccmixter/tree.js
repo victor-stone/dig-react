@@ -24,7 +24,7 @@ TreePage.title = 'Remix Tree';
 TreePage.path  = '/tree';
 
 TreePage.subnav = function(props) {
-  return (<GallerySubNav paging store={props.store} />);
+  return (<GallerySubNav paging store={props.store} className="tree-subnav" />);
 };
 
 TreePage.store = function(params,queryParams) {

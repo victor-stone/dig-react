@@ -13,7 +13,7 @@ var CuratorSearchResults = React.createClass({
 
   mixins: [ ModelTracker ],
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     return { curators: store.model.curators || [] };
   },
 
@@ -35,7 +35,7 @@ var search = React.createClass({
     
   mixins: [ QueryParamTracker ],
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     return { text: queryParams.search };
   },
 

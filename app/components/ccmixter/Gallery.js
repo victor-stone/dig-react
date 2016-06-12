@@ -1,5 +1,5 @@
 import React               from 'react';
-import css                 from './style/css';
+import css                 from './style/gallery';
 import GalleryElement      from './GalleryElement';
 import { RemixContainer }  from '../Remixes';
 import InlineCSS           from '../InlineCSS';

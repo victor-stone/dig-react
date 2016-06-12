@@ -14,7 +14,7 @@ var SearchHead = React.createClass({
 
   mixins: [ QueryParamTracker ],
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     return { searchTerm: queryParams.searchp };
   },
 

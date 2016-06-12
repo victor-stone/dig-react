@@ -3,6 +3,7 @@ import CollapsingText    from '../CollapsingText';
 import { ModelTracker }  from '../../mixins';
 import Link              from '../Link';
 import { PlayButton }    from '../AudioPlayer';
+import UploadMenu        from './UploadMenu';
 
 var DescriptionText = React.createClass({
 
@@ -48,6 +49,7 @@ var Description = React.createClass({
           <h4 className="clearfix"><Link className="artist" href={'/people/'+model.artist.id}>{model.artist.name}</Link></h4>
           <DescriptionText store={this.state.store} />
           <div className="clearfix" />
+          <UploadMenu store={this.state.store} />
           {model.fileInfo && model.fileInfo.isMP3
             ? <PlayButton model={model} className="tree-play-button"/>
             : null

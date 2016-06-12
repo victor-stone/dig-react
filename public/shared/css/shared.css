@@ -47,7 +47,7 @@ span.light-color a {
 }
 
 .img-circle {
-  box-shadow: 4px 4px 8px #999;
+  box-shadow: 0 2 4 rgba(0,0,0,0.2);
   margin-right: 15px;
   margin-bottom: 20px;
 }

@@ -20,7 +20,7 @@ var UploadLink = React.createClass({
     return { model: this.props.model };
   },
 
-  componentWillReceiveProps: function(props) {
+  componentWillReceiveProps(props) {
     this.setState( { model: props.model });
   },
 
@@ -41,7 +41,7 @@ var DeadLink = React.createClass({
     return { onClick: this.props.onClick };
   },
 
-  onClick: function(e) {
+  onClick(e) {
     e.stopPropagation();
     e.preventDefault();
     if( this.state.onClick ) {
@@ -67,7 +67,7 @@ var ExternalLink = React.createClass({
 
 var AddTrackbackPopup = React.createClass({
 
-  addTrackbackPopup: function(e) {
+  addTrackbackPopup(e) {
     e.preventDefault();
     e.stopPropagation();
   },

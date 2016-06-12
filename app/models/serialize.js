@@ -68,7 +68,7 @@ import events from './events';
 
 
           Model {
-            getFavoriteFiles: function(target) {
+            getFavoriteFiles(target) {
               // 'target' is a partially serialized js object
               // only the subtree properties are stable
               return target.files.map( f => f.isFavorite )

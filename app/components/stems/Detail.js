@@ -8,14 +8,14 @@ const SCROLL_OFFSET = 100;
 
 const DetailTags = React.createClass({
 
-  onAddTag: function(tag) {
+  onAddTag(tag) {
     var _this = this;
     return function(e) {
       e.stopPropagation();
       e.preventDefault();
       var tags = _this.props.store.queryParams.tags;
       tags.add(tag);
-      _this.props.store.refreshHard( { tags: tags.toString() } );
+      _this.props.store.refreshModel( { tags: tags.toString() } );
     };
   },
 

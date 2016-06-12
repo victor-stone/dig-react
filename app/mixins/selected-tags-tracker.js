@@ -24,11 +24,11 @@ var SelectedTagsTracker = {
     }
   },
 
-  onSelectedTags: function(queryParams) {
+  onSelectedTags(queryParams) {
     this.setState( this._tagsFromParams(queryParams) );
   },
 
-  _tagsFromParams: function(queryParams) {
+  _tagsFromParams(queryParams) {
     var qpTags = new TagString(queryParams.tags);
     if( !qpTags.isEmpty() && this.props.catID ) {
       return { selectedTags: this.filterTagsByCat(qpTags) };

@@ -17,11 +17,23 @@ var Alert = React.createClass({
     $e.on('close.bs.alert', this.props.onClose);
   },
 
-  componentWillReceiveProps: function(props) {
+  componentWillReceiveProps(props) {
     this.setState( { type: props.type, text: props.text } );
   },
 
+  shouldComponentUpdate(nextProps,nextState) {
+    return this.state.text !== nextState.text;
+  },
+  
+  componentWillUnmount() {
+    var $e = $('#' + this.state.id);
+    $e.off('close.bs.alert', this.props.onClose);
+  },
+  
   render: function() {
+    if( !this.state.text ) {
+      return null;
+    }
     var times  = { __html: '&times;' };
     var text   = this.state.text;
     var title  = 'Success';

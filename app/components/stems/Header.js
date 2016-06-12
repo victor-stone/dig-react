@@ -36,7 +36,7 @@ const Header = React.createClass({
 
   displayName: 'Header',
 
-  submitSearch: function(text) {
+  submitSearch(text) {
     var router = services('router');
     router.navigateTo( '/search?searchp=' + text );
   },

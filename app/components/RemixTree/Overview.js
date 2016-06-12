@@ -10,6 +10,14 @@ var OverviewForm = React.createClass({
     var cls   = this.props.lineCls || '';
     return (
       <HorizontalForm>
+          {model.edPick
+            ? <FormItem title="editorial" cls={cls} wrap>
+                <div className="edpick">
+                  {model.edPick.review}
+                  <div className="edpick-author">{model.edPick.reviewer}</div>
+                </div>
+              </FormItem>
+            : null}
           {model.featuring
             ? <FormItem title="featuring" cls={cls} wrap>{model.featuring}</FormItem>
             : null}
@@ -20,14 +28,6 @@ var OverviewForm = React.createClass({
               ? <a target="_blank" href={model.purchaseLicenseURL}>{" "}<img src={model.purchaseLogoURL} /></a>
               : null}
           </FormItem>
-          {model.edPick
-            ? <FormItem title="editorial" cls={cls} wrap>
-                <div className="edpick">
-                  {model.edPick.review}
-                  <div className="edpick-author">{model.edPick.reviewer}</div>
-                </div>
-              </FormItem>
-            : null}
           {model.bpm
             ? <FormItem title="BPM" cls={cls} wrap>{model.bpm}</FormItem>
             : null}

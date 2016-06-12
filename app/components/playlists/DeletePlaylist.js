@@ -22,7 +22,7 @@ var DeletePlaylist = React.createClass({
     }
   },
 
-  handleShowModal: function(e){
+  handleShowModal(e){
     e.stopPropagation();
     e.preventDefault();
     this.setState( { view: true, msg: null, error: null } );

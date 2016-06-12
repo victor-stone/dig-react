@@ -8,7 +8,7 @@ const TitleSetter = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function(props) {
+  componentWillReceiveProps(props) {
     this.setState( { title: props.title } );
   },
 

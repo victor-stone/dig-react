@@ -1,64 +1,42 @@
 var css = `
 
+/* bootstrap disabled this on iphone for some reason 
+   so we re-enable it here */
+
+.tree-head .navbar-right .dropdown-menu {
+    right: 0;
+    left: auto;
+}
+
 .tree-head {
-  box-shadow: 2px 2px #715F40;
-  background-image: -webkit-linear-gradient(top, #846735 0%, #CAAB77 100%);
-  background-image: -o-linear-gradient(top, #846735 0%, #CAAB77 100%);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#846735), to(#CAAB77));
-  background-image: linear-gradient(to bottom, #846735 0%, #CAAB77 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3FB040', endColorstr='#ff3FB040', GradientType=0);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  background-repeat: repeat-x;  
+  position: relative;
 }
 
 .tree-head img {
-  box-shadow: 2px 2px #715F40;
+  /* box-shadow: 2px 2px #715F40; */
 }
 
 .tree-head {
   margin: 22px;
   padding: 12px;
   border-radius: 15px;
+  border: 1px solid #ccc;
 }
 
 .tree-head .img-circle {
     float: left;
 }
 
-.tree-head h3 {
-  color: white;
-}
-
 .tree-head a.artist {
   color: #DDD;
 }
 
-.tree-head > .collapse-text {
-  color: yellow;
-}
-
 .tree-head .collapse-text {
-  margin-bottom: 20px;
-  min-height: 10px;
-}
-
-.tree-head .collapse-text-more-link {
-  color: white;
-  text-decoration: none;
-  float: right;
-}
-
-.tree-head .collapse-text-more-link:hover {
-  text-decoration: none;
-}
-
-.tree-head > .collapse-text-more-link:hover::after {
-  content: ' ↕';
-  font-weight: bold;
+  margin-bottom: 30px;
+  min-height: 40px;
 }
 
 .tree-head > .collapse-text .cc_format_link {
-  color: white;
 }
 
 .tree-head > .collapse-text .plain {
@@ -97,21 +75,43 @@ var css = `
 
 .tree-play-button {
   position: absolute;
-  bottom: 3px;
+  bottom: -14px;
+  left: -14px;
   border: 3px solid;
 }
 
-
 span.ribbon.edpick {
-  float: right;
   font-size: 12px;
   position: absolute;
-  right: 50px;
-  top: 22px;
-}    
+  right: 11px;
+  top: 0px;
+}
+
+.tree-link-head,
+.tree-link-tail {
+  padding: 0px;
+}
+
+.tree-link-head {
+  margin-bottom: 0px;
+}
+
+.tree-link-head > li,
+.tree-link-tail > li {
+  margin-bottom: 8px;
+}
+
+.tree-link-name {
+  font-style: italic;
+}
+.tree-link-artist {
+  color: black;
+}
+
 #accordion .form-control {
   height: initial;
 }
+
 #accordion .tags-list.form-control li {
   float: left;
   margin-left: 8px;
@@ -125,27 +125,7 @@ span.ribbon.edpick {
   text-align: right;
   font-style: italic;
 } 
-.panel-offset-1 {
-  margin-left: 12px;
-}
-.panel-offset-2 {
-  margin-left: 32px;
-}
-.tree-link-head {
-  margin-bottom: 0px;
-}
-.tree-link-tail {
-  margin-top: 0px;
-}
-.tree-link-more {
-  margin-top: 12px;
-}
-.tree-link-name {
-  font-style: italic;
-}
-.tree-link-artist {
-  color: black;
-}
+
 .panel.panel-default i.fa-spinner {
   color: green;
   font-size: large;
@@ -168,6 +148,10 @@ span.ribbon.edpick {
   right: 30px;
   top: 6px;
   position: absolute;
+}
+
+#recc_heading button.ratings.btn-disabled {
+  background-color: #777;
 }
 
 #reviews span.quote {

@@ -66,7 +66,7 @@ var NotALotHere = React.createClass({
 
   mixins: [ModelTracker],
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     var model = store.model;
     var showNotALot = model.total < MIN_LIMIT && store.paramsDirty();
     return { showNotALot };    
@@ -106,7 +106,7 @@ var RemixContainer = React.createClass({
     return { skipUser: false };
   },
  
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     return { model: store.model };
   },
 

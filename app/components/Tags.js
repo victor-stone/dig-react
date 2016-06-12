@@ -16,11 +16,11 @@ const SelectableTag = React.createClass({
     return { selected: this.props.selected };
   },
 
-  componentWillReceiveProps: function(props) {
+  componentWillReceiveProps(props) {
     this.setState( { selected: props.selected } );
   },
 
-  onClick: function(e) {
+  onClick(e) {
     e.stopPropagation();
     e.preventDefault();
     
@@ -113,7 +113,7 @@ const TagCategoryBox = React.createClass({
 
 const SelectedTag = React.createClass({
 
-  remove: function(e) {
+  remove(e) {
     e.stopPropagation();
     e.preventDefault();
     var tags = new TagString(this.props.store.queryParams.tags);
@@ -137,13 +137,13 @@ const SelectedTags = React.createClass({
 
   mixins: [ SelectedTagsTracker, UriParamTracker ],
 
-  clear: function(e) {
+  clear(e) {
     e.stopPropagation();
     e.preventDefault();
     this.props.store.applyTags( '' );
   },
 
-  onGetParamsURI: function(queryParams) {
+  onGetParamsURI(queryParams) {
     queryParams.tags.clear();
   },
 
@@ -171,18 +171,18 @@ const MatchAllButton = React.createClass({
 
   mixins: [ QueryParamTracker, UriParamTracker ],
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     return { toggle: queryParams.type === 'all' };
   },
 
-  onGetParamsURI: function(queryParams) {
+  onGetParamsURI(queryParams) {
     queryParams.type = 'any';
   },
 
   performQuery: function() {
     // yes, we reverse it here
     var type = this.state.toggle ? 'any' : 'all';
-    this.props.store.refreshHard( { type } );
+    this.props.store.refreshModel( { type } );
   },
 
   render: function() {
@@ -201,7 +201,7 @@ const NoTagHits = React.createClass({
 
   mixins: [ModelTracker],
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     var optionsDirty = store.paramsDirty();
     var showNoHits   = !store.model.total;
     var qp           = store.model.queryParams;

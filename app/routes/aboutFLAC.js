@@ -78,14 +78,14 @@ const FLACTest = React.createClass({
     }
   },
 
-  onControls: function(media) {
+  onControls(media) {
     this.setState({
       isPlaying: media.isPlaying,
       waiting: false
     });
   },
 
-  onPosition: function(position) {
+  onPosition(position) {
     this.setState({ waiting: false, position });
   },
 

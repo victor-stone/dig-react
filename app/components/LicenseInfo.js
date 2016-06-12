@@ -22,7 +22,7 @@ var LicenseInfoPopup = React.createClass({
     this.setState({ view: false });
   },
 
-  handleShowModal: function(e){
+  handleShowModal(e){
     e.stopPropagation();
     e.preventDefault();
     this.setState( { view: true } );

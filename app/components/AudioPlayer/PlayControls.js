@@ -10,23 +10,23 @@ const PlayControls = React.createClass({
     return oassign( {}, this.props.controls );
   },
 
-  componentWillReceiveProps: function(props) {
+  componentWillReceiveProps(props) {
     this.setState( oassign( {}, props.controls ) );
   },
 
-  playPrevious: function(e) {
+  playPrevious(e) {
     e.stopPropagation();
     e.preventDefault();
     AudioService.playPrevious();
   },
 
-  togglePause: function(e) {
+  togglePause(e) {
     e.stopPropagation();
     e.preventDefault();
     AudioService.togglePause();
   },
 
-  playNext: function(e) {
+  playNext(e) {
     e.stopPropagation();
     e.preventDefault();
     AudioService.playNext();

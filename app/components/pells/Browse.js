@@ -14,11 +14,11 @@ var PellsListing = React.createClass({
 
   mixins: [ModelTracker],
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     return { model: store.model };
   },
 
-  selectLine: function(pell) {
+  selectLine(pell) {
     return (e) => {
       e.stopPropagation();
       e.preventDefault();
@@ -60,7 +60,7 @@ var PellDetail = React.createClass({
       show: 'listing'};
   },
 
-  componentWillReceiveProps: function(newProps) {
+  componentWillReceiveProps(newProps) {
     this.setState( { model: newProps.model } );
   },
 
@@ -121,11 +121,11 @@ var  PellsBrowser = React.createClass({
 
   mixins: [NowPlayingTracker],
 
-  onNowPlayingState: function(selected) {
+  onNowPlayingState(selected) {
     this.setState( { selected } );
   },
 
-  onSelectedPell: function(selected) {
+  onSelectedPell(selected) {
     this.setState( { selected });
   },
 

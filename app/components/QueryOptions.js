@@ -23,11 +23,11 @@ const LicenseFilter = React.createClass({
 
   mixins: [QueryParamTracker,DirtyParamTracker],
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     return { lic: queryParams.lic };
   },
 
-  onAreParamsDirty: function(queryParams,defaults,isDirty) {
+  onAreParamsDirty(queryParams,defaults,isDirty) {
     if( !isDirty.isDirty) {
       isDirty.isDirty = queryParams.lic !== defaults.lic;
     }
@@ -35,7 +35,7 @@ const LicenseFilter = React.createClass({
 
   performQuery: function() {
     var lic = this.refs['lic'].value;
-    this.props.store.refreshHard( { lic } );
+    this.props.store.refreshModel( { lic } );
   },
 
   render: function() {
@@ -59,7 +59,7 @@ const SortFilterWrap = React.createClass({
 
   mixins: [QueryParamTracker],
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     return { digrank: queryParams.digrank};
   },
 
@@ -94,7 +94,7 @@ const ResetOptionsButton = React.createClass({
 
   mixins: [ModelTracker],
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     return { dirty: store.paramsDirty() };
   },
 
@@ -169,7 +169,7 @@ const QueryOptions = React.createClass({
     this.setState( { showOptions } );
   },
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     var dirty = store.supportsOptions && store.paramsDirty();
     return { dirty };
   },

@@ -99,17 +99,17 @@ const BPMSlider = React.createClass({
     }
   },
 
-  onAreParamsDirty: function(queryParams,defaults,isDirty) {
+  onAreParamsDirty(queryParams,defaults,isDirty) {
     if( !isDirty.isDirty ) {
       isDirty.isDirty = !!queryParams.oneof.filter(TAG_FILTER).getLength();
     }
   },
 
-  onGetParamsDefault: function(queryParams) {
+  onGetParamsDefault(queryParams) {
     queryParams.oneof.remove( queryParams.oneof.filter(TAG_FILTER) );
   },
   
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     return { bpmVal: valueFromTags(queryParams.oneof) };
   },
 
@@ -120,11 +120,11 @@ const BPMSlider = React.createClass({
       var qptags  = this.props.store.queryParams.oneof;
       var oneof   = qptags.replace(old_tag,new_tag).toString();
 
-      this.refreshHard( { oneof } );
+      this.refreshModel( { oneof } );
 
     }, DEBOUNCE_APPLY_BPM ),
 
-  onSlide: function(val) {
+  onSlide(val) {
     this.applyBpm(val);
   },
 
@@ -138,7 +138,7 @@ var BPMDisplay = React.createClass({
 
   mixins: [QueryParamTracker],
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     var bpmTag = tagsToBPMtag(queryParams.oneof);
     return { bpmTag };
   },

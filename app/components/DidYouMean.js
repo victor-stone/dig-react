@@ -8,7 +8,7 @@ var DidYouMean = React.createClass({
 
   mixins: [ ModelTracker ],
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
 
     var model = [];
     

@@ -40,7 +40,7 @@
 }
 
 .playlist-detail-page .playlist-curator .img-circle {
-  box-shadow: 6px 4px 16px #857254;
+  box-shadow: 0 2 4 rgba(0,0,0,0.2);
   margin: 5px;
 }
 

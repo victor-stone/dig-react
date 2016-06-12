@@ -21,7 +21,7 @@ var TrackList = React.createClass({
     }
   },
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     return { model: store.model };
   },
 
@@ -66,7 +66,7 @@ var SaveDynamicPopup = React.createClass({
     }
   },
 
-  handleShowModal: function(e){
+  handleShowModal(e){
     e.stopPropagation();
     e.preventDefault();
     this.setState( { showModal: true } );

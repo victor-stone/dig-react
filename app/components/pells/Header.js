@@ -10,7 +10,7 @@ const PellsHeader = React.createClass({
 
   displayName: 'PellsHeader',
 
-  submitSearch: function(text) {
+  submitSearch(text) {
     var router = services('router');
     router.navigateTo( '/search?searchp=' + text );
   },

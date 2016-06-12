@@ -3,27 +3,27 @@ import events from '../models/events';
 /*
   Implementors must implement 
 
-    stateFromStore: function(store) {
+    stateFromStore(store) {
       return { someStateDerivedFromStore: ... }
     }
 */
 var ModelTracker = {
 
-  getInitialState: function() {
+  getInitialState() {
     return this.stateFromStore(this.props.store);
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     this._modelTrackMounted = this;
     this.props.store.on( events.MODEL_UPDATED, this.onModelUpdate );
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this._modelTrackMounted = false;
     this.props.store.removeListener( events.MODEL_UPDATED, this.onModelUpdate );
   },
 
-  componentWillReceiveProps: function( props ) {
+  componentWillReceiveProps( props ) {
     if( this.props.store !== props.store ) {
       if( this.props.store ) {
         this.props.store.removeListener( events.MODEL_UPDATED, this.onModelUpdate );
@@ -33,7 +33,7 @@ var ModelTracker = {
     }
   },
 
-  onModelUpdate: function() {
+  onModelUpdate() {
     if( this._modelTrackMounted ) {
       this.setState( this.stateFromStore(this.props.store) );
     }

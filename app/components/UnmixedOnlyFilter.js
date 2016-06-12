@@ -8,23 +8,23 @@ const UnmixedOnlyFilter = React.createClass({
 
   mixins: [QueryParamTracker, DirtyParamTracker, DefaultParamTracker],
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     var toggle = queryParams.remixmax === '0';
     return { toggle };
   },
 
-  onAreParamsDirty: function(queryParams,defaults,isDirty) {
+  onAreParamsDirty(queryParams,defaults,isDirty) {
     if( !isDirty.isDirty) {
       isDirty.isDirty = queryParams.remixmax === '0';
     }
   },
 
-  onGetParamsDefault: function(queryParams) {
+  onGetParamsDefault(queryParams) {
     queryParams.remixmax = null;
   },
 
   performQuery: function() {
-    this.refreshHard( { remixmax: !this.state.toggle ? '0' : '' });
+    this.refreshModel( { remixmax: !this.state.toggle ? '0' : '' });
   },
 
   render: function() {

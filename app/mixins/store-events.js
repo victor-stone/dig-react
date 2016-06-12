@@ -50,11 +50,11 @@ var StoreEvents = {
     }
   },
 
-  _subscribeToStoreEvents: function(store) {
+  _subscribeToStoreEvents(store) {
     this._getStoreEvents().forEach( event => store.on(event,this._storeEventHandlers[event]));
   },
 
-  _unsubscribeFromStoreEvents: function(store) {
+  _unsubscribeFromStoreEvents(store) {
     this._getStoreEvents().forEach( event => store.removeListener(event,this._storeEventHandlers[event]) );
   },
 

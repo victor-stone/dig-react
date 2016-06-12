@@ -14,7 +14,7 @@ var Playlists = React.createClass({
 
   mixins: [ModelTracker],
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     return { model: store.model };
   },
 

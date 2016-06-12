@@ -1,49 +1,39 @@
+/* globals $ */
 import React                   from 'react';
 import { AccordianPanel }      from '../Accordian';
 import People                  from '../People';
 import Ratings                 from '../../stores/ratings';
-import { CurrentUserTracker,
-         CollapsingModel,
+import { CollapsingModel,
+         UploadOwner,
          ModelTracker }        from '../../mixins';
 import api                     from '../../services/ccmixter';
 import Glyph                   from '../Glyph';
 
+var nextRecommendsButtonId = 0;
+
 const RecommendsButton = React.createClass({
 
-    mixins: [ ModelTracker, CurrentUserTracker ],
+    mixins: [ UploadOwner ],
+
+    getInitialState() {
+      return { id: 'reccbtn_' + ++nextRecommendsButtonId };
+    },
 
     shouldComponentUpdate(nextProps,nextState) {
-      return this.state.okToRate !== nextState.okToRate;
-    },
-
-    stateFromStore(store) {
-      var id = store.model.upload.id;
-      this._calcState(id,this.state && this.state.user);
-      return { id, okToRate: false };
-    },
-
-    stateFromUser(user) {
-      this._calcState(this.state.id,user);
-      return { okToRate: false, user };
-    },
-
-    _calcState(id,user) {
-      if( id && user ) {
-        api.upload.permissions(id,user.id).then( (permissions) => {
-            this.setState({okToRate: permissions.okToRate});
-          });        
-      }
+      return this.state.owner.okToRate !== nextState.owner.okToRate;
     },
 
     onRecommends() {
-      this.setState({okToRate: false});
-      this.props.store.performAction(api.upload.rate( this.state.id, this.state.user.id ));
+      // http://stackoverflow.com/questions/17327668/best-way-to-disable-button-in-twitters-bootstrap
+      $('#' + this.state.id).prop({disabled:true}).addClass('btn-disabled');
+      var o = this.state.owner;
+      this.props.store.performAction(api.upload.rate( o.store.model.upload.id, o.user.id ));
     },
 
     render() {
       return (
-          this.state.okToRate
-            ? <button onClick={this.onRecommends} className="ratings pull-right"><Glyph icon="thumbs-up" /></button>
+          this.state.owner.okToRate
+            ? <button id={this.state.id} onClick={this.onRecommends} className="ratings pull-right"><Glyph icon="thumbs-up" /></button>
             : null
         );
     }
@@ -78,11 +68,18 @@ var Recommends = React.createClass({
     var title = `Recommends (${this.state.numItems})`;
     var recButton = <RecommendsButton store={this.props.store} />;
     return (
-      <AccordianPanel disabled={!this.state.numItems} title={title} id="recc" icon="thumbs-o-up" headerContent={recButton} onOpen={this.onOpen} onClose={this.onClose} >
-      {this.state.model && this.state.open
-        ? <People.List className="recommends-list" icon model={this.state.model} />
-        : null
-      }
+      <AccordianPanel disabled={!this.state.numItems} 
+                      title={title} 
+                      id="recc" 
+                      icon="thumbs-o-up" 
+                      headerContent={recButton} 
+                      onOpen={this.onOpen} o
+                      nClose={this.onClose} 
+      >
+        {this.state.model && this.state.open
+          ? <People.List className="recommends-list" thumb model={this.state.model} />
+          : null
+        }
       </AccordianPanel>
     );
   }

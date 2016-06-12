@@ -2,6 +2,7 @@ import rsvp             from 'rsvp';
 
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
+import events           from '../models/events';
 import Eventer          from '../services/eventer';
 import queryAjaxAdapter from '../services/query-ajax-adapter';
 import { oassign,
@@ -31,7 +32,16 @@ class Query extends Eventer
   }
   
   performAction( action ) {
-    return action.then( result => { this.refresh(result.queryParams || this.model.queryParams); return result; } );
+    this.emit( events.ACTION_START, action.name );
+    var resultHolder = null;
+    return action
+            .then( result => { 
+                resultHolder = result;
+                return this.refresh(result.queryParams || this.model.queryParams); 
+            }).then( (info) => {
+              this.emit( events.ACTION_END, action.name, info );
+              return resultHolder;
+            });
   }
 
   refresh() {

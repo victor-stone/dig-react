@@ -34,7 +34,7 @@ var PlaylistUserMenu = React.createClass({
 
 const Header = React.createClass({
 
-  submitSearch: function(text) {
+  submitSearch(text) {
     var router = services('router');
     router.navigateTo( '/search?search=' + text );
   },

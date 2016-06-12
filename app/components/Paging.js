@@ -18,12 +18,12 @@ const PagerLink = React.createClass({
     return { href };
   },
 
-  componentWillReceiveProps: function(newProps) {
+  componentWillReceiveProps(newProps) {
     var href = newProps.show ? '?offset=' + newProps.offset : '#';
     this.setState( { href } );
   },
 
-  onClick: function(e) {
+  onClick(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -51,13 +51,13 @@ const LimitFilter = React.createClass({
 
   mixins: [QueryParamTracker],
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     return { limit: queryParams.limit };
   },
 
   performQuery: function() {
     var limit = this.refs['limit'].value;
-    this.props.store.refreshHard( { limit } );
+    this.props.store.refreshModel( { limit } );
   },
 
   render: function() {
@@ -96,7 +96,7 @@ const Paging = React.createClass({
     this.recalcBoundries();
   },
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     var model = store.model;
     return {
         offset: model.queryParams.offset,
@@ -106,7 +106,7 @@ const Paging = React.createClass({
     };
   },
 
-  onNewOffset: function(offset) {
+  onNewOffset(offset) {
     this.props.store.paginate(offset);
   },
   

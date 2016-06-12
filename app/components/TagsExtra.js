@@ -11,7 +11,7 @@ var TagsExtra = React.createClass({
     return { value: (this.props.tags || '').toString() };
   },
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     if( this.state && this.state.value ) {
       var qptags = new TagString(queryParams.tags);
       return { value: qptags.intersection(this.state.value).toString() };
@@ -25,7 +25,7 @@ var TagsExtra = React.createClass({
     this.setState( { value: tags.toString() }, () => {
       var store   = this.props.store;
       var qptags  = store.queryParams.tags.replace( oldtags, this.state.value);
-      store.refreshHard( { tags: qptags.toString() } );
+      store.refreshModel( { tags: qptags.toString() } );
     });
   },
 
@@ -34,11 +34,11 @@ var TagsExtra = React.createClass({
     this.setState( { value: '' }, () => {
       var store   = this.props.store;
       var qptags  = store.queryParams.tags.remove(oldtags);
-      store.refreshHard( { tags: qptags.toString() } );
+      store.refreshModel( { tags: qptags.toString() } );
     });
   },
 
-  handleChange: function(event) {
+  handleChange(event) {
     this.setState({value: event.target.value} );
   },
 

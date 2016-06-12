@@ -32,13 +32,13 @@ var DownloadPopup = React.createClass({
     }
   },
 
-  selectPlain: function(e) {
+  selectPlain(e) {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ plainSelected: true });
   },
 
-  selectHTML: function(e) {
+  selectHTML(e) {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ plainSelected: false });
@@ -48,19 +48,19 @@ var DownloadPopup = React.createClass({
     window.prompt('Control (or Cmd) + C to copy', this.refs.attributionText.value );
   },
 
-  showLicense: function(e) {
+  showLicense(e) {
     e.stopPropagation();
     e.preventDefault();
     this.setState( { showLicense: true } );
   },
 
-  showDownload: function(e) {
+  showDownload(e) {
     e.stopPropagation();
     e.preventDefault();
     this.setState( { showLicense: false, showYTVideo: false } );
   },
 
-  showYTVideo: function(e) {
+  showYTVideo(e) {
     e.stopPropagation();
     e.preventDefault();
     this.setState( { showYTVideo: true } );

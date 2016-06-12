@@ -14,7 +14,7 @@ const TypeFilter = React.createClass({
 
   mixins: [QueryParamTracker],
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     return { reqtags: new TagString( queryParams.reqtags ).filter(/^(remix|sample|acappella)$/) };
   },
 

@@ -12,16 +12,9 @@ var GalleryElement = `
   box-shadow: 7px 14px 15px rgba(0,100,0,0.3);
 }
 
-.people-head,
-div.subnav-option-bar.people-subnav,
+div.subnav-option-bar.tree-subnav,
 .gallery .play-list li.gallery-element {
-  background-image: -webkit-linear-gradient(top, #276C28 0%, #3FB040 100%);
-  background-image: -o-linear-gradient(top, #276C28 0%, #3FB040 100%);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#276C28), to(#3FB040));
-  background-image: linear-gradient(to bottom, #276C28 0%, #3FB040 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3FB040', endColorstr='#ff3FB040', GradientType=0);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  background-repeat: repeat-x;
+  background-color: #3f51b5;
 }
 
 gallery .play-list li.gallery-element {

@@ -58,7 +58,7 @@ var FilterNavTabs = React.createClass({
     return oassign( this.props.all ? { all: 'all' } : {}, this.props.tabs ); 
   },
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     var badges = store.model.totals;
     var tags   = store.model.queryParams.reqtags;
     var tab    = (new TagString(tags)).filter(this.props.filter).toString() || 'all';
@@ -69,7 +69,7 @@ var FilterNavTabs = React.createClass({
     var tag     = filter === 'all' ? '' : filter;
     var qptags  = this.props.store.queryParams.reqtags;
     var reqtags = qptags.replace( this.state.tab, tag ).toString();
-    this.props.store.refreshHard( { reqtags } );    
+    this.props.store.refreshModel( { reqtags } );    
   }
 });
 

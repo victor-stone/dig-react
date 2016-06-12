@@ -13,7 +13,7 @@ var people = React.createClass({
 
   mixins: [ ModelTracker ],
 
-  stateFromStore: function(store) {
+  stateFromStore(store) {
     return { store };
   },
 

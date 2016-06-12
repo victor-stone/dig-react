@@ -11,14 +11,17 @@ class Playlists extends API
     return this.call('playlist/create/dynamic?' + q).then( serialize( ccmixter.Playlist ) );
   }
 
-  /* not used here (yet) */
-  createStatic(name,description) {
-    var q = 'name=' + name + '&cart_description=' + description;
-    return this.call('playlist/create?' + q).then( serialize( ccmixter.Playlist ) );
+  createStatic(name,description,track) {
+    var q = `name=${name}&cart_description=${description}`;
+    return this.call(`playlist/create/${track}?${q}`).then( serialize( ccmixter.Playlist ) );
   }
 
   deletePlaylist(id) {
     return this.call('playlist/delete/' + id);
+  }
+
+  addTrack(upload,id) {
+    return this.call('playlist/addtrack/' + upload + '/' + id);    
   }
 
   removeTrack(upload,id) {

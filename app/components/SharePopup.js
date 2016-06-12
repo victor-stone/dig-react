@@ -13,7 +13,7 @@ const SharePopup = React.createClass({
     this.setState({view: {showModal: false}});
   },
 
-  handleShowModal: function(e){
+  handleShowModal(e){
     e.stopPropagation();
     e.preventDefault();
     this.setState( { view: {showModal: true} } );

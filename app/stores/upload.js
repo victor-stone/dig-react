@@ -124,6 +124,7 @@ class Upload extends QueryBasic {
             .then( info => {
               this.model.upload = info;
               this.emit( events.MODEL_UPDATED, this.model );
+              return info;
             });
   }
 }

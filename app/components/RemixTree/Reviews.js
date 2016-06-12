@@ -8,7 +8,7 @@ import FormattedTextEditor from '../FormattedTextEditor';
 import api                 from '../../services/ccmixter';
 import Topics              from '../../stores/topics';
 import { ModelTracker,
-        CurrentUserTracker,
+        UploadOwner,
         CollapsingModel }    from '../../mixins';
 
 class ReviewPopup extends Modal.Popup {
@@ -16,7 +16,6 @@ class ReviewPopup extends Modal.Popup {
   constructor() {
     super(...arguments);
     this.state = { error: '',
-             show: true,
              disabled: true };
     this.onChange               = this.onChange.bind(this);
     this.shouldSubmitBeDisabled = this.shouldSubmitBeDisabled.bind(this);
@@ -31,17 +30,10 @@ class ReviewPopup extends Modal.Popup {
 
   onSubmitReview() {
     this.setState( { error: '' } );
-    var id = this.props.store.model.upload.id;
-    var uid = this.props.user.id;
+    var id   = this.props.store.model.upload.id;
+    var uid  = this.props.user.id;
     var text = this.state.value;
-    this.props.store.performAction(api.upload.review(id,uid,text))
-      .then( result => {
-        if( result['status'] === 'ok') {
-            this.manualClose();
-        } else {
-          this.setState( { error: result['status'] } );
-        }
-      });
+    this.props.store.performAction(api.upload.review(id,uid,text)).then( this.handleActionResponse );
   }
 
   shouldSubmitBeDisabled() {
@@ -49,9 +41,6 @@ class ReviewPopup extends Modal.Popup {
   }
 
   render() {
-    if( !this.state.show ) {
-      return null;
-    }
     var title = `Review of '${this.props.store.model.upload.name}'`;
     var style = { width: '88%'};
     return (
@@ -62,10 +51,7 @@ class ReviewPopup extends Modal.Popup {
              closeText="Cancel" 
              {...this.props}
       >
-          {this.state.error
-            ? <Alert type="danger" text={this.state.error} />
-            : null
-          }
+          <Alert type="danger" text={this.state.error} />
           <div className="form-group">
               <label>{"Your review:"}</label>
               <FormattedTextEditor  rows="6" style={style} onChange={this.onChange} />
@@ -77,43 +63,33 @@ class ReviewPopup extends Modal.Popup {
 
 const ReviewsButton = React.createClass({
 
-    mixins: [ ModelTracker, CurrentUserTracker ],
+  mixins: [ UploadOwner ],
 
-    shouldComponentUpdate(nextProps,nextState) {
-      return this.state.okToReview !== nextState.okToReview;
-    },
+  getDefaultProps() {
+    return { watchActions: ['reivew'] };
+  },
+  
+  getInitialState() {
+    return { disabled: false };
+  },
 
-    stateFromStore(store) {
-      var id = store.model.upload.id;
-      this._calcState(id,this.state && this.state.user);
-      return { id, okToReview: false, store };
-    },
+  shouldComponentUpdate(nextProps,nextState) {
+    return this.state.owner.okToReview !== nextState.owner.okToReview;
+  },
 
-    stateFromUser(user) {
-      this._calcState(this.state.id,user);
-      return { okToReview: false, user };
-    },
+  onReview(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    var o = this.state.owner;
+    ReviewPopup.show( ReviewPopup, { store: o.store, user: o.user } );
+  },
 
-    _calcState(id,user) {
-      if( id && user ) {
-        api.upload.permissions(id,user.id).then( (permissions) => {
-            this.setState({okToReview: permissions.okToReview});
-          });        
-      }
-    },
-
-    onRecommends(event) {
-      event.stopPropagation();
-      event.preventDefault();
-      ReviewPopup.show( ReviewPopup, { store: this.state.store, user: this.state.user } );
-    },
-
-    render() {
-      return (
-          this.state.okToReview
-            ? <button onClick={this.onRecommends} className="review pull-right"><Glyph icon="pencil" /></button>
-            : null
-        );
+  render() {
+    return (
+        this.state.owner.okToReview && !this.state.disabled
+          ? <button onClick={this.onReview} className="review pull-right"><Glyph icon="pencil" /></button>
+          : null
+      );
     }
 });
 

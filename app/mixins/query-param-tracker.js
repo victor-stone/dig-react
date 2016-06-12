@@ -23,16 +23,16 @@ var QueryParamTracker = {
     }
   },
 
-  onParamsChanged: function(queryParams) {
+  onParamsChanged(queryParams) {
     this.setState( this.stateFromParams(queryParams) );
   },
 
-  refresh: function(opts) {
+  refresh(opts) {
     this.props.store.refresh(opts);
   },
 
-  refreshHard: function(opts) {
-    this.props.store.refreshHard(opts);
+  refreshModel(opts) {
+    this.props.store.refreshModel(opts);
   },
   
 };

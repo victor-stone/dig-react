@@ -21,7 +21,7 @@ const ArtistList = React.createClass({
     this.getArtists();
   },
 
-  componentWillReceiveProps: function(props) {
+  componentWillReceiveProps(props) {
     this.setState( { search: props.search }, () => this.getArtists() );
   },
 
@@ -34,7 +34,7 @@ const ArtistList = React.createClass({
     }
   },
 
-  artistSelect: function(a) {
+  artistSelect(a) {
     return (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -55,18 +55,18 @@ const ArtistFilter = React.createClass({
 
   mixins: [QueryParamTracker, DirtyParamTracker, DefaultParamTracker],
 
-  stateFromParams: function(queryParams) {
+  stateFromParams(queryParams) {
     var val = queryParams.u || null;
     return { u: val, propValue: val };
   },
 
-  onAreParamsDirty: function(queryParams,defaults,isDirty) {
+  onAreParamsDirty(queryParams,defaults,isDirty) {
     if( !isDirty.isDirty) {
       isDirty.isDirty = !!queryParams.u;
     }
   },
 
-  onGetParamsDefault: function(queryParams) {
+  onGetParamsDefault(queryParams) {
     queryParams.u = null;
   },
 
@@ -74,10 +74,10 @@ const ArtistFilter = React.createClass({
     this.setState( {u} );
   }, SEARCH_DEBOUNCE ),
 
-  filter: function(u, isIcon, filterCB) {
+  filter(u, isIcon, filterCB) {
     
     var kill = function() {
-      this.setState( { u: null }, () => this.refreshHard( { u: null } ) );
+      this.setState( { u: null }, () => this.refreshModel( { u: null } ) );
     }.bind(this);
 
     if( isIcon ) {
@@ -91,8 +91,8 @@ const ArtistFilter = React.createClass({
     }
   },
 
-  artistSelect: function(a) {
-    this.refreshHard( { u: a.id } );
+  artistSelect(a) {
+    this.refreshModel( { u: a.id } );
     this.refs['edit'].setState( { value: a.id } );
   },
 

@@ -1,13 +1,14 @@
 /*eslint "react/no-danger":0 */
 /* globals $ */
 
-import React       from 'react';
-import Link        from '../Link';
-import Trackbacks  from '../Trackbacks';
+import React          from 'react';
+import Link           from '../Link';
+import Trackbacks     from '../Trackbacks';
+import MoreOrLessLink from '../MoreOrLessLink';
 
 import { ModelTracker }  from '../../mixins';
 
-const MAX_LINKS_SHOW = 5;
+const MAX_LINKS_SHOW = 3;
 
 function TreeLink( props ) {
   var s = props.s;
@@ -30,18 +31,23 @@ var TreeLinks = React.createClass({
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
-    var linkID = '#link_' + this.props.id;
-    var tailID = '#tail_' + this.props.id;
-    $(tailID)
-      .on('show.bs.collapse', () => $(linkID).text('show less') )
-      .on('hide.bs.collapse', () => $(linkID).text('show all') );
+    $('#tail_' + this.props.id)
+      .on('show.bs.collapse', () => this.showMoreOrLess('less') )
+      .on('hide.bs.collapse', () => this.showMoreOrLess('more') );
+  },
+
+  showMoreOrLess(moreOrLess) {
+    this.setState({
+      showLess: moreOrLess === 'less',
+    });
   },
 
   stateFromStore(store) {
-    var files = store.model[this.props.id];
+    var files      = store.model[this.props.id];
     var trackbacks = this.props.trackbacks ? store.model.trackbacks : null;
-    var filelen = files.length || 0;
-    var tblen   = trackbacks ? trackbacks.length : 0;
+    var filelen    = files.length || 0;
+    var tblen      = trackbacks ? trackbacks.length : 0;
+    
     if( filelen + tblen > MAX_LINKS_SHOW ) {
       if( filelen > MAX_LINKS_SHOW ) {
         return { head: files.slice(0,MAX_LINKS_SHOW), 
@@ -68,7 +74,6 @@ var TreeLinks = React.createClass({
     var tail    = this.state.tail   ? this.state.tail.map( s => <TreeLink s={s} key={'fl_' + s.id} />) : null;
     var tbhead  = this.state.tbhead ? this.state.tbhead.map( tb => (<Trackbacks.Trackback model={tb} key={'tb_' + tb.id}/>) ) : null;
     var tbtail  = this.state.tbtail ? this.state.tbtail.map( tb => (<Trackbacks.Trackback model={tb} key={'tb_' + tb.id} />) ) : null;
-    var cls  = (tail || tbtail) ? 'tree-link-more' : 'tree-link-more hidden';
     return (
         <div className="panel panel-warning" id={this.props.id}>
           <div className="panel-heading">
@@ -83,7 +88,10 @@ var TreeLinks = React.createClass({
               {tail}
               {tbtail}
             </ul>
-            <button id={'link_' + this.props.id} data-toggle="collapse" className={cls} href={'#tail_' + this.props.id}>{'show all'}</button>
+            {tail || tbtail
+              ? <MoreOrLessLink targetId={'tail_' + this.props.id} less={this.state.showLess} />
+              : null
+            }
           </div>
         </div>
 

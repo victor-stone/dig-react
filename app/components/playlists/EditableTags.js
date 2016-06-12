@@ -39,7 +39,7 @@ var EditableTags = React.createClass({
     }
   },
 
-  removeTag: function(tag) {
+  removeTag(tag) {
     var _this = this;
     return function() {
       _this.setState( { tags: _this.state.tags.remove(tag),
@@ -47,7 +47,7 @@ var EditableTags = React.createClass({
     };
   },
 
-  addTag: function(tag) {
+  addTag(tag) {
     var _this = this;
     return function() {
       _this.setState( { tags: _this.state.tags.add(tag),

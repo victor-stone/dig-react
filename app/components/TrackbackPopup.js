@@ -5,7 +5,7 @@ import Glyph from './Glyph';
 
 const TrackbackPopupLink = React.createClass({
 
-  handleClick: function(e) {
+  handleClick(e) {
     e.stopPropagation();
     e.preventDefault();
     this.props.onShow();

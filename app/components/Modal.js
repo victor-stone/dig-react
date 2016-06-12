@@ -7,12 +7,6 @@ import events   from '../models/events';
 
 const Modal = React.createClass({
 
-  /*
-  propTypes: {
-    handleHideModal: React.PropTypes.func.isRequired
-  },
-  */
-
   componentDidMount: function() {
     /* globals $ */
     var d = $(ReactDOM.findDOMNode(this));
@@ -23,10 +17,17 @@ const Modal = React.createClass({
     });
   },
 
+  onSubmit() {
+    /* globals $ */
+    $('.modal-submit').prop({disabled:true}).removeClass('btn-success');
+    $('.modal-submit-text').text('saving...');
+    this.props.action();
+  },
+
   render(){
     var title    = this.props.title;
     var subTitle = this.props.subTitle;
-    var action   = this.props.action;
+    var action   = this.onSubmit;
     var icon     = this.props.icon || 'share';
     var text     = ' ' + (this.props.buttonText || 'Submit');
     var close    = ' ' + (this.props.closeText || 'Close');
@@ -46,7 +47,7 @@ const Modal = React.createClass({
           <div className="modal-footer">
             <button type="button" className="btn btn-default" data-dismiss="modal">{close}</button>
             {action 
-              ? <button disabled={disabled} className="btn btn-primary btn-success" onClick={action}><Glyph icon={icon} />{text}</button>
+              ? <button disabled={disabled} className="modal-submit btn btn-primary btn-success" onClick={action}><Glyph icon={icon} /><span className="modal-submit-text">{text}</span></button>
               : null
             }
           </div>
@@ -90,10 +91,23 @@ const ModalContainer = React.createClass({
 });
 
 class ModalPopup extends React.Component {
+  constructor() {
+    super(...arguments);
+    this.handleActionResponse = this.handleActionResponse.bind(this);
+  }
+
   manualClose() {
     /* globals $ */
     var d = $(ReactDOM.findDOMNode(this));
-    d.modal('hide');    
+    d.modal('hide'); 
+  }
+
+  handleActionResponse(result) {
+    if( result.status === 'ok') {
+      this.manualClose();
+    } else {
+      this.setState( { error: result['status'] } );
+    }
   }
 }
 

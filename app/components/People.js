@@ -2,6 +2,7 @@ import React         from 'react';
 import ActionButtons from './ActionButtons';
 import _Link         from './Link';
 import Glyph         from './Glyph';
+import env           from '../services/env';
 
 const ExternalLink = ActionButtons.ExternalLink;
 
@@ -46,10 +47,19 @@ const Link = React.createClass({
       href += '/' + this.props.suburl;
     }
 
-    var icon = this.props.icon === true ? 'user' : this.props.icon;
+    var icon       = this.props.icon === true ? 'user' : this.props.icon;
+    var thumbStyle = this.props.thumb ? { backgroundImage:     `url('${env.rpcHost}user/thumbnail/${model.id}')`,
+                                          backgroundRepeat:    'no-repeat',
+                                          paddingLeft:         '24px',
+                                          backgroundPositionY: 'center',
+                                          marginRight:         '8px'
+
+                                           } : null;
+
+    var cls        = 'people-link ' + (this.props.className || '');
 
     return( 
-        <_Link {...this.props} href={href}>
+        <_Link {...this.props} className={cls} style={thumbStyle} href={href}>
           {this.props.avatar
             ? <span><img className="img-circle" src={model.avatarURL} />{model.name}</span>
             : icon

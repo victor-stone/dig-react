@@ -26,7 +26,7 @@ var EditControls = {
     });
   },
 
-  editControls: function(props) {
+  editControls(props) {
       var title     = props.title ? (' ' + props.title) : '';
 
       return (

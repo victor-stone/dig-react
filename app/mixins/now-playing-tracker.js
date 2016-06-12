@@ -21,11 +21,11 @@ var NowPlayingTracker = {
     }
   },
 
-  onNowPlaying: function(nowPlaying) {
+  onNowPlaying(nowPlaying) {
     this.modelFromNowPlaying(nowPlaying);
   },
 
-  modelFromNowPlaying: function(np) {
+  modelFromNowPlaying(np) {
     if( np ) {
       var upload = new Upload();
       upload.info(np.id).then( nowPlaying => {
