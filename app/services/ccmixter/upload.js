@@ -15,6 +15,11 @@ class Upload extends API
     this.invalidateCacheCat(userid+id);
     return this.post(`upload/review/${id}/${userid}`,{textbody});
   }
+
+  update(id,props) {
+    return this.patch(`upload/properties/${id}`,props);
+
+  }
 }
 
 module.exports = Upload;

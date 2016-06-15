@@ -4,7 +4,7 @@
     ccmixter.org (front-end)
     dig.ccmixter.org
 
-  It also builds 3 so-called satellite websites:
+  It also builds 3 satellite websites:
     pells.ccmixter.org
     stems.ccmixter.org
     playlists.ccmixter.org

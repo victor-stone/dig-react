@@ -11,6 +11,7 @@ function FormItem(props) {
               ? <span className="form-control">{props.children}</span>
               : props.children
             }
+            {props.addOn}
           </div>
         </div>
       </div>

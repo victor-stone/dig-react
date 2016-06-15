@@ -103,10 +103,10 @@ class ModalPopup extends React.Component {
   }
 
   handleActionResponse(result) {
-    if( result.status === 'ok') {
-      this.manualClose();
+    if( result.status === 'error') {
+      this.setState( { error: result.errmsg || 'fAIL' } );
     } else {
-      this.setState( { error: result['status'] } );
+      this.manualClose();
     }
   }
 }

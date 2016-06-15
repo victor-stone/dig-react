@@ -172,6 +172,9 @@ a.recommends-list:hover {
     background-color: rgba(186, 226, 183, 0.68);
 }
 
+.input-group-btn .btn i.fa {
+  font-size: 20;
+}
 `;
 
 module.exports = css;

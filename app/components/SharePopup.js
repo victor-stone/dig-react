@@ -3,52 +3,47 @@ import Glyph        from './Glyph';
 import Modal        from './Modal';
 import env          from '../services/env';
 
-const SharePopup = React.createClass({
+class SharePopup extends Modal.Popup {
 
-  getInitialState: function() {
-    return {view: {showModal: false} };
-  },
-  
-  handleHideModal: function() {
-    this.setState({view: {showModal: false}});
-  },
+  constructor() {
+    super(...arguments);
+    this.modelLink    = this.modelLink.bind(this);
+    this.fbLink       = this.fbLink.bind(this);
+    this.twitterLink  = this.twitterLink.bind(this);
+    this.mailLink     = this.mailLink.bind(this);
+  }
 
-  handleShowModal(e){
-    e.stopPropagation();
-    e.preventDefault();
-    this.setState( { view: {showModal: true} } );
-  },
-
-  modelLink: function() {
+  modelLink() {
     if( this.props.modelLink ) {
       return this.props.modelLink(this.props.model);
     }
     return 'http://dig.ccmixter.org/files/' +
           this.props.model.artist.id +
           '/' + this.props.model.id;
-  },
+  }
   
-  fbLink: function() {
+  fbLink() {
     return 'http://www.facebook.com/share.php?u=' + 
           this.modelLink() + '&t=' + this.props.model.name;
-  },
+  }
   
-  twitterLink: function() {
+  twitterLink() {
     return 'http://twitter.com/home?status=' +
            this.props.model.name + ' ' +
            this.modelLink() + '&t=' + this.props.model.name;
-  },
+  }
   
-  mailLink: function() {
+  mailLink() {
+    var appName = env.appName === 'ccmixter' ? '' : env.appName + '.';
     return 'mailto://?subject=' + 'Dig the sounds' +
-          '&body=' + 'I\'m sharing some sounds I found at '+env.appName+'.ccmixter:  ' +
+          '&body=' + 'I\'m sharing some sounds I found at '+appName+'ccmixter:  ' +
           this.modelLink();
-  },
+  }
 
-  genPopup: function() {
+  render() {
     var title = this.props.model.name;
     return (
-      <Modal handleHideModal={this.handleHideModal} subTitle="Share" title={title}>
+      <Modal subTitle="Share" title={title}>
       <ul className="actions actions-centered">
         <li>
           <a href={this.fbLink()} className="btn btn-success"><Glyph icon="facebook" />{" facebook"}</a>            
@@ -62,20 +57,33 @@ const SharePopup = React.createClass({
       </ul>
       </Modal>
     );
-  },
-
-  render: function() {
-    var popup = this.state.view.showModal ? this.genPopup() : null;
-    var sz    = this.props.big ? 'x4' : '';
-    var cls   = this.props.med ? 'btn btn-success' : 'btn btn-lg btn-success';
-    var fixed = this.props.fixed || false;
-    return (
-        <span>
-          <a className={cls} href="#" onClick={this.handleShowModal}><Glyph fixed={fixed} icon="share-alt" sz={sz} /></a>
-          {popup}
-        </span>
-      );  
   }
-});
 
-module.exports = SharePopup;
+
+}
+
+class SharePopupLink extends React.Component {
+
+  constructor() {
+    super(...arguments);
+    this.showSharePopup = this.showSharePopup.bind(this);
+  }
+
+  showSharePopup(e) {
+    e.preventDefault();
+    SharePopup.show( SharePopup, { model: this.props.model } );
+  }
+
+  render() {
+    var sz    = this.props.big ? 'x4' : '';
+    var cls   = this.props.bare ? '' : (this.props.med ? 'btn btn-success' : 'btn btn-lg btn-success');
+    var fixed = this.props.fixed || false;
+    var text  = this.props.caption ? ' Share' : null;
+    var link  = <a className={cls} href="#" onClick={this.showSharePopup}><Glyph fixed={fixed} icon="share-alt" sz={sz} />{text}</a>;
+    return this.props.bare ? link : <span>{link}</span>;
+  }
+}
+
+module.exports = SharePopupLink;
+
+//

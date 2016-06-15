@@ -30,7 +30,7 @@ class File extends Model {
 
     this.getTags = function() {
       if( 'ccud' in this.file_extra ) {
-        return TagString( this.file_extra.ccud );
+        return new TagString( this.file_extra.ccud );
       }
       return '';
     };
@@ -292,7 +292,7 @@ class Sample extends Upload {
       artist: UploadUserBasic,
     };
     this.getUserTags = function() {
-      return TagString( this.upload_extra.usertags );
+      return new TagString( this.upload_extra.usertags );
     };    
   }
 }
@@ -319,11 +319,11 @@ class Detail extends Upload {
     this.descriptionHTMLBinding = 'upload_description_html';
 
     this.getTags = function() {
-      return TagString(this.upload_tags);
+      return new TagString(this.upload_tags);
     };
     
     this.getUserTags = function() {
-      return TagString( this.upload_extra.usertags );
+      return new TagString( this.upload_extra.usertags );
     };
     
     this.getFeaturing = function() {

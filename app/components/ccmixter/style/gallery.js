@@ -9,12 +9,12 @@ var GalleryElement = `
   padding: 4px;
   display: inline-table;
   border-radius: 6px;
-  box-shadow: 7px 14px 15px rgba(0,100,0,0.3);
+  box-shadow: 4px 4px 4px rgba(0,0,0,0.3);
 }
 
 div.subnav-option-bar.tree-subnav,
 .gallery .play-list li.gallery-element {
-  background-color: #3f51b5;
+  background-color: #607D8B;
 }
 
 gallery .play-list li.gallery-element {

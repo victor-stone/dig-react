@@ -5,24 +5,33 @@ import ajax        from './ajax';
 import events      from '../models/events';
 import env         from './env';
 
+const LOADING_DELAY = 600; // ms 
+
 class QueryAjaxAdapter extends Eventer
 {
   constructor() {
     super(...arguments);
     this.ajax   = ajax;
+    this._waiting = false;
     this._count = 0;
   }
 
   _inc() {
       if( !this._count ) {
-        this.emit( events.LOADING, true  );
+        this._waiting = true;
+        setTimeout( () => {
+          if( this._count ) {
+            this.emit( events.LOADING, true  );
+          }
+          this._waiting = false;
+        }, LOADING_DELAY );
       }
       ++this._count;
   }
 
   _dec() {
       --this._count;
-      if( !this._count ) {
+      if( !this._count && !this._waiting ) {
         this.emit( events.LOADING, false );
       }
     }

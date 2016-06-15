@@ -16,7 +16,7 @@ class ReviewPopup extends Modal.Popup {
   constructor() {
     super(...arguments);
     this.state = { error: '',
-             disabled: true };
+                   disableSubmit: true };
     this.onChange               = this.onChange.bind(this);
     this.shouldSubmitBeDisabled = this.shouldSubmitBeDisabled.bind(this);
     this.onSubmitReview         = this.onSubmitReview.bind(this);
@@ -24,8 +24,8 @@ class ReviewPopup extends Modal.Popup {
 
   onChange(event) {
     var value = event.target.value.trim();
-    var disabled = value.length === 0;
-    this.setState( {disabled,value} );
+    var disableSubmit = value.length === 0;
+    this.setState( {disableSubmit,value} );
   }
 
   onSubmitReview() {
@@ -37,16 +37,15 @@ class ReviewPopup extends Modal.Popup {
   }
 
   shouldSubmitBeDisabled() {
-    return this.state.disabled;
+    return this.state.disableSubmit;
   }
 
   render() {
-    var title = `Review of '${this.props.store.model.upload.name}'`;
-    var style = { width: '88%'};
     return (
       <Modal action={this.onSubmitReview} 
              submitDisabler={this.shouldSubmitBeDisabled} 
-             title={title}  
+             subTitle="Review"
+             title={this.props.store.model.upload.name}  
              buttonText="Submit" 
              closeText="Cancel" 
              {...this.props}
@@ -54,7 +53,7 @@ class ReviewPopup extends Modal.Popup {
           <Alert type="danger" text={this.state.error} />
           <div className="form-group">
               <label>{"Your review:"}</label>
-              <FormattedTextEditor  rows="6" style={style} onChange={this.onChange} />
+              <FormattedTextEditor  onChange={this.onChange} />
           </div>
       </Modal>
       );

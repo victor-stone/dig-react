@@ -16,13 +16,15 @@ class AddToPlaylistPopup extends Modal.Popup {
       error: null,
       newPlaylistName: '',
       showList: true,
-      selectedValue: ''
+      selectedValue: '',
+      disableSubmit: true
     };
 
-    this.onChange          = this.onChange.bind(this);
-    this.onNewPlaylistName = this.onNewPlaylistName.bind(this);
-    this.onToggleShow      = this.onToggleShow.bind(this);
-    this.onSubmit          = this.onSubmit.bind(this);
+    this.onChange            = this.onChange.bind(this);
+    this.onNewPlaylistName   = this.onNewPlaylistName.bind(this);
+    this.onToggleShow        = this.onToggleShow.bind(this);
+    this.onSubmit            = this.onSubmit.bind(this);
+    this.shouldSubmitDisable = this.shouldSubmitDisable.bind(this);
   }
 
   onChange(e){
@@ -31,11 +33,12 @@ class AddToPlaylistPopup extends Modal.Popup {
       this.onToggleShow();
       selectedValue = '';
     } 
-    this.setState({selectedValue});
+    this.setState({selectedValue,disableSubmit:!selectedValue});
   }
 
   onNewPlaylistName(e) {
-    this.setState({newPlaylistName:e.target.value});
+    var value = e.target.value;
+    this.setState({newPlaylistName:value,disableSubmit:!value.trim().length});
   }
 
   onSubmit() {
@@ -44,12 +47,12 @@ class AddToPlaylistPopup extends Modal.Popup {
     if( this.state.showList ) {
       var pid = this.state.selectedValue;
       api.playlist.addTrack(id,pid).then( ret => {
-        ret.status === 'ok' && env.alert('success', 'New playlist created and track added');
+        env.alert('success', 'Track added to playlist');
         this.handleActionResponse(ret);
       });
     } else {
       api.playlist.createStatic(this.state.newPlaylistName,'',id).then( ret => {
-        ret.status === 'ok' && env.alert('success', 'Track added to playlist');
+        env.alert('success', 'New playlist created and track added');
         this.handleActionResponse(ret); 
       });
     }
@@ -60,21 +63,27 @@ class AddToPlaylistPopup extends Modal.Popup {
     /* globals $ */
     var $e = $('#fade-group');
     $e.fadeOut(FADE_DURATION, () => {
-      this.setState({showList: !this.state.showList}, () => { $e.fadeIn(FADE_DURATION); $('#fade-group button').blur(); } );
+      var disableSubmit =  !this.state.showList || !this.state.newPlaylistName.trim().length;
+      this.setState({showList: !this.state.showList,disableSubmit}, () => { $e.fadeIn(FADE_DURATION); $('#fade-group button').blur(); } );
     });
   }
 
+  shouldSubmitDisable() {
+    return this.state.disableSubmit;
+  }
+
   render() {
-    var title = `Add '${this.props.model.name}'`;
     var sl = this.state.showList;
     var style = !this.state.selectedValue  ? { color: '#ccc'} : {};
 
     return (
       <Modal action={this.onSubmit} 
-             title={title}  
+             subTitle="Add to playlist"
+             title={this.props.model.name}  
              icon="plus"
              buttonText="Add" 
              closeText="Cancel" 
+             submitDisabler={this.shouldSubmitDisable}
              {...this.props}
       >
         <Alert type="danger" text={this.state.error} />

@@ -14,6 +14,7 @@ var FormattedTextEditor = React.createClass({
     return(
       <div onChange={this.onChange} >
         <textarea
+            className="form-control"
             value={this.state.value} 
             placeholder="awesome!"
             rows="6" 

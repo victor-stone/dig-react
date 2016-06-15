@@ -16,6 +16,7 @@ const CurrentUserTracker = {
   },
 
   componentWillUnmount() {
+    this.unMounted = true;
     api.removeListener(events.USER_LOGIN,this.onUserLogin);
   },
 
@@ -31,10 +32,12 @@ const CurrentUserTracker = {
     }.bind(this);
 
     return  api.user.currentUser().then( id => {
-      if( id ) {
-          api.user.currentUserProfile().then( profileHandler );
-      } else {
-        profileHandler(null);
+      if( !this.unMounted ) { // unclear where/when this needs to be protected from
+        if( id ) {
+            api.user.currentUserProfile().then( profileHandler );
+        } else {
+          profileHandler(null);
+        }
       }
       return id;
     });

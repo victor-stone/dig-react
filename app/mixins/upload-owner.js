@@ -53,9 +53,10 @@ var UploadOwner = {
     this.setState( {owner}, () => {
       var ownerId  = this.state.owner.user && this.state.owner.user.id;
       var uploadId = this.state.owner.store.model.upload.id;
+      var artistId = this.state.owner.store.model.upload.artist.id;
       if( ownerId && uploadId ) {
         api.upload.permissions(uploadId,ownerId).then( results => {
-          owner = Object.assign( {}, this.state.owner, results );
+          owner = Object.assign( {}, this.state.owner, results, {isOwner:ownerId===artistId} );
           this.setState( {owner} );
         });
       }

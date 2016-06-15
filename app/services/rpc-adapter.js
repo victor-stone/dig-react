@@ -13,6 +13,14 @@ class RPCAdapter
     return this._call(cmd,true,'POST',args);
   }
 
+  patch(cmd,args) {
+    return this._call(cmd,true,'POST' /*'PATCH'*/,args);
+  }
+
+  put(cmd,args) {
+    return this._call(cmd,true,'POST' /*'PUT'*/,args);
+  }
+
   call(cmd,isSingleton) {
     return this._call(cmd,isSingleton,'GET');
   }

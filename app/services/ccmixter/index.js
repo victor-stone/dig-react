@@ -13,12 +13,12 @@ class CCMixter extends Eventer
     super(...arguments);
     this.adapter = RPCAdapter;
 
-    this.feed = new Feed(this);
-    this.playlists = new Playlists(this);
-    this.playlist = this.playlists;
-    this.user = new User(this);
-    this.upload = new Upload(this);
-    this.uploads = this.upload;
+    this.feed        = new Feed(this);
+    this.playlists   = new Playlists(this);
+    this.playlist    = this.playlists;
+    this.user        = new User(this);
+    this.upload      = new Upload(this);
+    this.uploads     = this.upload;
   }
 
   _call_wrap(promise) {
@@ -38,6 +38,10 @@ class CCMixter extends Eventer
 
   _post(cmd,args) {
     return this._call_wrap(this.adapter.post(cmd,args));
+  }
+
+  _patch(cmd,args) {
+    return this._call_wrap(this.adapter.patch(cmd,args));
   }
 }
 

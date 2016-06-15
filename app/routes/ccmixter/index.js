@@ -10,6 +10,8 @@ import login     from  './login';
 import userfeed  from  './userfeed';
 import tree      from  './tree';
 
+import workbench from './workbench';
+
 import playlists          from  '../playlists/browse';
 import playlists_tags     from  '../playlists/tags';
 import playlist_browse    from  '../playlists/playlist';
@@ -46,5 +48,6 @@ module.exports = {
     tree,
     upload,
     userfeed,
+    workbench
 };
 

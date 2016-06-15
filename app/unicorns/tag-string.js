@@ -53,26 +53,6 @@ var defaultOpts = {
     separator:  ','
 };
 
-var TagString = function(opts) 
-{
-  if( !(this instanceof TagString) ) {
-    return new TagString(opts);
-  }
-
-  if( !opts ) {
-    opts = { source: null };
-  } else if( !opts.hasOwnProperty('source') ) {
-    opts = { source: opts };
-  }
-
-  for( var k in defaultOpts ) {
-    this[k] = opts[k] || defaultOpts[k];
-  }
-
-  this._tagsArray = TagString.toArray(opts.source,this);
-
-};
-
 function contains(arr,obj) {
   return arr.indexOf(obj) !== NOT_FOUND;
 }
@@ -124,203 +104,222 @@ function getDiff(arr1, arr2) {
   return compare(arr1,arr2,true);
 }    
 
-function merge( obj1, ...targets )
+var merge = Object.assign;
+
+class TagString
 {
-  targets.forEach( function(obj2) {
-    for( var k in obj2 ) {
-      if( obj2.hasOwnProperty(k) ) {
-        obj1[k] = obj2[k];
+  constructor(opts) {
+    
+    this.clear = this.removeAll;
+    this.includes = this.contains;
+
+    if( !opts ) {
+      opts = { source: null };
+    } else if( !opts.hasOwnProperty('source') ) {
+      opts = { source: opts };
+    }
+
+    for( var k in defaultOpts ) {
+      this[k] = opts[k] || defaultOpts[k];
+    }
+
+    this._tagsArray = TagString.toArray(opts.source,this.opts);
+  }
+
+  get opts() {
+    return {
+      ignore: this.ignore,
+      invalid: this.invalid,
+      separator: this.separator
+    };
+  }
+
+  add(tag) {
+    
+    if( tag instanceof TagString ) {
+      if( tag._tagsArray.length ) {
+        tag._tagsArray.forEach( t => {
+          if( !this._tagsArray.contains(t) ) {
+            this._tagsArray.push(t);
+          }
+        });
+      }
+      return this;
+    }
+
+    var ignore  = this.ignore;
+    var invalid = this.invalid;
+    var arr     = this._tagsArray;
+
+    function safeAddTag(tag) {
+      tag += ''; // stringize
+      if( !!tag && 
+          tag.match(ignore) === null &&
+          tag.match(invalid) === null && 
+          !contains(arr,tag) ) 
+      {
+        arr.push(tag);
       }
     }
-  });
 
-  return obj1;
-}
+    TagString.toArray(tag,this.opts).forEach( safeAddTag );
+    return this;
+  }
+          
+  remove(tagSpec) {
+    var arr = this._tagsArray;
 
-
-TagString.prototype.add = function(tag) {
-  
-  if( tag instanceof TagString ) {
-    if( tag._tagsArray.length ) {
-      tag._tagsArray.forEach( t => {
-        if( !this._tagsArray.contains(t) ) {
-          this._tagsArray.push(t);
+    function safeRemove(tag) {
+        if( contains(arr,tag) ) {
+          removeObject(arr,tag);
         }
-      });
+    }
+
+    TagString.toArray(tagSpec,this.opts).forEach( safeRemove );
+    return this;
+  }
+          
+  replace(replaceThisSource,withThisSource) {
+    if( replaceThisSource && (replaceThisSource !== withThisSource) ) {
+      this.remove(replaceThisSource);
+    }
+    this.add(withThisSource);
+    return this;
+  }
+          
+  removeAll() {
+    this._tagsArray = [ ];
+    return this;
+  }
+           
+  isEmpty() {
+    return this._tagsArray.length === 0;
+  }
+
+  toggle(tag,flag) {
+    if( flag ) {
+      this.add(tag);
+    } else {
+      this.remove(tag);
     }
     return this;
   }
-
-  var ignore  = this.ignore;
-  var invalid = this.invalid;
-  var arr     = this._tagsArray;
-
-  function safeAddTag(tag) {
-    tag += ''; // stringize
-    if( !!tag && 
-        tag.match(ignore) === null &&
-        tag.match(invalid) === null && 
-        !contains(arr,tag) ) 
-    {
-      arr.push(tag);
+          
+  contains(tagsOrFunction) {
+    if( typeof tagsOrFunction === 'function' ) {
+      return find(this._tagsArray, tagsOrFunction) !== false;
     }
+    var them = TagString.toArray(tagsOrFunction,this.opts);
+    return find( them, tag => this._tagsArray.contains(tag) ) !== false;
   }
 
-  TagString.toArray(tag,this).forEach( safeAddTag );
-  return this;
-};
-        
-TagString.prototype.remove = function(tagSpec) {
-  var arr = this._tagsArray;
+  containsOne(tag) {
+    return this._tagsArray.contains(tag);
+  }
 
-  function safeRemove(tag) {
-      if( contains(arr,tag) ) {
-        removeObject(arr,tag);
+  intersection(other) {
+    var ret  = this; 
+    if( this._tagsArray.length ) {
+      var opts = this.copyOptions();
+      var arr2 = TagString.toArray(other,opts);
+      if( arr2.length ) {
+        var arr1 = this._tagsArray.slice();
+        opts.source = getIntersect(arr1,arr2);
+        ret = new TagString(opts);
       }
+    }
+    return ret;
   }
 
-  TagString.toArray(tagSpec,this).forEach( safeRemove );
-  return this;
-};
-        
-TagString.prototype.replace = function(replaceThisSource,withThisSource) {
-  if( replaceThisSource && (replaceThisSource !== withThisSource) ) {
-    this.remove(replaceThisSource);
-  }
-  this.add(withThisSource);
-  return this;
-};
-        
-TagString.prototype.removeAll = function() {
-  this._tagsArray = [ ];
-  return this;
-};
-        
-TagString.prototype.clear = TagString.prototype.removeAll;
-        
-TagString.prototype.isEmpty = function() {
-  return this._tagsArray.length === 0;
-};
-
-TagString.prototype.toggle = function(tag,flag) {
-  if( flag ) {
-    this.add(tag);
-  } else {
-    this.remove(tag);
-  }
-  return this;
-};
-        
-TagString.prototype.contains = function(tagsOrFunction) {
-  if( typeof tagsOrFunction === 'function' ) {
-    return find(this._tagsArray, tagsOrFunction) !== false;
-  }
-  var them = TagString.toArray(tagsOrFunction,this);
-  return find( them, tag => this._tagsArray.contains(tag) ) !== false;
-};
-
-TagString.prototype.includes = TagString.prototype.contains;
-
-TagString.prototype.containsOne = function(tag) {
-  return this._tagsArray.contains(tag);
-};
-
-TagString.prototype.intersection = function(other) {
-  var ret  = this; 
-  if( this._tagsArray.length ) {
+  diff(returnTagsOnlyInThisOne) {
     var opts = this.copyOptions();
-    var arr2 = TagString.toArray(other,opts);
-    if( arr2.length ) {
-      var arr1 = this._tagsArray.slice();
-      opts.source = getIntersect(arr1,arr2);
-      ret = new TagString(opts);
+    opts.source = getDiff(this._tagsArray.slice(),TagString.toArray(returnTagsOnlyInThisOne,opts));
+    return new TagString(opts);  
+  }
+
+  sort() {
+    this._tagsArray.sort();
+    return this;
+  }
+
+  get hash() {
+    return this._tagsArray.slice().sort().join(':');
+  }
+
+  isEqual(tags) {
+    var other = new TagString(tags);
+    if( !this._tagsArray.length || other._tagsArray.length !== this._tagsArray.length ) {
+      return false;
     }
-  }
-  return ret;
-};
-
-TagString.prototype.diff = function(returnTagsOnlyInThisOne) {
-  var opts = this.copyOptions();
-  opts.source = getDiff(this._tagsArray.slice(),TagString.toArray(returnTagsOnlyInThisOne,opts));
-  return new TagString(opts);  
-};
-
-TagString.prototype.sort = function() {
-  this._tagsArray.sort();
-  return this;
-};
-
-TagString.prototype.isEqual = function(tags) {
-  var other = new TagString(tags);
-  if( !this._tagsArray.length || other._tagsArray.length !== this._tagsArray.length ) {
-    return false;
-  }
-  if( this._tagsArray.length === 1 ) {
-    return other._tagsArray[0] === this._tagsArray[0];
-  }
-  return other._tagsArray.sort().join(',') === this._tagsArray.sort().join(',');
-};
-
-TagString.prototype.anyInString = function(stringToSearch) {
-  var str = (stringToSearch + '').toLowerCase();
-  return this._tagsArray.find( tag => str.includes(tag) );
-};
-
-TagString.prototype.anyInArray = function(arrayOfStringsToSearch) {
-  return arrayOfStringsToSearch
-            .map( s => s.toLowerCase() )
-            .find( this.anyInString.bind(this) );
-};
-
-TagString.prototype.clone = function() {
-  var opts = this.copyOptions();
-  opts.src = this._tagsArray;
-  return new TagString( opts );
-};
-
-TagString.prototype.copyOptions = function() {
-  return {
-    ignore: this.ignore,
-    invalid: this.invalid,
-    separator: this.separator
-  };
-};
-
-TagString.prototype.getLength = function() {
-  return this._tagsArray.length;
-};
-
-TagString.prototype.toString = function() {
-  var tagArr = this._tagsArray;
-  if( tagArr.length > 0 ) {
-      return tagArr.join(this.separator);
-  }
-  return '';
-};
-
-TagString.prototype.toArray = function() {
-  return this._tagsArray;
-};
-
-TagString.prototype.forEach = function(callback,context) {
-  this._tagsArray.forEach(callback,context || this);
-  return this;
-};
-        
-TagString.prototype.map = function(callback,context) {
-  return this._tagsArray.map(callback,context || this);
-};
-    
-TagString.prototype.filter = function(rgx) {
-  var ts = new TagString();
-  for( var i = 0; i < this._tagsArray.length; i++ ) {
-    var t = this._tagsArray[i];
-    if( t.match(rgx) ) {
-      ts._tagsArray.push(t);
+    if( this._tagsArray.length === 1 ) {
+      return other._tagsArray[0] === this._tagsArray[0];
     }
+    return this.hash === other.hash;
   }
-  return ts;
-};
+
+  anyInString(stringToSearch) {
+    var str = (stringToSearch + '').toLowerCase();
+    return this._tagsArray.find( tag => str.includes(tag) );
+  }
+
+  anyInArray(arrayOfStringsToSearch) {
+    return arrayOfStringsToSearch
+              .map( s => s.toLowerCase() )
+              .find( this.anyInString.bind(this) );
+  }
+
+  clone() {
+    var opts = this.copyOptions();
+    opts.src = this._tagsArray;
+    return new TagString( opts );
+  }
+
+  copyOptions() {
+    return merge({},this.opts);
+  }
+
+  getLength() {
+    return this._tagsArray.length;
+  }
+
+  get length() {
+    return this._tagsArray.length;
+  }
+
+  toString() {
+    var tagArr = this._tagsArray;
+    if( tagArr.length > 0 ) {
+        return tagArr.join(this.separator);
+    }
+    return '';
+  }
+
+  toArray() {
+    return this._tagsArray;
+  }
+
+  forEach(callback,context) {
+    this._tagsArray.forEach(callback,context || this);
+    return this;
+  }
+          
+  map(callback,context) {
+    return this._tagsArray.map(callback,context || this);
+  }
+      
+  filter(rgx) {
+    var ts = new TagString();
+    for( var i = 0; i < this._tagsArray.length; i++ ) {
+      var t = this._tagsArray[i];
+      if( t.match(rgx) ) {
+        ts._tagsArray.push(t);
+      }
+    }
+    return ts;
+  }
+
+
+}
 
 TagString.create = function(opts) {
   return new TagString(opts);
@@ -357,19 +356,19 @@ TagString.toArray = function(source,useropts) {
     return [ ];
   }
 
-  var opts = merge( {}, defaultOpts );
-  if( useropts ) {
-    opts = merge(opts,useropts);
-  }
-
   var arr = null;
   if( typeof(source) === 'string' ) {
-    if( source.match(opts.ignore) )  {
-      return [ ];
+    var opts = merge( {}, defaultOpts );
+    if( useropts ) {
+      opts = merge(opts,useropts);
     }
-    // still not 100% because '-'
-    var r = new RegExp(opts.separator,'g');
-    arr = source.replace(r,' ').split(/\s+/).filter( t => t.length && t );
+    if( source.match(opts.ignore) )  {
+      arr = [ ];
+    } else {
+      // still not 100% because '-'
+      var r = new RegExp(opts.separator,'g');
+      arr = source.replace(r,' ').split(/\s+/).filter( t => t.length && t );
+    }
   } else if( Array.isArray(source) ) {
     arr = source.slice();        
   } else if( source && (source instanceof TagString) )  {

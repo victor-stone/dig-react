@@ -13,6 +13,22 @@ import lookup           from '../../services';
 
 var GalleryElement = React.createClass({
 
+  getInitialState() {
+    return { popupShowing: false };
+  },
+
+  shouldComponentUpdate(nextProps) {
+    return this.props.upload.id !== nextProps.upload.id;
+  },
+
+  componentWillUnmount() {
+    var u = this.props.upload;
+    var id = 'gallery-element-' + u.id;
+    if( !$('#'+id).data('bs.popover') ) {
+      $('#'+id).popover('destroy');
+    }
+  },
+
   _showInfo(id,html) {
     html = `<div class="gallery-element-popover">${html}</div>`;
      $('#' + id).popover({
@@ -20,7 +36,10 @@ var GalleryElement = React.createClass({
             html: true,
             trigger: 'focus',
             placement: 'bottom'
-        }).popover('show');
+        })
+        .on('shown.bs.popover', () => this.setState({popupShowing: true}))
+        .on('hidden.bs.popover', () => this.setState({popupShowing: false}))
+        .popover('show');
   },
 
   showInfo(e) {
@@ -28,15 +47,20 @@ var GalleryElement = React.createClass({
     e.preventDefault();
     var u = this.props.upload;
     var id = 'gallery-element-' + u.id;
+    if( this.state.popupShowing ) {
+      $('#'+id).popover('hide') ;
+    }
     if( !$('#'+id).data('bs.popover') ) {
       var contentID = 'popover-placeholder-' + u.id;
-      var upload = new UploadStore();
+      var store = new UploadStore();
       var me = this;
-      upload.info(u.id).then( model =>
-            ReactDOM.render( React.createElement(Overview.OverviewForm,{model}),  
-                             document.getElementById(contentID),
-                             function() { me._showInfo(id,ReactDOM.findDOMNode(this).innerHTML); } )
-        );
+      store.info(u.id).then( model =>
+        {
+          store.model.upload = model;
+          ReactDOM.render( React.createElement(Overview.OverviewForm,{store}),  
+                           document.getElementById(contentID),
+                           function() { me._showInfo(id,ReactDOM.findDOMNode(this).innerHTML); } );
+        });
     }
   },
 

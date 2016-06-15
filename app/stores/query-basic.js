@@ -37,7 +37,7 @@ class Query extends Eventer
     return action
             .then( result => { 
                 resultHolder = result;
-                return this.refresh(result.queryParams || this.model.queryParams); 
+                return this.refresh(this.model.queryParams); 
             }).then( (info) => {
               this.emit( events.ACTION_END, action.name, info );
               return resultHolder;

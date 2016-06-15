@@ -29,7 +29,7 @@ const SelectedTagSection = React.createClass({
 
   doFadeAnimation() {
     if( !global.IS_SERVER_REQUEST ) {
-      var hasTags = this.state.selectedTags.getLength() > 0;
+      var hasTags = this.state.selectedTags.length > 0;
       if( !hasTags ) {
         setTimeout( function() {
           $('.no-selected-tags').fadeIn( FADE_IN_SPEED );
@@ -39,7 +39,7 @@ const SelectedTagSection = React.createClass({
   },
 
   render() {
-    var hasTags = this.state.selectedTags.getLength() > 0;
+    var hasTags = this.state.selectedTags.length > 0;
     var style   = { display: 'none' };
 
     return (

@@ -43,6 +43,10 @@ class API
     return this.transport._post(...arguments);
   }
   
+  patch() {
+    return this.transport._patch(...arguments);
+  }
+  
   on() {
     this.transport.on(...arguments);
   }
