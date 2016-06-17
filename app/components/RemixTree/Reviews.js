@@ -5,10 +5,8 @@ import Glyph               from '../Glyph';
 import Modal               from '../Modal';
 import Alert               from '../Alert';
 import FormattedTextEditor from '../FormattedTextEditor';
-import api                 from '../../services/ccmixter';
 import Topics              from '../../stores/topics';
 import { ModelTracker,
-        UploadOwner,
         CollapsingModel }    from '../../mixins';
 
 class ReviewPopup extends Modal.Popup {
@@ -30,10 +28,8 @@ class ReviewPopup extends Modal.Popup {
 
   onSubmitReview() {
     this.setState( { error: '' } );
-    var id   = this.props.store.model.upload.id;
-    var uid  = this.props.user.id;
-    var text = this.state.value;
-    this.props.store.performAction(api.upload.review(id,uid,text)).then( this.handleActionResponse );
+    this.props.store.review(this.state.value)
+      .then( () => this.manualClose );
   }
 
   shouldSubmitBeDisabled() {
@@ -62,30 +58,29 @@ class ReviewPopup extends Modal.Popup {
 
 const ReviewsButton = React.createClass({
 
-  mixins: [ UploadOwner ],
+  mixins: [ ModelTracker ],
 
-  getDefaultProps() {
-    return { watchActions: ['reivew'] };
-  },
-  
   getInitialState() {
     return { disabled: false };
   },
 
   shouldComponentUpdate(nextProps,nextState) {
-    return this.state.owner.okToReview !== nextState.owner.okToReview;
+    return this.state.store.permissions.okToReview !== nextState.store.permissions.okToReview;
   },
 
+  stateFromStore(store) {
+    return {store};
+  },
+  
   onReview(event) {
     event.stopPropagation();
     event.preventDefault();
-    var o = this.state.owner;
-    ReviewPopup.show( ReviewPopup, { store: o.store, user: o.user } );
+    ReviewPopup.show( ReviewPopup, { store: this.state.store } );
   },
 
   render() {
     return (
-        this.state.owner.okToReview && !this.state.disabled
+        this.state.store.permissions.okToReview && !this.state.disabled
           ? <button onClick={this.onReview} className="review pull-right"><Glyph icon="pencil" /></button>
           : null
       );

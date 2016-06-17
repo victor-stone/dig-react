@@ -1,14 +1,15 @@
-import React           from 'react';
-import { FormItem }    from './Form';
-import Glyph           from './Glyph';
-import Modal           from './Modal';
-import Alert           from './Alert';
-import Tags            from './Tags';
-import InlineCSS       from './InlineCSS';
-import { UploadOwner } from '../mixins';
-import { TagString }   from '../unicorns';
+import React            from 'react';
+import Glyph            from './Glyph';
+import InlineCSS        from './InlineCSS';
+import { TagString }    from '../unicorns';
+import TagStore         from '../stores/tags';
+
+import { SelectedTagsTracker } from '../mixins';
 
 /*
+  In this context 'static' means non-interactive
+  on the page.
+
   Use cases for displaying static tags
 
       scenario            query    store
@@ -27,14 +28,17 @@ import { TagString }   from '../unicorns';
     - upload                x      upload
     - admin                 x      tags
 
-    components
-    ------------
-    - Selectable tag
+  Complient stores:
 
-    - Selectable tags list
-      : check/uncheck 
+    Properties:
+      tags [TagString] - read/write
 
-    - Selected tags list
+    Methods:
+      toggleTag(tag,toggle)
+      clearTags()
+
+    Events source:
+      TAGS_SELECTED
 
 */
 
@@ -81,7 +85,7 @@ const SelectableTag = React.createClass({
   onClick(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.setState( {selected: !this.state.selected}, () => this.props.onSelected(this.props.model.id,this.state.selected) );
+    this.props.onSelected(this.props.model.id,!this.state.selected);
   },
 
   calcState(props) {
@@ -125,6 +129,9 @@ SelectableTag.css = `
   vertical-align: middle;
   display: inline-block;
 }
+.tag-selectable > span.light-color {
+  margin-left: 4px;
+}
 `;
 
 /*
@@ -133,10 +140,11 @@ SelectableTag.css = `
               id: 'tag_name'
               count: usage_count (optional)
              }]
-    - className [string] (optional - added to 'tag-list-selectable')
-    - onSelected(model) [callback] (optional)
     - selected TagString
+    - onSelected(model) [callback] (optional)
     - floating [boolean] (optional default:false)
+    - autoclear [boolean] (optional default:false)
+    - className [string] (optional - added to 'tag-list-selectable')
     - glyphs [string-enum] <-- N.B. plural
         : none (default)
         : checks
@@ -144,10 +152,16 @@ SelectableTag.css = `
 */
 
 function modelsToTagString(arr) {
+  if( arr instanceof TagString ) {
+    return new TagString(arr);
+  }
   return new TagString(arr && arr.map(t => t.id));
 }
 
 function tagStringToModels(tagStr) {
+  if( !(tagStr instanceof TagString) ) {
+    return tagStr;
+  }
   return (tagStr && tagStr.map( t => { return { id: t }; } )) || [];
 }
 
@@ -163,12 +177,13 @@ const SelectableTagList = React.createClass({
 
   shouldComponentUpdate(nextProps,nextState) {
     return !this.state.selected.isEqual(nextState.selected) ||
-            !this.state.tags.isEqual(nextState.tags);
+            !this.state._tags.isEqual(nextState._tags);
   },
 
   calcState(props) {
     return { selected: props.selected || new TagString(),
-             tags:     modelsToTagString(props.model) };
+             _tags:    modelsToTagString(props.model),
+             tags:     tagStringToModels(props.model) };
   },
 
   render() {
@@ -176,10 +191,15 @@ const SelectableTagList = React.createClass({
     if( this.props.floating ) {
       cls += ' floating';
     }
+    if( this.props.autoclear ) {
+      cls += ' autoclear';
+    }
     if( this.props.className ) {
       cls += ' ' + this.props.className;
     }
-    var arr = this.props.floating ? (arr = this.props.model.slice(),arr.push({id:''}),arr) : this.props.model;
+    var arr = this.props.autoclear 
+                    ? ( arr = this.state.tags.slice(), arr.push({id:''}), arr ) 
+                    : this.state.tags;
 
     return (
       <ul className={cls}>{arr.map( tag => 
@@ -203,7 +223,7 @@ SelectableTagList.css = SelectableTag.css + `
     float: left;
     margin-left: 5px;     
   } 
-  ul.tag-list-selectable.floating > li:last-child {
+  ul.tag-list-selectable.autoclear > li:last-child {
     float: none;
     clear: both;
   }
@@ -218,12 +238,13 @@ SelectableTagList.css = SelectableTag.css + `
              }]
     - className [string] (optional - added to 'tag-list-static')
     - floating [boolean] (optional default:true)
+    - autoclear [boolean] (optional default:true)
 */
 
 const StaticTagsList = React.createClass({
 
   getDefaultProps() {
-    return { floating: true };
+    return { floating: true, autoclear: true };
   },
 
   getInitialState() {
@@ -254,6 +275,7 @@ const StaticTagsList = React.createClass({
             className={cls}
             glyphs={this.props.glyphs}
             floating={this.props.floating}
+            autoclear={this.props.autoclear}
           />
       </div>
       );
@@ -261,6 +283,7 @@ const StaticTagsList = React.createClass({
 });
 
 StaticTagsList.css = SelectableTagList.css;
+
 
 /*
   Props: 
@@ -303,6 +326,7 @@ CheckableTagsList.css = SelectableTagList.css + `
 .tag-list-checkable li.tag-selectable-checks {
     padding: 0 4px;
     margin-bottom: 3px;
+    margin-right: 12px;
     cursor: pointer;
     border: 1px solid transparent;
 }
@@ -313,11 +337,24 @@ CheckableTagsList.css = SelectableTagList.css + `
 
 `;
 
+var ClearTagsButton = React.createClass({
+
+  onClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.onClear();
+  },
+
+  render() {
+    return (<a href="#" onClick={this.onClick} className="btn btn-xs btn-danger tags-clear"><Glyph icon="trash" />{" clear"}</a>);
+  }
+});
 
 /*
   Props: 
     - model TagString
     - onRemoved [callback]
+    - onClear [callback]
     - className [string] (optional - added to 'tag-list-selected')
     - css [string] (note: inline css - set CheckableTagsList.css to destroy defaults)
 */
@@ -353,87 +390,235 @@ var SelectedTagList = React.createClass({
           <InlineCSS css={css} id="tag-list-selected-css" />
           <SelectableTagList 
             model={tagStringToModels(this.state.model)} 
+            selected={this.state.model}
             onSelected={this.onSelected}
             className={cls}
             glyphs="x"
             floating
           />
+          {this.state.model.length > 1 && (<ClearTagsButton onClear={this.props.onClear} />)}
+          <div className="clearfix" />
       </div>
       );
   }
 });
 
 SelectedTagList.css = SelectableTagList.css + `
-.tag-list-selected > li.tag-selectable-x {
-  background: green;
-  margin-bottom: 6px;
-  color: white;
-  padding: 0 5px;
-  border-radius: 4px;
+.tag-list-selected-container {
+  padding-bottom: 12px;
 }
+.tag-list-selected > li.tag-selectable-x {
+  font-size: 12px;
+  display: inline-block;
+  border-radius: 5px;
+  background-color: #DDD;
+  padding: 6px;
+  vertical-align: center;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.tag-list-selected > li.tag-selectable-x i.fa {
+  font-size: 13px;  
+}
+
 .tag-list-selected > li.tag-selectable-x:hover {
   background: red;
+  color: white;
   cursor: default;
 }
 `;
 
+/*
+  Props: 
+    - category [CategoryTagBox.categories]
+    - pairWith [string] (e.g. one of: remix, sample, acappella)
+    - minCount [number] (only show tags that have been used this much)
+    - onSelected(model,toggle) [callback] (option)
+    - selected [TagString]
+*/
 
-const SYSTEM_TAGS = 'audio,non_commercial,attribution,44k,48k,mp3,archive,flac,zip,media,CBR,VBR,stereo';
+const DEFAULT_MIN_TAG_COUNT = 100;
 
-class TagEditor extends Modal.Popup {
+var CategoryTagBox = React.createClass({
 
-  constructor() {
-    super(...arguments);
-  }
+  getInitialState() {
+    return { selected: new TagString(this.props.selected), model: [] };
+  },
 
-  getModelName() {
-    return 'wat';
-  }
+  componentDidMount() {
+    var store = new TagStore();
+    var minCount = this.props.minCount || DEFAULT_MIN_TAG_COUNT;
+    store.category(this.props.category,this.props.pairWith,minCount)
+      .then( this.tagsResponse );
+  },
 
-  render() {
-    var tags = this._currentTags();
+  componentWillReceiveProps(nextProps) {
+    this.setState({ selected: new TagString(nextProps.selected) });
+  },
 
-    return (
-      <Modal action={this.onSubmit} 
-             subTitle="Select tags"
-             title={this.getModelName()}  
-             icon="cloud-upload"
-             buttonText="Save" 
-             closeText="Cancel" 
-             {...this.props}
-      >
-        <div className="selected-tags">
-        </div>
-        <Alert type="danger" text={this.state.error} />
-        <Tags.SelectedTags store={this.props.store} />
-        <Tags.SelectableTagList store={this.props.store} model={tags} />        
-      </Modal>
-      );
-  }  
-}
-
-var UploadTagsLink = React.createClass({
-
-  mixins: [UploadOwner],
-
-  showEditTags(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    TagEditor.show( TagEditor, { store: this.props.store } );
+  tagsResponse(model) {
+    this.setState({model});
   },
 
   render() {
-    var model = this.props.store.model.upload;
-    var addOn = this.state.owner.isOwner && <span className="input-group-addon"><a onClick={this.showEditTags} ><Glyph icon="edit"  /></a></span>;
 
     return (
-        <FormItem title="tags" cls={this.props.cls} wrap={false} addOn={addOn}>
-          <ul className="tags-list form-control">{model.tags.remove(SYSTEM_TAGS).map( t => <li className="tag" key={t}>{t}</li> )}</ul>
-        </FormItem>
+        <div>
+          <InlineCSS css={CategoryTagBox.css} id="category-tag-box-css" />
+          <CheckableTagsList className="tag-list-category" model={this.state.model} selected={this.state.selected} onSelected={this.props.onSelected} />
+        </div>
+      );
+  }
+
+});
+
+CategoryTagBox.categories = TagStore.categories;
+
+CategoryTagBox.css = CheckableTagsList.css + `
+.tag-list-category {
+  height: 200px;
+  border: 1px solid #CCC;
+}
+`;
+
+
+/*
+  Props: 
+    - store - required property: tags [TagString]
+        watches MODEL_UPDATE events
+
+*/
+
+var BoundStaticTagList = React.createClass({
+
+  mixins: [ SelectedTagsTracker ],
+
+  render() {
+    return ( <StaticTagsList className="tag-list-bound" model={this.state.tags} />);
+  }
+});
+
+
+/*
+  Props: 
+    - store 
+    - minCount [number] (only show tags that h
+            ave been used this much - default 100)
+    - category [BoundCategoryTagBox.categories]
+
+*/
+var BoundCategoryTagBox = React.createClass({
+
+  mixins: [ SelectedTagsTracker ],
+
+  onSelected(tag,toggle) {
+    this.props.store.toggleTag(tag,toggle);
+  },
+
+  render() {
+    var cls = 'tag-list-bound';
+    if( this.props.className ) {
+      cls += ' ' + this.props.className;
+    }
+    return (<CategoryTagBox 
+                category={this.props.category} 
+                minCount={this.props.minCount} 
+                selected={this.state.tags} 
+                onSelected={this.onSelected} 
+                className={cls}
+            />);
+  }
+});
+
+BoundCategoryTagBox.categories = CategoryTagBox.categories;
+
+
+/*
+  Props: 
+    - store 
+    - minCount [number] (only show tags that h
+            ave been used this much - default 100)
+    - category [BoundCategoryTagBox.categories]
+
+*/
+var BoundSelectedTagList = React.createClass({
+
+  mixins: [ SelectedTagsTracker ],
+
+  onRemove(tag) {
+    this.props.store.toggleTag(tag,false);
+  },
+
+  onClear() {
+    this.props.store.clearTags();
+  },
+
+  render() {
+    var cls = 'tag-list-bound';
+    if( this.props.className ) {
+      cls += ' ' + this.props.className;
+    }
+    return (
+        <SelectedTagList 
+            model={this.state.tags} 
+            onRemove={this.onRemove} 
+            onClear={this.onClear} 
+            className={cls}
+        />
       );
   }
 });
 
+var genreCat = BoundCategoryTagBox.categories.GENRE;
+
+var DualTagFieldWidget = React.createClass({
+  render() {
+    return(
+      <div>
+        <BoundSelectedTagList store={this.props.store} />
+        <BoundCategoryTagBox category={genreCat} store={this.props.store} />
+      </div>
+    );
+  }
+});
+
+var EditableTagsField = React.createClass({
+
+  getInitialState() {
+    return { editing: false };
+  },
+
+  onEdit() {
+    this.setState( {editing:true});
+  },
+
+  onCancel() {
+    this.setState( {editing:false} );
+  },
+
+  render() {
+    return(
+          <div className="input-group">
+            <span className="form-control">
+              {this.state.editing
+                ? <BoundStaticTagList store={this.props.store} />
+                : <DualTagFieldWidget store={this.props.store} />
+              }
+            </span>
+            {this.props.store.permissions.isOwner
+                ? <div className="btn-group">
+                    {this.state.editing
+                      ? <button className="btn btn-default" onClick={this.onCancel}><Glyph icon="times" /></button>
+                      : <button className="btn btn-default" onClick={this.onEdit}><Glyph icon="pencil" /></button>}
+                  </div>
+                : null
+            }
+          </div>
+        );
+  }
+});
 
 module.exports = {
   SelectableTag,
@@ -441,8 +626,13 @@ module.exports = {
   StaticTagsList,
   CheckableTagsList,
   SelectedTagList,
+  CategoryTagBox,
 
-  UploadTagsLink
+  BoundStaticTagList,
+  BoundCategoryTagBox,
+  BoundSelectedTagList,
+  EditableTagsField,
+  DualTagFieldWidget
 };
 
 //

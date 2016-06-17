@@ -3,12 +3,11 @@ import Tracks         from './Tracks';
 import { TrackList }  from  './Edit';
 import api           from '../../services/ccmixter';
 
-import { PlaylistOwner,
-         EditControls } from '../../mixins';
+import { EditControls } from '../../mixins';
 
 var EditableTracks = React.createClass({
 
-  mixins: [ PlaylistOwner, EditControls ],
+  mixins: [ EditControls ],
 
   doneEdit: function() {
     /* globals $ */
@@ -24,7 +23,7 @@ var EditableTracks = React.createClass({
     var store   = model.tracks;
     var isDyn   = model.head.isDynamic;
     var title   = isDyn ? 'edit query' : 'edit order';
-    var staticOwned = this.state.isOwner && !isDyn;
+    var staticOwned = this.props.store.permissions.isOwner && !isDyn;
 
     return (
       <div className="tracks-widget">

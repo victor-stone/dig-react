@@ -1,33 +1,27 @@
 import React  from 'react';
 import Glyph  from '../Glyph';
-import api    from '../../services/ccmixter';
-
-import { PlaylistOwner,
+import { ModelTracker,
         EditControls } from '../../mixins';
 
 var EditableTitle = React.createClass({
 
-  mixins: [ PlaylistOwner, EditControls ],
+  mixins: [ ModelTracker, EditControls ],
 
-  getInitialState: function() {
-    var text = this.props.store.model.head.name;
-    return { text, orgText: text };
+  stateFromStore(store) {
+    var text = store.model.head.name;
+    return { text, orgText: text, editing: false };
   },
 
-  doneEdit: function() {
+  doneEdit() {
     var name = this.refs.ptitle.value;
-    var id   = this.props.store.model.head.id;
-    api.playlist.update(id,{name}).then( model=> {
-      this.setState( { text: model.name, 
-                       editing: false } );
-    });
+    this.state.store.applyProperties({name});
   },
 
-  cancelEdit: function() {
+  cancelEdit() {
     this.setState( { text: this.state.orgText, editing: false } );
   },
 
-  render: function() {
+  render() {
 
     var text = this.state.text;
 
@@ -48,7 +42,7 @@ var EditableTitle = React.createClass({
                 </div>
               : <span>{text}</span>
             }
-            {this.state.isOwner && !this.state.editing
+            {this.state.store.permissions.isOwner && !this.state.editing
               ? this.editControls( {title: 'edit name'} )
               : null
             }

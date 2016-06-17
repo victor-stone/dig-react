@@ -2,8 +2,7 @@ import React     from 'react';
 
 import InstrumentalOnlyFilter  from '../InstrumentalOnlyFilter';
 import ArtistFilter            from '../ArtistFilter';
-import TagFilter               from '../TagFilter';
-import TagsExtra               from '../TagsExtra';
+import { DualTagFieldWidget }   from '../TagEditor';
 import { QueryParamTracker }   from '../../mixins';
 import { TagString }           from '../../unicorns';
 import { LicenseFilter,
@@ -61,10 +60,7 @@ function PlaylistQueryOptions(props) {
           <ArtistFilter store={store} />
         </li>
         <li>
-          <TagFilter store={store} />
-        </li>
-        <li>
-          <TagsExtra store={store} />
+          <DualTagFieldWidget store={store} />
         </li>
       </OptionsWrap>
     );

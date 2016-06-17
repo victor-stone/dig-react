@@ -4,12 +4,9 @@ import Glyph      from '../../components/Glyph';
 import Modal      from '../../components/Modal';
 
 import api                 from '../../services/ccmixter';
-import { PlaylistOwner }   from '../../mixins';
 import env                 from '../../services/env';
 
 var DeletePlaylist = React.createClass({
-
-  mixins: [PlaylistOwner],
 
   getInitialState: function() {
     this.manualHide = false;
@@ -60,7 +57,7 @@ var DeletePlaylist = React.createClass({
   },
 
   render: function() {
-    if( !this.state.isOwner ) {
+    if( !this.props.store.permissions.isOwner ) {
       return null;
     }
     return (<span>

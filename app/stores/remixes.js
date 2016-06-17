@@ -1,9 +1,9 @@
-import Query       from './query';
-import ccmixter    from '../models/ccmixter';
-import serialize   from '../models/serialize';
+import QueryWithTags    from './query-with-tags';
+import ccmixter         from '../models/ccmixter';
+import serialize        from '../models/serialize';
 
 
-class Remixes extends Query {
+class Remixes extends QueryWithTags {
 
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName).then( serialize(ccmixter.Upload) );

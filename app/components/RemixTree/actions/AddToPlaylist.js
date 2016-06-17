@@ -121,16 +121,16 @@ var AddToPlaylistLink = React.createClass({
 
   showPlaylistPopup(e) {
     e.preventDefault();
+    e.stopPropagation();
     var playlists = new Playlists();
     playlists.autoFilterTags = false;
     var opts = {
-      u: this.props.user.id,
       limit: 200,
       dynamic: '-1'
     };
-    playlists.getModel(opts).then( () => {
-      AddToPlaylistPopup.show( AddToPlaylistPopup, { store: playlists, model: this.props.store.model.upload, user: this.props.user } );
-    });
+    api.user.currentUser()
+      .then( u => playlists.getModel(Object.assign(opts,{u})))
+      .then( () => AddToPlaylistPopup.show( AddToPlaylistPopup,{ store: playlists, model: this.props.store.model.upload, user: opts.u } ));
   },
 
   render() {

@@ -28,8 +28,8 @@ class Playlists extends API
     return this.call('playlist/removetrack/' + upload + '/' + id);
   }
 
-  updateDynamic(id,queryParamsString) {
-    var q = queryParamsString;
+  updateDynamic(id,props) {
+    var q = typeof(props) === 'string' ? props : querystring.stringify(props);
     return this.call('playlist/update/dynamic/' + id + '?' + q);
   }
 

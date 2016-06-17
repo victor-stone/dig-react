@@ -5,20 +5,18 @@ import Glyph      from '../../components/Glyph';
 import Link       from '../../components/Link';
 import api        from '../../services/ccmixter';
 
+import { EditableTagsField } from '../TagEditor';
+
 import EditableDescription from './EditableDescription';
-import EditableTags        from './EditableTags';
 import DeletePlaylist      from './DeletePlaylist';
 import lookup              from '../../services';
 
-import { PlaylistOwner,
-         CurrentUserTracker }   from '../../mixins';
+import { CurrentUserTracker }   from '../../mixins';
 
 var EditQueryLink = React.createClass({
 
-  mixins: [PlaylistOwner],
-
   render: function() {
-    if( !this.state.isOwner ) {
+    if( !this.props.store.permissions.isOwner ) {
       return null;
     }
 
@@ -53,7 +51,7 @@ var FeatureLink = React.createClass({
 });
 
 function ShareLink(model) {
-  return 'http://playlists.ccmixter.org/playlist/browse/' + model.id;
+  return 'http://ccmixter.org/playlist/browse/' + model.id;
 }
 
 function Curator(props) {
@@ -91,7 +89,7 @@ var Info = React.createClass({
           <EditableDescription store={store} />
           <ActionButtonBar store={store} />
           <Curator store={store} />
-          <EditableTags store={store} />
+          <EditableTagsField store={store} />
         </div>
       );
   }

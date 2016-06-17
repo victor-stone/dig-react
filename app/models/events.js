@@ -22,6 +22,7 @@ var Events = {
   GET_PARAMS_DEFAULT: 'get_params_default',
   GET_PARAMS_URI:     'get_params_uri',
   MODEL_UPDATED:      'model_updated',
+  TAGS_SELECTED:      'tags_selected',
   
   ACTION_START:       'action_start',
   ACTION_END:         'action_end',

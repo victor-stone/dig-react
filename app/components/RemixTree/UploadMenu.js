@@ -1,18 +1,21 @@
 import React            from 'react';
-import { UploadOwner }  from '../../mixins';
 import Glyph            from '../Glyph';
 import InlineCSS        from '../InlineCSS';
 import css              from './style/upload-menu';
 import AddToPlaylist    from './actions/AddToPlaylist';
 import Share            from '../SharePopup';
+import {CurrentUserTracker} from '../../mixins';
 
 var UploadMenu = React.createClass({
 
-  mixins: [ UploadOwner ],
+  mixins: [CurrentUserTracker],
 
   render() {
-    var o = this.state.owner;
-    var store = o.store;
+    if( this.state.userLoading ) {
+      return null;
+    }
+    var store = this.props.store;
+    var user = this.state.user;
 
     return (
       <div>
@@ -24,13 +27,13 @@ var UploadMenu = React.createClass({
             <span className="icon-bar"></span>
           </a>
           <ul className="dropdown-menu">
-            {o.user
-              ? <li><AddToPlaylist store={store} user={o.user}/></li>
+            {user
+              ? <li><AddToPlaylist store={store} /></li>
               : null
             }            
             <li><a href="#"><Glyph fixed icon="flag" />{" Report"}</a></li>
             <li><Share model={store.model.upload} bare caption fixed /></li>
-            {o.isAdmin
+            {user.isAdmin
               ? <li><a href="#"><Glyph fixed icon="minus-circle" />{" Ban"}</a></li>
               : null
             }            

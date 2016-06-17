@@ -1,10 +1,10 @@
-import Query       from './query';
-import Upload      from './upload';
-import ccmixter    from '../models/ccmixter';
-import serialize   from '../models/serialize';
-import events      from '../models/events';
-import env         from '../services/env';
-import rsvp        from 'rsvp';
+import QueryWithTags    from './query-with-tags';
+import Upload           from './upload';
+import ccmixter         from '../models/ccmixter';
+import serialize        from '../models/serialize';
+import events           from '../models/events';
+import env              from '../services/env';
+import rsvp             from 'rsvp';
 
 import { oassign,
          cleanSearchString }   from '../unicorns';
@@ -15,7 +15,7 @@ const DEFAULT_SEARCH_MINITEMS = 1;
 const DEFAULT_USER_MINITEMS   = '-1';
 const DEFAULT_MINITEMS        = 5;
 
-class Playlists extends Query {
+class Playlists extends QueryWithTags {
 
   constructor() {
     super(...arguments);
@@ -33,7 +33,7 @@ class Playlists extends Query {
   }
 
   get tagFilter() {
-    return this.tags.forCategories( ['genre','mood'], '');
+    return this.tagStore.forCategories( ['genre','mood'], '');
   }
 
   get uploadStore() {

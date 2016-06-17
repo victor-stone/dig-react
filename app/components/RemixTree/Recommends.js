@@ -4,35 +4,30 @@ import { AccordianPanel }      from '../Accordian';
 import People                  from '../People';
 import Ratings                 from '../../stores/ratings';
 import { CollapsingModel,
-         UploadOwner,
          ModelTracker }        from '../../mixins';
-import api                     from '../../services/ccmixter';
 import Glyph                   from '../Glyph';
-
-var nextRecommendsButtonId = 0;
 
 const RecommendsButton = React.createClass({
 
-    mixins: [ UploadOwner ],
-
-    getInitialState() {
-      return { id: 'reccbtn_' + ++nextRecommendsButtonId };
-    },
+    mixins: [ModelTracker],
 
     shouldComponentUpdate(nextProps,nextState) {
-      return this.state.owner.okToRate !== nextState.owner.okToRate;
+      return this.state.store.permissions.okToRate !== nextState.store.permissions.okToRate;
+    },
+
+    stateFromStore(store) {
+      return { id: 'recc_' + store.model.upload.id, store };
     },
 
     onRecommends() {
       // http://stackoverflow.com/questions/17327668/best-way-to-disable-button-in-twitters-bootstrap
       $('#' + this.state.id).prop({disabled:true}).addClass('btn-disabled');
-      var o = this.state.owner;
-      this.props.store.performAction(api.upload.rate( o.store.model.upload.id, o.user.id ));
+      this.state.store.recommend();
     },
 
     render() {
       return (
-          this.state.owner.okToRate
+          this.state.store.permissions.okToRate
             ? <button id={this.state.id} onClick={this.onRecommends} className="ratings pull-right"><Glyph icon="thumbs-up" /></button>
             : null
         );

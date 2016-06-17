@@ -126,14 +126,10 @@ class TagString
     this._tagsArray = TagString.toArray(opts.source,this.opts);
   }
 
-  get opts() {
-    return {
-      ignore: this.ignore,
-      invalid: this.invalid,
-      separator: this.separator
-    };
-  }
-
+  
+  /*
+      Editing
+  */
   add(tag) {
     
     if( tag instanceof TagString ) {
@@ -192,10 +188,6 @@ class TagString
     return this;
   }
            
-  isEmpty() {
-    return this._tagsArray.length === 0;
-  }
-
   toggle(tag,flag) {
     if( flag ) {
       this.add(tag);
@@ -205,6 +197,13 @@ class TagString
     return this;
   }
           
+  /*
+      Queries 
+  */
+  isEmpty() {
+    return this._tagsArray.length === 0;
+  }
+
   contains(tagsOrFunction) {
     if( typeof tagsOrFunction === 'function' ) {
       return find(this._tagsArray, tagsOrFunction) !== false;
@@ -268,6 +267,26 @@ class TagString
               .find( this.anyInString.bind(this) );
   }
 
+  getLength() {
+    return this._tagsArray.length;
+  }
+
+  get length() {
+    return this._tagsArray.length;
+  }
+
+  /*
+      Utilities
+  */
+
+  get opts() {
+    return {
+      ignore: this.ignore,
+      invalid: this.invalid,
+      separator: this.separator
+    };
+  }
+
   clone() {
     var opts = this.copyOptions();
     opts.src = this._tagsArray;
@@ -276,14 +295,6 @@ class TagString
 
   copyOptions() {
     return merge({},this.opts);
-  }
-
-  getLength() {
-    return this._tagsArray.length;
-  }
-
-  get length() {
-    return this._tagsArray.length;
   }
 
   toString() {

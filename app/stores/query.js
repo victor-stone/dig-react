@@ -40,7 +40,7 @@ class Query extends QueryBasic {
     return this._expandQP(this.model.queryParams);
   }
   
-  get tags() {
+  get tagStore() {
     if( !this._tags ) {
       this._tags = new Tags();
     }
@@ -51,9 +51,14 @@ class Query extends QueryBasic {
     return this._refresh(this._qp({offset},events.PARAMS_CHANGED));
   }
 
+  // use this instead of the property if you
+  // need the return promise
   applyTags(tags) {
     var qp = { tags: tags.toString() };
-    return this.refreshModel(qp);    
+    return this.refreshModel(qp).then( model =>{
+      this.emit(events.TAGS_SELECTED);
+      return model;
+    });
   }
 
   applyURIQuery(qp) {
@@ -136,7 +141,7 @@ class Query extends QueryBasic {
                     remixmin: 1,
                     searchp: text
                   },'artists');
-        hash.genres = this.tags.searchTags( text.split(/\s/).filter( t => t.length > MIN_GENRE_TAG_SIZE ), 'genres' );
+        hash.genres = this.tagStore.searchTags( text.split(/\s/).filter( t => t.length > MIN_GENRE_TAG_SIZE ), 'genres' );
       }
     }
 

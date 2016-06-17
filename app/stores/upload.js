@@ -2,7 +2,11 @@ import QueryBasic       from './query-basic';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import events           from '../models/events';
-//import rsvp             from 'rsvp';
+import api              from '../services/ccmixter';
+import { TagString }    from '../unicorns';
+import TagsOwner        from '../mixins/tags-owner';
+import Permissions      from '../mixins/permissions';
+
 
 function _fixFeaturing(model) {
   if( !model.upload.featuring && model.sources && model.upload.setFeatureSources ) {
@@ -11,15 +15,67 @@ function _fixFeaturing(model) {
   return model;
 }
 
-class Upload extends QueryBasic {
+class Upload extends Permissions(TagsOwner(QueryBasic)) {
 
   constructor() {
     super(...arguments);
     this.model = {};
   }
 
+  getPermissions(model) {
+    return api.user.currentUser()
+            .then( user => {
+                if( user ) {
+                    return api.upload.permissions(model.upload.id,user).then( results => {
+                      return( Object.assign( {isOwner:user === model.upload.artist.id}, results ) );
+                    });
+                }
+                return this.nullPermissions;
+            }).then( perms => {
+              this.permissions = perms;
+              return model;
+            });
+  }
+
+  get nullPermissions() {
+    return { 
+      isOwner: false,
+      okToRate: false,
+      okToReview: false
+    };
+  }
+
   get queryParams() {
     return (this.model && this.model.queryParams) || {};
+  }
+
+  get tags() {
+    return new TagString(this.model.upload.userTags);
+  }
+
+  set tags(t) {
+    var tags = t.toString();
+    this.applyProperties({tags}).then( () => {
+      this.emit(events.TAGS_SELECTED);
+    });
+  }
+
+  applyProperties(props) {
+    return api.upload.update(this.model.upload.id,props).then( this.refresh.bind(this) );
+  }
+
+  recommend() {
+    return api.user.currentUser()
+            .then( user => {
+              return api.upload.rate( this.model.upload.id, user );
+            }).then( () => this.refresh() );
+  }
+
+  review(text) {
+    return api.user.currentUser()
+            .then( user => {
+              return api.upload.review( this.model.upload.id, user, text );
+            }).then( () => this.refresh() );
   }
 
   find(id,userid,_flags) {
@@ -57,10 +113,12 @@ class Upload extends QueryBasic {
         model.upload.artist = user;
         model.queryParams   = { ids: id, u: user.id };
         
-        this.model = model;
+        return this.getPermissions(model);
 
+      }).then( model => {
+
+        this.model = model;
         this.emit( events.MODEL_UPDATED, model );
-        
         return model;
 
       }).catch( e => {

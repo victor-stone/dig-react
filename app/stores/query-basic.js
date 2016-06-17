@@ -1,8 +1,6 @@
 import rsvp             from 'rsvp';
-
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
-import events           from '../models/events';
 import Eventer          from '../services/eventer';
 import queryAjaxAdapter from '../services/query-ajax-adapter';
 import { oassign,
@@ -31,6 +29,7 @@ class Query extends Eventer
     return this.query(params,deferName).then( r => r[0] );
   }
   
+  /*
   performAction( action ) {
     this.emit( events.ACTION_START, action.name );
     var resultHolder = null;
@@ -43,6 +42,7 @@ class Query extends Eventer
               return resultHolder;
             });
   }
+  */
 
   refresh() {
     // define in derivations
@@ -85,10 +85,12 @@ class Query extends Eventer
     return countParams;    
   }
 
+  /*
   transaction(promise) {
     this.adapter._inc();
     return promise.finally( () => this.adapter._dec() );
   }
+  */
 
   _clean(p) {
     if( !('f' in p) && !('format' in p) ) {

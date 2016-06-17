@@ -86,6 +86,8 @@ const Header = React.createClass({
                 <li>
                   <DeadLink><LoadingGlyph /></DeadLink>
                 </li>
+                                <li><Link href="/workbench">{"workbench"}</Link></li>
+
                 <li  id="tree_menu_tab" >
                   <Link href="/tree">{"remix tree"}</Link>
                 </li>

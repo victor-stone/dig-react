@@ -7,8 +7,6 @@ import { TagString,
 
 const REMIX_CATEGORY_NAMES = ['genre', 'instr', 'mood'];
 
-const DEFAULT_CAT = '*';
-
 const MIN_REMIX_TAG_PAIR = 10;
 const MIN_SAMPLE_TAG_PAIR = 5;
 const SORT_UP = 1;
@@ -22,8 +20,11 @@ class Tags extends Query {
 
   constructor() {
     super(...arguments);
+    /*
     this.selectedTags = {};
     this.selectedTags[DEFAULT_CAT] = new TagString();
+    */
+    this.typeValues = Object.keys(Tags.categories.types).map( t => Tags.categories.types[t] );
   }
 
   // return a TagString object
@@ -57,16 +58,23 @@ class Tags extends Query {
       return ts;
     });
   }
+  
   // return an array of Tag models
   category(category,pairWith,minCount,deferName) {
+    var isType = this.typeValues.contains(category); 
     var q = {   
-      category: category,
+      category: (!isType && category) || null,
+      type:     (isType && category) || null,
       pair:     pairWith,
       sort:     'name',
       ord:      'asc',
       min:      minCount,
       dataview: 'tags'
     };
+    return this._fetch(q,deferName);
+  }
+  
+  _fetch(q,deferName) {
     var cached = this._checkCache(q);
     if( cached.models ) {
       return rsvp.resolve(cached.models);
@@ -76,9 +84,9 @@ class Tags extends Query {
             .then( models => {
               this._putCache(cached.key,models);
               return models;
-            });
+            });    
   }
-  
+
   // returns a hash with each category name as a property
   // who's value is an array of objects that were created
   // serializing the json through the Tag models
@@ -137,5 +145,17 @@ class Tags extends Query {
     return allTags;
   }
 }
+
+Tags.categories = {
+  GENRE:      'genre',
+  INSTRUMENT: 'instr',
+  MOOD:       'mood',
+  types: {
+    SYSTEM: 'system',
+    ADMIN:  'admin',
+    USER: 'user',
+    ASSIGNABLE: 'system:assignable'
+  }
+};
 
 module.exports = Tags;

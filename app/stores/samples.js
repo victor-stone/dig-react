@@ -1,8 +1,8 @@
-import Query            from './query';
+import QueryWithTags    from './query-with-tags';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 
-class Samples extends Query {   
+class Samples extends QueryWithTags {   
 
   fetch(queryParams,deferName) {
     queryParams.dataview = 'default'; // links_by doesn't have bpm

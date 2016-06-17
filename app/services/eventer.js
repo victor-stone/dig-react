@@ -18,9 +18,10 @@ const MAX_LISTENERS = 50;
 
 class Eventer {
 
-  constructor() {
+  constructor(validateEvents) {
     this.__events = new EventEmitter();
     this.__events.setMaxListeners( MAX_LISTENERS );
+    this._validateEvents = typeof(validateEvents) === 'undefined' || validateEvents;
   }
 
   on(name,cb) {
