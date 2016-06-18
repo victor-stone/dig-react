@@ -1,7 +1,5 @@
 import React       from 'react';
 
-import api from '../../../services/ccmixter';
-import env from '../../../services/env';
 import { FormItem } from '../../Form';
 
 import { ModelTracker,
@@ -21,7 +19,7 @@ var BPM = React.createClass({
 
   stateFromStore(store) {
     var text = store.model.upload.bpm;
-    return { text, orgText: text, editing: false };
+    return { text, orgText: text, store };
   },
 
   doneEdit() {

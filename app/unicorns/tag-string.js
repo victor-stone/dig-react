@@ -297,10 +297,11 @@ class TagString
     return merge({},this.opts);
   }
 
-  toString() {
+  toString(withSeparator) {
     var tagArr = this._tagsArray;
     if( tagArr.length > 0 ) {
-        return tagArr.join(this.separator);
+        var sep = withSeparator || this.separator;
+        return tagArr.join(sep);
     }
     return '';
   }

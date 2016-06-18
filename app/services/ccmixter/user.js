@@ -9,13 +9,32 @@ const NOT_LOGGED_IN = null;
 
 class User extends API
 {
+
+  constructor() {
+    super(...arguments);
+    this._onLoginSuccess = this._onLoginSuccess.bind(this);
+    this._onLoginReject  = this._onLoginReject.bind(this);
+    this._onCurrentUserSuccess = this._onCurrentUserSuccess.bind(this);
+    this._onCurrentUserReject  = this._onCurrentUserReject.bind(this);
+  }
+
+  _onLoginSuccess(username) {
+    cookies.create( 'username', username );
+    this._setCurrentUser(username);
+    return this.currentUserProfile().then( profile => {
+      this.emit( events.USER_LOGIN, username );
+      return profile;
+    });
+  }
+
+  _onLoginReject(status) {
+    this.emit( events.USER_LOGIN, null );
+    throw status;
+  }
+
   login( username,password ) {
     return this.call('user/login?remember=1&username=' +  username + '&password=' + password )
-      .then( result => {
-        cookies.create( 'username', result.data );
-        this.emit( events.USER_LOGIN, this._setCurrentUser(result) );
-        return result;
-      });
+      .then( this._onLoginSuccess, this._onLoginReject );
   }
 
   logout() {
@@ -29,19 +48,28 @@ class User extends API
                 });
   }
 
+  _onCurrentUserSuccess(username) {
+    return this._setCurrentUser(username);
+  }
+
+  _onCurrentUserReject(status) {
+    this._setCurrentUser(NOT_LOGGED_IN);
+    throw status;
+  }
+
   currentUser() {
     if( global.IS_SERVER_REQUEST  ) {
-      return rsvp.resolve( NOT_LOGGED_IN );
+      return rsvp.reject( NOT_LOGGED_IN );
     }
 
     if( !_.isUndefined(this._currentUser) ) {
-      return rsvp.resolve( this._currentUser );
+      return this._currentUser ? rsvp.resolve( this._currentUser ) : rsvp.reject( NOT_LOGGED_IN );
     }
 
     if( document.cookie ) {
       var id = cookies.value('username');
       if( id ) {
-        this._setCurrentUser( { data: id } );
+        this._setCurrentUser( id );
         return rsvp.resolve( id );
       }
     }
@@ -51,7 +79,7 @@ class User extends API
     }
 
     this._currentUserPromise = this.call('user/current')
-                                      .then( this._setCurrentUser.bind(this) );
+                                      .then( this._onCurrentUserSuccess, this._onCurrentUserReject );
 
     return this._currentUserPromise;                                      
   }
@@ -79,8 +107,8 @@ class User extends API
     return this.call(`user/follow/${type}/${follower}/${followee}`);
   }
 
-  _setCurrentUser(status) {
-    this._currentUser = status.data || NOT_LOGGED_IN; // data might be 'undefined'
+  _setCurrentUser(username) {
+    this._currentUser = username;
     this._currentUserPromise = null;
     return this._currentUser;
   }

@@ -322,6 +322,8 @@ const CheckableTagsList = React.createClass({
 CheckableTagsList.css = SelectableTagList.css + `
 .tag-list-checkable-container {
   overflow: scroll;
+  background-color: rgba(96, 125, 139, 0.08);
+  border-radius: 8px;
 }
 .tag-list-checkable li.tag-selectable-checks {
     padding: 0 4px;
@@ -439,6 +441,11 @@ SelectedTagList.css = SelectableTagList.css + `
     - selected [TagString]
 */
 
+function tagOccurrances(cat,tags) {
+  var arr = cat.map( t => t.id );
+  var regx = new RegExp('\\b(' + tags.toString('|') +  ')\\b','g');
+  return arr.match(regx).length;
+}
 const DEFAULT_MIN_TAG_COUNT = 100;
 
 var CategoryTagBox = React.createClass({
@@ -451,23 +458,29 @@ var CategoryTagBox = React.createClass({
     var store = new TagStore();
     var minCount = this.props.minCount || DEFAULT_MIN_TAG_COUNT;
     store.category(this.props.category,this.props.pairWith,minCount)
-      .then( this.tagsResponse );
+      .then( this.onReceivedTags );
   },
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ selected: new TagString(nextProps.selected) });
+    var ts = new TagString(nextProps.selected);
+    var maxReached = this.props.maxAllowed && tagOccurrances(this.state.model,ts) >= this.props.maxAllowed;
+    this.setState({ selected: ts,  maxReached });
   },
 
-  tagsResponse(model) {
+  onReceivedTags(model) {
     this.setState({model});
   },
 
   render() {
+    var cls = 'tag-list-category';
+    if( this.props.className ) {
+      cls += ' ' + this.props.className;
+    }
 
     return (
         <div>
           <InlineCSS css={CategoryTagBox.css} id="category-tag-box-css" />
-          <CheckableTagsList className="tag-list-category" model={this.state.model} selected={this.state.selected} onSelected={this.props.onSelected} />
+          <CheckableTagsList className={cls} model={this.state.model} selected={this.state.selected} onSelected={this.props.onSelected} />
         </div>
       );
   }
@@ -522,7 +535,7 @@ var BoundCategoryTagBox = React.createClass({
     if( this.props.className ) {
       cls += ' ' + this.props.className;
     }
-    return (<CategoryTagBox 
+    return (<CategoryTagBox                
                 category={this.props.category} 
                 minCount={this.props.minCount} 
                 selected={this.state.tags} 
@@ -590,32 +603,41 @@ var EditableTagsField = React.createClass({
     return { editing: false };
   },
 
-  onEdit() {
+  onEdit(e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.setState( {editing:true});
   },
 
-  onCancel() {
+  onCancel(e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.setState( {editing:false} );
   },
 
   render() {
     return(
-          <div className="input-group">
-            <span className="form-control">
-              {this.state.editing
-                ? <BoundStaticTagList store={this.props.store} />
-                : <DualTagFieldWidget store={this.props.store} />
+        <div className="form-group">
+          <div className="col-md-12">
+            <div className="input-group">
+              <span className="input-group-addon">{"tags"}</span>
+              <span className="form-control initial-height">
+                {this.state.editing
+                  ? <DualTagFieldWidget store={this.props.store} />
+                  : <BoundStaticTagList store={this.props.store} />
+                }
+              </span>
+              {this.props.store.permissions.isOwner
+                  ? <span className="input-group-addon">
+                      {this.state.editing
+                        ? <a href="#" onClick={this.onCancel} className="btn btn-danger"><Glyph icon="times" /></a>
+                        : <a href="#" onClick={this.onEdit}><Glyph icon="edit" /></a>}
+                    </span>
+                  : null
               }
-            </span>
-            {this.props.store.permissions.isOwner
-                ? <div className="btn-group">
-                    {this.state.editing
-                      ? <button className="btn btn-default" onClick={this.onCancel}><Glyph icon="times" /></button>
-                      : <button className="btn btn-default" onClick={this.onEdit}><Glyph icon="pencil" /></button>}
-                  </div>
-                : null
-            }
+            </div>
           </div>
+        </div>
         );
   }
 });
@@ -632,7 +654,9 @@ module.exports = {
   BoundCategoryTagBox,
   BoundSelectedTagList,
   EditableTagsField,
-  DualTagFieldWidget
+  DualTagFieldWidget,
+
+  tagOccurrances
 };
 
 //

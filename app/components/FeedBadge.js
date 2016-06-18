@@ -21,14 +21,17 @@ var FeedBadge = React.createClass({
     this.setState( { feedcount: 0 } );
   },
 
+  onLastSeenCount(feedcount) {
+    this.setState( {feedcount} );
+  },
+
   stateFromUser(user) {
-    if( user ) {
+    if( user ) { 
       if( !this.state  || !this.state.user || user.id !== this.state.user.id ) {
-        this.props.store.lastSeenCount(user.id).then( feedcount => this.setState( {feedcount} ) );
-        return { user };
+        this.props.store.lastSeenCount(user.id).then( this.onLastSeenCount );
       }
     }
-    return { user: null };
+    return { user };
   },
 
   render() {

@@ -6,6 +6,7 @@ import api    from '../../../services/ccmixter';
 import env    from '../../../services/env';
 
 import Playlists from '../../../stores/playlists';
+import { CurrentUserTracker } from '../../../mixins';
 
 class AddToPlaylistPopup extends Modal.Popup {
 
@@ -83,10 +84,10 @@ class AddToPlaylistPopup extends Modal.Popup {
              icon="plus"
              buttonText="Add" 
              closeText="Cancel" 
+             error={this.state.error}
              submitDisabler={this.shouldSubmitDisable}
              {...this.props}
       >
-        <Alert type="danger" text={this.state.error} />
         <div id="fade-group">
         {sl
           ? <div className="form-group">
@@ -119,6 +120,8 @@ class AddToPlaylistPopup extends Modal.Popup {
 
 var AddToPlaylistLink = React.createClass({
 
+  mixins: [CurrentUserTracker],
+
   showPlaylistPopup(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -126,10 +129,10 @@ var AddToPlaylistLink = React.createClass({
     playlists.autoFilterTags = false;
     var opts = {
       limit: 200,
-      dynamic: '-1'
+      dynamic: '-1',
+      user: this.state.user.id
     };
-    api.user.currentUser()
-      .then( u => playlists.getModel(Object.assign(opts,{u})))
+    playlists.getModel( opts )
       .then( () => AddToPlaylistPopup.show( AddToPlaylistPopup,{ store: playlists, model: this.props.store.model.upload, user: opts.u } ));
   },
 

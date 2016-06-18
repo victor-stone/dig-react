@@ -3,7 +3,13 @@ import Glyph from '../components/Glyph';
 
 var EditControls = {
 
-  _startEdit() {
+  getInitialState() {
+    return { editing: false };
+  },
+  
+  _startEdit(e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.setState( { editing: true }, () => {
       if( this.props.focusId ) {
         /* globals $ */
@@ -24,7 +30,9 @@ var EditControls = {
     this.setState( { editing: false } );
   },
 
-  _cancelEdit() {
+  _cancelEdit(e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.setState( { editing: false }, () => {
       if( this.cancelEdit ) {
         this.cancelEdit();

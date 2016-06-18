@@ -91,11 +91,14 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
               });
   }
 
-  getPermissions(model) {
+  getPermissions(head) {
     return api.user.currentUser()
       .then( user => {
-        this.permssions = { isOwner: user === model.head.curator.id };
-        return model;
+        this.permssions = { isOwner: user === head.curator.id };
+        return head;
+      }, () => {
+        this.permssions = this.nullPermissions;
+        return head;
       });
   }
 
@@ -106,7 +109,7 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
     };
     return this.queryOne(q)
       .then( serialize( ccmixter.PlaylistHead ) )
-      .then( this.getPermissions );
+      .then( this.getPermissions.bind(this) );
   }
 
   _fetchTracks(id) {

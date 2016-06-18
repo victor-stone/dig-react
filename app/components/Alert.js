@@ -1,6 +1,9 @@
 /*eslint "react/no-danger":0 */
 /* globals $ */
 import React from 'react';
+import env from '../services/env';
+
+const ALERT_TIMEOUT = 5000;
 
 var Alert = React.createClass({
 
@@ -15,6 +18,9 @@ var Alert = React.createClass({
     var $e = $('#' + this.state.id);
     $e.show();
     $e.on('close.bs.alert', this.props.onClose);
+    if( !this.props.noAutoFade ) {
+      setTimeout( () => $e.fadeOut('slow',() => $e.alert('close')), ALERT_TIMEOUT);
+    }
   },
 
   componentWillReceiveProps(props) {
@@ -50,6 +56,10 @@ var Alert = React.createClass({
     );
   }
 });
+
+Alert.show = function(type,msg) {
+  env.alert(type,msg);
+};
 
 module.exports = Alert;
 

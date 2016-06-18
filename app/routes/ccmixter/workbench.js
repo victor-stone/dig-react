@@ -52,7 +52,7 @@ var workbench = React.createClass({
   },
 
   componentDidMount() {
-    Upload.storeFromQuery(22419).then( store => {
+    Upload.storeFromQuery(52185).then( store => {
       upload = store; 
       this.fooler({loadedState: true});
     });
@@ -88,6 +88,15 @@ var workbench = React.createClass({
     return ( 
       <div className="container-fluid workbench">
         <InlineCSS css={wbCss} id="wbCss" /> 
+        <div className="row">
+          <div className="col-md-6  col-md-offset-1" >
+            <form className="form-horizontal">
+                <div className="form-group">
+                  <T.EditableTagsField store={upload} />
+                </div>
+            </form>
+          </div>
+        </div>
         <div className="row">
           <div className="col-md-2  col-md-offset-1" >
             <div>

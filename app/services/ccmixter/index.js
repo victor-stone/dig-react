@@ -1,5 +1,4 @@
 import RPCAdapter   from '../rpc-adapter';
-import env          from '../env';
 import Eventer      from '../eventer';
 
 import Feed      from './feed';
@@ -21,27 +20,25 @@ class CCMixter extends Eventer
     this.uploads     = this.upload;
   }
 
-  _call_wrap(promise) {
+  _call_wrap(promise,debug) {
     return promise.then( result=> {
-      if( typeof result.status === 'undefined' || result.status === 'error' ) {
-        throw new Error(result.errmsg || 'because error');
+      if( !result || typeof result.status === 'undefined' || result.status === 'error' ) {
+        throw result && result.errmsg || 'because error ' + debug;
       }
-      return (result.data || result);
-    }).catch( e => {
-      env.alert('danger', 'wups, that didn\'t work so well: ' + e.message );
+      return result.data;
     });
   }
 
   _call(cmd) {
-    return this._call_wrap(this.adapter.callOne(cmd));
+    return this._call_wrap(this.adapter.callOne(cmd),cmd);
   }
 
   _post(cmd,args) {
-    return this._call_wrap(this.adapter.post(cmd,args));
+    return this._call_wrap(this.adapter.post(cmd,args),cmd);
   }
 
   _patch(cmd,args) {
-    return this._call_wrap(this.adapter.patch(cmd,args));
+    return this._call_wrap(this.adapter.patch(cmd,args),cmd);
   }
 }
 

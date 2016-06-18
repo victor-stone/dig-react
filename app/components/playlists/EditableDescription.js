@@ -19,7 +19,7 @@ var EditableDescription = React.createClass({
     if( raw ) {
       raw = cleanLinks(raw);
     }
-    return { text: desc, orgText: desc, raw };
+    return { text: desc, orgText: desc, raw, store };
 
   },
 

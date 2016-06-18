@@ -116,20 +116,17 @@ const App = React.createClass({
         subnav = React.createElement( comp.subnav, { store: this.state.store } );
       }
     }
-    var alert = this.state.alert
-            ? <Alert type={this.state.alertType} text={this.state.alert} className="system-alert" onClose={this.onAlertClosed}/>
-            : null;
-    var title  = comp && comp.title;
+
     return (
       <div>
         <Modal.Container />
         <div id="wrap">
-          <TitleSetter title={title} />
+          <TitleSetter title={comp && comp.title} />
           <Banner />
           {this.state.header}
           {subnav}
           <ErrorDisplay />
-          {alert}
+          {this.state.alert && <Alert type={this.state.alertType} text={this.state.alert} className="system-alert" onClose={this.onAlertClosed}/>}
           <div className="outlet-wrap">{elem}</div>
         </div>
         {this.state.footer}

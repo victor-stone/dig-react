@@ -22,19 +22,32 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
     this.model = {};
   }
 
+
+  _onCurrentUserReject() {
+    return this.nullPermissions;
+  }
+
   getPermissions(model) {
+    var success = function(user) {
+        return api.upload.permissions(model.upload.id,user).then( results => {
+          return( Object.assign( {isOwner:user === model.upload.artist.id}, results ) );
+        });
+    };
+
+    var me = this;
+
+    var reject = function() {
+      return me.nullPermissions;
+    };
+
+    var pthen = function( perms ) {
+      me.permissions = perms;
+      return model;
+    };
+
     return api.user.currentUser()
-            .then( user => {
-                if( user ) {
-                    return api.upload.permissions(model.upload.id,user).then( results => {
-                      return( Object.assign( {isOwner:user === model.upload.artist.id}, results ) );
-                    });
-                }
-                return this.nullPermissions;
-            }).then( perms => {
-              this.permissions = perms;
-              return model;
-            });
+            .then( success, reject )
+            .then( pthen );
   }
 
   get nullPermissions() {

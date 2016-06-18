@@ -39,6 +39,10 @@ var InlineCSS = React.createClass({
     sheetParent.removeChild(sheetToBeRemoved);
   },
 
+  shouldCompnentUpdate() {
+    return false;
+  },
+
   render() {
     return null;
   }

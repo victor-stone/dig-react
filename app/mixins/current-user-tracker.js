@@ -26,21 +26,25 @@ const CurrentUserTracker = {
 
   checkForUser() {
     var profileHandler = function(profile) {
+      if( !this.unMounted ) { 
         var state = this.stateFromUser ? this.stateFromUser(profile,this.props) : { user: profile };
         state.userLoading = false;
         this.setState( state );
+      }
     }.bind(this);
 
-    return  api.user.currentUser().then( id => {
+    var onSuccess = function( id ) {
       if( !this.unMounted ) { // unclear where/when this needs to be protected from
-        if( id ) {
-            api.user.currentUserProfile().then( profileHandler );
-        } else {
-          profileHandler(null);
-        }
+        api.user.currentUserProfile().then( profileHandler );
       }
       return id;
-    });
+    }.bind(this);
+
+    var onReject = function() {
+      profileHandler(null);
+    }.bind(this);
+
+    return  api.user.currentUser().then( onSuccess, onReject );
   },
 
 };

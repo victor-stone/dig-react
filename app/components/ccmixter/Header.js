@@ -11,8 +11,8 @@ import LoadingGlyph    from '../LoadingGlyph';
 import NavbarHeader    from '../NavbarHeader';
 import { DeadLink }    from '../ActionButtons';
 import CurrentUserMenu from '../CurrentUserMenu';
-
-import Login  from './Login';
+import Alert           from '../Alert';
+import Login           from './Login';
 
 const UserMenu = React.createClass({
 
@@ -20,13 +20,12 @@ const UserMenu = React.createClass({
 
   onLogout() {
     api.user.logout().then( () => {
-      lookup('env').alert('success', 'you are now logged out');
+      Alert.show('success', 'you are now logged out');
     });
   },
 
   onLogin() {
-    //this.setState( { showLogin: true } );
-    lookup('env').emit( events.REQUEST_MODAL, Login );
+    Login.show( Login );
   },
 
   render() {

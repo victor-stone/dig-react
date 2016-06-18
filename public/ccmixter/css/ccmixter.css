@@ -29,6 +29,11 @@
 .feedbadge {
   background: red;
 }
+
+.initial-height {
+  height: initial;
+}
+
 .navbar-brand {
   padding-top: 8px;
 }

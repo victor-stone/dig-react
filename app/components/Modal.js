@@ -1,11 +1,17 @@
 import React    from 'react';
 import ReactDOM from 'react-dom';
 import Glyph    from './Glyph';
-import { CloseButton } from './ActionButtons';
+import Alert    from './Alert';
 import env      from '../services/env';
 import events   from '../models/events';
 
+import { CloseButton } from './ActionButtons';
+
 const Modal = React.createClass({
+
+  getInitialState() {
+    return { error: this.props.error };
+  },
 
   componentDidMount: function() {
     /* globals $ */
@@ -17,11 +23,30 @@ const Modal = React.createClass({
     });
   },
 
+  componentWillReceiveProps(nextProps) {
+    this.setState( {error: nextProps.error});
+  },
+
+  _getButtonText() {
+    return ' ' + (this.props.buttonText || 'Submit');
+  },
+
   onSubmit() {
     /* globals $ */
     $('.modal-submit').prop({disabled:true}).removeClass('btn-success');
-    $('.modal-submit-text').text('saving...');
-    this.props.action();
+    $('.modal-submit-text').text(' saving...');
+    var possibleThenable = this.props.action();
+    if( possibleThenable.then ) {
+      possibleThenable.then( () => {
+        var text = this._getButtonText();
+        $('.modal-submit').prop({disabled:false}).addClass('btn-success');
+        $('.modal-submit-text').text(text);
+      });
+    }
+  },
+
+  onAlertClosed() {
+    this.setState({error:''});
   },
 
   render(){
@@ -29,7 +54,7 @@ const Modal = React.createClass({
     var subTitle = this.props.subTitle;
     var action   = this.onSubmit;
     var icon     = this.props.icon || 'share';
-    var text     = ' ' + (this.props.buttonText || 'Submit');
+    var text     = this._getButtonText();
     var close    = ' ' + (this.props.closeText || 'Close');
     var disabled = this.props.submitDisabler && this.props.submitDisabler() || false; 
 
@@ -42,6 +67,7 @@ const Modal = React.createClass({
             <h4 className="modal-title"><span className="light-color">{subTitle}</span> {title}</h4>
           </div>
           <div className="modal-body">
+            {this.state.error && <Alert type="danger" noAutoFade onClose={this.onAlertClosed} text={this.props.error} />}
             {this.props.children}
           </div>
           <div className="modal-footer">

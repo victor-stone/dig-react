@@ -44,9 +44,9 @@ class ReviewPopup extends Modal.Popup {
              title={this.props.store.model.upload.name}  
              buttonText="Submit" 
              closeText="Cancel" 
+             error={this.state.error}
              {...this.props}
       >
-          <Alert type="danger" text={this.state.error} />
           <div className="form-group">
               <label>{"Your review:"}</label>
               <FormattedTextEditor  onChange={this.onChange} />

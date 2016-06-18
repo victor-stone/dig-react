@@ -33,7 +33,7 @@ var UploadMenu = React.createClass({
             }            
             <li><a href="#"><Glyph fixed icon="flag" />{" Report"}</a></li>
             <li><Share model={store.model.upload} bare caption fixed /></li>
-            {user.isAdmin
+            {user && user.isAdmin
               ? <li><a href="#"><Glyph fixed icon="minus-circle" />{" Ban"}</a></li>
               : null
             }            

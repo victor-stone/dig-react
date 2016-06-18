@@ -63,8 +63,8 @@ class Tags extends Query {
   category(category,pairWith,minCount,deferName) {
     var isType = this.typeValues.contains(category); 
     var q = {   
-      category: (!isType && category) || null,
-      type:     (isType && category) || null,
+      category: (!isType && category) || undefined,
+      type:     (isType && category) || undefined,
       pair:     pairWith,
       sort:     'name',
       ord:      'asc',

@@ -1,66 +1,71 @@
 import React            from 'react';
-import ReactDOM         from 'react-dom';
 import api              from '../../services/ccmixter';
-import lookup           from '../../services';
 import Modal            from '../Modal';
 import Alert            from '../Alert';
 
-var Login = React.createClass({
+class Login extends Modal.Popup
+{
+  constructor() {
+    super(...arguments);
+    this.state = { error: '',
+                   name: '',
+                   password: '' };
+    this.onLogin             = this.onLogin.bind(this);
+    this.onLoginSuccess      = this.onLoginSuccess.bind(this);
+    this.onLoginReject       = this.onLoginReject.bind(this);
+    this.onNameChange        = this.onNameChange.bind(this);
+    this.onPasswordChange    = this.onPasswordChange.bind(this);
+    this.shouldDisableSubmit = this.shouldDisableSubmit.bind(this);
+  }
 
-  getInitialState() {
-    return { error: '',
-             show: true };
-  },
+  onLoginSuccess() {
+    this.manualClose();
+    Alert.show('success', 'logged in');    
+  }
+
+  onLoginReject(status) {
+    this.setState( { error: status || 'login failed' } );      
+  }
 
   onLogin() {
     this.setState( { error: '' } );
-    api.user.ogin(this.refs['login-name'].value,this.refs['password'].value)
-      .then( result => {
-        if( result['status'] === 'ok') {
-          /* globals $ */
-          var d = $(ReactDOM.findDOMNode(this));
-          d.modal('hide');
-          lookup('env').alert('success', 'logged in');
-        } else {
-          this.setState( { error: result['status'] } );
-        }
-      });
-  },
+    return api.user.login( this.state.name, this.state.password )
+                    .then( this.onLoginSuccess, this.onLoginReject );
+  }
 
-  onCancel() {
-    if( this.props.onCancel ) {
-      this.props.onCancel();
-    }
+  shouldDisableSubmit() {
+    return !this.state.name.length || !this.state.password.length;
+  }
 
-    this.setState( {
-      error: '',
-      show: false
-    });
-  },
+  onNameChange(e) {
+    this.setState( {name:e.target.value});
+  }
+
+  onPasswordChange(e) {
+    this.setState( {password: e.target.value});
+  }
 
   render() {
-    if( !this.state.show ) {
-      return null;
-    }
     return (
-      <Modal action={this.onLogin} handleHideModal={this.onCancel} title="Login" icon="sign-in" buttonText="Login">
-          {this.state.error
-            ? <Alert type="danger" text={this.state.error} />
-            : null
-          }
+      <Modal action={this.onLogin} 
+             title="Login" 
+             icon="sign-in" 
+             buttonText="Login" 
+             submitDisabler={this.shouldDisableSubmit} 
+             error={this.state.error}
+      >
           <div className="form-group">
               <label htmlFor="login-name">{"login name"}</label>
-              <input type="email" className="form-control" ref="login-name" placeholder="login name" />
+              <input type="text" className="form-control" onChange={this.onNameChange} placeholder="login name" />
           </div>
           <div className="form-group">
               <label htmlFor="password">{"password"}</label>
-              <input type="password" className="form-control" ref="password" placeholder="password" />
+              <input type="password" className="form-control" onChange={this.onPasswordChange} placeholder="password" />
           </div>
       </Modal>
       );
   }  
-});
-
+}
 
 module.exports = Login;
 

@@ -9,7 +9,7 @@ var EditableTitle = React.createClass({
 
   stateFromStore(store) {
     var text = store.model.head.name;
-    return { text, orgText: text, editing: false };
+    return { text, orgText: text };
   },
 
   doneEdit() {
@@ -42,7 +42,7 @@ var EditableTitle = React.createClass({
                 </div>
               : <span>{text}</span>
             }
-            {this.state.store.permissions.isOwner && !this.state.editing
+            {this.props.store.permissions.isOwner && !this.state.editing
               ? this.editControls( {title: 'edit name'} )
               : null
             }
