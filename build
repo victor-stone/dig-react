@@ -9,10 +9,10 @@ esac
 done
 gulp clean 
 # server
-gulp server-js   -p ${APIHOST}
+gulp server-js   -p ${APIHOST} ${SATHOST}
 # apps
-gulp --ccmixter  -p ${APIHOST}
-gulp --dig       -p ${APIHOST}
+gulp --ccmixter  -p ${APIHOST} ${SATHOST}
+gulp --dig       -p ${APIHOST} ${SATHOST}
 # satellites
 gulp --stems     -p ${SATHOST}
 gulp --playlists -p ${SATHOST}

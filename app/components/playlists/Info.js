@@ -5,13 +5,13 @@ import Glyph      from '../../components/Glyph';
 import Link       from '../../components/Link';
 import api        from '../../services/ccmixter';
 
-import { EditableTagsField } from '../TagEditor';
-
 import EditableDescription from './EditableDescription';
 import DeletePlaylist      from './DeletePlaylist';
 import lookup              from '../../services';
 
 import { CurrentUserTracker }   from '../../mixins';
+
+import { EditableTagsDiv } from '../TagEditor';
 
 var EditQueryLink = React.createClass({
 
@@ -51,7 +51,10 @@ var FeatureLink = React.createClass({
 });
 
 function ShareLink(model) {
-  return 'http://ccmixter.org/playlist/browse/' + model.id;
+  if( global.IS_SERVER_REQUEST ) {
+    return '#';
+  }
+  return  `http://${document.location.href.replace(document.location.pathname,'')}/playlist/browse/${model.id}`;
 }
 
 function Curator(props) {
@@ -64,6 +67,17 @@ function Curator(props) {
       </div>
     );  
 }
+
+class Tags extends React.Component
+{
+  render() {
+    return (this.props.store.tags.length || this.props.store.permissions.isOwner ?
+            <div className="playlist-tags playlist-bg-color">
+              <EditableTagsDiv store={this.props.store} delayCommit />
+            </div> : null);
+  }
+}
+
 
 function ActionButtonBar(props) {
   var store = props.store;
@@ -89,7 +103,7 @@ var Info = React.createClass({
           <EditableDescription store={store} />
           <ActionButtonBar store={store} />
           <Curator store={store} />
-          <EditableTagsField store={store} />
+          <Tags store={store} />
         </div>
       );
   }

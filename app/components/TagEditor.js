@@ -3,8 +3,8 @@ import Glyph            from './Glyph';
 import InlineCSS        from './InlineCSS';
 import { TagString }    from '../unicorns';
 import TagStore         from '../stores/tags';
-
 import { SelectedTagsTracker } from '../mixins';
+import DelayedCommitTagStore from '../stores/delayed-commit-tag-store';
 
 /*
   In this context 'static' means non-interactive
@@ -32,6 +32,7 @@ import { SelectedTagsTracker } from '../mixins';
 
     Properties:
       tags [TagString] - read/write
+      permissions.isOwner - read only
 
     Methods:
       toggleTag(tag,toggle)
@@ -497,6 +498,7 @@ CategoryTagBox.css = CheckableTagsList.css + `
 `;
 
 
+
 /*
   Props: 
     - store - required property: tags [TagString]
@@ -587,9 +589,18 @@ var BoundSelectedTagList = React.createClass({
 var genreCat = BoundCategoryTagBox.categories.GENRE;
 
 var DualTagFieldWidget = React.createClass({
+
+  componentDidMount() {
+    /* globals $ */
+    if( this.props.cancelCallback ) {
+      $('#blerg').slideDown();
+      this.props.cancelCallback( cb => $('#blerg').slideUp('fast',cb) );
+    }
+  },
+
   render() {
     return(
-      <div>
+      <div id="blerg" style={this.props.cancelCallback && {display:'none'}}>
         <BoundSelectedTagList store={this.props.store} />
         <BoundCategoryTagBox category={genreCat} store={this.props.store} />
       </div>
@@ -597,50 +608,100 @@ var DualTagFieldWidget = React.createClass({
   }
 });
 
-var EditableTagsField = React.createClass({
+const TagEditMixin = target => class extends target {
 
-  getInitialState() {
-    return { editing: false };
-  },
+  constructor() {
+    super(...arguments);
+    [ 'onEdit', 'onCancel', 'onDone', 'cancelCB' ].forEach( f => this[f] = this[f].bind(this));
+    this.state = { editing: false };
+    this._store = this.props.delayCommit ? new DelayedCommitTagStore(this.props.store) : this.props.store;
+  }
 
   onEdit(e) {
     e.stopPropagation();
     e.preventDefault();
     this.setState( {editing:true});
-  },
+  }
 
   onCancel(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.setState( {editing:false} );
-  },
+    this.props.delayCommit && this._store.resetTags();
+    this._closeMe();
+  }
 
-  render() {
-    return(
-        <div className="form-group">
-          <div className="col-md-12">
-            <div className="input-group">
-              <span className="input-group-addon">{"tags"}</span>
-              <span className="form-control initial-height">
-                {this.state.editing
-                  ? <DualTagFieldWidget store={this.props.store} />
-                  : <BoundStaticTagList store={this.props.store} />
-                }
-              </span>
-              {this.props.store.permissions.isOwner
-                  ? <span className="input-group-addon">
+  onDone(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.props.delayCommit && this._store.commitTags();
+    this.props.onDone && this.props.onDone();    
+    this._closeMe();
+  }
+
+  _closeMe() {
+    var ss = () => this.setState({editing:false});
+    this.pcb && this.pcb(ss)  || ss();    
+  }
+
+  cancelCB( pcb ) {
+    this.pcb = pcb;
+  }
+
+  get widget() {
+    return this.state.editing
+                  ? <DualTagFieldWidget store={this._store} cancelCallback={this.cancelCB} />
+                  : <BoundStaticTagList store={this._store} />;
+  }
+
+  get editControls() {
+    var cls = (this.props.controlsCls || '') + (this.state.editing ? ' editing' : '');
+    return this._store.permissions.isOwner
+                  ? <span className={cls}>
+                      {this.state.editing && (this.props.onDone || this.props.delayCommit) && <a href="#" onClick={this.onDone} className="btn btn-success"><Glyph icon="check" /></a>}
                       {this.state.editing
                         ? <a href="#" onClick={this.onCancel} className="btn btn-danger"><Glyph icon="times" /></a>
                         : <a href="#" onClick={this.onEdit}><Glyph icon="edit" /></a>}
                     </span>
-                  : null
-              }
+                  : null;
+  }
+};
+
+
+class EditableTagsField extends TagEditMixin(React.Component)
+{
+  render() {
+    var cls = this.props.cls || 'form-group';
+    return(
+        <div className={cls}>
+          <div className="col-md-12">
+            <div className="input-group">
+              <span className="input-group-addon">{"tags"}</span>
+              <span className="form-control initial-height">
+                {this.widget}
+              </span>
+              {this.editControls}
             </div>
           </div>
         </div>
         );
+    }
+}
+
+EditableTagsField.defaultProps = { controlsCls: 'input-group-addon' };
+
+class EditableTagsDiv extends TagEditMixin(React.Component)
+{
+  render() {
+    return(
+        <div className="tags-edit-field-div">
+          {this.widget}
+          {this.editControls}
+        </div>
+      );
   }
-});
+}
+
+EditableTagsDiv.defaultProps = { controlsCls: 'tag-edit-controls' };
 
 module.exports = {
   SelectableTag,
@@ -655,6 +716,7 @@ module.exports = {
   BoundSelectedTagList,
   EditableTagsField,
   DualTagFieldWidget,
+  EditableTagsDiv,
 
   tagOccurrances
 };

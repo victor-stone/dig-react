@@ -27,7 +27,7 @@ var OverviewForm = React.createClass({
           </FormItem>
           {model.bpm && <BPM store={this.props.store} cls={cls} />}
           {model.nsfw && <FormItem title="NSFW" cls={cls} wrap>{"This music may be NSFW"}</FormItem>}
-          <EditableTagsField store={this.props.store} />
+          <EditableTagsField store={this.props.store} delayCommit />
           {this.props.children}
         </HorizontalForm>
       );

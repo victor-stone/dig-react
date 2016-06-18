@@ -94,10 +94,10 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
   getPermissions(head) {
     return api.user.currentUser()
       .then( user => {
-        this.permssions = { isOwner: user === head.curator.id };
+        this.permissions = { isOwner: user === head.curator.id };
         return head;
       }, () => {
-        this.permssions = this.nullPermissions;
+        this.permissions = this.nullPermissions;
         return head;
       });
   }

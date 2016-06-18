@@ -1,5 +1,3 @@
-import events from '../models/events';
-
 /*
   Usage pattern for stores:
 
@@ -25,17 +23,6 @@ const Permissions = target => class extends target {
     super(...arguments);
     this._permissions = {};
     this.permissions = this.nullPermissions;
-  }
-
-  getCurrentUser() {
-    return this._permissions.user;
-  }
-
-  set currentUser(user) {
-    this._permissions.user = user;
-    if( this.resourceOwner ) {
-        this.emit(events.OWNERSHIP_CHANGED);
-    }
   }
 
   get permissions() {
