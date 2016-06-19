@@ -115,6 +115,11 @@ div.subnav-option-bar.people-subnav {
     box-shadow: #DDD 1px 1px;
     background-color: white;
 }
+
+.people-head .followers .form-control {
+  max-height: 100px;
+  overflow: scroll;
+}
 `;
 
 module.exports = css;

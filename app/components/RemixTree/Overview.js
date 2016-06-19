@@ -1,10 +1,26 @@
 import React       from 'react';
 
-import { AccordianPanel }  from '../Accordian';
+import { AccordianPanel }           from '../Accordian';
 import { HorizontalForm, FormItem } from '../Form';
-import BPM from './overview/BPM';
-import {EditableTagsField} from '../TagEditor';
+import EditField                    from './EditField';
+import {EditableTagsField}          from '../TagEditor';
 
+
+
+/* 
+
+     TODDO
+
+     Add bpm to top level store.model.upload
+
+     Add stores/upload.getProperties([names]) {
+        return this.model.upload[names]
+     }
+
+     Kill overview/BPM.js
+
+
+*/     
 var OverviewForm = React.createClass({
 
   render() {
@@ -25,7 +41,7 @@ var OverviewForm = React.createClass({
             <a target="_blank" href={model.licenseURL}><img src={model.licenseLogoURL} /></a>
             {model.isCCPlus && <a target="_blank" href={model.purchaseLicenseURL}>{" "}<img src={model.purchaseLogoURL} /></a>}
           </FormItem>
-          {model.bpm && <BPM store={this.props.store} cls={cls} />}
+          {model.bpm && <EditField store={this.props.store} cls={cls} propName="bpm" title="BPM" />}
           {model.nsfw && <FormItem title="NSFW" cls={cls} wrap>{"This music may be NSFW"}</FormItem>}
           <EditableTagsField store={this.props.store} delayCommit />
           {this.props.children}

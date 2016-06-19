@@ -1,6 +1,7 @@
 import React            from 'react';
 import Glyph            from './Glyph';
 import InlineCSS        from './InlineCSS';
+import EditControls     from './EditControls';
 import { TagString }    from '../unicorns';
 import TagStore         from '../stores/tags';
 import { SelectedTagsTracker } from '../mixins';
@@ -40,6 +41,9 @@ import DelayedCommitTagStore from '../stores/delayed-commit-tag-store';
 
     Events source:
       TAGS_SELECTED
+
+  See DelayedCommitTagStore for the minimum API
+  required for bound components.
 
 */
 
@@ -510,6 +514,10 @@ var BoundStaticTagList = React.createClass({
 
   mixins: [ SelectedTagsTracker ],
 
+  shouldComponentUpdate(nextProps) {
+    return this.props.store.tags.hash !== nextProps.store.tags.hash;
+  },
+
   render() {
     return ( <StaticTagsList className="tag-list-bound" model={this.state.tags} />);
   }
@@ -598,6 +606,10 @@ var DualTagFieldWidget = React.createClass({
     }
   },
 
+  shouldComponentUpdate(nextProps) {
+    return this.props.store.tags.hash !== nextProps.store.tags.hash;
+  },
+  
   render() {
     return(
       <div id="blerg" style={this.props.cancelCallback && {display:'none'}}>
@@ -614,25 +626,28 @@ const TagEditMixin = target => class extends target {
     super(...arguments);
     [ 'onEdit', 'onCancel', 'onDone', 'cancelCB' ].forEach( f => this[f] = this[f].bind(this));
     this.state = { editing: false };
-    this._store = this.props.delayCommit ? new DelayedCommitTagStore(this.props.store) : this.props.store;
+    this._setupStore(this.props.store);
   }
 
-  onEdit(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  _setupStore(store) {
+    this._store = this.props.delayCommit ? new DelayedCommitTagStore(store) : store;    
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this._setupStore(nextProps.store);
+    this.setState({editing:false});
+  }
+
+  onEdit() {
     this.setState( {editing:true});
   }
 
-  onCancel(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  onCancel() {
     this.props.delayCommit && this._store.resetTags();
     this._closeMe();
   }
 
-  onDone(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  onDone() {
     this.props.delayCommit && this._store.commitTags();
     this.props.onDone && this.props.onDone();    
     this._closeMe();
@@ -657,10 +672,10 @@ const TagEditMixin = target => class extends target {
     var cls = (this.props.controlsCls || '') + (this.state.editing ? ' editing' : '');
     return this._store.permissions.isOwner
                   ? <span className={cls}>
-                      {this.state.editing && (this.props.onDone || this.props.delayCommit) && <a href="#" onClick={this.onDone} className="btn btn-success"><Glyph icon="check" /></a>}
+                      {this.state.editing && (this.props.onDone || this.props.delayCommit) && <EditControls.Done onDone={this.onDone} />}
                       {this.state.editing
-                        ? <a href="#" onClick={this.onCancel} className="btn btn-danger"><Glyph icon="times" /></a>
-                        : <a href="#" onClick={this.onEdit}><Glyph icon="edit" /></a>}
+                        ? <EditControls.Cancel onCancel={this.onCancel} />
+                        : <EditControls.Edit onEdit={this.onEdit} />}
                     </span>
                   : null;
   }

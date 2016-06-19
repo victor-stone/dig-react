@@ -13,10 +13,6 @@ var BPM = React.createClass({
     return {focusId: 'ptitle'};
   },
 
-  shouldComponentUpdate(nextProps,nextState) {
-    return this.state.editing !== nextState.editing || this.state.text !== nextState.text;
-  },
-
   stateFromStore(store) {
     var text = store.model.upload.bpm;
     return { text, orgText: text, store };

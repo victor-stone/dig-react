@@ -81,7 +81,7 @@ const Followers = React.createClass({
   render() {
     return (
       this.state.model.length
-        ? <FormItem title={this.props.title} wrap>
+        ? <FormItem title={this.props.title} wrap cls="followers">
             <People.List className="follow" thumb model={this.state.model} />
           </FormItem>
         : null 

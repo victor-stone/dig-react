@@ -20,6 +20,9 @@ var SelectedTagsTracker = {
         this.props.store.removeListener( events.TAGS_SELECTED, this.onSelectedTags );
       }
       props.store.on( events.TAGS_SELECTED, this.onSelectedTags );
+      if( this.props.store.tags.hash !== props.store.tags.hash ) {
+        this.setState( {tags: props.store.tags } );
+      }
     }
   },
 
