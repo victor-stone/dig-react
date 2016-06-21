@@ -4,7 +4,8 @@ import Query            from './query';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import env              from '../services/env';
-import { TagString }    from '../unicorns';
+import { TagString,
+         mergeParams }  from '../unicorns';
 import api              from '../services/ccmixter';
 import events           from '../models/events';
 import TagsOwner        from '../mixins/tags-owner';
@@ -30,7 +31,7 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
   }
 
   get nullPermissions() {
-    return { isOwner: false };
+    return { canEdit: false };
   }
 
   get isDynamic() {
@@ -49,6 +50,7 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
       });
   }
 
+  // TODO: make this a property
   applyQuery(props) {
     var id = this.model.head.id;
     return api.playlist.updateDynamic(id,props)
@@ -57,6 +59,11 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
           this.model.head = head;
           this.emit(events.MODEL_UPDATED);
       });
+  }
+
+  getProperties(props) {
+    Object.keys(props).forEach( n => props[n] = this.model.head[n] );
+    return props;
   }
 
   applyProperties(props) {
@@ -69,15 +76,26 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
       });
   }
 
-  get uploads() {
-    if( !this._uploads ) {
-      this._uploads = new PlaylistTracks();
-      this._uploads.gotCache = true;
+  // TODO: make this a property
+  reorder(sortkeys) {
+    return api.playlist.reorder(this.model.head.id,sortkeys).then( () => {
+        this._fetchTracks(this.model.head.id);
+      });
+  }
+  
+  create(name,track,dynamic) {
+    if( dynamic ) {
+      var qstring = this.model.uploads.queryStringWithDefaults;
+      return api.playlists.createDynamic(name,qstring);
+    } else {
+      return api.playlists.createStatic(name,'',track);
     }
-
-    return this._uploads;
   }
 
+  deletePlaylist() {
+    return api.playlist.deletePlaylist(this.model.head.id);
+  }
+  
   find(id) {
     var model = {
       head:    this._fetchHead(id),
@@ -94,12 +112,45 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
   getPermissions(head) {
     return api.user.currentUser()
       .then( user => {
-        this.permissions = { isOwner: user === head.curator.id };
+        this.permissions = { canEdit: user === head.curator.id };
         return head;
       }, () => {
         this.permissions = this.nullPermissions;
         return head;
       });
+  }
+
+  /*
+    The default query for the tracks is simply
+      playliist=<some-playlist-id>
+    But sometimes (like when editing the underlying
+    query) you want the tracks store to use the
+    actual query in the playlist head.
+  */
+  useUnderlyingQuery() {
+    var m = this.model;
+    delete m.tracks.model.queryParams['playlist'];
+    var qp = mergeParams( {}, m.tracks.model.queryParams, m.head.queryParams );
+    // a hack to remove the .artist fetch in Uploads
+    if( 'user' in qp ) {
+      qp.u = qp.user;
+      delete qp['user'];
+    }
+    delete qp['playlist'];
+    return this.model.tracks.refreshModel( qp ).then( () => this );
+  }
+  
+  get uploads() {
+    return this._tracksStore();
+  }
+
+  _tracksStore(opts) {
+    if( !this._uploads ) {
+      this._uploads = new PlaylistTracks(opts);
+      this._uploads.gotCache = true;
+    }
+
+    return this._uploads;
   }
 
   _fetchHead(id) {
@@ -136,6 +187,14 @@ Playlist.PlaylistTracks = PlaylistTracks;
 Playlist.storeFromQuery = function(id) {
   var pl = new Playlist();
   return pl.find(id).then( () => pl );
+};
+
+Playlist.storeFromUploadsQuery = function(qparams, opts) {
+  var pl = new Playlist();
+  return pl._tracksStore(opts).getModel(qparams).then( () => {
+    pl.model = { head: {}, tracks: pl.uploads };
+    return pl;
+  });
 };
 
 module.exports = Playlist;

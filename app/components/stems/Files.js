@@ -2,9 +2,9 @@ import React            from 'react';
 import DownloadPopup    from '../DownloadPopup';
 import ZIPContentPopup  from '../ZIPContentPopup';
 import AudioPlayer      from '../AudioPlayer';
-import Glyph            from '../Glyph';
+import Glyph            from '../vanilla/Glyph';
 import env              from '../../services/env';
-import { DeadLink }     from '../ActionButtons';
+import DeadLink         from '../vanilla/DeadLink';
 
 const Files = React.createClass({
 

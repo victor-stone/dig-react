@@ -7,11 +7,7 @@ import events from '../models/events';
       return { someStateDerivedFromStore: ... }
     }
 */
-var ModelTracker = {
-
-  getInitialState() {
-    return this.stateFromStore(this.props.store);
-  },
+var _methods = {
 
   componentWillMount() {
     this._modelTrackMounted = this;
@@ -40,6 +36,22 @@ var ModelTracker = {
   },
 };
 
+var ModelTracker = Object.assign({
+
+  getInitialState() {
+    return this.stateFromStore(this.props.store);
+  }
+}, _methods);
+
+const _classMixin = target => class extends target {
+  constructor() {
+    super(...arguments);
+    Object.assign(this,_methods);
+    this.stateFromStore(this.props.store);
+  }
+};
+
+ModelTracker.extender = _classMixin;
 
 module.exports = ModelTracker;
 

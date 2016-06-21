@@ -1,10 +1,11 @@
+// DEPRICATED
 import React        from 'react';
-import Link         from '../Link';
+import Link         from '../services/LinkToRoute';
 import SearchBox    from '../SearchBox';
-import LoadingGlyph from '../LoadingGlyph';
+import LoadingGlyph from '../services/LoadingGlyph';
 import NavbarHeader from '../NavbarHeader';
 import services     from '../../services';
-import Glyph        from '../Glyph';
+import Glyph        from '../vanilla/Glyph';
 
 import { CurrentUserTracker }    from '../../mixins';
 import CurrentUserMenu           from '../CurrentUserMenu';

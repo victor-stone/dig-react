@@ -1,5 +1,5 @@
 import React              from 'react';
-import Link               from './Link';
+import Link               from './services/LinkToRoute';
 import DownloadPopup      from './DownloadPopup';
 import People             from './People';
 import { PlayButton }     from './AudioPlayer';

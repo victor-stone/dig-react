@@ -1,11 +1,10 @@
 /*eslint "react/no-danger":0 */
-import React               from 'react';
-import { AccordianPanel }  from '../Accordian';
-import Glyph               from '../Glyph';
-import Modal               from '../Modal';
-import Alert               from '../Alert';
-import FormattedTextEditor from '../FormattedTextEditor';
-import Topics              from '../../stores/topics';
+import React                 from 'react';
+import { AccordianPanel }    from '../Accordian';
+import Glyph                 from '../vanilla/Glyph';
+import Modal                 from '../Modal';
+import {FormattedTextEditor} from '../vanilla/FormattedTextEditor';
+import Topics                from '../../stores/topics';
 import { ModelTracker,
         CollapsingModel }    from '../../mixins';
 
@@ -15,9 +14,7 @@ class ReviewPopup extends Modal.Popup {
     super(...arguments);
     this.state = { error: '',
                    disableSubmit: true };
-    this.onChange               = this.onChange.bind(this);
-    this.shouldSubmitBeDisabled = this.shouldSubmitBeDisabled.bind(this);
-    this.onSubmitReview         = this.onSubmitReview.bind(this);
+    [ 'onChange', 'shouldSubmitBeDisabled', 'onSubmitReview'].forEach( f => this[f] = this[f].bind(this));
   }
 
   onChange(event) {

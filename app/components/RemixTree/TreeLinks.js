@@ -2,7 +2,7 @@
 /* globals $ */
 
 import React          from 'react';
-import Link           from '../Link';
+import Link           from '../services/LinkToRoute';
 import Trackbacks     from '../Trackbacks';
 import MoreOrLessLink from '../MoreOrLessLink';
 

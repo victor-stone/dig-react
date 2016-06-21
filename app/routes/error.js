@@ -1,6 +1,7 @@
 import React from 'react';
-import { PageHeader,
-          ErrorDisplay } from '../components';
+import { PageHeader } from '../components';
+
+import ErrorDisplay from '../components/services/ErrorDisplay';
 
 const ErrorPage = React.createClass({
 

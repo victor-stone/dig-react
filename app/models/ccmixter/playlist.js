@@ -43,12 +43,20 @@ class Playlist extends Model {
   }
 }
 
+function cleanLinks(str) {
+  return str.replace(/http:\/\/ccmixter.org\/playlist\/browse/g,'/playlist/browse' );
+}
+
 class PlaylistHead extends Playlist {
   constructor() {
     super(...arguments);
     this.subTypeBinding = 'cart_subtype';
-    this.descriptionBinding = 'cart_desc_html';
-    this.descriptionRawBinding = 'cart_description';
+    this.getDescription = function() {
+      return cleanLinks(this.cart_description);
+    };
+    this.getDescriptionRaw =function() {
+      return cleanLinks(this.cart_desc_html);
+    };
     this.getIsFeatured = function() {
       return this.cart_subtype === 'featured';
     };

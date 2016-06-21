@@ -1,6 +1,6 @@
 import React        from 'react';
 import LicenseUtils from '../models/licenses';
-import Glyph        from './Glyph';
+import Glyph        from './vanilla/Glyph';
 import Modal        from './Modal';
 
 var LicenseInfoLink = React.createClass({

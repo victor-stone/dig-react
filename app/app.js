@@ -7,11 +7,12 @@ import events      from './models/events';
 
 import { browserScripts } from './unicorns';
 import { Banner,
-         TitleSetter,
-         Alert,
-         Modal,
-         ErrorDisplay,
          AudioPlayer }    from './components';
+
+import TitleSetter  from './components/vanilla/TitleSetter';
+import ErrorDisplay from './components/services/ErrorDisplay';
+import Modal        from './components/services/Modal';
+import Alert        from './components/services/Alert';
 
 const App = React.createClass({
 

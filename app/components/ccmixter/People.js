@@ -9,12 +9,12 @@ import { TagString } from '../../unicorns';
 
 import {  ModelTracker} from '../../mixins';
 
-import {  ActionButtons,
-          InlineCSS,
+import {  InlineCSS,
           CollapsingText,
           Form   }        from '../../components';
 
-var ExternalLink   = ActionButtons.ExternalLink;
+import ExternalLink from '../vanilla/ExternalLink';
+
 var HorizontalForm = Form.HorizontalForm;
 var FormItem       = Form.FormItem;
 

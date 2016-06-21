@@ -1,7 +1,7 @@
-import React          from 'react';
-import Info           from './Info';
-import EditableTitle  from './EditableTitle';
-import EditableTracks from './EditableTracks';
+import React             from 'react';
+import Info              from './Info';
+import EditableTrackList from './EditableTrackList';
+import EditableTitle     from '../bound/EditableTitle';
 
 import InlineCSS   from '../InlineCSS';
 import playlistCSS from './style/playlist';
@@ -14,15 +14,14 @@ var PlaylistPage = React.createClass({
     
     return (
         <div className="container-fluid playlist-detail-page">
-          <InlineCSS css={playlistCSS} id="playlist-detail-css" />
-          <InlineCSS css={bgColor} id="playlists-bgColor-css"/>
+          <InlineCSS css={playlistCSS + bgColor} id="playlist-detail-css" />
           <EditableTitle store={store} />
           <div className="row">
             <div className="col-md-3 col-md-offset-1">
               <Info store={store} />
             </div>
             <div className="col-md-6">
-              <EditableTracks store={store} />
+              <EditableTrackList store={store} />
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 /* globals $ */
 import React            from 'react';
-import Glyph            from '../Glyph'; 
+import Glyph            from '../vanilla/Glyph'; 
 import Tags             from '../Tags';
 import SearchBox        from '../SearchBox';
 import { TagString }    from '../../unicorns';

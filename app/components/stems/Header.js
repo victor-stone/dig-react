@@ -1,8 +1,8 @@
 import React        from 'react';
-import Link         from '../Link';
-import Glyph        from '../Glyph';
+import Link         from '../services/LinkToRoute';
+import Glyph        from '../vanilla/Glyph';
 import SearchBox    from '../SearchBox';
-import LoadingGlyph from '../LoadingGlyph';
+import LoadingGlyph from '../services/LoadingGlyph';
 import NavbarHeader from '../NavbarHeader';
 import services     from '../../services';
 

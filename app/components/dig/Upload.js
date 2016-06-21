@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Link            from '../Link';
+import Link            from '../services/LinkToRoute';
 import TrackbackList   from '../Trackbacks';
 import People          from '../People';
 import SharePopup      from '../SharePopup';
@@ -8,8 +8,7 @@ import LicenseInfo     from '../LicenseInfo';
 import DownloadPopup   from '../DownloadPopup';
 import { PlayButton }  from '../AudioPlayer';
 
-import { AddTrackbackPopup, 
-         ExternalLink } from '../ActionButtons';
+import ExternalLink    from '../vanilla/ExternalLink';
 
 var Actions = React.createClass({
 
@@ -125,7 +124,6 @@ var TrackbacksSection = React.createClass({
       <div>
         <div className="center-text">
           <h3 className="inlined">{"Trackbacks"}</h3>
-          <AddTrackbackPopup model={model.upload} />
         </div>
         <TrackbackList model={model.trackbacks} />
       </div>

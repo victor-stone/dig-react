@@ -1,5 +1,5 @@
 import React  from 'react';
-import Glyph  from '../Glyph';
+import Glyph  from '../vanilla/Glyph';
 import events from '../../models/events';
 
 import AudioService from '../../services/audio-player';
@@ -61,9 +61,7 @@ var PlayButton = React.createClass({
     e.preventDefault();
     e.stopPropagation();
     AudioService.togglePlay(this.props.model);
-    if( this.props.onPlay ) {
-      this.props.onPlay();
-    }
+    this.props.onPlay && this.props.onPlay(this.props.model);
   },
 
   onControls(media) {

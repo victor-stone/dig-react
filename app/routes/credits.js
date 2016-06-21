@@ -1,8 +1,9 @@
 import React from 'react';
-import { ActionButtons,
-        PageHeader } from '../components';
+import { PageHeader } from '../components';
 
-var ExLink = ActionButtons.ExternalLink;
+import ExternalLink from '../components/vanilla/ExternalLink';
+
+var ExLink = ExternalLink;
 
 const creditsPage = (
   <div>

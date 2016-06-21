@@ -1,7 +1,7 @@
 import React             from 'react';
 import CollapsingText    from '../CollapsingText';
 import { ModelTracker }  from '../../mixins';
-import Link              from '../Link';
+import Link              from '../services/LinkToRoute';
 import { PlayButton }    from '../AudioPlayer';
 import UploadMenu        from './UploadMenu';
 

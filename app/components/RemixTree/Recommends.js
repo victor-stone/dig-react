@@ -5,7 +5,7 @@ import People                  from '../People';
 import Ratings                 from '../../stores/ratings';
 import { CollapsingModel,
          ModelTracker }        from '../../mixins';
-import Glyph                   from '../Glyph';
+import Glyph                   from '../vanilla/Glyph';
 
 const RecommendsButton = React.createClass({
 

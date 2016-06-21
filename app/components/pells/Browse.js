@@ -1,8 +1,8 @@
 import React              from 'react';
 import QueryOptions       from './QueryOptions';
-import Glyph              from '../Glyph';
+import Glyph              from '../vanilla/Glyph';
 import DownloadPopup      from '../DownloadPopup';
-import Link               from '../Link';
+import Link               from '../services/LinkToRoute';
 import { PlayButton }     from '../AudioPlayer';
 import { ModelTracker,
          NowPlayingTracker } from '../../mixins';

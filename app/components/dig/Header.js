@@ -1,11 +1,11 @@
 import React     from 'react';
-import Link      from '../Link';
+import Link      from '../services/LinkToRoute';
 import SearchBox from '../SearchBox';
 
-import Glyph        from '../Glyph';
-import LoadingGlyph from '../LoadingGlyph';
-import { DeadLink } from '../ActionButtons';
-import NavbarHeader from '../NavbarHeader';
+import Glyph        from '../vanilla/Glyph';
+import LoadingGlyph from '../services/LoadingGlyph';
+import DeadLink     from '../vanilla/DeadLink';
+import NavbarHeader from '../vanilla/NavbarHeader';
 import serviceLookup from '../../services';
 
 const NavbarRight = (
@@ -35,6 +35,10 @@ const NavbarRight = (
     </ul>    
 );
 
+function homeLink() {
+  return( <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.titles} /></Link> );
+}
+
 const Header = React.createClass({
 
   submitSearch(text) {
@@ -43,10 +47,12 @@ const Header = React.createClass({
   },
 
   render: function() {
+    var homeLink = <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.titles} /></Link>;
+
     return  ( 
         <nav className="navbar navbar-inverse">
           <div className="container-fluid">
-            <NavbarHeader title="dig.ccMixter" />
+            <NavbarHeader title="dig.ccMixter" homeLink={homeLink}/>
             <div className="collapse navbar-collapse" id="dig-collapse">
               <ul className="nav navbar-nav">
                 <li><DeadLink><LoadingGlyph /></DeadLink></li>    

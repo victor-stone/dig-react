@@ -1,10 +1,10 @@
 /*
   Usage pattern for stores:
 
-    permissions object MUST have an 'isOwner' boolean 
+    permissions object MUST have an 'canEdit' boolean 
 
     implement a nullPermissions property that returns a default 
-    permissions object.  e.g: { isOwner: false }
+    permissions object.  e.g: { canEdit: false }
 
     impelemnt getPermissions(model)  method that psuedos:
       api.user.currentUser()

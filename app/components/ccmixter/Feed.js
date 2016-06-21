@@ -5,7 +5,7 @@ import {UserFeedVerbs,
         UserFeedReasons}  from '../../models/user-feed-types';
 import { ModelTracker } from '../../mixins';
 import InlineCSS        from '../InlineCSS';
-import Glyph            from '../Glyph';
+import Glyph            from '../vanilla/Glyph';
 import css              from './style/feed';
 import lookup           from '../../services';
 import api              from '../../services/ccmixter';

@@ -7,7 +7,7 @@ import { TagString,
          browserScripts }       from '../../unicorns';
 import { ModelTracker,
          SelectedTagsTracker  } from '../../mixins';
-import { CloseButton }          from '../ActionButtons';
+import CloseButton        from '../vanilla/CloseButton';
 
 const SCROLL_OFFSET = 100;
 

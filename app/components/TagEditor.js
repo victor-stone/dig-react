@@ -1,5 +1,5 @@
 import React            from 'react';
-import Glyph            from './Glyph';
+import Glyph            from './vanilla/Glyph';
 import InlineCSS        from './InlineCSS';
 import EditControls     from './EditControls';
 import { TagString }    from '../unicorns';
@@ -33,7 +33,7 @@ import DelayedCommitTagStore from '../stores/delayed-commit-tag-store';
 
     Properties:
       tags [TagString] - read/write
-      permissions.isOwner - read only
+      permissions.canEdit - read only
 
     Methods:
       toggleTag(tag,toggle)
@@ -670,7 +670,7 @@ const TagEditMixin = target => class extends target {
 
   get editControls() {
     var cls = (this.props.controlsCls || '') + (this.state.editing ? ' editing' : '');
-    return this._store.permissions.isOwner
+    return this._store.permissions.canEdit
                   ? <span className={cls}>
                       {this.state.editing && (this.props.onDone || this.props.delayCommit) && <EditControls.Done onDone={this.onDone} />}
                       {this.state.editing

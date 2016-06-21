@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Link from './Link';
+import Link from './services/LinkToRoute';
 
 
 function Footer(props) {

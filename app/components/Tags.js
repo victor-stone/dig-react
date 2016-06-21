@@ -1,5 +1,5 @@
 import React         from 'react';
-import Glyph         from './Glyph';
+import Glyph         from './vanilla/Glyph';
 import { TagString } from '../unicorns';
 import QueryOptions  from './QueryOptions';
 

@@ -6,7 +6,7 @@ import { SongLink,
          ArtistLink }   from '../Remixes';
 import Overview         from '../RemixTree/Overview';
 import { PlayButton }   from '../AudioPlayer';
-import Glyph            from '../Glyph';
+import Glyph            from '../vanilla/Glyph';
 
 import UploadStore      from '../../stores/upload';
 import lookup           from '../../services';

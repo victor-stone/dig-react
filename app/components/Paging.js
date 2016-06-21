@@ -1,5 +1,5 @@
 import React            from 'react';
-import Glyph            from './Glyph';
+import Glyph            from './vanilla/Glyph';
 import events           from '../models/events';
 
 import { ModelTracker,

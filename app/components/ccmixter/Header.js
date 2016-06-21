@@ -4,15 +4,19 @@ import lookup                 from '../../services';
 import api                    from '../../services/ccmixter';
 import { CurrentUserTracker } from '../../mixins';
 
-import Link            from '../Link';
-import Glyph           from '../Glyph';
+import Link            from '../services/LinkToRoute';
+import Glyph           from '../vanilla/Glyph';
 import FeedBadge       from '../FeedBadge';
-import LoadingGlyph    from '../LoadingGlyph';
-import NavbarHeader    from '../NavbarHeader';
-import { DeadLink }    from '../ActionButtons';
+import LoadingGlyph    from '../services/LoadingGlyph';
+import NavbarHeader    from '../vanilla/NavbarHeader';
+import DeadLink        from '../vanilla/DeadLink';
 import CurrentUserMenu from '../CurrentUserMenu';
 import Alert           from '../Alert';
 import Login           from './Login';
+
+function homeLink() {
+  return( <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.titles} /></Link> );
+}
 
 const UserMenu = React.createClass({
 
@@ -52,9 +56,11 @@ const UserMenu = React.createClass({
 
 const Header = React.createClass({
 
-  displayName: 'Header',
-
   componentWillMount() {
+    /*
+        Ths is beta code -- we don't want crawlers digging 
+        around the site for now
+    */
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
@@ -78,7 +84,7 @@ const Header = React.createClass({
     return  (        
         <nav className="navbar navbar-inverse top-navbar">
           <div className="container-fluid">
-            <NavbarHeader title="ccMixter" />
+            <NavbarHeader title="ccMixter" homeLink={homeLink} />
             <div className="collapse navbar-collapse" id="dig-collapse">
 
               <ul className="nav navbar-nav navbar-right">

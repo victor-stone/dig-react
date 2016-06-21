@@ -1,7 +1,7 @@
 /* globals $ */
 import React            from 'react';
-import Link             from '../Link';
-import Glyph            from '../Glyph';
+import Link             from '../services/LinkToRoute';
+import Glyph            from '../vanilla/Glyph';
 import { browserScripts } from '../../unicorns';
 
 const SCROLL_OFFSET = 100;

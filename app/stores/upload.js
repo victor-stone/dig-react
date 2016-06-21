@@ -30,7 +30,7 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
   getPermissions(model) {
     var success = function(user) {
         return api.upload.permissions(model.upload.id,user).then( results => {
-          return( Object.assign( {isOwner:user === model.upload.artist.id}, results ) );
+          return( Object.assign( {canEdit:user === model.upload.artist.id}, results ) );
         });
     };
 
@@ -52,7 +52,7 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
 
   get nullPermissions() {
     return { 
-      isOwner: false,
+      canEdit: false,
       okToRate: false,
       okToReview: false
     };
@@ -73,8 +73,14 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
     });
   }
 
+  getProperties(props) {
+    Object.keys(props).forEach( n => props[n] = this.model.upload[n] );
+    return props;
+  }
+
   applyProperties(props) {
-    return api.upload.update(this.model.upload.id,props).then( this.refresh.bind(this) );
+    return api.upload.update(this.model.upload.id,props)
+                .then( this.refresh.bind(this) );
   }
 
   recommend() {

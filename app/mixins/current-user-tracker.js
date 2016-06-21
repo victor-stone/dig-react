@@ -1,11 +1,7 @@
 import api      from '../services/ccmixter';
 import events   from '../models/events';
 
-const CurrentUserTracker = {
-
-  getInitialState() {
-    return { user: null, userLoading: !global.IS_SERVER_REQUEST };
-  },
+const _methods = {
 
   componentWillMount() {
     if( global.IS_SERVER_REQUEST ) {
@@ -34,7 +30,7 @@ const CurrentUserTracker = {
     }.bind(this);
 
     var onSuccess = function( id ) {
-      if( !this.unMounted ) { // unclear where/when this needs to be protected from
+      if( !this.unMounted ) { // this can happen when the component goes away on user logout
         api.user.currentUserProfile().then( profileHandler );
       }
       return id;
@@ -49,6 +45,22 @@ const CurrentUserTracker = {
 
 };
 
+const CurrentUserTracker = Object.assign({
+
+  getInitialState() {
+    return { user: null, userLoading: !global.IS_SERVER_REQUEST };
+  },
+}, _methods);
+
+const _classMixin = target => class extends target {
+  constructor() {
+    super(...arguments);
+    Object.assign(this,_methods);
+    this.stateFromStore(this.props.store);
+  }
+};
+
+CurrentUserTracker.extender = _classMixin;
 
 module.exports = CurrentUserTracker;
 

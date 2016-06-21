@@ -10,12 +10,9 @@ class Login extends Modal.Popup
     this.state = { error: '',
                    name: '',
                    password: '' };
-    this.onLogin             = this.onLogin.bind(this);
-    this.onLoginSuccess      = this.onLoginSuccess.bind(this);
-    this.onLoginReject       = this.onLoginReject.bind(this);
-    this.onNameChange        = this.onNameChange.bind(this);
-    this.onPasswordChange    = this.onPasswordChange.bind(this);
-    this.shouldDisableSubmit = this.shouldDisableSubmit.bind(this);
+    ['onLogin','onLoginSuccess','onLoginReject',
+        'onNameChange','onPasswordChange',
+        'shouldDisableSubmit'].forEach( f => this[f] = this[f].bind(this));
   }
 
   onLoginSuccess() {

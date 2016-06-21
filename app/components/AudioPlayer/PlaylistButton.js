@@ -1,6 +1,6 @@
 import React  from 'react';
-import Glyph  from '../Glyph';
-import Link   from '../Link';
+import Glyph  from '../vanilla/Glyph';
+import Link   from '../services/LinkToRoute';
 import events from '../../models/events';
 
 import AudioService from '../../services/audio-player';

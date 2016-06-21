@@ -1,54 +1,37 @@
 import React      from 'react';
 import People     from '../People';
 import SharePopup from '../SharePopup';
-import Glyph      from '../../components/Glyph';
-import Link       from '../../components/Link';
-import api        from '../../services/ccmixter';
+import Glyph      from '../vanilla/Glyph';
+import Link       from '../services/LinkToRoute';
 
-import EditableDescription from './EditableDescription';
-import DeletePlaylist      from './DeletePlaylist';
-import lookup              from '../../services';
+import Toggle                  from '../bound/Toggle';
+import FormattedText           from '../bound/FormattedTextEditor';
+import DeletePlaylist          from './DeletePlaylist';
+import { CurrentUserTracker }  from '../../mixins';
+import { EditableTagsDiv }     from '../TagEditor';
 
-import { CurrentUserTracker }   from '../../mixins';
+class Feature extends CurrentUserTracker.extender(React.Component)
+{
+  constructor() {
+    super(...arguments);
+  }
 
-import { EditableTagsDiv } from '../TagEditor';
+  render() {
+    return this.state.user.idAdmin && <Toggle propName="isFeatured" text="Featured" />;
+  }
+}
 
-var EditQueryLink = React.createClass({
-
-  render: function() {
-    if( !this.props.store.permissions.isOwner ) {
+function EditQueryLink(props) {
+    if( !props.store.permissions.canEdit ) {
       return null;
     }
 
-    var head = this.props.store.model.head;
+    var head  = props.store.model.head;
     var isDyn = head.isDynamic;
     var href  = '/playlist/browse/' + head.id + '/edit';
 
-    return isDyn
-          ? <Link className="btn btn-success" href={href}><Glyph icon="edit" />{" edit query"}</Link>
-          : null;
-  }
-});
-
-var FeatureLink = React.createClass({
-  
-  mixins: [CurrentUserTracker],
-
-  toggleFeatured: function() {
-    var id = this.props.store.model.head.id;
-    api.playlist.toggleFeatured( id ).then( () => lookup('router').navigateTo('/playlist/browse/' + id) );
-  },
-
-  render: function() {
-    if( !this.state.user || !this.state.user.isAdmin ) {
-      return null;
-    }
-    var head = this.props.store.model.head;
-    var text = head.isFeatured ? ' un-feature' : ' feature';
-    return <button className="btn btn-success" onClick={this.toggleFeatured}><Glyph icon="star" />{text}</button>;
-  }
-
-});
+    return isDyn && <Link className="btn btn-success" href={href}><Glyph icon="edit" />{" edit query"}</Link>;
+}
 
 function ShareLink(model) {
   if( global.IS_SERVER_REQUEST ) {
@@ -58,7 +41,6 @@ function ShareLink(model) {
 }
 
 function Curator(props) {
-
   var model = props.store.model.head;
 
   return(
@@ -68,14 +50,11 @@ function Curator(props) {
     );  
 }
 
-class Tags extends React.Component
-{
-  render() {
-    return (this.props.store.tags.length || this.props.store.permissions.isOwner ?
-            <div className="playlist-tags playlist-bg-color">
-              <EditableTagsDiv store={this.props.store} delayCommit />
-            </div> : null);
-  }
+function Tags(props) {
+  return (props.store.tags.length || props.store.permissions.canEdit ?
+          <div className="playlist-tags playlist-bg-color">
+            <EditableTagsDiv store={this.props.store} delayCommit />
+          </div> : null);
 }
 
 
@@ -86,28 +65,30 @@ function ActionButtonBar(props) {
   return(
       <div className="action-btn-toolbar playlist-bg-color">
         <SharePopup     model={model} modelLink={ShareLink} med />
-        <FeatureLink    store={store} />
+        <Feature        store={store} />
         <EditQueryLink  store={store} />
         <DeletePlaylist store={store} />
       </div>
     );
 }
 
-var Info = React.createClass({
+function Description(props) {
+  return( <FormattedText store={props.store} propName="description" htmlName="descriptionRaw" />);
+}
 
-  render: function() {
-    var store = this.props.store;
+function Info(props) {
 
-    return (
-        <div className="playlist-info hidden-xs hidden-sm">
-          <EditableDescription store={store} />
-          <ActionButtonBar store={store} />
-          <Curator store={store} />
-          <Tags store={store} />
-        </div>
-      );
-  }
-});
+  var store = props.store;
+
+  return (
+      <div className="playlist-info hidden-xs hidden-sm">
+        <Description store={store} />
+        <ActionButtonBar store={store} />
+        <Curator store={store} />
+        <Tags store={store} />
+      </div>
+    );
+}
 
 module.exports = Info;
 

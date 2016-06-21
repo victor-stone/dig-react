@@ -1,5 +1,5 @@
 import React            from 'react';
-import Glyph            from '../Glyph';
+import Glyph            from '../vanilla/Glyph';
 import InlineCSS        from '../InlineCSS';
 import css              from './style/upload-menu';
 import AddToPlaylist    from './actions/AddToPlaylist';

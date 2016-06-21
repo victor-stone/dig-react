@@ -5,7 +5,7 @@ import qc                 from '../../models/query-configs';
 
 
 import { Header }      from '../../components/People';
-import { UploadLink }  from '../../components/ActionButtons';
+import  UploadLink     from '../../components/services/LinkToUploadRoute';
 import { Paging }      from '../../components';
 import { ModelTracker } from '../../mixins';
 

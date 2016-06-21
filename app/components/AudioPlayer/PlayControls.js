@@ -1,5 +1,5 @@
 import React        from 'react';
-import Glyph        from '../Glyph';
+import Glyph        from '../vanilla/Glyph';
 import { oassign }  from '../../unicorns';
 import AudioService from '../../services/audio-player';
 import env          from '../../services/env';

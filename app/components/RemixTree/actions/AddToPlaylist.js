@@ -1,5 +1,5 @@
 import React  from 'react';
-import Glyph  from '../../Glyph';
+import Glyph  from '../../vanilla/Glyph';
 import Modal  from '../../Modal';
 import Alert  from '../../Alert';
 import api    from '../../../services/ccmixter';

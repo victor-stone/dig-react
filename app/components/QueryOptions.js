@@ -1,6 +1,6 @@
 import React     from 'react';
-import Glyph     from './Glyph';
-import Link      from './Link';
+import Glyph     from './vanilla/Glyph';
+import Link      from './services/LinkToRoute';
 import qc        from '../models/query-configs';
 
 import { CloseButton }    from './ActionButtons';

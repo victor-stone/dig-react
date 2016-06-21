@@ -1,6 +1,5 @@
 import React  from 'react';
 import People from '../People';
-import AB     from '../ActionButtons';
 import events from '../../models/events';
 
 import { oassign } from '../../unicorns';
@@ -11,7 +10,7 @@ import PlaybackScrubber from './PlaybackScrubber';
 import PlayButton       from './PlayButton';
 import AudioService     from '../../services/audio-player';
 
-var UploadLink = AB.UploadLink;
+import UploadLink       from '../services/LinkToUploadRoute';
 
 var nullPosition = { 
   bytesLoaded: -1,
