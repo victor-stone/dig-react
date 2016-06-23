@@ -1,14 +1,16 @@
 import React      from 'react';
-import People     from '../People';
 import SharePopup from '../SharePopup';
 import Glyph      from '../vanilla/Glyph';
-import Link       from '../services/LinkToRoute';
+
+import Link               from '../services/LinkToRoute';
+import LinkToPeople       from '../services/LinkToPeopleRoute';
 
 import Toggle                  from '../bound/Toggle';
 import FormattedText           from '../bound/FormattedTextEditor';
+import { EditableTagsDiv }     from '../bound/Tags';
+
 import DeletePlaylist          from './DeletePlaylist';
 import { CurrentUserTracker }  from '../../mixins';
-import { EditableTagsDiv }     from '../bound/Tags';
 
 class Feature extends CurrentUserTracker.extender(React.Component)
 {
@@ -17,7 +19,7 @@ class Feature extends CurrentUserTracker.extender(React.Component)
   }
 
   render() {
-    return this.state.user.idAdmin && <Toggle propName="isFeatured" text="Featured" />;
+    return this.state.user.idAdmin && <Toggle store={this.props.store} propName="isFeatured" text="Featured" />;
   }
 }
 
@@ -33,7 +35,7 @@ function EditQueryLink(props) {
     return isDyn && <Link className="btn btn-success" href={href}><Glyph icon="edit" />{" edit query"}</Link>;
 }
 
-function ShareLink(model) {
+function ShareURL(model) {
   if( global.IS_SERVER_REQUEST ) {
     return '#';
   }
@@ -45,7 +47,7 @@ function Curator(props) {
 
   return(
       <div className="playlist-curator playlist-bg-color">
-        <People.Link model={model.curator} avatar suburl="playlists" />
+        <LinkToPeople model={model.curator} avatar suburl="playlists" />
       </div>
     );  
 }
@@ -64,7 +66,7 @@ function ActionButtonBar(props) {
 
   return(
       <div className="action-btn-toolbar playlist-bg-color">
-        <SharePopup     model={model} modelLink={ShareLink} med />
+        <SharePopup     model={model} modelLink={ShareURL} med />
         <Feature        store={store} />
         <EditQueryLink  store={store} />
         <DeletePlaylist store={store} />

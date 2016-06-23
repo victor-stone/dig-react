@@ -1,6 +1,6 @@
 import React               from 'react';
 import { AccordianPanel }  from '../vanilla/Accordian';
-import UploadOverview      from '../models/UploadOverview';
+import UploadOverview      from '../bound/UploadOverview';
 
 var Overview = React.createClass({
 

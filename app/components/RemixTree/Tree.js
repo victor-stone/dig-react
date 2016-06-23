@@ -1,7 +1,7 @@
 import React       from 'react';
 import InlineCSS   from '../vanilla/InlineCSS';
 import { Accordian
-               }   from '../Accordian';
+               }   from '../vanilla/Accordian';
 
 import { ModelTracker }    from '../../mixins';
 import { SamplesFrom, 
@@ -11,7 +11,7 @@ import FileSection from './Files';
 import Recommends  from './Recommends';
 import Reviews     from './Reviews';
 import Overview    from './Overview';
-import Description from './Description';
+import Description from '../bound/UploadDescription';
 import css         from './style/tree';
 
 import { PrevPeruse,

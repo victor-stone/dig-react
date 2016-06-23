@@ -1,15 +1,17 @@
 import React             from 'react';
-import SaveButton        from '../vanilla/SaveButton';
 import QueryOptions      from './QueryOptions';
 
 import StaticTrackList   from '../bound/StaticTrackList';
 
-import PageHeader        from '../PageHeader';
+import SaveButton        from '../vanilla/SaveButton';
+import PageHeader        from '../vanilla/PageHeader';
 import InlineCSS         from '../vanilla/InlineCSS';
-import css               from './style/edit';
-import DisableAutoScroll from '../services/DisableAutoScroll';
 
-class DynamicForm extends DisableAutoScroll(React.Component)
+import css               from './style/edit';
+
+import DisableScrollToTop from '../services/DisableScrollToTop';
+
+class DynamicForm extends DisableScrollToTop(React.Component)
 {
   render() {
     var store = this.props.store;

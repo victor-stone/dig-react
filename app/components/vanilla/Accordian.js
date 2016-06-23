@@ -1,7 +1,7 @@
 /* globals $*/
 import React        from 'react';
 import Glyph        from './Glyph';
-import LoadingGlyph from './services/LoadingGlyph';
+import LoadingGlyph from '../services/LoadingGlyph';
 import DeadLink     from './DeadLink';
 
 var AccordianButton = React.createClass({

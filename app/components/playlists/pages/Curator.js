@@ -1,6 +1,6 @@
 import React         from 'react';
-import Browse        from './Browse';
-import PeopleHeader  from '../models/PeopleHeader';
+import Browse        from '../Browse';
+import PeopleHeader  from '../../models/PeopleHeader';
 
 function Curator(props) {
   var store = props.store;

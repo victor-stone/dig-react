@@ -1,4 +1,4 @@
-var CollapsingModel = {
+var DelayLoadModel = {
 
   getDefaulProps() {
     return { onOpen: this.onOpen, onClose: this.onClose };
@@ -34,4 +34,4 @@ var CollapsingModel = {
 
 };
 
-module.exports = CollapsingModel;
+module.exports = DelayLoadModel;

@@ -1,5 +1,4 @@
 import React            from 'react';
-import People           from '../People';
 import Files            from './Files';
 import Detail           from './Detail';
 import { NoTagHits }    from '../Tags';
@@ -8,6 +7,7 @@ import { TagString,
 import { ModelTracker,
          SelectedTagsTracker  } from '../../mixins';
 import CloseButton        from '../vanilla/CloseButton';
+import LinkToPeople       from '../services/LinkToPeopleRoute';
 
 const SCROLL_OFFSET = 100;
 
@@ -92,7 +92,7 @@ const Listing = React.createClass({
                       {fl ? <CloseButton className="close" onClick={this.onClose} /> : null}
                       {u.bpm ? <span className="bpm">{u.bpm}</span> : null}
                       {fo ? null : <a href="#" className="stem-name" onClick={this.onNameClick(u.id)}>{u.name}</a>}
-                      {nn ? null : <People.Link model={u.artist} className="stem-artist" />}
+                      {nn ? null : <LinkToPeople model={u.artist} className="stem-artist" />}
                       <Files 
                         model={u} 
                         store={store} 

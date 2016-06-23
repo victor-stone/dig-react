@@ -2,7 +2,7 @@ import React        from 'react';
 import Link         from '../services/LinkToRoute';
 import SearchBox    from '../SearchBox';
 import LoadingGlyph from '../services/LoadingGlyph';
-import NavbarHeader from '../NavbarHeader';
+import NavbarHeader from '../vanilla/NavbarHeader';
 import services     from '../../services';
 
 

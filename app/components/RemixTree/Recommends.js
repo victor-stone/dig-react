@@ -1,14 +1,14 @@
 import React               from 'react';
 import { AccordianPanel }  from '../vanilla/Accordian';
-import People              from '../People';
+import PeopleList          from '../models/PeopleList';
 import Ratings             from '../../stores/ratings';
-import { CollapsingModel,
+import { DelayLoadModel,
          ModelTracker }    from '../../mixins';
 import RecommendsButton    from '../bound/RecommendsButton';
 
 var Recommends = React.createClass({
 
-  mixins: [ModelTracker,CollapsingModel],
+  mixins: [ModelTracker,DelayLoadModel],
 
   componentWillReceiveProps(nextProps) {
     this.setState({ numItems: nextProps.numItems });
@@ -43,7 +43,7 @@ var Recommends = React.createClass({
                       nClose={this.onClose} 
       >
         {this.state.model && this.state.open
-          ? <People.List className="recommends-list" thumb model={this.state.model} />
+          ? <PeopleList className="recommends-list" thumb model={this.state.model} />
           : null
         }
       </AccordianPanel>

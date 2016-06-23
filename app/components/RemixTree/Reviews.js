@@ -2,14 +2,14 @@
 import React                 from 'react';
 import { AccordianPanel }    from '../vanilla/Accordian';
 import Glyph                 from '../vanilla/Glyph';
-import ReviewsButton         from '../bound/ReviewsButton';
+import ReviewsPopup          from '../bound/ReviewsPopup';
 import Topics                from '../../stores/topics';
 import { ModelTracker,
-        CollapsingModel }    from '../../mixins';
+        DelayLoadModel }    from '../../mixins';
 
 var Reviews = React.createClass({
 
-  mixins: [ModelTracker,CollapsingModel],
+  mixins: [ModelTracker,DelayLoadModel],
 
   getInitialState() {
     return { numItems: this.props.numItems };
@@ -54,14 +54,20 @@ var Reviews = React.createClass({
   },
 
   render() {
-    var title = `Reviews (${this.state.numItems})`;
-    var revButton = <ReviewsButton store={this.props.store} />;
+    const { numItems, model } = this.state;
+    var title = `Reviews (${numItems})`;
+    var revButton = <ReviewsPopup store={this.props.store} />;
     return (
-        <AccordianPanel disabled={!this.state.numItems} headerContent={revButton} title={title} id="reviews" icon="pencil" onOpen={this.onOpen} onClose={this.onClose} >
-        {this.state.model 
-          ? this.state.model.map( this._renderReview )
-          : null
-        }
+        <AccordianPanel 
+          disabled={!numItems} 
+          headerContent={revButton} 
+          title={title} 
+          id="reviews" 
+          icon="pencil" 
+          onOpen={this.onOpen} 
+          onClose={this.onClose} 
+        >
+          {model && model.map( this._renderReview )}
         </AccordianPanel>
       );
   }

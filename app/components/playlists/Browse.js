@@ -1,5 +1,5 @@
 import React                   from 'react';
-import PlaylistList            from '../bround/PlaylistList';
+import PlaylistList            from '../bound/PlaylistList';
 import InlineCSS               from '../vanilla/InlineCSS';
 import { browse as browseCSS,
          tags   as tagsCSS }   from './style/browse';

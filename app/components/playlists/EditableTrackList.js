@@ -17,12 +17,12 @@ class EditableTrackList extends React.Component
   }
 
   render() {
-    var store   = this.props.store;
-    var model   = store.model;
+    const { store, store: { permissions: {canEdit=false} = {} } } = this.props;
+    const { model: {tracks,head:{isDynamic}} } = store;
 
     return  (<_EditableTrackList 
-                store={model.tracks} 
-                canEdit={store.permissions.canEdit && !model.head.isDynamic}
+                store={tracks} 
+                canEdit={canEdit && !isDynamic}
                 onDelete={this.onDelete}
                 onPlay={this.onPlay}
                 onSort={this.onSort}

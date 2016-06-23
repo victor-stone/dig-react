@@ -1,7 +1,7 @@
 import React            from 'react';
 import Listing          from './Listing';
 import Paging           from '../Paging';
-import People           from '../People';
+import PeopleHeader     from '../models/PeopleHeader';
 
 function NoPeopleSamples() {
   return (<div className="well no-people-samples">{"this artist doesn't have any samples!"}</div>);
@@ -14,7 +14,7 @@ var StemsPeople = React.createClass({
 
     return (
       <div>
-        <People.Header model={store.model.artist} />
+        <PeopleHeader model={store.model.artist} />
         <div className="container-fluid stems-browser">
           <div className="row">
             <div className="col-md-6 col-md-offset-3 stems-listing-widget">
