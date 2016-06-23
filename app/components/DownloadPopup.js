@@ -1,6 +1,6 @@
 import React   from 'react';
 import Glyph   from './vanilla/Glyph';
-import Modal   from './Modal';
+import Modal   from './services/Modal';
 import Upload  from '../stores/upload';
 import env     from '../services/env';
 import events  from '../models/events';

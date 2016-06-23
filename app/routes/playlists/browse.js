@@ -1,16 +1,10 @@
 import React            from 'react';
 import Playlists        from '../../stores/playlists';
 import { mergeParams }  from '../../unicorns';
-import { Browse }       from '../../components/playlists/Browse';
+import pages            from '../../components/playlists/pages';
 import SubNav           from '../../components/playlists/SubNav';
 
-var browse = function(props) {
-    return (
-      <div className="container-fluid">        
-        <Browse store={props.store} />
-      </div>
-    );      
-};
+var browse = pages.Browse;
 
 browse.title = 'Browse Playlists';
 

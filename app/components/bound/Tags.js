@@ -1,10 +1,12 @@
 import React            from 'react';
-import InlineCSS        from './InlineCSS';
-import EditControls     from './EditControls';
-import { TagString }    from '../unicorns';
-import TagStore         from '../stores/tags';
-import { SelectedTagsTracker } from '../mixins';
-import DelayedCommitTagStore from '../stores/delayed-commit-tag-store';
+import { InlineCSS,
+         EditControls } from '../vanilla';
+import { TagString }    from '../../unicorns';
+import TagStore         from '../../stores/tags';
+
+import { SelectedTagsTracker } from '../../mixins';
+import DelayedCommitTagStore   from '../../stores/delayed-commit-tag-store';
+
 import { 
           StaticTagsList,
           CheckableTagsList,
@@ -29,35 +31,34 @@ function tagOccurrances(cat,tags) {
 }
 const DEFAULT_MIN_TAG_COUNT = 100;
 
-var CategoryTagBox = React.createClass({
-
-  getInitialState() {
-    return { selected: new TagString(this.props.selected), model: [] };
-  },
+class CategoryTagBox extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.state = { selected: new TagString(this.props.selected), model: [] };
+  }
 
   componentDidMount() {
+    const { minCount = DEFAULT_MIN_TAG_COUNT, category, pairWith } = this.props;
     var store = new TagStore();
-    var minCount = this.props.minCount || DEFAULT_MIN_TAG_COUNT;
-    store.category(this.props.category,this.props.pairWith,minCount)
+    store.category( category, pairWith, minCount )
       .then( this.onReceivedTags );
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     var ts = new TagString(nextProps.selected);
-    var maxReached = this.props.maxAllowed && tagOccurrances(this.state.model,ts) >= this.props.maxAllowed;
+    const { maxAllowed } = this.props;
+    var maxReached = maxAllowed && tagOccurrances(this.state.model,ts) >= maxAllowed;
     this.setState({ selected: ts,  maxReached });
-  },
+  }
 
   onReceivedTags(model) {
     this.setState({model});
-  },
+  }
 
   render() {
-    var cls = 'tag-list-category';
-    if( this.props.className ) {
-      cls += ' ' + this.props.className;
-    }
-
+    const { className = '' } = this.props;
+    var cls = 'tag-list-category ' + className;
     return (
         <div>
           <InlineCSS css={CategoryTagBox.css} id="category-tag-box-css" />
@@ -66,7 +67,7 @@ var CategoryTagBox = React.createClass({
       );
   }
 
-});
+}
 
 CategoryTagBox.categories = TagStore.categories;
 
@@ -110,6 +111,7 @@ var BoundStaticTagList = React.createClass({
 */
 var BoundCategoryTagBox = React.createClass({
 
+  // TODO: make SelectedTagsTracker a class mixin 
   mixins: [ SelectedTagsTracker ],
 
   onSelected(tag,toggle) {
@@ -117,10 +119,9 @@ var BoundCategoryTagBox = React.createClass({
   },
 
   render() {
-    var cls = 'tag-list-bound';
-    if( this.props.className ) {
-      cls += ' ' + this.props.className;
-    }
+    const { className = '' } = this.props;
+    var cls = 'tag-list-bound ' + className;
+
     return (<CategoryTagBox                
                 category={this.props.category} 
                 minCount={this.props.minCount} 
@@ -155,10 +156,8 @@ var BoundSelectedTagList = React.createClass({
   },
 
   render() {
-    var cls = 'tag-list-bound';
-    if( this.props.className ) {
-      cls += ' ' + this.props.className;
-    }
+    const { className = '' } = this.props;
+    var cls = 'tag-list-bound ' + className;
     return (
         <SelectedTagList 
             model={this.state.tags} 
@@ -170,21 +169,21 @@ var BoundSelectedTagList = React.createClass({
   }
 });
 
-var genreCat = BoundCategoryTagBox.categories.GENRE;
+const genreCat = BoundCategoryTagBox.categories.GENRE;
 
-var DualTagFieldWidget = React.createClass({
-
+class DualTagFieldWidget extends React.Component
+{
   componentDidMount() {
     /* globals $ */
     if( this.props.cancelCallback ) {
       $('#blerg').slideDown();
       this.props.cancelCallback( cb => $('#blerg').slideUp('fast',cb) );
     }
-  },
+  }
 
   shouldComponentUpdate(nextProps) {
     return this.props.store.tags.hash !== nextProps.store.tags.hash;
-  },
+  }
   
   render() {
     return(
@@ -194,13 +193,15 @@ var DualTagFieldWidget = React.createClass({
       </div>
     );
   }
-});
+}
+
+const editingClasses = { [false]: '', [true]: ' editing '};
 
 const TagEditMixin = target => class extends target {
 
   constructor() {
     super(...arguments);
-    [ 'onEdit', 'onCancel', 'onDone', 'cancelCB' ].forEach( f => this[f] = this[f].bind(this));
+    this.__bindAll([ 'onEdit', 'onCancel', 'onDone', 'cancelCB' ]);
     this.state = { editing: false };
     this._setupStore(this.props.store);
   }
@@ -245,11 +246,13 @@ const TagEditMixin = target => class extends target {
   }
 
   get editControls() {
-    var cls = (this.props.controlsCls || '') + (this.state.editing ? ' editing' : '');
+    const { controlsCls = '', onDone, delayCommit } = this.props;
+    const { editing } = this.state;
+    var cls = controlsCls + editingClasses[editing];
     return this._store.permissions.canEdit
                   ? <span className={cls}>
-                      {this.state.editing && (this.props.onDone || this.props.delayCommit) && <EditControls.Done onDone={this.onDone} />}
-                      {this.state.editing
+                      {editing && (onDone || delayCommit) && <EditControls.Done onDone={this.onDone} />}
+                      {editing
                         ? <EditControls.Cancel onCancel={this.onCancel} />
                         : <EditControls.Edit onEdit={this.onEdit} />}
                     </span>
@@ -261,7 +264,7 @@ const TagEditMixin = target => class extends target {
 class EditableTagsField extends TagEditMixin(React.Component)
 {
   render() {
-    var cls = this.props.cls || 'form-group';
+    const { cls = 'form-group' } = this.props;
     return(
         <div className={cls}>
           <div className="col-md-12">

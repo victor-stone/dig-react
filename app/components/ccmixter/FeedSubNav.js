@@ -1,59 +1,54 @@
 import React            from 'react';
-import SubNav           from '../SubNav';
-import InlineCSS        from '../InlineCSS';
+import SubNavTabs       from '../vanilla/SubNavTabs';
+import SubNavBar        from '../bound/SubNavBar';
+import InlineCSS        from '../vanilla/InlineCSS';
 import css              from './style/subnav';
-import lookup           from '../../services';
-import { CurrentUserTracker } from '../../mixins';
+import LinkToRoute      from '../services/LinkToRoute';
+
+import {  CurrentUserTracker } from '../../mixins';
 
 
-var FeedTabs = React.createClass({
+class FeedTabs extends CurrentUserTracker.extender(SubNavTabs)
+{
+  constructor() {
+    super(...arguments);
+  }
 
-  mixins: [ CurrentUserTracker, SubNav.TabsMixin ],
-
-  getDefaultProps() { 
-    return { checkActive(tab) {
-                  return tab === document.location.pathname;
-                },
-             allowEmptyBadges: true }; 
-  },
-
-  getInitialState() {
-    return { tab: '#' };
-  },
-
-  tabs(user) {
+  get tabs() { 
     var tabs = {
       '/feed': 'site'
     };
-    var u = user || this.state.user;
-    if( u) {
-      tabs['/feed/' +  u.id] = u.name;
-      tabs['/feed/' +  u.id + '/following'] = 'following';
+    const { user: { id, name } = {}} = this.state;
+    if( id ) {
+      tabs['/feed/' +  id] = name;
+      tabs['/feed/' +  id + '/following'] = 'following';
     }
     return tabs;    
-  },
+  }
+
+  get tab() {
+    return this.props.tab;
+  }
+
+  checkActive(tab) {
+    return tab === document.location.pathname;
+  }
+
 
   onTab(tab) {
-    lookup('router').navigateTo(tab);
+    LinkToRoute.navigateTo(tab);
   }
+}
 
-});
-
-var FeedSubNav = React.createClass({
-
-  render() {
-    if( global.IS_SERVER_REQUEST ) {
-      return null;
-    }
-    var props = this.props;
-    return (
-        <SubNav {...props} >
-          <InlineCSS css={css} id="feed-subnav-css" />
-          <FeedTabs store={props.store}  />
-        </SubNav>
-    );
-  }
-});
+function FeedSubNav(props)
+{
+  return (
+      <SubNavBar {...props} >
+        <InlineCSS css={css} id="feed-subnav-css" />
+        <FeedTabs   />
+      </SubNavBar>
+  );
+}
 
 module.exports = FeedSubNav;
 

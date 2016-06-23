@@ -55,7 +55,7 @@ class GroupBase extends React.Component
   constructor() {
     super(...arguments);
     this.state = { editing: false };
-    ['_startEdit','_doneEdit', '_cancelEdit'].forEach( f => this[f] = this[f].bind(this));
+    this.__bindAll(['_startEdit','_doneEdit', '_cancelEdit']);
   }
 
   shouldComponentUpdate(nextProps) {

@@ -1,18 +1,9 @@
-import React              from 'react';
-import Playlists          from '../../stores/playlists';
-import { PlaylistWidget } from '../../components/playlists/Browse';
-import SubNav             from '../../components/playlists/SubNav';
-import PageHeader         from '../../components/PageHeader';
+import React     from 'react';
+import Playlists from '../../stores/playlists';
+import pages     from '../../components/playlists/pages';
+import SubNav    from '../../components/playlists/SubNav';
 
-function tags(props) {
-  var store = props.store;
-  return (        
-    <div className="container-fluid playlist-tags-page">
-      <PageHeader icon="tags" subTitle="tags" title={store.model.queryParams.tags} />
-      <PlaylistWidget store={store} />
-    </div>
-  );
-}
+var tags = pages.Tags;
 
 tags.path = '/playlists/tags/:tags';
 

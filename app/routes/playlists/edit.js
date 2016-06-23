@@ -1,11 +1,7 @@
-import React             from 'react';
-import Playlist          from '../../stores/playlist';
-import EditDynamicPlaylist from '../../components/playlists/EditDynamicPlaylist';
+import Playlist  from '../../stores/playlist';
+import pages     from '../../components/playlists/pages';
 
-
-function Edit(props) {
-  return <EditDynamicPlaylist {...props} />;
-}
+var Edit = pages.EditDynamicPlaylist;
 
 Edit.path = '/playlist/browse/:id/edit';
 

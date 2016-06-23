@@ -1,17 +1,10 @@
-import React              from 'react';
-import Playlists          from '../../stores/playlists';
-import { PlaylistWidget } from '../../components/playlists/Browse';
-import { mergeParams }    from '../../unicorns';
-import SubNav             from '../../components/playlists/SubNav';
+import React            from 'react';
+import { mergeParams }  from '../../unicorns';
+import Playlists        from '../../stores/playlists';
+import pages            from '../../components/playlists/pages';
+import SubNav           from '../../components/playlists/SubNav';
 
-function featured(props) {
-  var store = props.store;
-  return (        
-    <div className="container-fluid playlist-featured-page">
-      <PlaylistWidget store={store} />
-    </div>
-  );
-}
+var featured = pages.Featured;
 
 featured.title = 'Featured';
 

@@ -1,3 +1,5 @@
+// TODO this page is broken
+/*
 import React              from 'react';
 import Playlists          from '../../stores/playlists';
 import { PlaylistWidget } from '../../components/playlists/Browse';
@@ -66,5 +68,5 @@ search.store = function(params,queryParams) {
 };
 
 module.exports = search;
-
+*/
 //

@@ -1,8 +1,8 @@
 import React              from 'react';
-import UploadLink         from '../services/LinkToUploadRoute';
+import LinkToUpload       from '../services/LinkToUploadRoute';
+import LinkToPeople       from '../services/LinkToUploadRoute';
 import { PlayButton }     from '../AudioPlayer';
-import People             from '../People';
-import DeleteButton       from './DeleteButton';
+import DeleteButton       from '../vanilla/DeleteButton';
 
 
 /*
@@ -23,8 +23,8 @@ function TrackListItem(props) {
       <li className="tracklist-item">
         {props.editing && <DeleteButton model={model} onDelete={props.onDelete} />}
         <PlayButton className="play-button" onPlay={props.onPlay} model={model} />
-        <UploadLink className="track-name" model={model} />
-        {!props.skipUser && <People.Link model={model.artist} className="track-artist" />}
+        <LinkToUpload className="track-name" model={model} />
+        {!props.skipUser && <LinkToPeople model={model.artist} className="track-artist" />}
       </li>
     );
 }

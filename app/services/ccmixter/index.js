@@ -33,11 +33,11 @@ class CCMixter extends Eventer
     return this._call_wrap(this.adapter.callOne(cmd),cmd);
   }
 
-  _post(cmd,args) {
+  post(cmd,args) {
     return this._call_wrap(this.adapter.post(cmd,args),cmd);
   }
 
-  _patch(cmd,args) {
+  patch(cmd,args) {
     return this._call_wrap(this.adapter.patch(cmd,args),cmd);
   }
 }

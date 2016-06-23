@@ -2,7 +2,7 @@ import React        from 'react';
 import Listing      from './Listing';
 import QueryOptions from './QueryOptions';
 import { TagsList } from './Tags';
-import InlineCSS    from '../../components/InlineCSS';
+import InlineCSS    from '../../components/vanilla/InlineCSS';
 import css          from '../../components/stems/style/browse';
 
 

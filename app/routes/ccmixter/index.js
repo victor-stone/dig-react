@@ -12,15 +12,16 @@ import tree      from  './tree';
 
 import workbench from './workbench';
 
-import playlists          from  '../playlists/browse';
-import playlists_tags     from  '../playlists/tags';
-import playlist_browse    from  '../playlists/playlist';
-import playlists_featured from  '../playlists/featured';
+import playlists_browse   from  '../playlists/browse';
 import playlists_curators from  '../playlists/curators';
 import playlists_curator  from  '../playlists/curator';
-import playlists_track    from  '../playlists/track';
 import playlists_edit     from  '../playlists/edit';
+import playlists_featured from  '../playlists/featured';
+import playlist           from  '../playlists/playlist';
 import playlists_new      from  '../playlists/new-playlist';
+import playlists_people   from  '../playlists/people';
+import playlists_tags     from  '../playlists/tags';
+import playlists_track    from  '../playlists/track';
 
 import stems     from  '../stems/browse';
 
@@ -35,14 +36,15 @@ module.exports = {
     nowplaying,
     people,
     pells,
-    playlists,
+    playlist,
     playlists_curator,
     playlists_curators,
     playlists_featured,
     playlists_new,
     playlists_tags,
     playlists_track,
-    playlist_browse,
+    playlists_people,
+    playlists_browse,
     playlists_edit,
     stems,
     tree,

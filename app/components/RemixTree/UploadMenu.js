@@ -1,9 +1,11 @@
 import React            from 'react';
 import Glyph            from '../vanilla/Glyph';
-import InlineCSS        from '../InlineCSS';
+import InlineCSS        from '../vanilla/InlineCSS';
 import css              from './style/upload-menu';
+
 import AddToPlaylist    from './actions/AddToPlaylist';
 import Share            from '../SharePopup';
+
 import {CurrentUserTracker} from '../../mixins';
 
 var UploadMenu = React.createClass({

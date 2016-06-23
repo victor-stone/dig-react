@@ -4,6 +4,8 @@ import AudioService        from '../../services/audio-player';
 import Playlists           from '../../stores/playlists';
 import events              from '../../models/events';
 
+// TODO: generial - this is too Playlist aware
+
 // This is broken out in it's own class in case
 // it might be needed in the future somewhere
 

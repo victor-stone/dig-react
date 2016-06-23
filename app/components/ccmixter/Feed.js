@@ -4,10 +4,10 @@ import moment           from 'moment';
 import {UserFeedVerbs,
         UserFeedReasons}  from '../../models/user-feed-types';
 import { ModelTracker } from '../../mixins';
-import InlineCSS        from '../InlineCSS';
+import InlineCSS        from '../vanilla/InlineCSS';
 import Glyph            from '../vanilla/Glyph';
 import css              from './style/feed';
-import lookup           from '../../services';
+import LinkToRoute      from '../services/LinkToRoute';
 import api              from '../../services/ccmixter';
 import events           from '../../models/events';
 
@@ -47,7 +47,7 @@ var FeedItemDebug = React.createClass({
   onClick(e) {
     e.stopPropagation();
     e.preventDefault();
-    lookup('router').navigateTo( this.state.model.navigationURL );
+    LinkToRoute.navigateTo( this.state.model.navigationURL );
   },
 
   render() {
@@ -91,7 +91,7 @@ var FeedItemPretty = React.createClass({
   onClick(e) {
     e.stopPropagation();
     e.preventDefault();
-    lookup('router').navigateTo( this.state.model.navigationURL );
+    LinkToRoute.navigateTo( this.state.model.navigationURL );
   },
 
   render() {
@@ -135,7 +135,7 @@ var FeedItemPretty = React.createClass({
   }  
 });
 
-var FeedItem = lookup('env').debugMode === 'not' ? FeedItemDebug : FeedItemPretty;
+var FeedItem = /*lookup('env').debugMode ? FeedItemDebug : */ FeedItemPretty;
 
 var Feed = React.createClass({
 
@@ -172,6 +172,8 @@ var Feed = React.createClass({
     );
   }
 });
+
+Feed.__supress_lint_warning = FeedItemDebug;
 
 module.exports = Feed;
 

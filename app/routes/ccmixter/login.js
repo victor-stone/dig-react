@@ -1,3 +1,4 @@
+// DEPRECATED
 import React            from 'react';
 import LoginPopup       from '../../components/ccmixter/Login';
 

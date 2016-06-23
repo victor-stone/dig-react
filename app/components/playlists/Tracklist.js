@@ -13,7 +13,7 @@ class PlaylistTrackList extends React.Component
 {
   constructor() {
     super(...arguments);
-    [ 'onPlay', 'onTrackDelete' ].forEach( f => this[f] = this[f].bind(this) );
+    this.__bindAll([ 'onPlay', 'onTrackDelete' ]);
   }
 
   onPlay() {

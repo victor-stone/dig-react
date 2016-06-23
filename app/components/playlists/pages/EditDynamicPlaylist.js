@@ -1,8 +1,8 @@
-import React                from 'react';
-import DynamicPlaylistForm  from './DynamicPlaylistForm';
-import Link                 from '../services/LinkToRoute';
+import React         from 'react';
+import DynamicPlaylistForm  from '../DynamicPlaylistForm';
+import Link                 from '../../services/LinkToRoute';
 
-class EditDynamic extends React.Component
+class EditDynamicPlaylist extends React.Component
 {
   constructor() {
     super(...arguments);
@@ -20,5 +20,4 @@ class EditDynamic extends React.Component
   }
 }
 
-module.exports = EditDynamic;
-
+module.exports = EditDynamicPlaylist;

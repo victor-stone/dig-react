@@ -1,8 +1,9 @@
-import React     from 'react';
-import SubNav    from '../SubNav';
-import InlineCSS from '../InlineCSS';
-import { bgColor }   from './style/browse';
-import css           from './style/subnav';
+import React        from 'react';
+import SubNavBar    from '../bound/SubNavBar';
+import UrlNavTabs   from '../services/UrlNavTabs';
+import InlineCSS    from '../vanilla/InlineCSS';
+import { bgColor }  from './style/browse';
+import css          from './style/subnav';
 
 const PLAYLIST_TABS = {
   '/playlists/featured': 'featured',
@@ -17,11 +18,10 @@ function UrlForTab(tab) {
 function SubNavPlaylists(props)
 {
   return (
-    <SubNav paging={props.paging}  store={props.store} >
-      <InlineCSS css={bgColor}   id="playlists-bgColor-css"/>
-      <InlineCSS css={css}       id="playlists-subnav-css"/>
-      <SubNav.UrlTabs store={props.store} tab={props.tab} tabs={PLAYLIST_TABS} urlForTab={UrlForTab} />
-    </SubNav>
+    <SubNavBar paging={props.paging}  store={props.store} >
+      <InlineCSS css={bgColor + css}  id="playlists-subnav-css"/>
+      <UrlNavTabs store={props.store} tab={props.tab} tabs={PLAYLIST_TABS} urlForTab={UrlForTab} />
+    </SubNavBar>
   );
 }
 

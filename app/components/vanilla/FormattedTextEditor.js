@@ -5,7 +5,7 @@ class FormattedTextEditor extends React.Component
 {
   constructor() {
     super(...arguments);
-    [ 'onChange' ].forEach( f => this[f] = this[f].bind(this));
+    this.__bindAll([ 'onChange' ]);
     this.state = { text: this.props.text, orgText: this.props.text };
   }
 
@@ -49,7 +49,7 @@ class InlineFormattedTextEditor extends FormattedTextEditor
   /*eslint "react/no-danger":0 */
   constructor() {
     super(...arguments);
-    [ 'onCancel', 'onEdit', 'onDone' ].forEach( f => this[f] = this[f].bind(this));
+    this.__bindAll([ 'onCancel', 'onEdit', 'onDone' ]);
     this.state = { text: this.props.text, orgText: this.props.text };
 
   }

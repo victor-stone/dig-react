@@ -141,8 +141,8 @@ function task_lint() {
 }
 
 function task_make_indecies() {
-  var skip = ['style'];
-  var dirs = config.apps
+  var skip = ['style','readme.md','readme'];
+  var dirs = [].concat(config.apps,['bound','models','services','vanilla','playlists/pages'])
     .map( d => `./app/components/${d}`)
     .concat( [ 
       ['./app/components',{ skip: config.apps } ],

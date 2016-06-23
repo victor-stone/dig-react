@@ -1,6 +1,6 @@
 import React    from 'react';
-import events   from '../models/events';
-import env      from '../services/env';
+import events   from '../../models/events';
+import env      from '../../services/env';
 import Modal    from '../vanilla/Modal';
 
 const ModalContainer = React.createClass({

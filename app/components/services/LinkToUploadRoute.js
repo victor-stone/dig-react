@@ -1,19 +1,23 @@
-import React from 'react';
-import Link  from './LinkToRoute';
+import React        from 'react';
+import Link         from './LinkToRoute';
+import { sliceStr } from '../../unicorns';
 
+function LinkToUploadRoute(props) {
 
-var UploadLink = React.createClass({
+  let { truncate = false, 
+        base = '/files/', 
+        name,
+        model: { id, artist: {id: artistID} 
+      } } = props;
 
-  render: function() {
+  name = truncate ? sliceStr(name) : name;
+  
+  var href = base + artistID + '/' + id;
 
-    var model = this.props.model;
-    var base  = this.props.base || '/files/';
-    var href  = base + model.artist.id + '/' + model.id;
-    return (
-        <Link href={href} {...this.props}>{model.name}</Link>
-      );
-  }
-});
+  return (
+      <Link href={href} {...props}>{name}{props.children}</Link>
+    );
+}
 
-module.exports = UploadLink;
+module.exports = LinkToUploadRoute;
 

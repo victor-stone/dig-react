@@ -12,10 +12,7 @@ class User extends API
 
   constructor() {
     super(...arguments);
-    this._onLoginSuccess = this._onLoginSuccess.bind(this);
-    this._onLoginReject  = this._onLoginReject.bind(this);
-    this._onCurrentUserSuccess = this._onCurrentUserSuccess.bind(this);
-    this._onCurrentUserReject  = this._onCurrentUserReject.bind(this);
+    this.__bindAll(['_onLoginSuccess','_onLoginReject','_onCurrentUserSuccess','_onCurrentUserReject']);
   }
 
   _onLoginSuccess(username) {

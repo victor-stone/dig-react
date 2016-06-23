@@ -1,25 +1,6 @@
-import React from 'react';
-
-import TrackbackPopup   from './TrackbackPopup';
-import ExternalLink     from '../vanilla/ExternalLink';
-import UploadStore      from '../../stores/upload'; // for MAX_TRACKBACK_FETCH should be in app/models
-
-
-function Trackback(props) {
-  var tb = props.model;
-  var cls = props.className || '';
-  return( 
-    <li className={cls}>
-      <div>
-        {tb.embed 
-            ? (<TrackbackPopup trackback={tb} />)
-            : (<ExternalLink href={tb.url} subname={tb.type} text={tb.name} />)
-        }
-        {' '}<span className="light-color">{tb.artist.name}</span>
-      </div>
-    </li>
-  );
-}
+import React       from 'react';
+import Trackback   from './Trackback';
+import UploadStore from '../../stores/upload'; // for MAX_TRACKBACK_FETCH should be in app/models
 
 var TracbackList = React.createClass({
 
@@ -40,8 +21,6 @@ var TracbackList = React.createClass({
 
   },
 });
-
-TracbackList.Trackback = Trackback;
 
 module.exports = TracbackList;
 

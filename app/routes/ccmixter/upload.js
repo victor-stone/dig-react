@@ -1,25 +1,7 @@
-
-import React             from 'react';
 import Upload            from '../../stores/upload';
 import { RemixTree }     from '../../components';
-import { ModelTracker,
-         PopPeruseModel }  from '../../mixins';
 
-var Tree = React.createClass({
-
-  mixins: [ModelTracker,PopPeruseModel],
-
-  stateFromStore(store) {
-    return { store };
-  },
-
-  render() {
-    return  ( 
-      <RemixTree store={this.state.store} />
-    );
-  },
-
-});
+const Tree =RemixTree;
 
 Tree.path = '/files/:user/:id';
 

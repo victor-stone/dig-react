@@ -1,12 +1,10 @@
 import React        from 'react';
 import Playlist     from '../../stores/playlist';
 import SubNav       from '../../components/playlists/SubNav';
-import PlaylistPage from '../../components/playlists/Playlist';
+import pages        from '../../components/playlists/pages';
 
-function playlist(props) {
-  return (<PlaylistPage {...props} />);
-}
-
+var playlist = pages.Playlist;
+  
 playlist.path = '/playlist/browse/:id';
 
 playlist.title = 'Playlist';

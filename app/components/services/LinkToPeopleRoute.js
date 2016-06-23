@@ -3,6 +3,13 @@ import Link          from './LinkToRoute';
 import Glyph         from '../vanilla/Glyph';
 import env           from '../../services/env';
 
+const thumbStyle = id => { return { backgroundImage:     `url('${env.rpcHost}user/thumbnail/${id}')`,
+                                    backgroundRepeat:    'no-repeat',
+                                    paddingLeft:         '24px',
+                                    backgroundPositionY: 'center',
+                                    marginRight:         '8px'
+                                  };};
+
 const LinkToPeopleRoute = React.createClass({
 
   getInitialState() {
@@ -14,37 +21,42 @@ const LinkToPeopleRoute = React.createClass({
   },
 
   render() {
-    var model = this.state.model;
-    var href  = '/people/' + model.id;
+    const { model: { id, name, avatarURL } } = this.state;
+    let   { suburl = null, 
+            className = '', 
+            skipUser = false,
+            avatar = false,
+            icon = null, 
+            thumb = false } = this.props;
 
-    if( this.props.suburl ) {
-      href += '/' + this.props.suburl;
+
+    // for compat with dig legacy lol
+    if( skipUser ) {
+      return null;
     }
 
-    var icon       = this.props.icon === true ? 'user' : this.props.icon;
-    var thumbStyle = this.props.thumb ? { backgroundImage:     `url('${env.rpcHost}user/thumbnail/${model.id}')`,
-                                          backgroundRepeat:    'no-repeat',
-                                          paddingLeft:         '24px',
-                                          backgroundPositionY: 'center',
-                                          marginRight:         '8px'
+    icon = this.props.icon === true ? 'user' : this.props.icon;
 
-                                           } : null;
-
-    var cls        = 'people-link ' + (this.props.className || '');
+    var href       = `/people/${id}${suburl?'/'+suburl:''}`;
+    var cls        = 'people-link ' + className;
+    var thumbStyle = thumb ? thumbStyle(id) : null;
 
     return( 
         <Link {...this.props} className={cls} style={thumbStyle} href={href}>
-          {this.props.avatar
-            ? <span><img className="img-circle" src={model.avatarURL} />{model.name}</span>
+          {avatar
+            ? <span><img className="img-circle" src={avatarURL} />{name}</span>
             : icon
-              ? <span><Glyph icon={icon} />{' ' + model.name}</span>
-              : this.props.children || model.name
+              ? <span><Glyph icon={icon} />{' ' + name}</span>
+              : this.props.children || name
           }
         </Link>
       );
   }
 });
 
+LinkToPeopleRoute.navigateTo = function(model) {
+  Link.navigateTo('/people/' + model.id);  
+};
 
 module.exports = LinkToPeopleRoute;
 

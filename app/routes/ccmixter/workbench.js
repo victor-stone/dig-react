@@ -1,6 +1,6 @@
 import React         from 'react';
-import T             from '../../components/TagEditor';
-import InlineCSS     from '../../components/InlineCSS';
+import T             from '../../components/bound/Tags';
+import InlineCSS     from '../../components/vanilla/InlineCSS';
 
 import Upload from '../../stores/upload';
 import Remixes from '../../stores/remixes';

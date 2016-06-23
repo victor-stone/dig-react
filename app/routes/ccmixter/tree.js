@@ -7,17 +7,9 @@ import Store             from '../../stores/remixes';
 import { mergeParams, 
          oassign }       from '../../unicorns';
 
-import { PushPeruseModel } from '../../mixins';
-
-var TreePage = React.createClass({
-
-  mixins: [PushPeruseModel],
-  
-  render() {
-    return <Gallery {...this.props} />; 
-  }
-});
-
+function TreePage(props) {
+  return <Gallery {...props} />; 
+}
 
 TreePage.title = 'Remix Tree';
 
@@ -28,13 +20,13 @@ TreePage.subnav = function(props) {
 };
 
 TreePage.store = function(params,queryParams) {
-  var qopts = oassign({},qc.remixes);
+  var defaultOpts = oassign({},qc.remixes);
   if( queryParams && 'reqtags' in queryParams ) {
-    qopts.reqtags = queryParams.reqtags;
+    defaultOpts.reqtags = queryParams.reqtags;
   }
-  var opts = mergeParams( {}, qopts, qc.latest );
-  var qparams = mergeParams( {}, opts, queryParams );
-  return Store.storeFromQuery(qparams, opts);
+  mergeParams( defaultOpts, qc.latest );
+  var qparams = mergeParams( {}, defaultOpts, queryParams );
+  return Store.storeFromQuery(qparams, defaultOpts);
 };
 
 module.exports = TreePage;

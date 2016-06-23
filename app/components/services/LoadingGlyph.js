@@ -1,6 +1,6 @@
 import React       from 'react';
-import Glyph       from './vanilla/Glyph';
-import { AjaxTracker } from '../mixins';
+import Glyph       from '../vanilla/Glyph';
+import { AjaxTracker } from '../../mixins';
 
 const LoadingGlyph = React.createClass({
 

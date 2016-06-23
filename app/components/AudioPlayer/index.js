@@ -1,5 +1,4 @@
 import React  from 'react';
-import People from '../People';
 import events from '../../models/events';
 
 import { oassign } from '../../unicorns';
@@ -10,7 +9,9 @@ import PlaybackScrubber from './PlaybackScrubber';
 import PlayButton       from './PlayButton';
 import AudioService     from '../../services/audio-player';
 
-import UploadLink       from '../services/LinkToUploadRoute';
+import LinkToUpload       from '../services/LinkToUploadRoute';
+import LinkToPeople       from '../services/LinkToPeopleRoute';
+
 
 var nullPosition = { 
   bytesLoaded: -1,
@@ -107,9 +108,9 @@ const AudioPlayer = React.createClass({
           <PlaylistButton   media={nowPlaying} />
           <PlaybackScrubber media={nowPlaying} position={position} />
           <div className="song-info hidden-xs">
-            <UploadLink className="upload-link" model={nowPlaying} />
+            <LinkToUpload className="upload-link" model={nowPlaying} />
             {" "}
-            <People.Link model={nowPlaying.artist} className="user light-color hidden-sm" />
+            <LinkToPeople model={nowPlaying.artist} className="user light-color hidden-sm" />
           </div>
         </div>
       </div>

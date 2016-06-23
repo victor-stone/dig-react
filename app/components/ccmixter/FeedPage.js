@@ -1,5 +1,5 @@
 import React            from 'react';
-import InlineCSS        from '../InlineCSS';
+import InlineCSS        from '../vanilla/InlineCSS';
 import css              from './style/feed';
 import Feed             from './Feed';
 import StickyStore       from '../../stores/userfeed';

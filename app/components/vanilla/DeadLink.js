@@ -1,4 +1,5 @@
 import React from 'react';
+import Glyph from './Glyph';
 
 var DeadLink = React.createClass({
 
@@ -9,7 +10,7 @@ var DeadLink = React.createClass({
   },
 
   render() {
-    return (<a className="deadlink" {...this.props} href="#" onClick={this.onClick} >{this.props.children}</a>);
+    return (<a className="deadlink" {...this.props} href="#" onClick={this.onClick} >{this.props.icon && <Glyph icon={this.props.icon} />}{this.props.text}{this.props.children}</a>);
   }
 });
 

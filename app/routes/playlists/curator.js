@@ -1,19 +1,10 @@
-import React              from 'react';
-import Playlists          from '../../stores/playlists';
-import { mergeParams }    from '../../unicorns';
-import { PlaylistWidget } from '../../components/playlists/Browse';
-import SubNav             from '../../components/playlists/SubNav';
-import { Header }         from '../../components/People';
+import React            from 'react';
+import Playlists        from '../../stores/playlists';
+import { mergeParams }  from '../../unicorns';
+import pages            from '../../components/playlists/pages';
+import SubNav           from '../../components/playlists/SubNav';
 
-function curator(props) {
-  var store = props.store;
-  return (        
-    <div className="container-fluid curator-detail-page">
-      <Header model={store.model.curator} />
-    <PlaylistWidget store={store} skipUser />
-    </div>
-  );
-}
+var curator = pages.Curator;
 
 curator.path = '/people/:userid/playlists';
 

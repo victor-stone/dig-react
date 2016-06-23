@@ -3,7 +3,7 @@ import Info              from './Info';
 import EditableTrackList from './EditableTrackList';
 import EditableTitle     from '../bound/EditableTitle';
 
-import InlineCSS   from '../InlineCSS';
+import InlineCSS   from '../vanilla/InlineCSS';
 import playlistCSS from './style/playlist';
 import { bgColor } from './style/browse';
 

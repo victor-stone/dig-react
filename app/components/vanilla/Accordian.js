@@ -64,8 +64,7 @@ class AccordianPanel extends React.Component {
       disabled: this.props.disabled,
       open: false
     };
-    this.onOpen = this.onOpen.bind(this);
-    this.onClose =this.onClose.bind(this);
+    this.__bindAll(['onOpen','onClose']);
   }
 
   componentWillReceiveProps(nextProps) {

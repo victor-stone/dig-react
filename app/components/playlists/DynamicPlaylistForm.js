@@ -5,7 +5,7 @@ import QueryOptions      from './QueryOptions';
 import StaticTrackList   from '../bound/StaticTrackList';
 
 import PageHeader        from '../PageHeader';
-import InlineCSS         from '../InlineCSS';
+import InlineCSS         from '../vanilla/InlineCSS';
 import css               from './style/edit';
 import DisableAutoScroll from '../services/DisableAutoScroll';
 

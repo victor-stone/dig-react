@@ -82,14 +82,16 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
         this._fetchTracks(this.model.head.id);
       });
   }
-  
-  create(name,track,dynamic) {
-    if( dynamic ) {
-      var qstring = this.model.uploads.queryStringWithDefaults;
-      return api.playlists.createDynamic(name,qstring);
-    } else {
-      return api.playlists.createStatic(name,'',track);
-    }
+
+  // create a dynamic playlist based on the query in
+  // tracks
+  create(name) {
+    var qstring = this.model.tracks.queryStringWithDefaults;
+    return Playlist.create(name,'',qstring);
+  }
+
+  addTrack(track) {
+    return api.playlist.addTrack(track,this.model.head.id);
   }
 
   deletePlaylist() {
@@ -181,6 +183,14 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
                             });
   }
 }
+
+Playlist.create = function(name,track,qstring) {
+  if( qstring ) {
+    return api.playlists.createDynamic(name,qstring);
+  } else {
+    return api.playlists.createStatic(name,'',track);
+  }
+};
 
 Playlist.PlaylistTracks = PlaylistTracks;
 

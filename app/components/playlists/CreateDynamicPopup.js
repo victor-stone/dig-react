@@ -1,6 +1,6 @@
 import React   from 'react';
 import Modal   from '../services/Modal';
-import Link    from '../services/Link';
+import LinkToPlaylist    from '../services/LinkToPlaylistRoute';
 
 // <span className="save-playlist-form">
 
@@ -16,7 +16,7 @@ class CreateDynamicPopup extends Modal.Popup
     this.props.store.create(name)
         .then( (playlist) => {
             this.manualClose();
-            Link.navigateTo( '/playlist/browse/' + playlist.id );
+            LinkToPlaylist.navigateTo( playlist );
           })
         .catch( () => this.setState( { error: 'ccmixter service did not create a playlist' } ) );
   }

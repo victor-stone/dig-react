@@ -1,6 +1,6 @@
 import React  from 'react';
 import Glyph  from './vanilla/Glyph'; 
-import Modal  from './Modal';
+import Modal  from './services/Modal';
 
 import { TagString } from '../unicorns';
 

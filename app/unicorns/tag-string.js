@@ -47,12 +47,6 @@
 
 const NOT_FOUND = -1;
 
-var defaultOpts = {
-    ignore:  /^(\*|all)$/,
-    invalid: /[^-a-zA-Z0-9_]/,
-    separator:  ','
-};
-
 function contains(arr,obj) {
   return arr.indexOf(obj) !== NOT_FOUND;
 }
@@ -106,22 +100,31 @@ function getDiff(arr1, arr2) {
 
 var merge = Object.assign;
 
+function cookOpts(opts={} ) {
+  /*
+    we're doing this manually so that when we Object.assign() to 'this'
+    we don't create some kind  "unintentional" additions 
+  */
+  let { ignore    = /^(\*|all)$/,
+        invalid   = /[^-a-zA-Z0-9_]/, 
+        separator = ',',
+        source    = '' } = opts;
+
+  return { ignore, invalid, separator, source };
+}
+
 class TagString
 {
-  constructor(opts) {
+  constructor(opts = '') {
     
     this.clear = this.removeAll;
     this.includes = this.contains;
 
-    if( !opts ) {
-      opts = { source: null };
-    } else if( !opts.hasOwnProperty('source') ) {
+    if( !opts.hasOwnProperty('source') ) {
       opts = { source: opts };
     }
 
-    for( var k in defaultOpts ) {
-      this[k] = opts[k] || defaultOpts[k];
-    }
+    Object.assign(this,cookOpts(opts));
 
     this._tagsArray = TagString.toArray(opts.source,this.opts);
   }
@@ -370,17 +373,9 @@ TagString.toArray = function(source,useropts) {
 
   var arr = null;
   if( typeof(source) === 'string' ) {
-    var opts = merge( {}, defaultOpts );
-    if( useropts ) {
-      opts = merge(opts,useropts);
-    }
-    if( source.match(opts.ignore) )  {
-      arr = [ ];
-    } else {
-      // still not 100% because '-'
-      var r = new RegExp(opts.separator,'g');
-      arr = source.replace(r,' ').split(/\s+/).filter( t => t.length && t );
-    }
+    var opts = cookOpts(useropts);
+    var r = new RegExp(opts.separator,'g');
+    arr = source.match(opts.ignore) ? [] : source.replace(r,' ').split(/\s+/).filter( t => t.length && t );
   } else if( Array.isArray(source) ) {
     arr = source.slice();        
   } else if( source && (source instanceof TagString) )  {

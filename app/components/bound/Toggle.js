@@ -1,5 +1,5 @@
-import React from 'react';
-import Toggle from '../vanilla/Toggle';
+import React            from 'react';
+import Toggle           from '../vanilla/Toggle';
 import { ModelTracker } from '../../mixins';
 
 /*

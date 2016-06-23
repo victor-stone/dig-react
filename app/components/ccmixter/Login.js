@@ -1,18 +1,20 @@
 import React            from 'react';
 import api              from '../../services/ccmixter';
-import Modal            from '../Modal';
-import Alert            from '../Alert';
+import Modal            from '../services/Modal';
+import Alert            from '../services/Alert';
 
 class Login extends Modal.Popup
 {
   constructor() {
     super(...arguments);
+    
     this.state = { error: '',
                    name: '',
                    password: '' };
-    ['onLogin','onLoginSuccess','onLoginReject',
-        'onNameChange','onPasswordChange',
-        'shouldDisableSubmit'].forEach( f => this[f] = this[f].bind(this));
+
+    this.__bindAll(['onLogin','onLoginSuccess','onLoginReject',
+                    'onNameChange','onPasswordChange',
+                    'shouldDisableSubmit']);
   }
 
   onLoginSuccess() {

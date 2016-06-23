@@ -20,7 +20,7 @@ class EditableTracks extends React.Component
 {
   constructor() {
     super(...arguments);
-    ['onDone','onEditState'].forEach( f => this[f] = this[f].bind(this) );
+    this.__bindAll(['onDone','onEditState']);
   }
 
   onDone() {

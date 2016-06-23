@@ -13,7 +13,7 @@ class EditableTrackList extends React.Component
 {
   constructor() {
     super(...arguments);
-    ['onDelete','onPlay','onSort'].forEach( f => this[f] = this[f].bind(this) );
+    this.__bindAll(['onDelete','onPlay','onSort']);
   }
 
   render() {

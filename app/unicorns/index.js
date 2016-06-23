@@ -144,20 +144,11 @@ if( typeof String.prototype.ellipse === 'undefined' ) {
   };
 }
 
-/*
-var _oldLowerCase = String.prototype.toLowerCase;
-var __env;
-String.prototype.toLowerCase = function() {
-  if( typeof this !== 'string' ) {
-    throw new Error('bogus toLowerCase');
+Object.prototype.__bindAll = function(arr) {
+  for( const f of arr ) {
+    this[f] = this[f].bind(this);
   }
-  if( !__env ) {
-    __env = require('../services/env');
-  }
-  __env.log('lowering: ' + this);
-  return _oldLowerCase.apply(this);
 };
-*/
 
 if( typeof String.prototype.hashCode === 'undefined' ) {
   const HASH_SHIFT = 5;
@@ -225,6 +216,18 @@ function trim(s) {
 
 function w(s) {
   return s.split(/\s+/);
+}
+
+const TRUNCATED_STRING_MAX = 10;
+const TRUNCATED_WORD_MAX   = 5;
+
+function sliceStr( {str='', maxWords = TRUNCATED_WORD_MAX, maxStr = TRUNCATED_STRING_MAX } ) {
+  return str
+          .trim()
+          .split(' ')
+          .slice( 0, maxWords )
+          .map( s => s.length > maxStr ? s.substr(0,maxStr/2) + '...' : s )
+          .join(' ');
 }
 
 Object.values = obj => Object.keys(obj).map(key => obj[key]);
@@ -369,6 +372,7 @@ module.exports = {
   hashParams,
   oassign,
   pagingStats,
+  sliceStr,
   trim,
   w,
   underscore,

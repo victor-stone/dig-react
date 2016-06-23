@@ -1,91 +1,13 @@
 /*eslint "react/no-danger":0 */
 import React                 from 'react';
-import { AccordianPanel }    from '../Accordian';
+import { AccordianPanel }    from '../vanilla/Accordian';
 import Glyph                 from '../vanilla/Glyph';
-import Modal                 from '../Modal';
-import {FormattedTextEditor} from '../vanilla/FormattedTextEditor';
+import ReviewsButton         from '../bound/ReviewsButton';
 import Topics                from '../../stores/topics';
 import { ModelTracker,
         CollapsingModel }    from '../../mixins';
 
-class ReviewPopup extends Modal.Popup {
-
-  constructor() {
-    super(...arguments);
-    this.state = { error: '',
-                   disableSubmit: true };
-    [ 'onChange', 'shouldSubmitBeDisabled', 'onSubmitReview'].forEach( f => this[f] = this[f].bind(this));
-  }
-
-  onChange(event) {
-    var value = event.target.value.trim();
-    var disableSubmit = value.length === 0;
-    this.setState( {disableSubmit,value} );
-  }
-
-  onSubmitReview() {
-    this.setState( { error: '' } );
-    this.props.store.review(this.state.value)
-      .then( () => this.manualClose );
-  }
-
-  shouldSubmitBeDisabled() {
-    return this.state.disableSubmit;
-  }
-
-  render() {
-    return (
-      <Modal action={this.onSubmitReview} 
-             submitDisabler={this.shouldSubmitBeDisabled} 
-             subTitle="Review"
-             title={this.props.store.model.upload.name}  
-             buttonText="Submit" 
-             closeText="Cancel" 
-             error={this.state.error}
-             {...this.props}
-      >
-          <div className="form-group">
-              <label>{"Your review:"}</label>
-              <FormattedTextEditor  onChange={this.onChange} />
-          </div>
-      </Modal>
-      );
-  }  
-}
-
-const ReviewsButton = React.createClass({
-
-  mixins: [ ModelTracker ],
-
-  getInitialState() {
-    return { disabled: false };
-  },
-
-  shouldComponentUpdate(nextProps,nextState) {
-    return this.state.store.permissions.okToReview !== nextState.store.permissions.okToReview;
-  },
-
-  stateFromStore(store) {
-    return {store};
-  },
-  
-  onReview(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    ReviewPopup.show( ReviewPopup, { store: this.state.store } );
-  },
-
-  render() {
-    return (
-        this.state.store.permissions.okToReview && !this.state.disabled
-          ? <button onClick={this.onReview} className="review pull-right"><Glyph icon="pencil" /></button>
-          : null
-      );
-    }
-});
-
-
-var  Reviews = React.createClass({
+var Reviews = React.createClass({
 
   mixins: [ModelTracker,CollapsingModel],
 
@@ -113,6 +35,7 @@ var  Reviews = React.createClass({
     return this.topics.reviewsFor(id);
   },
 
+  // TODO: bug: indenting isn't working
   _renderReview(r,i) {
     return (
         <div key={i} className={'panel panel-info panel-offset-' + r.indent}>

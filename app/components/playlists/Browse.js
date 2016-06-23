@@ -1,6 +1,6 @@
 import React                   from 'react';
 import PlaylistList            from '../bround/PlaylistList';
-import InlineCSS               from '../InlineCSS';
+import InlineCSS               from '../vanilla/InlineCSS';
 import { browse as browseCSS,
          tags   as tagsCSS }   from './style/browse';
 

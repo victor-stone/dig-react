@@ -8,7 +8,7 @@ import Toggle                  from '../bound/Toggle';
 import FormattedText           from '../bound/FormattedTextEditor';
 import DeletePlaylist          from './DeletePlaylist';
 import { CurrentUserTracker }  from '../../mixins';
-import { EditableTagsDiv }     from '../TagEditor';
+import { EditableTagsDiv }     from '../bound/Tags';
 
 class Feature extends CurrentUserTracker.extender(React.Component)
 {

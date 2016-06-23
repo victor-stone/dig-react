@@ -1,16 +1,13 @@
 import React        from 'react';
 import Glyph        from './vanilla/Glyph';
-import Modal        from './Modal';
+import Modal        from './services/Modal';
 import env          from '../services/env';
 
 class SharePopup extends Modal.Popup {
 
   constructor() {
     super(...arguments);
-    this.modelLink    = this.modelLink.bind(this);
-    this.fbLink       = this.fbLink.bind(this);
-    this.twitterLink  = this.twitterLink.bind(this);
-    this.mailLink     = this.mailLink.bind(this);
+    this.__bindAll(['modelLink','fbLink','twitterLink','mailLink']);
   }
 
   modelLink() {

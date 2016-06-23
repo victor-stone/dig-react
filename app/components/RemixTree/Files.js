@@ -1,6 +1,6 @@
 import React       from 'react';
 import { AccordianPanel 
-               }   from '../Accordian';
+               }   from '../vanilla/Accordian';
 import Files       from '../stems/Files';
 
 

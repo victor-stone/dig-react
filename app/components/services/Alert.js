@@ -1,4 +1,4 @@
-import env from '../services/env';
+import env from '../../services/env';
 import Alert from '../vanilla/Alert';
 
 Alert.show = function(type,msg) {

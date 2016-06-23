@@ -7,7 +7,7 @@ import { PlayButton }     from '../AudioPlayer';
 import { ModelTracker,
          NowPlayingTracker } from '../../mixins';
 
-import InlineCSS          from '../InlineCSS';
+import InlineCSS          from '../vanilla/InlineCSS';
 import browserCSS         from './style/browser';
 
 var PellsListing = React.createClass({

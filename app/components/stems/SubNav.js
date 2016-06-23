@@ -1,12 +1,12 @@
 import React                   from 'react';
-import SubNav                  from '../SubNav';
+import SubNavBar               from '../bound/SubNavBar';
 import { SelectedTagSection }  from './Tags';
 
 function StemsSubNav(props) {
   return (
-      <SubNav paging store={props.store} >
+      <SubNavBar paging store={props.store} >
         <SelectedTagSection store={props.store} />
-      </SubNav>
+      </SubNavBar>
   );
 }
 

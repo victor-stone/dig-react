@@ -1,5 +1,5 @@
 import React         from 'react';
-import Glyph         from './vanilla/Glyph';
+import Glyph         from '../vanilla/Glyph';
 import DeadLink      from '../vanilla/DeadLink';
 import FeedBadge     from './FeedBadge';
 

@@ -6,12 +6,12 @@ import { CurrentUserTracker } from '../../mixins';
 
 import Link            from '../services/LinkToRoute';
 import Glyph           from '../vanilla/Glyph';
-import FeedBadge       from '../FeedBadge';
+import FeedBadge       from '../services/FeedBadge';
 import LoadingGlyph    from '../services/LoadingGlyph';
 import NavbarHeader    from '../vanilla/NavbarHeader';
 import DeadLink        from '../vanilla/DeadLink';
-import CurrentUserMenu from '../CurrentUserMenu';
-import Alert           from '../Alert';
+import CurrentUserMenu from '../services/CurrentUserMenu';
+import Alert           from '../services/Alert';
 import Login           from './Login';
 
 function homeLink() {

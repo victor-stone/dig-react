@@ -1,6 +1,7 @@
 import React            from 'react';
-import SubNav          from '../SubNav';
-import InlineCSS        from '../InlineCSS';
+import SubNavBar        from '../bound/SubNavBar';
+import ReqTagsNavTabs   from '../bound/ReqTagsNavTabs';
+import InlineCSS        from '../vanilla/InlineCSS';
 import css              from './style/subnav';
 
 var UPLOAD_TYPES = {
@@ -10,14 +11,12 @@ var UPLOAD_TYPES = {
   acappella: 'pells'
 };
 
-const UPLOAD_FILTER  = new RegExp( '^' + Object.keys(UPLOAD_TYPES).join('|') + '$');
-
 function GallerySubNav(props) {
   return (
-      <SubNav {...props}>
+      <SubNavBar {...props}>
         <InlineCSS css={css} id="gallery-subnav-css" />
-        <SubNav.FilterTabs tabs={UPLOAD_TYPES} filter={UPLOAD_FILTER} store={props.store} all={props.all} />
-      </SubNav>
+        <ReqTagsNavTabs tabs={UPLOAD_TYPES} store={props.store} all={props.all} />
+      </SubNavBar>
   );
 }
 

@@ -2,7 +2,7 @@ import React     from 'react';
 
 import InstrumentalOnlyFilter  from '../InstrumentalOnlyFilter';
 import ArtistFilter            from '../ArtistFilter';
-import { DualTagFieldWidget }   from '../TagEditor';
+import { DualTagFieldWidget }   from '../bound/Tags';
 import { QueryParamTracker }   from '../../mixins';
 import { TagString }           from '../../unicorns';
 import { LicenseFilter,

@@ -4,7 +4,7 @@ import {InputText} from './InputField';
 
 function EditableTitle(props)
 {
-  var icon = props.icon || 'music';
+  const { icon = 'music' } = props;
   return (
       <div className="page-header"> 
         <h1 className="center-text">

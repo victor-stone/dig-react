@@ -1,7 +1,7 @@
 import React        from 'react';
 import Modal        from '../vanilla/Modal';
 import ExternalLink from '../vanilla/ExternalLink';
-import Glyph        from '../vanilla/vanilla/Glyph';
+import Glyph        from '../vanilla/Glyph';
 
 const TrackbackPopupLink = React.createClass({
 

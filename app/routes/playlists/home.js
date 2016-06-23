@@ -1,3 +1,4 @@
+// DEPRECIATED
 import React from 'react';
 
 var index = React.createClass({

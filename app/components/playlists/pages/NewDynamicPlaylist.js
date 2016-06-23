@@ -1,8 +1,8 @@
-import React                 from 'react';
-import DynamicPlaylistForm   from './DynamicPlaylistForm';
-import CreateDynamicPopup    from './CreateDynamicPopup';
+import React         from 'react';
+import DynamicPlaylistForm  from '../DynamicPlaylistForm';
+import CreateDynamicPopup    from '../CreateDynamicPopup';
 
-class NewPlaylist extends React.Component
+class NewDynamicPlaylist extends React.Component
 {
   constructor() {
     super(...arguments);
@@ -19,5 +19,4 @@ class NewPlaylist extends React.Component
   }
 }
 
-module.exports = NewPlaylist;
-
+module.exports = NewDynamicPlaylist;

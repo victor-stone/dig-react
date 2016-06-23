@@ -1,18 +1,30 @@
 import React               from 'react';
 import css                 from './style/gallery';
 import GalleryElement      from './GalleryElement';
-import { RemixContainer }  from '../Remixes';
-import InlineCSS           from '../InlineCSS';
+import InlineCSS           from '../vanilla/InlineCSS';
+import PlayCapture         from '../services/PlayCapture';
+import { ModelTracker,
+        PushPeruseModel }  from '../../mixins';
 
-function Gallery(props) {
-  return (
-    <div className="gallery">
-      <InlineCSS css={css.Gallery}         id="gallery-css"/>
-      <InlineCSS css={css.GalleryElement}  id="gallery-element-css"/>
-      <RemixContainer {...props} remixLine={GalleryElement} />
-    </div>
-  );
+class Gallery extends PushPeruseModel(ModelTracker.extender(PlayCapture(React.Component)))
+{
+  stateFromStore(store) {
+    return {store};
+  }
+
+  render() {
+    const { store: { model: {items} } } = this.state;
+    return (
+      <div className="gallery">
+        <InlineCSS css={css.Gallery+css.GalleryElement} id="gallery-css"/>
+        <ul className="play-list">
+          {items.map( m => <GalleryElement key={m.id} model={m} {...this.props}/>)}
+        </ul>
+      </div>
+    );
+  }
 }
+
 
 module.exports = Gallery;
 

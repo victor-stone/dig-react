@@ -55,12 +55,13 @@
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-            "sourceType": "module",
-                "ecmaFeatures": {
-                    "jsx": true,
-                    "experimentalObjectRestSpread": true,
-                    modules: true
-                },
+        "ecmaVersion": 6,
+        "sourceType": "module",
+            "ecmaFeatures": {
+                "jsx": true,
+                "experimentalObjectRestSpread": true,
+                modules: true
+            },
         },    
     "plugins": [
         "react"

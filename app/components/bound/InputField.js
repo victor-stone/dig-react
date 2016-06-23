@@ -26,7 +26,7 @@ const BoundInputControlMixin = target => class extends target {
 };
 
 /*
-  Emit static text wrapped in bootstrap form-group structure that is bound
+  Emit static text wrapped in bootstrap 'form-group' structure that is bound
   to a property in a store, optionally editable by user
 
   props
@@ -37,12 +37,14 @@ const BoundInputControlMixin = target => class extends target {
 class BoundInputFormField extends BoundInputControlMixin(ModelTracker.extender(React.Component))
 {
   render() {
-    return <InputFormField text={this.state.text} title={this.props.title} canEdit={this.props.store.permissions.canEdit} />;
+    const { title, staticOnly = false, store: { permissions: {canEdit = false} = {}  } } = this.props;
+    const { text } = this.state;
+    return <InputFormField text={text} title={title} canEdit={!staticOnly && canEdit} />;
   }
 }
 
 /*
-  Emit static text bound to a store's property optionally editable by user
+  Emit static html text bound to a store's property optionally editable by user
 
   props
     propName = name of the store's property
@@ -50,7 +52,9 @@ class BoundInputFormField extends BoundInputControlMixin(ModelTracker.extender(R
 class BoundInputText extends BoundInputControlMixin(ModelTracker.extender(React.Component))
 {
   render() {
-    return <InputText text={this.state.text} canEdit={this.props.store.permissions.canEdit} />;
+    const { staticOnly = false, store: { permissions: {canEdit = false} = {}  } } = this.props;
+    const { text } = this.state;
+    return <InputText text={text} canEdit={!staticOnly && canEdit} />;
   }
 }
 

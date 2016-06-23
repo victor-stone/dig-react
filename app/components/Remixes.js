@@ -1,34 +1,21 @@
 import React              from 'react';
 import Link               from './services/LinkToRoute';
 import DownloadPopup      from './DownloadPopup';
-import People             from './People';
+import LinkToPeople       from './services/LinkToPeopleRoute';
 import { PlayButton }     from './AudioPlayer';
 import AudioPlayerService from '../services/audio-player';
 import { ModelTracker }   from '../mixins';
-
+import { sliceStr }       from '../unicorns';
 import { ResetOptionsButton } from './QueryOptions';
 
 const MIN_LIMIT = 10;
-
-const TRUNCATED_STRING_MAX = 10;
-const TRUNCATED_STRING_MAX_HALF = 5;
-const TRUNCATED_WORD_MAX   = 5;
-
-function sliceStr(str) {
-  return str
-          .trim()
-          .split(' ')
-          .slice( 0, TRUNCATED_WORD_MAX )
-          .map( s => s.length > TRUNCATED_STRING_MAX ? s.substr(0,TRUNCATED_STRING_MAX_HALF) + '...' : s )
-          .join(' ');
-}
 
 var SongLink = React.createClass({
 
   render: function() {
     var u = this.props.model;
     var href = '/files/' + u.artist.id + '/' + u.id;
-    var name = this.props.truncate ? sliceStr(u.name) : u.name;
+    var name = this.props.truncate ? sliceStr({str:u.name}) : u.name;
 
     return (<span className="song-title"><Link id={'song-link-' + u.id} href={href}>{name}</Link></span> );
   }
@@ -42,7 +29,7 @@ var ArtistLink = React.createClass({
     if( this.props.skipUser ) {
       return null;
     }
-    return (<span className="artist-name light-color"><People.Link model={artist} /></span>);  
+    return (<span className="artist-name light-color"><LinkToPeople model={artist} /></span>);  
   }
 
 });

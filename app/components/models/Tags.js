@@ -1,5 +1,5 @@
 import React            from 'react';
-import Glyph            from './vanilla/Glyph';
+import Glyph            from '../vanilla/Glyph';
 import InlineCSS        from '../vanilla/InlineCSS';
 import { TagString }    from '../../unicorns';
 

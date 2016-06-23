@@ -1,20 +1,20 @@
 import lookup            from '../services';
 import events            from '../models/events';
 
-var PushPeruseModel = {
+const PushPeruseModel = target => class extends target {
   componentDidMount() {
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
     lookup('router').on( events.PRE_NAVIGATE, this.onPreNavigate );
-  },
+  }
 
   componentWillUnmount() {
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
     lookup('router').removeListener( events.PRE_NAVIGATE, this.onPreNavigate );
-  },
+  }
 
   onPreNavigate( navInfo ) {
     if( navInfo.path.match( /^\/files\//) ) {
@@ -31,7 +31,7 @@ var PushPeruseModel = {
         }),
       });
     }
-  }, 
+  } 
 
 };
 

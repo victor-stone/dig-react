@@ -4,15 +4,8 @@ import People           from '../../components/ccmixter/People';
 import { mergeParams }  from '../../unicorns';
 import qc               from '../../models/query-configs';
 import SubNav           from '../../components/ccmixter/GallerySubNav';
-import { PushPeruseModel } from '../../mixins';
 
-var people = React.createClass({
-  mixins: [PushPeruseModel],
-
-  render() {
-    return (<People store={this.props.store} />);
-  }  
-});
+const people = People;
 
 people.path = '/people/:userid';
 

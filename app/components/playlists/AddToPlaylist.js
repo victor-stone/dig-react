@@ -1,12 +1,15 @@
-import React  from 'react';
-import Glyph  from '../../vanilla/Glyph';
-import Modal  from '../../Modal';
-import Alert  from '../../Alert';
-import api    from '../../../services/ccmixter';
-import env    from '../../../services/env';
+import React    from 'react';
+import Glyph    from '../vanilla/Glyph';
+import DeadLink from '../vanilla/DeadLink';
+import CrossFadeContent from '../vanilla/CrossFadeContent';
 
-import Playlists from '../../../stores/playlists';
-import { CurrentUserTracker } from '../../../mixins';
+import Modal    from '../services/Modal';
+import Alert    from '../services/Alert';
+
+import Playlists from '../../stores/playlists';
+import Playlist  from '../../stores/playlist';
+
+import { CurrentUserTracker } from '../../mixins';
 
 class AddToPlaylistPopup extends Modal.Popup {
 
@@ -21,11 +24,7 @@ class AddToPlaylistPopup extends Modal.Popup {
       disableSubmit: true
     };
 
-    this.onChange            = this.onChange.bind(this);
-    this.onNewPlaylistName   = this.onNewPlaylistName.bind(this);
-    this.onToggleShow        = this.onToggleShow.bind(this);
-    this.onSubmit            = this.onSubmit.bind(this);
-    this.shouldSubmitDisable = this.shouldSubmitDisable.bind(this);
+    this.__bindAll(['onChange','onNewPlaylistName','onToggleShow','onSubmit','shouldSubmitDisable']);
   }
 
   onChange(e){
@@ -42,54 +41,36 @@ class AddToPlaylistPopup extends Modal.Popup {
     this.setState({newPlaylistName:value,disableSubmit:!value.trim().length});
   }
 
+  _alertAndClose(msg) {
+    Alert.show('success', msg);
+    this.manualClose();    
+  }
+
   onSubmit() {
     this.setState( { error: null } );
     var id   = this.props.model.id;
+
     if( this.state.showList ) {
-      var pid = this.state.selectedValue;
-      api.playlist.addTrack(id,pid).then( ret => {
-        env.alert('success', 'Track added to playlist');
-        this.handleActionResponse(ret);
-      });
+      var store = this.this.props.store.model.items.findBy('id',this.state.selectedValue);
+      store.addTrack(id).then( () => this._alertAndClose('Track added to playlist') );
     } else {
-      api.playlist.createStatic(this.state.newPlaylistName,'',id).then( ret => {
-        env.alert('success', 'New playlist created and track added');
-        this.handleActionResponse(ret); 
-      });
+      Playlist.create(this.state.newPlaylistName,id).then( () => this._alertAndClose('New playlist created and track added') );
     }
   }
 
   onToggleShow() {
-    const FADE_DURATION = 250;
-    /* globals $ */
-    var $e = $('#fade-group');
-    $e.fadeOut(FADE_DURATION, () => {
-      var disableSubmit =  !this.state.showList || !this.state.newPlaylistName.trim().length;
-      this.setState({showList: !this.state.showList,disableSubmit}, () => { $e.fadeIn(FADE_DURATION); $('#fade-group button').blur(); } );
-    });
+    this.setState( {showList: !this.state.showList} );
   }
 
   shouldSubmitDisable() {
-    return this.state.disableSubmit;
+    return this.state.showList || !this.state.newPlaylistName.trim().length;
   }
 
   render() {
     var sl = this.state.showList;
     var style = !this.state.selectedValue  ? { color: '#ccc'} : {};
 
-    return (
-      <Modal action={this.onSubmit} 
-             subTitle="Add to playlist"
-             title={this.props.model.name}  
-             icon="plus"
-             buttonText="Add" 
-             closeText="Cancel" 
-             error={this.state.error}
-             submitDisabler={this.shouldSubmitDisable}
-             {...this.props}
-      >
-        <div id="fade-group">
-        {sl
+    var elem = sl 
           ? <div className="form-group">
               <select defaultValue="placehoder" onChange={this.onChange} className="form-control" style={style}>
                 <option value="">{"Select a playlist"}</option>
@@ -110,9 +91,21 @@ class AddToPlaylistPopup extends Modal.Popup {
               <span className="input-group-addon">              
                 <a href="#" onClick={this.onToggleShow}><Glyph icon="list-ul"/>{' Show list'}</a>
               </span>
-            </div>      
-        }
-        </div>
+            </div>;     
+    var name = sl ? 'list' : 'edit';
+
+    return (
+      <Modal action={this.onSubmit} 
+             subTitle="Add to playlist"
+             title={this.props.model.name}  
+             icon="plus"
+             buttonText="Add" 
+             closeText="Cancel" 
+             error={this.state.error}
+             submitDisabler={this.shouldSubmitDisable}
+             {...this.props}
+      >
+        <CrossFadeContent elem={elem} elemName={name} />
       </Modal>
       );
   }  
@@ -122,9 +115,7 @@ var AddToPlaylistLink = React.createClass({
 
   mixins: [CurrentUserTracker],
 
-  showPlaylistPopup(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  showPlaylistPopup() {
     var playlists = new Playlists();
     playlists.autoFilterTags = false;
     var opts = {
@@ -138,7 +129,7 @@ var AddToPlaylistLink = React.createClass({
 
   render() {
     return(
-        <a href="#" onClick={this.showPlaylistPopup}><Glyph fixed icon="music" />{" Add to Playlist"}</a>
+        <DeadLink onClick={this.showPlaylistPopup} icon="music" text=" Add to Playlist" />
       );
   }
 });

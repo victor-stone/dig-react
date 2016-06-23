@@ -8,7 +8,7 @@ var nextID = 0;
 const InputControlMixin = target => class extends target {
   constructor() {
     super(...arguments);
-    [ 'onCancel', 'onEdit', 'onDone' ].forEach( f => this[f] = this[f].bind(this));
+    this.__bindAll([ 'onCancel', 'onEdit', 'onDone' ]);
     this.state = { text: this.props.text, orgText: this.props.text };
   }
 

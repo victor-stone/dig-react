@@ -1,8 +1,8 @@
 import React            from 'react';
 import { CurrentUserTracker,
-          StoreEvents } from '../mixins';
-import events           from '../models/events';
-import UserFeed         from '../services/userfeed';
+          StoreEvents } from '../../mixins';
+import events           from '../../models/events';
+import UserFeed         from '../../services/userfeed';
 
 var FeedBadge = React.createClass({
 
