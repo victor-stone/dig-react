@@ -18,10 +18,9 @@ env.set( {
   rpcHost: 'http://<%= apihost %>/api/',
   queryHost: 'http://<%= apihost %>/api/query?',
   queriesHost: 'http://<%= apihost %>/api/queries?',
-  selfHost: 'http://<%= satellite_host =%>/'
+  selfHost: 'http://<%= satellite_host %>/'
 });
 
 var server = new Server( router, webDir, AppModule, logPrefix );
 
 server.start();
-
