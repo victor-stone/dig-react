@@ -1,7 +1,5 @@
-'use strict';
-
 import React         from 'react';
-import serviceLookup from '../services';
+import serviceLookup from '../../services';
 
 var Link = React.createClass({
   
@@ -15,8 +13,7 @@ var Link = React.createClass({
     return true;
   },
 
-  render: function() {
-
+  render() {
     return (
       <a {...this.props} onClick={this.handleClick} >
         {this.props.children}

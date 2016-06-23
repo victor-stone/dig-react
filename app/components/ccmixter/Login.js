@@ -2,6 +2,7 @@ import React            from 'react';
 import api              from '../../services/ccmixter';
 import Modal            from '../services/Modal';
 import Alert            from '../services/Alert';
+import { bindAll }      from '../../unicorns';
 
 class Login extends Modal.Popup
 {
@@ -12,7 +13,7 @@ class Login extends Modal.Popup
                    name: '',
                    password: '' };
 
-    this.__bindAll(['onLogin','onLoginSuccess','onLoginReject',
+    bindAll(this, ['onLogin','onLoginSuccess','onLoginReject',
                     'onNameChange','onPasswordChange',
                     'shouldDisableSubmit']);
   }

@@ -4,9 +4,10 @@ import {  ModelTracker,
           StoreEvents,
           CurrentUserTracker } from '../../mixins';
 
-import {  Glyph,
-          People,
-          Form   }        from '../../components';
+import PeopleList from '../models/PeopleList';
+
+import Glyph from '../vanilla/Glyph';
+import Form  from '../vanilla/Form';
 
 import api from '../../services/ccmixter';          
 
@@ -82,7 +83,7 @@ const Followers = React.createClass({
     return (
       this.state.model.length
         ? <FormItem title={this.props.title} wrap cls="followers">
-            <People.List className="follow" thumb model={this.state.model} />
+            <PeopleList className="follow" thumb model={this.state.model} />
           </FormItem>
         : null 
       );

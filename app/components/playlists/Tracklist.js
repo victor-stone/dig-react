@@ -1,6 +1,7 @@
 import React              from 'react';
 import AudioService       from '../../services/audio-player';
 import TrackList          from '../bound/TrackList';
+import { bindAll }           from '../../unicorns';
 
 /*
   Display a list of Upload reacords for a given playlist
@@ -13,7 +14,7 @@ class PlaylistTrackList extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.__bindAll([ 'onPlay', 'onTrackDelete' ]);
+    bindAll(this, [ 'onPlay', 'onTrackDelete' ]);
   }
 
   onPlay() {

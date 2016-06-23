@@ -6,11 +6,10 @@ function LinkToUploadRoute(props) {
 
   let { truncate = false, 
         base = '/files/', 
-        name,
-        model: { id, artist: {id: artistID} 
+        model: { name, id, artist: {id: artistID } 
       } } = props;
 
-  name = truncate ? sliceStr(name) : name;
+  name = truncate ? sliceStr({str:name}) : name;
   
   var href = base + artistID + '/' + id;
 

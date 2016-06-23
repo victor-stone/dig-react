@@ -8,7 +8,7 @@ import LinkToRoute      from '../services/LinkToRoute';
 import {  CurrentUserTracker } from '../../mixins';
 
 
-class FeedTabs extends CurrentUserTracker.extender(SubNavTabs)
+class FeedTabs extends CurrentUserTracker.cut(SubNavTabs)
 {
   constructor() {
     super(...arguments);

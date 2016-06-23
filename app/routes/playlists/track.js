@@ -2,7 +2,7 @@ import Playlists from '../../stores/playlists';
 import pages     from '../../components/playlists/pages';
 import SubNav    from '../../components/playlists/SubNav';
 
-var track = pages.Track;
+var track = pages.Tracks;
 
 track.path = '/tracks/:userid/:id';
 track.title = 'Track';

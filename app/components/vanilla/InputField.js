@@ -3,18 +3,19 @@ import React       from 'react';
 import { FormItem } from './Form';
 import EditControls from './EditControls';
 
-var nextID = 0;
+import { bindAll }           from '../../unicorns';
 
 const InputControlMixin = target => class extends target {
   constructor() {
     super(...arguments);
-    this.__bindAll([ 'onCancel', 'onEdit', 'onDone' ]);
+    bindAll(this, [ 'onCancel', 'onEdit', 'onDone' ]);
     this.state = { text: this.props.text, orgText: this.props.text };
+    this.focusId = this.props.focusId || 'element_' + Math.random();
   }
 
   onEdit() {
     /* globals $ */
-    this.setState( { editing: true }, () =>  this.props.focusId && $('#'+this.props.focusId).focus() );
+    this.setState( { editing: true }, () =>  $('#'+this.focusId).focus() );
   }
 
   onCancel() {
@@ -27,7 +28,7 @@ const InputControlMixin = target => class extends target {
   }
 
   htmlInput() {
-    return <input id={this.props.focusId} type="text" ref="editor" className="form-control" defaultValue={this.state.text} />;
+    return <input id={this.focusId} type="text" ref="editor" className="form-control" defaultValue={this.state.text} />;
   }
 
 };
@@ -58,8 +59,6 @@ class InputFormField extends InputControlMixin(React.Component)
   }
 }
 
-InputFormField.defaultProps = { focusId: 'editable_' + ++nextID };
-
 /*
   Emit static text optionally editable by user
 
@@ -88,8 +87,6 @@ class InputText extends InputControlMixin(React.Component)
     return this.state.text;
   }
 }
-
-InputText.defaultProps = { focusId: 'editable_' + ++nextID };
 
 
 module.exports = {

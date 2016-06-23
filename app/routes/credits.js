@@ -1,9 +1,10 @@
 import React from 'react';
-import { PageHeader } from '../components';
-
+import PageHeader   from '../components/vanilla/PageHeader';
 import ExternalLink from '../components/vanilla/ExternalLink';
 
 var ExLink = ExternalLink;
+
+// TODO: Get this the hell out of /routes
 
 const creditsPage = (
   <div>

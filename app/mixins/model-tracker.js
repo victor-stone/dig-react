@@ -47,7 +47,7 @@ const _classMixin = target => class extends target {
   constructor() {
     super(...arguments);
     Object.assign(this,_methods);
-    this.stateFromStore(this.props.store);
+    this.state = this.stateFromStore(this.props.store);
   }
 };
 

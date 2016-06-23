@@ -2,6 +2,7 @@ import React            from 'react';
 import { InlineCSS,
          EditControls } from '../vanilla';
 import { TagString }    from '../../unicorns';
+import { bindAll }      from '../../unicorns';
 import TagStore         from '../../stores/tags';
 
 import { SelectedTagsTracker } from '../../mixins';
@@ -201,7 +202,7 @@ const TagEditMixin = target => class extends target {
 
   constructor() {
     super(...arguments);
-    this.__bindAll([ 'onEdit', 'onCancel', 'onDone', 'cancelCB' ]);
+    bindAll(this, [ 'onEdit', 'onCancel', 'onDone', 'cancelCB' ]);
     this.state = { editing: false };
     this._setupStore(this.props.store);
   }

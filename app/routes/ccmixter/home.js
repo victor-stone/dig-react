@@ -1,7 +1,7 @@
 import React from 'react';
 import { Glyph, 
-         Link,
-         InlineCSS } from '../../components';
+         InlineCSS } from '../../components/vanilla';
+import Link          from '../../components/services/LinkToRoute';
 
 function fb_custom_fb_login() {
 

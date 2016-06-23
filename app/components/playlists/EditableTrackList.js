@@ -1,5 +1,6 @@
 import React              from 'react';
 import _EditableTrackList from '../bound/EditableTrackList';
+import { bindAll }           from '../../unicorns';
 
 
 /*
@@ -13,7 +14,7 @@ class EditableTrackList extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.__bindAll(['onDelete','onPlay','onSort']);
+    bindAll(this, ['onDelete','onPlay','onSort']);
   }
 
   render() {

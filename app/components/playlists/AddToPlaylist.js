@@ -9,6 +9,8 @@ import Alert    from '../services/Alert';
 import Playlists from '../../stores/playlists';
 import Playlist  from '../../stores/playlist';
 
+import { bindAll }            from '../../unicorns';
+
 import { CurrentUserTracker } from '../../mixins';
 
 class AddToPlaylistPopup extends Modal.Popup {
@@ -24,7 +26,7 @@ class AddToPlaylistPopup extends Modal.Popup {
       disableSubmit: true
     };
 
-    this.__bindAll(['onChange','onNewPlaylistName','onToggleShow','onSubmit','shouldSubmitDisable']);
+    bindAll(this, ['onChange','onNewPlaylistName','onToggleShow','onSubmit','shouldSubmitDisable']);
   }
 
   onChange(e){

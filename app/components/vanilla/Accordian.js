@@ -3,6 +3,7 @@ import React        from 'react';
 import Glyph        from './Glyph';
 import LoadingGlyph from '../services/LoadingGlyph';
 import DeadLink     from './DeadLink';
+import { bindAll }  from '../../unicorns';
 
 var AccordianButton = React.createClass({
 
@@ -64,7 +65,7 @@ class AccordianPanel extends React.Component {
       disabled: this.props.disabled,
       open: false
     };
-    this.__bindAll(['onOpen','onClose']);
+    bindAll(this, ['onOpen','onClose']);
   }
 
   componentWillReceiveProps(nextProps) {

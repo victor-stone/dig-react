@@ -3,6 +3,7 @@ import Glyph                 from '../vanilla/Glyph';
 import Modal                 from '../services/Modal';
 import {FormattedTextEditor} from '../vanilla/FormattedTextEditor';
 import { ModelTracker}       from '../../mixins';
+import { bindAll }           from '../../unicorns';
 
 class ReviewPopup extends Modal.Popup {
 
@@ -10,7 +11,7 @@ class ReviewPopup extends Modal.Popup {
     super(...arguments);
     this.state = { error: '',
                    disableSubmit: true };
-    this.__bindAll([ 'onChange', 'shouldSubmitBeDisabled', 'onSubmitReview']);
+    bindAll(this, [ 'onChange', 'shouldSubmitBeDisabled', 'onSubmitReview']);
   }
 
   onChange(event) {

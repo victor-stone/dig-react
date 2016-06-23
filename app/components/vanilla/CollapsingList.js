@@ -1,6 +1,7 @@
 /* globals $ */
 import React          from 'react';
 import MoreOrLessLink from './MoreOrLessLink';
+import { bindAll }    from '../../unicorns';
 
 const DEFAULT_MAX_SHOW = 3;
 
@@ -10,7 +11,7 @@ class CollapsingList extends React.Component
     super(...arguments);
     this.state = { showLess: 'less' };
     this.id = 'collapsing-list-' + Math.random();
-    this.__bindAll(['showLess', 'showMore', 'listElement' ]);
+    bindAll(this, ['showLess', 'showMore', 'listElement' ]);
   }
 
   componentDidMount() {

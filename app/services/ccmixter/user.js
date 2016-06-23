@@ -5,6 +5,8 @@ import UserStore    from '../../stores/user';
 import events       from '../../models/events';
 import { cookies }  from '../../unicorns';
 
+import { bindAll }  from '../../unicorns';
+
 const NOT_LOGGED_IN = null;
 
 class User extends API
@@ -12,7 +14,7 @@ class User extends API
 
   constructor() {
     super(...arguments);
-    this.__bindAll(['_onLoginSuccess','_onLoginReject','_onCurrentUserSuccess','_onCurrentUserReject']);
+    bindAll(this, ['_onLoginSuccess','_onLoginReject','_onCurrentUserSuccess','_onCurrentUserReject']);
   }
 
   _onLoginSuccess(username) {

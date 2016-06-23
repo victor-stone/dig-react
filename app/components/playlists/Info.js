@@ -12,7 +12,7 @@ import { EditableTagsDiv }     from '../bound/Tags';
 import DeletePlaylist          from './DeletePlaylist';
 import { CurrentUserTracker }  from '../../mixins';
 
-class Feature extends CurrentUserTracker.extender(React.Component)
+class Feature extends CurrentUserTracker.cut(React.Component)
 {
   constructor() {
     super(...arguments);

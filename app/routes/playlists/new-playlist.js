@@ -3,7 +3,7 @@ import { mergeParams }  from '../../unicorns';
 import Playlist         from '../../stores/playlist';
 import pages            from '../../components/playlists/pages';
 
-var newPlaylist = pages.NewPlaylist;
+var newPlaylist = pages.NewDynamicPlaylist;
 
 newPlaylist.path = '/playlists/new';
 

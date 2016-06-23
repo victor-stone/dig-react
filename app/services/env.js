@@ -48,6 +48,12 @@ class Env extends Eventer {
       }
     }
   }
+
+  verifyClasses(...cls) {
+    for( const c in cls ) {
+      this.assert( c, 'broken import', true);
+    }
+  }
 }
 
 

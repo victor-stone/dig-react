@@ -14,8 +14,8 @@ import CurrentUserMenu from '../services/CurrentUserMenu';
 import Alert           from '../services/Alert';
 import Login           from './Login';
 
-function homeLink() {
-  return( <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.titles} /></Link> );
+function homeLink(props) {
+  return( <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={props.titles} /></Link> );
 }
 
 const UserMenu = React.createClass({

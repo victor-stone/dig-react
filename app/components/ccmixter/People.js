@@ -11,9 +11,8 @@ import {  ModelTracker} from '../../mixins';
 
 import {  InlineCSS,
           CollapsingText,
-          Form   }        from '../../components';
-
-import ExternalLink from '../vanilla/ExternalLink';
+          ExternalLink,
+          Form   }       from '../vanilla';
 
 var HorizontalForm = Form.HorizontalForm;
 var FormItem       = Form.FormItem;

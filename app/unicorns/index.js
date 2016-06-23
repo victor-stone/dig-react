@@ -144,11 +144,11 @@ if( typeof String.prototype.ellipse === 'undefined' ) {
   };
 }
 
-Object.prototype.__bindAll = function(arr) {
+function bindAll(obj,arr) {
   for( const f of arr ) {
-    this[f] = this[f].bind(this);
+    obj[f] = obj[f].bind(obj);
   }
-};
+}
 
 if( typeof String.prototype.hashCode === 'undefined' ) {
   const HASH_SHIFT = 5;
@@ -360,6 +360,7 @@ var cookies = {
 };
 
 module.exports = {
+  bindAll,
   browserScripts,
   camelize,
   cleanSearchString,

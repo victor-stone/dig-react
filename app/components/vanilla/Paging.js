@@ -53,18 +53,21 @@ class PagerLink extends React.Component
 */
 function Paging(props)
 {
-    var s    = pagingStats(this.prop.stats);
-    var cls  = 'paging' + (s.total > 0 ? '' : ' hidden');
-    var cls2 = 'pagination' + (s.shouldShow ? '' : ' hidden');
+    const { total, shouldShow, showFirst, showPrev, showNext, showLast,
+            prevValue, nextValue, lastPage, printableOffset,
+            printableLastValue, printableTotal } = pagingStats(props.stats);
+
+    const cls  = 'paging' + (total > 0 ? '' : ' hidden');
+    const cls2 = 'pagination' + (shouldShow ? '' : ' hidden');
     return(
       <div className={cls}>
         <ul className={cls2}>  
-          <PagerLink newOffset={props.onNewOffset} offset="0"            show={s.showFirst} icon="angle-double-left" />
-          <PagerLink newOffset={props.onNewOffset} offset={s.prevValue}  show={s.showPrev}  icon="arrow-left" />
-          <PagerLink newOffset={props.onNewOffset} offset={s.nextValue}  show={s.showNext}  icon="arrow-right" />
-          <PagerLink newOffset={props.onNewOffset} offset={s.lastPage}   show={s.showLast}  icon="angle-double-right" />
+          <PagerLink newOffset={props.onNewOffset} offset="0"          show={showFirst} icon="angle-double-left" />
+          <PagerLink newOffset={props.onNewOffset} offset={prevValue}  show={showPrev}  icon="arrow-left" />
+          <PagerLink newOffset={props.onNewOffset} offset={nextValue}  show={showNext}  icon="arrow-right" />
+          <PagerLink newOffset={props.onNewOffset} offset={lastPage}   show={showLast}  icon="angle-double-right" />
         </ul>
-        <div className="paging-caption center-text">{s.printableOffset + ' - ' + s.printableLastValue + ' of ' + s.printableTotal}</div>
+        <div className="paging-caption center-text">{printableOffset + ' - ' + printableLastValue + ' of ' + printableTotal}</div>
         {props.children}
       </div>
       );

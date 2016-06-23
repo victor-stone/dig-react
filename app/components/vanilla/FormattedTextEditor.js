@@ -1,12 +1,15 @@
 import React from 'react';
 import EditControls from './EditControls';
 
+import { bindAll } from '../../unicorns';
+
 class FormattedTextEditor extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.__bindAll([ 'onChange' ]);
+    bindAll(this, [ 'onChange' ]);
     this.state = { text: this.props.text, orgText: this.props.text };
+    this.focusId = this.prop.focusId || 'element_' + Math.random();
   }
 
   onChange(e) {
@@ -17,7 +20,7 @@ class FormattedTextEditor extends React.Component
     return(
       <div onChange={this.onChange} >
         <textarea
-            id={this.props.focusId}
+            id={this.focusId}
             className="form-control"
             value={this.state.value} 
             placeholder="awesome!"
@@ -49,13 +52,13 @@ class InlineFormattedTextEditor extends FormattedTextEditor
   /*eslint "react/no-danger":0 */
   constructor() {
     super(...arguments);
-    this.__bindAll([ 'onCancel', 'onEdit', 'onDone' ]);
+    bindAll(this, [ 'onCancel', 'onEdit', 'onDone' ]);
     this.state = { text: this.props.text, orgText: this.props.text };
 
   }
   onEdit() {
     /* globals $ */
-    this.setState( { editing: true }, () =>  this.props.focusId && $('#'+this.props.focusId).focus() );
+    this.setState( { editing: true }, () =>  $('#'+this.focusId).focus() );
   }
 
   onCancel() {

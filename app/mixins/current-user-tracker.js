@@ -60,7 +60,7 @@ const _classMixin = target => class extends target {
   }
 };
 
-CurrentUserTracker.extender = _classMixin;
+CurrentUserTracker.cut = _classMixin;
 
 module.exports = CurrentUserTracker;
 

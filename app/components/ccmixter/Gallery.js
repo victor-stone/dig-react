@@ -8,6 +8,7 @@ import { ModelTracker,
 
 class Gallery extends PushPeruseModel(ModelTracker.extender(PlayCapture(React.Component)))
 {
+
   stateFromStore(store) {
     return {store};
   }

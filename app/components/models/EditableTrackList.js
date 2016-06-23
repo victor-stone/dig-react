@@ -3,6 +3,7 @@ import React           from 'react';
 import Tracklist       from './Tracklist';
 import StaticTrackList from './StaticTrackList';
 import EditControls    from '../vanilla/EditControls';
+import { bindAll }     from '../../unicorns';
 
 /*
   Present a tracklist that is optionally editable including sorting
@@ -20,7 +21,7 @@ class EditableTracks extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.__bindAll(['onDone','onEditState']);
+    bindAll(this, ['onDone','onEditState']);
   }
 
   onDone() {

@@ -1,6 +1,8 @@
 import React from 'react';
 import Glyph from './Glyph';
 
+import { bindAll } from '../../unicorns';
+
 class ButtonBase extends React.Component
 {
   constructor() {
@@ -55,7 +57,7 @@ class GroupBase extends React.Component
   constructor() {
     super(...arguments);
     this.state = { editing: false };
-    this.__bindAll(['_startEdit','_doneEdit', '_cancelEdit']);
+    bindAll(this, ['_startEdit','_doneEdit', '_cancelEdit']);
   }
 
   shouldComponentUpdate(nextProps) {

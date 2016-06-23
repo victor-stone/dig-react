@@ -1,5 +1,5 @@
 import React from 'react';
-import { BoundInputControlMixin }   from '../vanilla/InputField';
+import { BoundInputControlMixin }   from './InputField';
 import { InlineFormattedTextEditor }from '../vanilla/FormattedTextEditor';
 import { ModelTracker }             from '../../mixins';
 
