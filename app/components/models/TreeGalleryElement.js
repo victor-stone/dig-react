@@ -23,7 +23,7 @@ class TreeGalleryElement extends React.Component
 
   render() {
     const { model, skipUser = false, onPlay } = this.props; 
-    const { artist, fileInfo: { isMP3 = false } } = model;
+    const { artist, fileInfo: { isMP3 = false } = {} } = model;
     return(
       <li className="gallery-element" >
         <div className="content-wrapper" onClick={this.onClick} >

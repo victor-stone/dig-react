@@ -8,7 +8,7 @@ class SharePopup extends Modal.Popup {
 
   constructor() {
     super(...arguments);
-    bindAll(this, ['modelLink','fbLink','twitterLink','mailLink']);
+    bindAll(this, 'modelLink','fbLink','twitterLink','mailLink' );
   }
 
   modelLink() {

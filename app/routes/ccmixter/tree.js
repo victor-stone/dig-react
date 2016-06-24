@@ -13,7 +13,7 @@ const tree = Gallery;
 tree.title = 'Remix Tree';
 
 tree.subnav = function(props) {
-  return (<SubNav paging store={props.store} className="tree-subnav" />);
+  return (<SubNav paging store={props.store} className="tree-subnav" tab="remix" />);
 };
 
 tree.store = function(params,queryParams) {

@@ -1,32 +1,50 @@
 import React             from 'react';
 import { ModelTracker }  from '../../mixins';
 import Glyph             from '../vanilla/Glyph';
+import { selectors }     from '../../unicorns';
 
-class RecommendsButton extends ModelTracker.extender(React.Component)
+class _RecommendsButton extends React.Component
 {
-  shouldComponentUpdate(nextProps,nextState) {
-    return this.state.store.permissions.okToRate !== nextState.store.permissions.okToRate;
+  constructor() {
+    super(...arguments);
+    this.onRecommends = this.onRecommends.bind(this);
+  }
+  
+  shouldComponentUpdate(nextProps) {
+    return this.state.id !== nextProps.store.model.upload.id || 
+            this.state.permissions.okToRate !== nextProps.store.permissions.okToRate;
   }
 
   stateFromStore(store) {
-    return { id: 'recc_' + store.model.upload.id, store };
+    const { model: {upload:{id}}, permissions } = store;
+    return { domId: 'recc_' + id, id, permissions };
   }
 
   onRecommends() {
     /* globals $ */
     // http://stackoverflow.com/questions/17327668/best-way-to-disable-button-in-twitters-bootstrap
-    $('#' + this.state.id).prop({disabled:true}).addClass('btn-disabled');
-    this.state.store.recommend();
+    $('#' + this.state.domId).prop({disabled:true}).addClass('btn-disabled');
+    this.props.store.recommend();
   }
 
   render() {
-    const { className = '' } = this.props;
-    var cls = 'ratings ' + className;
+    const { store: {permissions:{okToRate=false} = {}}, className = '' } = this.props;
+    const { domId } = this.state;
+
+    var cls = selectors('ratings',className);
+
     return (
-      this.state.store.permissions.okToRate
-        ? <button id={this.state.id} onClick={this.onRecommends} className={cls}><Glyph icon="thumbs-up" /></button>
+      okToRate
+        ? <button id={domId} onClick={this.onRecommends} className={cls}><Glyph icon="thumbs-up" /></button>
         : null
     );
+  }
+}
+
+class RecommendsButton extends ModelTracker.extender(_RecommendsButton)
+{
+  constructor() {
+    super(...arguments);
   }
 }
 

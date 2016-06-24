@@ -14,7 +14,9 @@ class Paging extends ModelTracker.extender(React.Component)
 {
   constructor() {
     super(...arguments);
-    this.state = { stats: emptyStats };
+    if( !('stats' in this.state) ) {
+      this.state = { stats: emptyStats };
+    }
     this.onNewOffset = this.onNewOffset.bind(this);
   }
 

@@ -14,7 +14,7 @@ class PlaylistTrackList extends React.Component
 {
   constructor() {
     super(...arguments);
-    bindAll(this, [ 'onPlay', 'onTrackDelete' ]);
+    bindAll(this, 'onPlay', 'onTrackDelete' );
   }
 
   onPlay() {

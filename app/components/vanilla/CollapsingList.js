@@ -21,7 +21,7 @@ class CollapsingList extends React.Component
   constructor() {
     super(...arguments);
     this.id = 'collapsing-list-' + ++nextID;
-    bindAll(this, [ 'listElement' ]);
+    bindAll(this, 'listElement' );
   }
 
   listElement(model,key) {

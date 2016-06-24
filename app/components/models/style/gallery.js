@@ -26,7 +26,7 @@ gallery .play-list li.gallery-element {
   min-height: 120px;
 }
 
-.gallery .play-list li .song-title {
+.gallery .play-list li .upload-link {
   font-size: 18px;
   display: block;
   text-align: right;
@@ -36,7 +36,7 @@ gallery .play-list li.gallery-element {
   margin-left: 20%;
 }
 
- .gallery .play-list li.gallery-element:hover .song-title {
+ .gallery .play-list li.gallery-element:hover .upload-link {
   text-decoration: underline;
 }
 
@@ -44,17 +44,17 @@ gallery .play-list li.gallery-element {
   cursor: pointer;
 }
 
-.gallery .play-list li .artist-name {
+.gallery .play-list li .people-link {
   display: block;
   text-align: center;
   margin-top: 8px;
 }
 
-.gallery .play-list li .song-title a {
+.gallery .play-list li .upload-link {
   color: white;
 }
 
-.gallery .play-list li .artist-name a {
+.gallery .play-list li .people-link {
   font-weight: 100;
   color: yellow;
   max-width: 120px;

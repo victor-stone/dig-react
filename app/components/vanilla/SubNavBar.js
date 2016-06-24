@@ -2,6 +2,8 @@ import React         from 'react';
 import css           from './style/subnav';
 import InlineCSS     from './InlineCSS';
 
+// TODO subnavbar is not in sync
+
 /*
   Display a navbar of tabs. The actual tabs are children 
   of this component (derivations of SubNavTabs)

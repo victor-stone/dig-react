@@ -10,7 +10,7 @@ var nextID = 0;
 const InputControlMixin = target => class extends target {
   constructor() {
     super(...arguments);
-    bindAll(this, [ 'onCancel', 'onEdit', 'onDone' ]);
+    bindAll(this, 'onCancel', 'onEdit', 'onDone' );
     this.state = { text: this.props.text, orgText: this.props.text };
     this.focusId = this.props.focusId || 'element_' + ++nextID;
   }

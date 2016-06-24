@@ -9,7 +9,7 @@ class FormattedTextEditor extends React.Component
 {
   constructor() {
     super(...arguments);
-    bindAll(this, [ 'onChange' ]);
+    bindAll(this, 'onChange' );
     let text;
     ({ text, focusId:this.focusId = 'element_' + ++nextID } = this.props);
     this.state = { text, orgText: text };

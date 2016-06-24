@@ -12,7 +12,7 @@ class Gallery extends PushPeruseModel(ModelTracker.extender(PlayCapture(React.Co
   }
 
   render() {
-    return <TreeGallery model={this.state.model} />;
+    return <TreeGallery model={this.state.model} skipUser={this.props.skipUser} />;
   }
 }
 

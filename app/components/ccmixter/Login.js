@@ -13,9 +13,9 @@ class Login extends Modal.Popup
                    name: '',
                    password: '' };
 
-    bindAll(this, ['onLogin','onLoginSuccess','onLoginReject',
+    bindAll(this, 'onLogin','onLoginSuccess','onLoginReject',
                     'onNameChange','onPasswordChange',
-                    'shouldDisableSubmit']);
+                    'shouldDisableSubmit');
   }
 
   onLoginSuccess() {

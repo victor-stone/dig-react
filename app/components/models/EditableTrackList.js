@@ -21,7 +21,7 @@ class EditableTracks extends React.Component
 {
   constructor() {
     super(...arguments);
-    bindAll(this, ['onDone','onEditState']);
+    bindAll(this, 'onDone','onEditState');
     this.state = { editing: false };
   }
 

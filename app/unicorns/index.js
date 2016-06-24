@@ -145,7 +145,7 @@ if( typeof String.prototype.ellipse === 'undefined' ) {
   };
 }
 
-function bindAll(obj,arr) {
+function bindAll(obj,...arr) {
   for( const f of arr ) {
     obj[f] = obj[f].bind(obj);
   }

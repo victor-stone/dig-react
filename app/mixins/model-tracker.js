@@ -10,7 +10,7 @@ import events from '../models/events';
 var _methods = {
 
   componentWillMount() {
-    this._modelTrackMounted = this;
+    this._modelTrackMounted = true;
     this.props.store.on( events.MODEL_UPDATED, this.onModelUpdate );
   },
 
@@ -46,8 +46,24 @@ var ModelTracker = Object.assign({
 const _classMixin = target => class extends target {
   constructor() {
     super(...arguments);
-    Object.assign(this,_methods);
     this.state = this.stateFromStore(this.props.store);
+    this.onModelUpdate = this.onModelUpdate.bind(this);
+  }
+
+  componentWillMount() {
+    _methods.componentWillMount.call(this);
+  }
+
+  componentWillUnmount() {
+    _methods.componentWillUnmount.call(this);
+  }
+
+  componentWillReceiveProps( props ) {
+    _methods.componentWillReceiveProps.call(this,props);
+  }
+
+  onModelUpdate() {
+    _methods.onModelUpdate.call(this);
   }
 };
 

@@ -2,8 +2,8 @@ import React                 from 'react';
 import Glyph                 from '../vanilla/Glyph';
 import Modal                 from '../services/Modal';
 import {FormattedTextEditor} from '../vanilla/FormattedTextEditor';
-import { ModelTracker}       from '../../mixins';
-import { bindAll }           from '../../unicorns';
+import { bindAll,
+         selectors }         from '../../unicorns';
 
 class ReviewPopup extends Modal.Popup {
 
@@ -11,7 +11,12 @@ class ReviewPopup extends Modal.Popup {
     super(...arguments);
     this.state = { error: '',
                    disableSubmit: true };
-    bindAll(this, [ 'onChange', 'shouldSubmitBeDisabled', 'onSubmitReview']);
+    bindAll(this, 'onChange', 'shouldSubmitBeDisabled', 'onSubmitReview' );
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return this.state.id !== nextProps.store.model.upload.id || 
+            this.state.permissions.okToRate !== nextProps.store.permissions.okToRate;
   }
 
   onChange(event) {
@@ -22,8 +27,8 @@ class ReviewPopup extends Modal.Popup {
 
   onSubmitReview() {
     this.setState( { error: '' } );
-    this.props.store.review(this.state.value)
-      .then( () => this.manualClose );
+    return this.props.store.review(this.state.value)
+                .then( () => this.manualClose() );
   }
 
   shouldSubmitBeDisabled() {
@@ -50,34 +55,37 @@ class ReviewPopup extends Modal.Popup {
   }  
 }
 
-class ReviewsButton extends ModelTracker.extender(React.Component)
+class ReviewsButton extends React.Component
 {
   constructor() {
     super(...arguments);
-    // TODO: figure out state ordering, stateFromStore() is actually
-    // called beore here
-    this.state = { disabled: true, store: this.state.store };
+    this.onReview = this.onReview.bind(this);
+    const { model: {upload:{id}}, permissions } = this.props.store;
+    this.state = { id, permissions };
   }
 
-  shouldComponentUpdate(nextProps,nextState) {
-    return this.state.store.permissions.okToReview !== nextState.store.permissions.okToReview;
+  componentWillReceiveProps(props) {
+    const { model: {upload:{id}}, permissions } = props.store;
+    this.setState({id,permissions});
   }
 
-  stateFromStore(store) {
-    return {store};
+  shouldComponentUpdate(nextProps) {
+    return this.state.id !== nextProps.store.model.upload.id || 
+            this.state.permissions.okToReview !== nextProps.store.permissions.okToReview;
   }
-  
+
   onReview(event) {
     event.stopPropagation();
     event.preventDefault();
-    ReviewPopup.show( ReviewPopup, { store: this.state.store } );
+    ReviewPopup.show( ReviewPopup, { store: this.props.store } );
   }
 
   render() {
-    const { className = '' } = this.props;
-    const cls = 'review ' + className;
+    const { store: { permissions:{okToReview=false} = {}}, className = '' } = this.props;
+    const cls = selectors('review',className);
+
     return (
-        this.state.store.permissions.okToReview && !this.state.disabled
+        okToReview
           ? <button onClick={this.onReview} className={cls}><Glyph icon="pencil" /></button>
           : null
       );

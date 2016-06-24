@@ -18,12 +18,12 @@ import { TagString,
 
 
 */
-class ReqTagsNavTabs extends ModelTracker.extender(SubNavTabs)
+class _ReqTagsNavTabs extends SubNavTabs
 {
 
   constructor() {
     super(...arguments);
-    this.state = { badges: null, tab: null };
+    this.state = { badges: null, tab: this.props.tab };
     this.filter = new RegExp( '^' + Object.keys(this.props.tabs).join('|') + '$');
   }
 
@@ -54,6 +54,20 @@ class ReqTagsNavTabs extends ModelTracker.extender(SubNavTabs)
   }
 }
 
+class ReqTagsNavTabs extends ModelTracker.extender(_ReqTagsNavTabs)
+{
+  constructor() {
+    super(...arguments);
+  }
+
+  componentWillMount() {
+    super.componentWillMount();
+    this.bogus();
+  }
+  bogus() {
+
+  }
+}
 module.exports = ReqTagsNavTabs;
 
 //

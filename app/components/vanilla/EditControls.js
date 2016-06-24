@@ -57,7 +57,7 @@ class GroupBase extends React.Component
   constructor() {
     super(...arguments);
     this.state = { editing: false };
-    bindAll(this, ['_startEdit','_doneEdit', '_cancelEdit']);
+    bindAll(this, '_startEdit','_doneEdit', '_cancelEdit' );
   }
 
   shouldComponentUpdate(nextProps) {
@@ -103,11 +103,12 @@ class InputGroup extends React.Component
 class ButtonGroup extends GroupBase 
 {
   render() {
+    return(
       <div className="btn-group btn-group-sm edit-controls">
         <button className="btn btn-default"  disabled={this.state.editing}  onEdit={this._startEdit} ><Glyph icon="edit"  /></button>
         {this.state.editing &&  <Done onDone={this._doneEdit} />}
         {this.state.editing && <Cancel onCancel={this._cancelEdit} />}
-      </div>;
+      </div>);
   }
 }
 

@@ -14,7 +14,7 @@ class User extends API
 
   constructor() {
     super(...arguments);
-    bindAll(this, ['_onLoginSuccess','_onLoginReject','_onCurrentUserSuccess','_onCurrentUserReject']);
+    bindAll(this, '_onLoginSuccess','_onLoginReject','_onCurrentUserSuccess','_onCurrentUserReject');
   }
 
   _onLoginSuccess(username) {

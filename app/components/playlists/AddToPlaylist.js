@@ -26,7 +26,7 @@ class AddToPlaylistPopup extends Modal.Popup {
       disableSubmit: true
     };
 
-    bindAll(this, ['onChange','onNewPlaylistName','onToggleShow','onSubmit','shouldSubmitDisable']);
+    bindAll(this, 'onChange','onNewPlaylistName','onToggleShow','onSubmit','shouldSubmitDisable');
   }
 
   onChange(e){

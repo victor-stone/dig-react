@@ -17,7 +17,7 @@ function PellsSubNav(props) {
   return (
       <SubNavBar paging store={props.store} >
         <InlineCSS css={css} id="stinkin badges css" />
-        <ReqTagsNavTabs store={props.store} tabs={PELL_TYPES} filter={PELLS_FILTER} all />
+        <ReqTagsNavTabs tab="featured" store={props.store} tabs={PELL_TYPES} filter={PELLS_FILTER} all />
       </SubNavBar>
   );
 }

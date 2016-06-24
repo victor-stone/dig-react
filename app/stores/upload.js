@@ -85,16 +85,16 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
 
   recommend() {
     return api.user.currentUser()
-            .then( user => {
-              return api.upload.rate( this.model.upload.id, user );
-            }).then( () => this.refresh() );
+            .then( user => api.upload.rate( this.model.upload.id, user ) )
+            .then( () => this.getPermissions( this.model ) )
+            .then( () => this.refresh() );
   }
 
   review(text) {
     return api.user.currentUser()
-            .then( user => {
-              return api.upload.review( this.model.upload.id, user, text );
-            }).then( () => this.refresh() );
+            .then( user => api.upload.review( this.model.upload.id, user, text ) )
+            .then( () => this.getPermissions( this.model ) )
+            .then( () => this.refresh() );
   }
 
   find(id,userid,_flags) {
