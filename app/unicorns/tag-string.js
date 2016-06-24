@@ -2,14 +2,15 @@
 /**
     Manipulate tags with ccHost policies in mind
 
-    tag              := ascii alphanumeric and underscore
+    tag              := ascii alphanumeric and underscore (depending on the 
+                         'ignore' and 'invalid' options)
     tag string       := tags is separated by commas possibly with commas at the
                          start and end of string   
     tag parameter    := can be any one of: 
                             tag string
                             array
                             instance of TagString
-
+    
     Class ensure unique (unordered) values.
 
     All (most?) parameters are flexible enough to accept strings, arrays or 
@@ -25,24 +26,21 @@
         - source     initial tags
         - ignore:    a RegExp of tags to ignore. By default the tag 'all' 
         - invalid:   a RegExp of characters that are not allowed in tags. By 
-                     default [^a-zA-Z0-9_]
+                     default [^-a-zA-Z0-9_]
         - separator: for when splitting incoming strings and building
                      serialized strings. Default is comma ','
                       
     Examples:     
     
-        var tags1 = TagString.create( { source: 'foo,bar' } );
+        var tags1 = new TagString( 'foo,bar' );
         
-        var tags2 = TagString.create( { source: [ 'fee', 'fie' ] } );
+        var tags2 = new TagString( [ 'fee', 'fie' ] );
         
-        var tags3 = TagString.create( { source: tags2 } );
+        var tags3 = TagString(tags2,{ separator: ' '}); // conver to space delimited
         
         tags2.add(tags1);  // fee,fie,foo,bar
         tags2.toggle( ['fie','foo'], false ); // fee,bar
         tags3.remove('fee'); // fie
-        
-        
-        var tags = TagString.combine(tags1, 'hip_hop,remix'); // 'foo,bar,hip_hop,remix'
 */
 
 const NOT_FOUND = -1;
@@ -98,35 +96,20 @@ function getDiff(arr1, arr2) {
   return compare(arr1,arr2,true);
 }    
 
-var merge = Object.assign;
-
-function cookOpts(opts={} ) {
-  /*
-    we're doing this manually so that when we Object.assign() to 'this'
-    we don't create some kind  "unintentional" additions 
-  */
-  let { ignore    = /^(\*|all)$/,
-        invalid   = /[^-a-zA-Z0-9_]/, 
-        separator = ',',
-        source    = '' } = opts;
-
-  return { ignore, invalid, separator, source };
-}
+const DEFAULT_IGNORE = /^(\*|all)$/;
 
 class TagString
 {
-  constructor(opts = '') {
+  constructor(src = null, { ignore    = DEFAULT_IGNORE,
+                            invalid   = /[^-a-zA-Z0-9_]/, 
+                            separator = ','} = {}) {
     
     this.clear = this.removeAll;
     this.includes = this.contains;
 
-    if( !opts.hasOwnProperty('source') ) {
-      opts = { source: opts };
-    }
+    Object.assign(this,{ignore,invalid,separator});
 
-    Object.assign(this,cookOpts(opts));
-
-    this._tagsArray = TagString.toArray(opts.source,this.opts);
+    this._tagsArray = TagString.toArray(src,this.opts);
   }
 
   
@@ -222,21 +205,20 @@ class TagString
   intersection(other) {
     var ret  = this; 
     if( this._tagsArray.length ) {
-      var opts = this.copyOptions();
-      var arr2 = TagString.toArray(other,opts);
+      var arr2 = TagString.toArray(other,this.opts);
       if( arr2.length ) {
         var arr1 = this._tagsArray.slice();
-        opts.source = getIntersect(arr1,arr2);
-        ret = new TagString(opts);
+        var source = getIntersect(arr1,arr2);
+        ret = new TagString(source,this.opts);
       }
     }
     return ret;
   }
 
   diff(returnTagsOnlyInThisOne) {
-    var opts = this.copyOptions();
-    opts.source = getDiff(this._tagsArray.slice(),TagString.toArray(returnTagsOnlyInThisOne,opts));
-    return new TagString(opts);  
+    var opts = this.opts;
+    var source = getDiff(this._tagsArray.slice(),TagString.toArray(returnTagsOnlyInThisOne,opts));
+    return new TagString(source,opts);  
   }
 
   sort() {
@@ -249,7 +231,7 @@ class TagString
   }
 
   isEqual(tags) {
-    var other = new TagString(tags);
+    var other = new TagString(tags,this.opts);
     if( !this._tagsArray.length || other._tagsArray.length !== this._tagsArray.length ) {
       return false;
     }
@@ -291,13 +273,7 @@ class TagString
   }
 
   clone() {
-    var opts = this.copyOptions();
-    opts.src = this._tagsArray;
-    return new TagString( opts );
-  }
-
-  copyOptions() {
-    return merge({},this.opts);
+    return new TagString( this._tagsArray, this.opts );
   }
 
   toString(withSeparator) {
@@ -322,6 +298,12 @@ class TagString
     return this._tagsArray.map(callback,context || this);
   }
       
+  concat(...args) {
+    var opts = this.opts;
+    this.add( args.reduce( (a,tag) => a.concat(TagString.toArray(tag,opts)), [] ) );
+    return this;
+  }
+
   filter(rgx) {
     var ts = new TagString();
     for( var i = 0; i < this._tagsArray.length; i++ ) {
@@ -336,46 +318,28 @@ class TagString
 
 }
 
-TagString.create = function(opts) {
-  return new TagString(opts);
-};
-
-TagString.combine = function(tags1,tags2,opts) {
-  if( !tags1 ) {
-      return tags2;
-  }
-  if( tags2 ) {
-      opts = merge( { source: tags1 }, opts || { } );
-      return TagString.create(opts).add(tags2).toString();
-  }
-  return tags1;
-};
-
 TagString.contains = function(source,tag,opts) {
-  opts = merge( { source }, opts || { } );
-  return TagString.create(opts).contains(tag);
+  return new TagString(source,opts).contains(tag);
 };        
 
 TagString.forEach = function(source,callback,context,opts) {
-  opts = merge( { source: source }, opts || { } );
-  return TagString.create( opts ).forEach(callback,context);
+  return new TagString(source,opts).forEach(callback,context);
 };
 
 TagString.filter = function(source,filter,opts) {
-  opts = merge( { source: source }, opts || { } );
-  return TagString.create( opts ).filter(filter);
+  return new TagString(source,opts).filter(filter);
 };
 
-TagString.toArray = function(source,useropts) {
+TagString.toArray = function(source,{ ignore    = DEFAULT_IGNORE,
+                                      separator = ','}) {
   if( !source ) {
     return [ ];
   }
 
   var arr = null;
   if( typeof(source) === 'string' ) {
-    var opts = cookOpts(useropts);
-    var r = new RegExp(opts.separator,'g');
-    arr = source.match(opts.ignore) ? [] : source.replace(r,' ').split(/\s+/).filter( t => t.length && t );
+    var r = new RegExp(separator,'g');
+    arr = source.match(ignore) ? [] : source.replace(r,' ').split(/\s+/).filter( t => t.length && t );
   } else if( Array.isArray(source) ) {
     arr = source.slice();        
   } else if( source && (source instanceof TagString) )  {
@@ -388,7 +352,7 @@ TagString.toArray = function(source,useropts) {
 
 
 String.prototype.tagize = function(pretty) {
-  var tu = TagString.create( { source: this } );
+  var tu = new TagString(this);
   var str = tu.toString();
   if( pretty ) {
     var rx = new RegExp(tu.separator,'g');

@@ -1,9 +1,10 @@
 import React from 'react';
+import { selectors } from '../../unicorns';
 
 function Ribbon(props) {
-  var color = props.color || 'orange';
-  var cls = `ribbon ${color} ${this.props.className}`;
-  return <span className={cls}>{this.props.text}</span>;
+  const { color = 'orange', className, text } = props;
+  const cls  = selectors('ribbon', color, className );
+  return <span className={cls}>{text}</span>;
 }
 
 module.exports = Ribbon;

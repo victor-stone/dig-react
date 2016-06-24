@@ -28,8 +28,8 @@ var CollapsingText = React.createClass({
 
     this.isMounted = true;
     $('#' + this.props.id + '-collapse-text-more')
-      .on('show.bs.collapse', () => {  toggleText('hide'); this.showMoreOrLess('less'); return true; } )
-      .on('hide.bs.collapse', () => {  toggleText('show'); this.showMoreOrLess('more'); return true; } );
+      .on('show.bs.collapse', () => {  toggleText('hide'); return true; } )
+      .on('hide.bs.collapse', () => {  toggleText('show'); return true; } );
   },
 
   componentWillReceiveProps(nextProps) {
@@ -46,12 +46,6 @@ var CollapsingText = React.createClass({
     $('#' + this.props.id + '-collapse-text-more')
       .off('show.bs.collapse')
       .off('hide.bs.collapse');
-  },
-
-  showMoreOrLess(moreOrLess) {
-    this.setState({
-      showLess: moreOrLess === 'less',
-    });
   },
 
   stateFromHTML(html) {
@@ -94,7 +88,7 @@ var CollapsingText = React.createClass({
         <div className={clsHTML}  id={this.props.id + '-collapse-text-more'} dangerouslySetInnerHTML={s.html} />
         {s.hideMoreButton
           ? null
-          : <MoreOrLessLink targetId={this.props.id + '-collapse-text-more'} less={s.showLess}/>
+          : <MoreOrLessLink targetId={this.props.id + '-collapse-text-more'} />
         }
         
       </div>

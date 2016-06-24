@@ -19,20 +19,29 @@ class Feature extends CurrentUserTracker.cut(React.Component)
   }
 
   render() {
-    return this.state.user.idAdmin && <Toggle store={this.props.store} propName="isFeatured" text="Featured" />;
+    const { user: {isAdmin=false} = {} } = this.state;
+    return isAdmin && <Toggle store={this.props.store} propName="isFeatured" text="Featured" />;
   }
 }
 
-function EditQueryLink(props) {
-    if( !props.store.permissions.canEdit ) {
+// you can't return null from a stateless component
+class EditQueryLink extends React.Component
+{
+  constructor() {
+    super(...arguments);
+  }
+
+  render() {
+    const { store } = this.props;
+    const { permissions:{canEdit=false}, model: {head:{isDynamic,id}} } = store;
+
+    if( !canEdit || !isDynamic ) {
       return null;
     }
+    var href = `/playlist/browse/${id}/edit`;
 
-    var head  = props.store.model.head;
-    var isDyn = head.isDynamic;
-    var href  = '/playlist/browse/' + head.id + '/edit';
-
-    return isDyn && <Link className="btn btn-success" href={href}><Glyph icon="edit" />{" edit query"}</Link>;
+    return (<Link className="btn btn-success" href={href}><Glyph icon="edit" />{" edit query"}</Link>);
+  }
 }
 
 function ShareURL(model) {
@@ -52,13 +61,20 @@ function Curator(props) {
     );  
 }
 
-function Tags(props) {
-  return (props.store.tags.length || props.store.permissions.canEdit ?
-          <div className="playlist-tags playlist-bg-color">
-            <EditableTagsDiv store={this.props.store} delayCommit />
-          </div> : null);
-}
+class Tags extends React.Component
+{
+  constructor() {
+    super(...arguments);
+  }
 
+  render() {
+    const { tags: {length}, permissions: {canEdit=false} = {} } = this.props.store;
+    return (length || canEdit ?
+            <div className="playlist-tags playlist-bg-color">
+              <EditableTagsDiv store={this.props.store} delayCommit />
+            </div> : null);
+  }
+}
 
 function ActionButtonBar(props) {
   var store = props.store;

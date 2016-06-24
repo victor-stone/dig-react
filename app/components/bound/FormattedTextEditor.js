@@ -22,7 +22,7 @@ class BoundInlineFormattedTextEditor extends BoundInputControlMixin(ModelTracker
     return state;
   }
 
-  return() {
+  render() {
     return <InlineFormattedTextEditor html={this.state.html} text={this.state.text} canEdit={this.props.store.permissions.canEdit} />;
   }
 }

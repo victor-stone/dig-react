@@ -7,8 +7,8 @@ import PeopleAvatar      from './PeopleAvatar';
 
 class UploadDescription extends React.Component
 {
-  shouldComponentUpdate(nextProps,nextState) {
-    return this.props.model.id !== nextState.props.model.id;
+  shouldComponentUpdate(nextProps) {
+    return this.props.model.id !== nextProps.model.id;
   }
 
   render() {

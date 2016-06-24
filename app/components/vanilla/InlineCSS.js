@@ -7,6 +7,10 @@ var InlineCSS = React.createClass({
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
+    var alreadyHaveIt = document.getElementById(this.props.id);
+    if( alreadyHaveIt ) {
+      return;
+    }
     var css = this.props.css;
 
     var sheet = document.createElement('style');

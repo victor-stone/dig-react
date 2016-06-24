@@ -22,6 +22,7 @@ class EditableTracks extends React.Component
   constructor() {
     super(...arguments);
     bindAll(this, ['onDone','onEditState']);
+    this.state = { editing: false };
   }
 
   onDone() {
@@ -35,8 +36,7 @@ class EditableTracks extends React.Component
   }
 
   render() {
-    var model       = this.props.model;
-    var canEdit     = this.props.canEdit;
+    const { model, canEdit } = this.props;
 
     return (
       <div className="tracks-widget">

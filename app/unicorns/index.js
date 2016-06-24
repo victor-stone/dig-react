@@ -1,5 +1,6 @@
 import pagingStats    from './paging-stats';
 import TagString      from './tag-string';
+import selectors      from './selectors';
 import browserScripts from './browser-scripts';
 import _              from 'underscore';
 
@@ -9,14 +10,14 @@ if (!Array.isArray) {
   Array.isArray = _.isArray;
 }
 
-if( typeof Array.prototype.includes === 'undefined' ) {
-  Array.prototype.includes = function(v) { 
-    return this.indexOf(v) !== NOT_FOUND; 
+if( typeof Array.prototype.contains === 'undefined' ) {
+  Array.prototype.contains = function(obj) {
+    return this.indexOf(obj) !== NOT_FOUND;
   };
 }
 
-if( typeof Array.prototype.contains === 'undefined' ) {
-  Array.prototype.contains = Array.prototype.includes;
+if( typeof Array.prototype.includes === 'undefined' ) {
+  Array.prototype.includes = Array.prototype.contains;
 }
 
 if( typeof Array.prototype.remove === 'undefined' ) {  
@@ -373,6 +374,7 @@ module.exports = {
   hashParams,
   oassign,
   pagingStats,
+  selectors,
   sliceStr,
   trim,
   w,

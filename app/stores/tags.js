@@ -41,7 +41,7 @@ class Tags extends Query {
       return rsvp.resolve(cached.models);
     }
     return this.query(q,deferName).then( r =>  {
-      var results = TagString.create( { source: r.map( t => t.tags_tag ) } );
+      var results = new TagString( r.map( t => t.tags_tag ) );
       this._putCache(cached.key,results);
       return results;
     });

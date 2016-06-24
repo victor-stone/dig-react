@@ -1,14 +1,14 @@
 import React       from 'react';
 
 function FormItem(props) {
-  var cls = props.cls;
+  const { cls = 'col-md-12' } = props;
   return (
       <div className="form-group">
         <div className={cls}>
           <div className="input-group">
             <span className="input-group-addon">{props.title}</span>
             {props.wrap
-              ? <span className="form-control">{props.children}</span>
+              ? <span className="form-control initial-height">{props.children}</span>
               : props.children
             }
             {props.addOn}

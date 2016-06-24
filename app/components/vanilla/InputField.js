@@ -5,12 +5,14 @@ import EditControls from './EditControls';
 
 import { bindAll }           from '../../unicorns';
 
+var nextID = 0;
+
 const InputControlMixin = target => class extends target {
   constructor() {
     super(...arguments);
     bindAll(this, [ 'onCancel', 'onEdit', 'onDone' ]);
     this.state = { text: this.props.text, orgText: this.props.text };
-    this.focusId = this.props.focusId || 'element_' + Math.random();
+    this.focusId = this.props.focusId || 'element_' + ++nextID;
   }
 
   onEdit() {
@@ -84,7 +86,7 @@ class InputText extends InputControlMixin(React.Component)
           </span>
         );
     }
-    return this.state.text;
+    return <span>{this.state.text}</span>;
   }
 }
 

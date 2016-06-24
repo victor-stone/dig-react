@@ -99,7 +99,7 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
 
   find(id,userid,_flags) {
     
-    var flags = _flags || Upload.ALL;
+    var flags = _flags === undefined ? Upload.ALL : _flags;
 
     var model = null;
 
@@ -124,6 +124,8 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
         }
         model = _fixFeaturing(record);
 
+        // TODO: check if artist is really needed!
+        
         return model.artist ? model.artist : this.findUser(model.upload.artist.id);
 
       }).then( user => {
@@ -217,6 +219,8 @@ Upload.storeFromQuery = function(id,user,flags) {
                         });
 };
 
+
+Upload.BARE       = 0x000;
 Upload.REMIXES    = 0x001;
 Upload.TRACKBACKS = 0x002;
 Upload.SOURCES    = 0x004;

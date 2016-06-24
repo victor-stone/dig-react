@@ -2,11 +2,13 @@ import React    from 'react';
 
 const DEFAULT_FADE_DURATION = 250;
 
+var nextID = 0;
+
 class CrossFadeContent extends React.Component {
   constructor() {
     super(...arguments);
     this.state = { elem: this.props.elem };
-    this.id = 'fade-group-'+Math.random();
+    this.id = 'fade-group-'+ ++nextID;
   }
 
   componentWillReceiveProps(nextProps) {

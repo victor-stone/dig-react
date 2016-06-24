@@ -37,7 +37,7 @@ const _methods = {
     }.bind(this);
 
     var onReject = function() {
-      profileHandler(null);
+      profileHandler();
     }.bind(this);
 
     return  api.user.currentUser().then( onSuccess, onReject );
@@ -48,7 +48,7 @@ const _methods = {
 const CurrentUserTracker = Object.assign({
 
   getInitialState() {
-    return { user: null, userLoading: !global.IS_SERVER_REQUEST };
+    return { user: undefined, userLoading: !global.IS_SERVER_REQUEST };
   },
 }, _methods);
 
@@ -56,7 +56,7 @@ const _classMixin = target => class extends target {
   constructor() {
     super(...arguments);
     Object.assign(this,_methods);
-    this.stateFromStore(this.props.store);
+    this.state = { user: undefined, userLoading: !global.IS_SERVER_REQUEST };
   }
 };
 

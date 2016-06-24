@@ -7,6 +7,7 @@ import Topics                from '../../stores/topics';
 import { ModelTracker,
         DelayLoadModel }    from '../../mixins';
 
+// TODO: factor out Review display to ../models
 var Reviews = React.createClass({
 
   mixins: [ModelTracker,DelayLoadModel],

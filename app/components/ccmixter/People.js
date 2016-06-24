@@ -1,6 +1,6 @@
   /*eslint "react/no-danger":0 */
 import React   from 'react';
-import Gallery from './Gallery';
+import Gallery from '../RemixTree/Gallery';
 import css     from './style/people';
 import { Followers,
          FollowButton } from './Follow';

@@ -5,7 +5,7 @@ import { Accordian
 
 import { ModelTracker }    from '../../mixins';
 import { SamplesFrom, 
-         SamplesUsedIn }   from '../models/TreeLinks';
+         SamplesUsedIn }   from '../bound/TreeLinks';
 
 import FileSection from './Files';
 import Recommends  from './Recommends';

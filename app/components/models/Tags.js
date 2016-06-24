@@ -1,7 +1,10 @@
 import React            from 'react';
 import Glyph            from '../vanilla/Glyph';
+import ClearButton      from '../vanilla/ClearButton';
 import InlineCSS        from '../vanilla/InlineCSS';
-import { TagString }    from '../../unicorns';
+import { FormItem }     from '../vanilla/Form';
+import { TagString,
+         selectors }    from '../../unicorns';
 
 /*
   In this context 'static' means non-interactive
@@ -69,60 +72,60 @@ import { TagString }    from '../../unicorns';
     depending on state in all cases
 
 */
-const SelectableTag = React.createClass({
 
-  getInitialState: function() {
-    return this.calcState(this.props);
-  },
+class SelectableTag extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.state = this.calcState(this.props);
+    this.onClick = this.onClick.bind(this);
+  }
 
   componentWillReceiveProps(props) {
     this.setState( this.calcState(props) );
-  },
+  }
 
   shouldComponentUpdate(nextProps,nextState) {
     return this.state.selected !== nextState.selected;
-  },
+  }
 
   onClick(e) {
     e.stopPropagation();
     e.preventDefault();
     this.props.onSelected(this.props.model.id,!this.state.selected);
-  },
+  }
 
   calcState(props) {
     return { selected: props.selected };
-  },
+  }
 
-  render: function() {
-    var props  = this.props;
-    var selected = this.state.selected;
-    var tag  = props.model;
-    var icon = props.glyph === 'checks'
+  render() {
+    const { model: {id,count=0}, glyph, onSelected } = this.props;
+    const { selected } = this.state;
+    
+    const icon = glyph === 'checks'
                   ? (selected ? 'check-square-o' : 'square-o')
-                  : props.glyph === 'x' 
+                  : glyph === 'x' 
                     ? 'times-circle'
                     : null;
-    var cls = 'tag-selectable';
-    if( props.glyph && props.glyph !== 'none' ) {
-      cls += ' tag-selectable-' + props.glyph;
-    }
-    if( selected ) {
-      cls += ' tag-selected';
-    }
 
+    const cls = selectors(
+                  'tag-selectable',
+                  glyph && glyph !== 'none' ? 'tag-selectable-' + glyph : null,
+                  selected ? 'tag-selected' : null );
     return (
-        <li className={cls} onClick={this.props.onSelected && this.onClick}>
-          {icon && tag.id && <Glyph icon={icon} />}
-          {tag.id} 
-          {tag.count
-            ? <span className="light-color">{"("}{tag.count}{")"}</span>
+        <li className={cls} onClick={onSelected && this.onClick}>
+          {icon && id && <Glyph icon={icon} />}
+          {id} 
+          {count
+            ? <span className="light-color">{"("}{count}{")"}</span>
             : null
           }
         </li>
       );
   }
 
-});
+}
 
 SelectableTag.css = `
 .tag-selectable > i.fa {
@@ -166,54 +169,55 @@ function tagStringToModels(tagStr) {
   return (tagStr && tagStr.map( t => { return { id: t }; } )) || [];
 }
 
-const SelectableTagList = React.createClass({
-
-  getInitialState() {
-    return this.calcState(this.props);
-  },
+class SelectableTagList extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.state = this.calcState(this.props);
+  }
 
   componentWillReceiveProps(props) {
     this.setState( this.calcState(props) );
-  },
+  }
 
   shouldComponentUpdate(nextProps,nextState) {
-    return !this.state.selected.isEqual(nextState.selected) ||
-            !this.state._tags.isEqual(nextState._tags);
-  },
+    const { selected, _tags } = this.state;
+    return !selected.isEqual(nextState.selected) || !_tags.isEqual(nextState._tags);
+  }
 
   calcState(props) {
     return { selected: props.selected || new TagString(),
              _tags:    modelsToTagString(props.model),
              tags:     tagStringToModels(props.model) };
-  },
+  }
 
   render() {
-    var cls = 'tag-list-selectable';
-    if( this.props.floating ) {
-      cls += ' floating';
-    }
-    if( this.props.autoclear ) {
-      cls += ' autoclear';
-    }
-    if( this.props.className ) {
-      cls += ' ' + this.props.className;
-    }
-    var arr = this.props.autoclear 
-                    ? ( arr = this.state.tags.slice(), arr.push({id:''}), arr ) 
-                    : this.state.tags;
+
+    const { floating, autoclear, className, glyphs, onSelected } = this.props;
+    const { tags, selected } = this.state;
+
+    const cls = selectors(
+                  'tag-list-selectable',
+                  floating ? 'floating' : null,
+                  autoclear ? 'autoclear' : null,
+                  className );
+
+    let arr = autoclear 
+                    ? ( arr = tags.slice(), arr.push({id:''}), arr ) 
+                    : tags;
 
     return (
       <ul className={cls}>{arr.map( tag => 
           <SelectableTag  key={tag.id} 
-                          selected={this.state.selected.containsOne(tag.id)} 
+                          selected={selected.containsOne(tag.id)} 
                           model={tag} 
-                          glyph={this.props.glyphs}
-                          onSelected={this.props.onSelected}
-          />
-      )}</ul>
+                          glyph={glyphs}
+                          onSelected={onSelected}
+          />)}
+      </ul>
     );
   }
-});
+}
 
 SelectableTagList.css = SelectableTag.css + `
   ul.tag-list-selectable {
@@ -242,31 +246,25 @@ SelectableTagList.css = SelectableTag.css + `
     - autoclear [boolean] (optional default:true)
 */
 
-const StaticTagsList = React.createClass({
-
-  getDefaultProps() {
-    return { floating: true, autoclear: true };
-  },
-
-  getInitialState() {
-    return this.calcState(this.props);
-  },
+class StaticTagsList extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.state = this.calcState(this.props);
+  }
 
   componentWillReceiveProps(props) {
     this.setState( this.calcState(props) );
-  },
+  }
 
   calcState(props) {
     var model = props.model instanceof TagString ? tagStringToModels(props.model) : props.model;
     return { model };
-  },
+  }
 
   render() {
-    var cls = 'tag-list-static';
-    if( this.props.className ) {
-      cls += ' ' + this.props.className;
-    }
-    var css = this.props.css || StaticTagsList.css;
+    const { className, css = StaticTagsList.css, glyphs, floating, autoclear } = this.props;
+    const cls = selectors( 'tag-list-static', className );
 
     return (
         <div className="tag-list-static-container">
@@ -274,17 +272,38 @@ const StaticTagsList = React.createClass({
           <SelectableTagList 
             model={this.state.model} 
             className={cls}
-            glyphs={this.props.glyphs}
-            floating={this.props.floating}
-            autoclear={this.props.autoclear}
+            glyphs={glyphs}
+            floating={floating}
+            autoclear={autoclear}
           />
       </div>
       );
   }
-});
+}
 
+StaticTagsList.defaultProps = { floating: true, autoclear: true };
 StaticTagsList.css = SelectableTagList.css;
 
+
+/*
+  Props: 
+    - model TagString OR
+            array[model {
+              id: 'tag_name'
+              count: usage_count (optional)
+             }]
+    - className [string] (optional - added to 'tag-list-static')
+    - floating [boolean] (optional default:true)
+    - autoclear [boolean] (optional default:true)
+*/
+function StaticTagsField(props)
+{
+    return(
+        <FormItem title="tags" wrap>
+          <StaticTagsList {...props} />
+        </FormItem>
+      );
+}
 
 /*
   Props: 
@@ -297,28 +316,24 @@ StaticTagsList.css = SelectableTagList.css;
     - className [string] (optional - added to 'tag-list-checkable')
     - css [string] (note: inline css - set CheckableTagsList.css to destroy defaults)
 */
-const CheckableTagsList = React.createClass({
+function CheckableTagsList(props)
+{
+  const { model, className, css = CheckableTagsList.css, selected, onSelected } = props;
+  const cls = selectors( 'tag-list-checkable', className );
 
-  render() {
-    var cls = 'tag-list-checkable';
-    if( this.props.className ) {
-      cls += ' ' + this.props.className;
-    }
-    var css = this.props.css || CheckableTagsList.css;
-    return (
-        <div className="tag-list-checkable-container">
-          <InlineCSS css={css} id="tag-list-checkable-css" />
-          <SelectableTagList 
-            model={this.props.model} 
-            selected={this.props.selected}
-            className={cls}
-            glyphs="checks"
-            onSelected={this.props.onSelected}
-          />
-        </div>
-      );
-  }
-});
+  return (
+      <div className="tag-list-checkable-container">
+        <InlineCSS css={css} id="tag-list-checkable-css" />
+        <SelectableTagList 
+          model={model} 
+          selected={selected}
+          className={cls}
+          glyphs="checks"
+          onSelected={onSelected}
+        />
+      </div>
+    );
+}
 
 CheckableTagsList.css = SelectableTagList.css + `
 .tag-list-checkable-container {
@@ -340,19 +355,6 @@ CheckableTagsList.css = SelectableTagList.css + `
 
 `;
 
-var ClearTagsButton = React.createClass({
-
-  onClick(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.props.onClear();
-  },
-
-  render() {
-    return (<a href="#" onClick={this.onClick} className="btn btn-xs btn-danger tags-clear"><Glyph icon="trash" />{" clear"}</a>);
-  }
-});
-
 /*
   Props: 
     - model TagString
@@ -362,49 +364,49 @@ var ClearTagsButton = React.createClass({
     - css [string] (note: inline css - set CheckableTagsList.css to destroy defaults)
 */
 
-var SelectedTagList = React.createClass({
-
-  getInitialState() {
-    return this.calcState(this.props);
-  },
+class SelectedTagList extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.onSelected = this.onSelected.bind(this);
+    this.state = this.calcState(this.props);
+  }
 
   componentWillReceiveProps(props) {
     this.setState( this.calcState(props) );
-  },
+  }
 
   calcState(props) {
     return { tags: tagStringToModels(props.model),
              model: props.model  };
-  },
+  }
 
   onSelected(tag) { 
     this.props.onRemove(tag);
-  },
+  }
 
   render() {
-    var cls = 'tag-list-selected';
-    if( this.props.className ) {
-      cls += ' ' + this.props.className;
-    }
-    var css = this.props.css || SelectedTagList.css;
+    const { className, css = SelectedTagList.css, onClear } = this.props;
+    const { model } = this.state;
+    const cls = selectors( 'tag-list-selected', className );
 
     return (
         <div className="tag-list-selected-container">
           <InlineCSS css={css} id="tag-list-selected-css" />
           <SelectableTagList 
-            model={tagStringToModels(this.state.model)} 
-            selected={this.state.model}
+            model={tagStringToModels(model)} 
+            selected={model}
             onSelected={this.onSelected}
             className={cls}
             glyphs="x"
             floating
           />
-          {this.state.model.length > 1 && (<ClearTagsButton onClear={this.props.onClear} />)}
+          {this.state.model.length > 1 && (<ClearButton className="btn-xs tags-clear" onClear={onClear} />)}
           <div className="clearfix" />
       </div>
       );
   }
-});
+}
 
 SelectedTagList.css = SelectableTagList.css + `
 .tag-list-selected-container {
@@ -438,7 +440,8 @@ module.exports = {
   SelectableTagList,
   StaticTagsList,
   CheckableTagsList,
-  SelectedTagList
+  SelectedTagList,
+  StaticTagsField,
 };
 
 //

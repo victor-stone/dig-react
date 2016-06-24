@@ -2,29 +2,34 @@ import React            from 'react';
 import { PlayButton }   from '../AudioPlayer';
 import LinkToUpload     from '../services/LinkToUploadRoute';
 import LinkToPeople     from '../services/LinkToPeopleRoute';
-import UploadInfoButton from '../bound/UploadInfoButton';
+import UploadInfoButton from '../models/UploadInfoButton';
 
-var GalleryElement = React.createClass({
+class TreeGalleryElement extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.onClick = this.onClick.bind(this);
+  }
 
   shouldComponentUpdate(nextProps) {
     return this.props.model.id !== nextProps.model.id;
-  },
+  }
 
   onClick(e) {
     e.preventDefault();
     e.stopPropagation();
     LinkToUpload.navigateTo(this.props.model);
-  },
+  }
 
   render() {
-    const { model, store, skipUser = false, onPlay } = this.props; 
+    const { model, skipUser = false, onPlay } = this.props; 
     const { artist, fileInfo: { isMP3 = false } } = model;
     return(
       <li className="gallery-element" >
         <div className="content-wrapper" onClick={this.onClick} >
           <LinkToUpload model={model} truncate /> 
           <div className="tools">
-            <UploadInfoButton store={store} />
+            <UploadInfoButton model={model} />
             {isMP3
               ? <PlayButton btnType="warning" className="play-button" model={model} onPlay={onPlay}/> 
               : null
@@ -35,8 +40,8 @@ var GalleryElement = React.createClass({
       </li>
       );
   }
-});
+}
 
-module.exports = GalleryElement;
+module.exports = TreeGalleryElement;
 
 //

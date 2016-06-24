@@ -2,6 +2,12 @@ import lookup            from '../services';
 import events            from '../models/events';
 
 const PushPeruseModel = target => class extends target {
+
+  constructor() {
+    super(...arguments);
+    this.onPreNavigate = this.onPreNavigate.bind(this);
+  }
+  
   componentDidMount() {
     if( global.IS_SERVER_REQUEST ) {
       return;

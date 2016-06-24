@@ -1,6 +1,6 @@
 import React               from 'react';
 import {ModelTracker}      from '../../mixins';
-import EditableTrackList   from '../models/TrackList';
+import EditableTrackList   from '../models/EditableTrackList';
 
 /*
   Present a tracklist that is optionally editable including sorting
@@ -16,8 +16,12 @@ import EditableTrackList   from '../models/TrackList';
 */
 class BoundEditableTrackList extends ModelTracker.extender(React.Component)
 {
+  stateFromStore(store) {
+    return { model: store.model };
+  }
+
   render() {
-    <EditableTrackList model={this.state.store.model} {...this.props} />;
+    return <EditableTrackList model={this.state.model} {...this.props} />;
   }
 }
 

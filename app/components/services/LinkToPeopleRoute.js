@@ -39,10 +39,10 @@ const LinkToPeopleRoute = React.createClass({
 
     var href       = `/people/${id}${suburl?'/'+suburl:''}`;
     var cls        = 'people-link ' + className;
-    var thumbStyle = thumb ? thumbStyle(id) : null;
+    var ts         = thumb ? thumbStyle(id) : null;
 
     return( 
-        <Link {...this.props} className={cls} style={thumbStyle} href={href}>
+        <Link {...this.props} className={cls} style={ts} href={href}>
           {avatar
             ? <span><img className="img-circle" src={avatarURL} />{name}</span>
             : icon

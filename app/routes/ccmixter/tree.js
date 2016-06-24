@@ -1,25 +1,22 @@
-import React             from 'react';
-import { Gallery,
-         GallerySubNav } from '../../components/ccmixter/';
-import qc                from '../../models/query-configs';
-import Store             from '../../stores/remixes';
+import React      from 'react';
+import qc         from '../../models/query-configs';
+import Store      from '../../stores/remixes';
 
 import { mergeParams, 
-         oassign }       from '../../unicorns';
+         oassign }    from '../../unicorns';
 
-function TreePage(props) {
-  return <Gallery {...props} />; 
-}
+import Gallery from '../../components/RemixTree/Gallery';
+import SubNav  from '../../components/RemixTree/SubNav';
 
-TreePage.title = 'Remix Tree';
+const tree = Gallery;
 
-TreePage.path  = '/tree';
+tree.title = 'Remix Tree';
 
-TreePage.subnav = function(props) {
-  return (<GallerySubNav paging store={props.store} className="tree-subnav" />);
+tree.subnav = function(props) {
+  return (<SubNav paging store={props.store} className="tree-subnav" />);
 };
 
-TreePage.store = function(params,queryParams) {
+tree.store = function(params,queryParams) {
   var defaultOpts = oassign({},qc.remixes);
   if( queryParams && 'reqtags' in queryParams ) {
     defaultOpts.reqtags = queryParams.reqtags;
@@ -29,5 +26,5 @@ TreePage.store = function(params,queryParams) {
   return Store.storeFromQuery(qparams, defaultOpts);
 };
 
-module.exports = TreePage;
+module.exports = tree;
 

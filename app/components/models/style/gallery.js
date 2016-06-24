@@ -1,4 +1,4 @@
-var GalleryElement = `
+var css = `
 .gallery ul.play-list {
   padding: 0px;
 }
@@ -87,9 +87,6 @@ gallery .play-list li.gallery-element {
   }
 }
 
-`;
-
-var Gallery = `
 .subnav-option-bar {
   background-color: black;
 }
@@ -111,9 +108,7 @@ var Gallery = `
 }
 `;
 
-module.exports = {
-  Gallery,
-  GalleryElement,
-};
+module.exports = css;
+
 
 //

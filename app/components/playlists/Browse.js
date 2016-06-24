@@ -7,13 +7,13 @@ import { browse as browseCSS,
 
 function BrowsePlaylists(props)
 {
-    var store = props.store;
+    const { store, skipUser } = props;
     return (
       <div className="container playlist-browser">
         <InlineCSS css={browseCSS + tagsCSS} id="playlists-browse-css"/>
         <div className="row">
           <div className="col-md-8 col-md-offset-2">
-            <PlaylistList store={store} skipUser={this.props.skipUser} />
+            <PlaylistList store={store} skipUser={skipUser} />
           </div>
         </div>
       </div>

@@ -1,22 +1,23 @@
 import React                 from 'react';
 import LinkToPlaylist        from '../services/LinkToPlaylistRoute';
 import LinkToPeople          from '../services/LinkToPeopleRoute';
-import { StaticTagList }     from './Tags';
+import { StaticTagsList }    from './Tags';
 import PlayAllButton         from '../services/PlayAllButton';
 
 function CuratorLink(props) {
-  return <div className="playlist-curator">{"curator: "}<LinkToPeople model={props.model.curator} suburl="playlists" /></div>;
+  const { model: {curator}} = props;
+  return <div className="playlist-curator">{"curator: "}<LinkToPeople model={curator} suburl="playlists" /></div>;
 }
 
 function PlaylistListItem(props)
 {
-    var model = props.model;
+  const { model, skipUser, model: {tags} } = props;
     return (
         <li >
           <PlayAllButton playlist={model} />
           <LinkToPlaylist model={model} />
-          {!this.props.skipUser && <CuratorLink model={model} />}
-          <StaticTagList model={model.tags} />
+          {!skipUser && <CuratorLink model={model} />}
+          <StaticTagsList floating model={tags} />
         </li>
       );
 }

@@ -1,6 +1,6 @@
 import React              from 'react';
 import LinkToUpload       from '../services/LinkToUploadRoute';
-import LinkToPeople       from '../services/LinkToUploadRoute';
+import LinkToPeople       from '../services/LinkToPeopleRoute';
 import { PlayButton }     from '../AudioPlayer';
 import DeleteButton       from '../vanilla/DeleteButton';
 

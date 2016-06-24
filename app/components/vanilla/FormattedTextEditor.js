@@ -3,13 +3,16 @@ import EditControls from './EditControls';
 
 import { bindAll } from '../../unicorns';
 
+var nextID;
+
 class FormattedTextEditor extends React.Component
 {
   constructor() {
     super(...arguments);
     bindAll(this, [ 'onChange' ]);
-    this.state = { text: this.props.text, orgText: this.props.text };
-    this.focusId = this.prop.focusId || 'element_' + Math.random();
+    let text;
+    ({ text, focusId:this.focusId = 'element_' + ++nextID } = this.props);
+    this.state = { text, orgText: text };
   }
 
   onChange(e) {
@@ -53,7 +56,8 @@ class InlineFormattedTextEditor extends FormattedTextEditor
   constructor() {
     super(...arguments);
     bindAll(this, [ 'onCancel', 'onEdit', 'onDone' ]);
-    this.state = { text: this.props.text, orgText: this.props.text };
+    const { text } = this.props;
+    this.state = { text, orgText: text };
 
   }
   onEdit() {
@@ -71,13 +75,15 @@ class InlineFormattedTextEditor extends FormattedTextEditor
   }
 
  render() {
+    const { className, html, canEdit } = this.props;
+    const { editing } = this.state;
     return (
-        <div cls={this.props.className}>           
-          {this.state.editing
+        <div cls={className}>           
+          {editing
             ? this.htmlTextarea()
-            : <span dangerouslySetInnerHTML={{ __html: this.props.html }}></span>
+            : <span dangerouslySetInnerHTML={{ __html: html }}></span>
           }
-          {this.props.canEdit && <EditControls.ButtonGroup onEdit={this.onEdit} onCancel={this.onCancel} onDone={this.onDone} />}
+          {canEdit && <EditControls.ButtonGroup onEdit={this.onEdit} onCancel={this.onCancel} onDone={this.onDone} />}
         </div>
       );
   }

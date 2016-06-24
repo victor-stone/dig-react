@@ -11,8 +11,11 @@ import _PlaylistList      from '../models/PlaylistList';
 
 class PlaylistList extends ModelTracker.extender(React.Component)
 {
+  stateFromStore(store) {
+    return { model: store.model };
+  }
   render() {
-    <_PlaylistList model={this.state.store.model} {...this.props} />;
+    return <_PlaylistList model={this.state.model} {...this.props} />;
   }
 }
 

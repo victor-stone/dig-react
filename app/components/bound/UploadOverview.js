@@ -3,12 +3,13 @@ import React       from 'react';
 import { HorizontalForm, FormItem } from '../vanilla/Form';
 import { InputFormField }           from './InputField';
 import { EditableTagsField }        from './Tags';
+import { StaticTagsField }          from '../models/Tags';
 
 
 function EdPick(props) {
-  const { upload: { edPick: { review, reviewer }} } = props.store.model;
+  const { cls, model: {edPick: { review, reviewer } } } = props;
   return (
-    <FormItem title="editorial" cls={this.props.cls} wrap>
+    <FormItem title="editorial" cls={cls} wrap>
       <div className="edpick">
         {review}
         <div className="edpick-author">{reviewer}</div>
@@ -17,42 +18,45 @@ function EdPick(props) {
 }
 
 function Featuring(props) {
+  const { cls, model: {featuring} } = props;
   return(
-      <FormItem title="featuring" cls={props.cls} wrap>{props.store.model.upload.featuring}</FormItem>    
+      <FormItem title="featuring" cls={cls} wrap>{featuring}</FormItem>    
     );
 }
 
 function License(props) {
-  const { licenseURL, licenseLogoURL, isCCPlus, purchaseLicenseURL, purchaseLogoURL } = props.store.model.upload;
+  const { cls, model } = props;
+  const { licenseURL, licenseLogoURL, isCCPlus, purchaseLicenseURL, purchaseLogoURL } = model;
   return(
-    <FormItem title="license"  cls={this.props.cls} wrap>
+    <FormItem title="license"  cls={cls} wrap>
       <a target="_blank" href={licenseURL}><img src={licenseLogoURL} /></a>
       {isCCPlus && <a target="_blank" href={purchaseLicenseURL}>{" "}<img src={purchaseLogoURL} /></a>}
     </FormItem>
   );
 }
 
-var UploadOverview = React.createClass({
-
-  render() {
-    const { store } = this.props;
-    const { model: {upload: {edPick, featuring, date, bpm, nsfw}} } = store.upload;
-    var cls   = this.props.lineCls || '';
-    return (
-      <HorizontalForm>
-          {edPick && <EdPick store={store} cls={cls} />}
-          {featuring && <Featuring store={store} cls={cls} />}
-          <FormItem title="uploaded" cls={cls} wrap>{date}</FormItem>
-          <License store={store} cls={cls} />
-          {bpm && <InputFormField store={store} cls={cls} propName="bpm" title="BPM" />}
-          {nsfw && <FormItem title="NSFW" cls={cls} wrap>{"This music may be NSFW"}</FormItem>}
-          <EditableTagsField store={this.props.store} delayCommit />
-          {this.props.children}
-        </HorizontalForm>
-      );
-  }
-});
-
+function UploadOverview(props)
+{
+  const { store, 
+          lineCls:cls='', 
+          store: { 
+              model: { upload: model }
+            } 
+          } = props;
+  const { edPick, featuring, date, bpm, nsfw } = model;
+  return (
+    <HorizontalForm>
+        {edPick && <EdPick model={model} cls={cls} />}
+        {featuring && <Featuring model={model} cls={cls} />}
+        <FormItem title="uploaded" cls={cls} wrap>{date}</FormItem>
+        <License model={model} cls={cls} />
+        {bpm && <InputFormField store={store} cls={cls} propName="bpm" title="BPM" />}
+        {nsfw && <FormItem title="NSFW" cls={cls} wrap>{"This music may be NSFW"}</FormItem>}
+        <EditableTagsField store={store} delayCommit />
+        {props.children}
+      </HorizontalForm>
+    );
+}
 
 module.exports = UploadOverview;
 

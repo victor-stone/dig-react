@@ -1,6 +1,5 @@
 import React              from 'react';
 import _EditableTrackList from '../bound/EditableTrackList';
-import { bindAll }           from '../../unicorns';
 
 
 /*
@@ -14,19 +13,24 @@ class EditableTrackList extends React.Component
 {
   constructor() {
     super(...arguments);
-    bindAll(this, ['onDelete','onPlay','onSort']);
   }
 
   render() {
-    const { store, store: { permissions: {canEdit=false} = {} } } = this.props;
-    const { model: {tracks,head:{isDynamic}} } = store;
+    const { store, 
+            store: { permissions: {canEdit=false} = {} },
+            onDelete,
+            onPlay,
+            onSort } = this.props;
+
+    const { model: { tracks,
+                     head:{isDynamic}} } = store;
 
     return  (<_EditableTrackList 
                 store={tracks} 
                 canEdit={canEdit && !isDynamic}
-                onDelete={this.onDelete}
-                onPlay={this.onPlay}
-                onSort={this.onSort}
+                onDelete={onDelete}
+                onPlay={onPlay}
+                onSort={onSort}
              />);
   }
 }

@@ -3,7 +3,7 @@ import User             from '../../stores/user';
 import People           from '../../components/ccmixter/People';
 import { mergeParams }  from '../../unicorns';
 import qc               from '../../models/query-configs';
-import SubNav           from '../../components/ccmixter/GallerySubNav';
+import SubNav           from '../../components/RemixTree/SubNav';
 
 const people = People;
 

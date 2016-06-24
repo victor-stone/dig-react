@@ -1,5 +1,6 @@
 import React            from 'react';
 import { InlineCSS,
+         Form,
          EditControls } from '../vanilla';
 import { TagString }    from '../../unicorns';
 import { bindAll }      from '../../unicorns';
@@ -265,20 +266,11 @@ const TagEditMixin = target => class extends target {
 class EditableTagsField extends TagEditMixin(React.Component)
 {
   render() {
-    const { cls = 'form-group' } = this.props;
     return(
-        <div className={cls}>
-          <div className="col-md-12">
-            <div className="input-group">
-              <span className="input-group-addon">{"tags"}</span>
-              <span className="form-control initial-height">
-                {this.widget}
-              </span>
-              {this.editControls}
-            </div>
-          </div>
-        </div>
-        );
+        <Form.FormItem title="tags" addOn={this.editControls} wrap>
+          {this.widget}
+        </Form.FormItem>
+      );
     }
 }
 

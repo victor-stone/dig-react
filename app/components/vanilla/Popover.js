@@ -7,29 +7,37 @@ const PopoverMixin = target => class extends target {
     super(...arguments);
   }
 
-  popupContent() {
+  _popoverContent() {
+    // this gets called a bunch of times from the popover plugin
     if( !this.DOMContainer ) {
       this.DOMContainer = document.createElement('div');
       this.DOMContainer.style.display = 'none';
       document.body.appendChild(this.DOMContainer);            
     }
-    var el  = this.popupContent || this.props.elem;
-    this.node = ReactDOM.unstable_renderSubtreeIntoContainer(this,el,this.DOMContainer);
+    if( !this.DOMContainer.innerHTML ) {
+      var el = this.popoverContent;
+      this.node = ReactDOM.unstable_renderSubtreeIntoContainer(this,el,this.DOMContainer);
+    }
     return this.DOMContainer.innerHTML;
   }
 
-  componentDidMount() {
+  showPopover() {
     var $e = $(ReactDOM.findDOMNode(this));
     $e.popover({
-        content: this.popupContent.bind(this),
+        content: this._popoverContent.bind(this),
         animation: this.props.animation,
         placement: 'auto',
         title: this.title || this.props.title,
-        trigger: 'click',
-        html: true,
-    });
+        trigger: 'hover',
+        html: true
+    }).popover('show');
   }
  
+  get hasPopover() {
+    var $e = $(ReactDOM.findDOMNode(this));
+    return !!$e.data('bs.popover');
+  }
+
   componentWillUnmount() {
     this.unmountNode();
     this.unmountContainer();
@@ -41,7 +49,7 @@ const PopoverMixin = target => class extends target {
   }
 
   unmountNode() {
-    ReactDOM.unmountComponentAtNode(this.DOMContainer);
+    this.DOMContainer && ReactDOM.unmountComponentAtNode(this.DOMContainer);
     this.node = null;
   }
 };

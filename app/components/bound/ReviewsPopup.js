@@ -54,7 +54,9 @@ class ReviewsButton extends ModelTracker.extender(React.Component)
 {
   constructor() {
     super(...arguments);
-    this.state = { disabled: true };
+    // TODO: figure out state ordering, stateFromStore() is actually
+    // called beore here
+    this.state = { disabled: true, store: this.state.store };
   }
 
   shouldComponentUpdate(nextProps,nextState) {
