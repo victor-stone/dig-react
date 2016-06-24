@@ -33,13 +33,9 @@ class Playlists extends API
     return this.call('playlist/update/dynamic/' + id + '?' + q);
   }
 
-  toggleFeatured(id) {
-    return this.call('playlist/feature/' + id);
-  }
-
   update(id,fields) {
     var q = querystring.stringify(fields);
-    return this.call('playlist/update/' + id + '?' + q).then( serialize(ccmixter.PlaylistHead) );
+    return this.call('playlist/update/' + id + '?' + q);
   }
 
   reorder(id,reorderSpec) {

@@ -25,7 +25,7 @@ class CCMixter extends Eventer
       if( !result || typeof result.status === 'undefined' || result.status === 'error' ) {
         throw result && result.errmsg || 'because error ' + debug;
       }
-      return result.data;
+      return result.data === undefined ? result : result.data;
     });
   }
 

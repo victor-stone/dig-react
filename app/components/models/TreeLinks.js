@@ -4,8 +4,8 @@ import CollapsingList from '../vanilla/CollapsingList';
 import LinkToUpload   from '../services/LinkToUploadRoute';
 
 function Link(props) {
-  var model = props.model;
-  return <LinkToUpload model={model} key={'fl_' + model.id}>{' '} <span className="tree-link-artist">{model.artist.id}</span></LinkToUpload>;
+  const { model, model: {id, artist:{id:artistId}} } = props;
+  return <LinkToUpload model={model} key={'fl_' + id}>{' '} <span className="tree-link-artist">{artistId}</span></LinkToUpload>;
 }
 
 class TreelinkList extends CollapsingList

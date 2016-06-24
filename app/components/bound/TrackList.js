@@ -3,7 +3,7 @@ import {ModelTracker} from '../../mixins';
 import TrackList      from '../models/TrackList';
 
 /*
-  Display a list of Upload reacords
+  Display a list of Upload records. Tracks changes to store.
 
   props
     store     - object   from [stores/uploads] assumes .model.items[]
@@ -18,7 +18,7 @@ import TrackList      from '../models/TrackList';
 class BoundTrackList extends ModelTracker.extender(React.Component)
 {
   render() {
-    <TrackList model={this.state.store.model} {...this.props} />;
+    <TrackList {...this.props} model={this.state.store.model} />;
   }
 }
 

@@ -12,12 +12,15 @@ class SharePopup extends Modal.Popup {
   }
 
   modelLink() {
-    if( this.props.modelLink ) {
-      return this.props.modelLink(this.props.model);
+    const { modelLink, model } = this.props;
+
+    if( modelLink ) {
+      return modelLink(model);
     }
-    return 'http://dig.ccmixter.org/files/' +
-          this.props.model.artist.id +
-          '/' + this.props.model.id;
+
+    const { id, artist:{id:artistId} } = model;
+    
+    return 'http://dig.ccmixter.org/files/' + artistId + '/' + id;
   }
   
   fbLink() {
@@ -26,9 +29,9 @@ class SharePopup extends Modal.Popup {
   }
   
   twitterLink() {
-    return 'http://twitter.com/home?status=' +
-           this.props.model.name + ' ' +
-           this.modelLink() + '&t=' + this.props.model.name;
+    const { model: {name} } = this.props;
+    return 'http://twitter.com/home?status=' + name  + ' ' +
+           this.modelLink() + '&t=' + name;
   }
   
   mailLink() {
@@ -69,7 +72,8 @@ class SharePopupLink extends React.Component {
 
   showSharePopup(e) {
     e.preventDefault();
-    SharePopup.show( SharePopup, { model: this.props.model } );
+    const { model, modelLink } = this.props;
+    SharePopup.show( SharePopup, { modelLink, model } );
   }
 
   render() {

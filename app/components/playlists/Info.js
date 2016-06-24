@@ -6,11 +6,13 @@ import Link               from '../services/LinkToRoute';
 import LinkToPeople       from '../services/LinkToPeopleRoute';
 
 import Toggle                  from '../bound/Toggle';
-import FormattedText           from '../bound/FormattedTextEditor';
 import { EditableTagsDiv }     from '../bound/Tags';
 
 import DeletePlaylist          from './DeletePlaylist';
-import { CurrentUserTracker }  from '../../mixins';
+import { CurrentUserTracker,
+         ModelTracker }        from '../../mixins';
+
+import BoundInlineFormattedTextEditor  from '../bound/FormattedTextEditor';
 
 class Feature extends CurrentUserTracker.cut(React.Component)
 {
@@ -77,12 +79,12 @@ class Tags extends React.Component
 }
 
 function ActionButtonBar(props) {
-  var store = props.store;
-  var model = props.store.model.head;
+
+  const { store, store:{model:{head}} } = props;
 
   return(
       <div className="action-btn-toolbar playlist-bg-color">
-        <SharePopup     model={model} modelLink={ShareURL} med />
+        <SharePopup     model={head} modelLink={ShareURL} med />
         <Feature        store={store} />
         <EditQueryLink  store={store} />
         <DeletePlaylist store={store} />
@@ -90,22 +92,54 @@ function ActionButtonBar(props) {
     );
 }
 
-function Description(props) {
-  return( <FormattedText store={props.store} propName="description" htmlName="descriptionRaw" />);
+class Description extends React.Component
+{
+  constructor() {
+    super(...arguments);
+  }
+
+  render() {
+    const { store } = this.props;
+    const { description } = store.getProperties(['description']);
+    const { permissions: {canEdit=false} = {} } = store;
+    return (description.length || canEdit ?
+            <div className="playlist-tags playlist-bg-color">
+              {!description.length && canEdit ? <span>{" add a description "}</span> : ''}
+              <BoundInlineFormattedTextEditor store={store} propName="description" htmlName="descriptionRaw" />
+            </div> : null);
+  }
 }
 
-function Info(props) {
 
-  var store = props.store;
+class _Info extends React.Component
+{
+  constructor() {
+    super(...arguments);
+  }
 
-  return (
-      <div className="playlist-info hidden-xs hidden-sm">
-        <Description store={store} />
-        <ActionButtonBar store={store} />
-        <Curator store={store} />
-        <Tags store={store} />
-      </div>
-    );
+  stateFromStore(store) {
+    return {store};
+  }
+
+  render() {
+    const { store } = this.state;
+
+    return (
+        <div className="playlist-info hidden-xs hidden-sm">
+          <Description store={store} />
+          <ActionButtonBar store={store} />
+          <Curator store={store} />
+          <Tags store={store} />
+        </div>
+      );
+
+  }
+}
+
+class Info extends ModelTracker.extender(_Info) {
+  constructor() {
+    super(...arguments);
+  }
 }
 
 module.exports = Info;

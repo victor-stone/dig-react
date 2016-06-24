@@ -33,21 +33,24 @@ class PlaylistTracker extends React.Component
     if( this._isOurPlaylistPlaying() ) {
       this.stop();
     } else {
-      this.play();
+      this.playAll();
     }
   }
 
   _isOurPlaylistPlaying() {
     var id = this.props.playlist.id;
+    // TODO: check this code 
     var nowPlaylingID = AudioService.nowPlaying && AudioService.nowPlaying.playlist;
     return( Number(nowPlaylingID) === Number(id) );
   }
 
-  play() {
+  playAll() {
+    var url = this._playlistURL();
+    // TODO: bug: this assuming this is cleared out somewhere
     var id = this.props.playlist.id;
     var playlists = new Playlists();
     playlists.tracksForPlaylist( id ).then( tracks => {
-      AudioService.playlistURL = this._playlistURL();
+      AudioService.playlistURL = url;
       AudioService.playlist = tracks;        
       AudioService.play( tracks[0] );
     });

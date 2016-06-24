@@ -60,31 +60,28 @@ class GroupBase extends React.Component
     bindAll(this, '_startEdit','_doneEdit', '_cancelEdit' );
   }
 
-  shouldComponentUpdate(nextProps) {
-    return this.props.editing !== nextProps.editing;
+  shouldComponentUpdate(nextProps,nextState) {
+    return this.props.editing !== nextProps.editing || this.state.editing !== nextState.editing;
   }
 
   _startEdit() {
-    this.setState( { editing: true }, () => {
-      this.startEdit && this.startEdit();
-      this.onEditState && this.onEditState(true);
-    });
+    this.setState( { editing: true }, () => this.__doNotify('onEdit',true) );
   }
 
   _doneEdit() {
-    this.setState( { editing: false }, () => {
-      this.doneEdit && this.doneEdit();
-      this.onEditState && this.onEditState(false);
-    });
+    this.setState( { editing: false }, () => this.__doNotify('onDone',false) );
   }
 
   _cancelEdit() {
-    this.setState( { editing: false }, () => {
-      this.cancelEdit && this.cancelEdit();
-      this.onEditState && this.onEditState(false);
-    });
+    this.setState( { editing: false }, () => this.__doNotify('onCancel',false) );
   }
 
+  __doNotify(meth,flag) {
+    this[meth] && this[meth]();
+    this.props[meth] && this.props[meth]();
+    this.onEditState && this.onEditState(flag);
+    this.props.onEditState && this.props.onEditState(flag);
+  }
 }
 
 // use to be 'bare'
@@ -103,11 +100,12 @@ class InputGroup extends React.Component
 class ButtonGroup extends GroupBase 
 {
   render() {
+    const { editing } = this.state;
     return(
       <div className="btn-group btn-group-sm edit-controls">
-        <button className="btn btn-default"  disabled={this.state.editing}  onEdit={this._startEdit} ><Glyph icon="edit"  /></button>
-        {this.state.editing &&  <Done onDone={this._doneEdit} />}
-        {this.state.editing && <Cancel onCancel={this._cancelEdit} />}
+        {!editing && <Edit onEdit={this._startEdit} />}
+        {editing  && <Done onDone={this._doneEdit} />}
+        {editing  && <Cancel onCancel={this._cancelEdit} />}
       </div>);
   }
 }

@@ -4,6 +4,7 @@ import EditableTrackList   from '../models/EditableTrackList';
 
 /*
   Present a tracklist that is optionally editable including sorting
+  Tracks model changes and updates appropriately.
 
   Props
     store   := object from [stores/uploads] assumes model.items[]
@@ -21,7 +22,7 @@ class BoundEditableTrackList extends ModelTracker.extender(React.Component)
   }
 
   render() {
-    return <EditableTrackList model={this.state.model} {...this.props} />;
+    return <EditableTrackList {...this.props} model={this.state.model} />;
   }
 }
 

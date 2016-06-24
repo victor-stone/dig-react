@@ -5,6 +5,8 @@ import StaticTrackList from './StaticTrackList';
 import EditControls    from '../vanilla/EditControls';
 import { bindAll }     from '../../unicorns';
 
+// TODO: All these lists that are model.items[] should just be model[]
+
 /*
   Present a tracklist that is optionally editable including sorting
 
@@ -36,14 +38,24 @@ class EditableTracks extends React.Component
   }
 
   render() {
-    const { model, canEdit } = this.props;
+    const { model, 
+            canEdit, 
+            onDelete,
+            onPlay,
+            model: {items:{length}} } = this.props;
+
+    // it doesn't make sense to sort a list of one object
+    // and we don't allow delete of the last item in 
+    // a playlist
+
+    var showControls = canEdit && length > 1;
 
     return (
       <div className="tracks-widget">
-        {canEdit && <EditControls.ButtonGroup onDone={this.onDone} onEditState={this.onEditState} />}
+        {showControls && <EditControls.ButtonGroup onDone={this.onDone} onEditState={this.onEditState} />}
         {this.state.editing 
           ? <StaticTrackList model={model} sortable id="tracks" />
-          : <Tracklist model={model} editing={canEdit} onDelete={this.props.onDelete} onPlay={this.props.onPlay}/>
+          : <Tracklist model={model} editing={showControls} onDelete={onDelete} onPlay={onPlay}/>
         }
       </div>
     );

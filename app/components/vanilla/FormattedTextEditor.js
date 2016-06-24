@@ -3,7 +3,7 @@ import EditControls from './EditControls';
 
 import { bindAll } from '../../unicorns';
 
-var nextID;
+var nextID = 0;
 
 class FormattedTextEditor extends React.Component
 {
@@ -25,7 +25,7 @@ class FormattedTextEditor extends React.Component
         <textarea
             id={this.focusId}
             className="form-control"
-            value={this.state.value} 
+            value={this.state.text} 
             placeholder="awesome!"
             rows="6" 
             {...this.props}
@@ -55,7 +55,7 @@ class InlineFormattedTextEditor extends FormattedTextEditor
   /*eslint "react/no-danger":0 */
   constructor() {
     super(...arguments);
-    bindAll(this, [ 'onCancel', 'onEdit', 'onDone' ]);
+    bindAll(this, 'onCancel', 'onEdit', 'onDone' );
     const { text } = this.props;
     this.state = { text, orgText: text };
 
@@ -75,7 +75,7 @@ class InlineFormattedTextEditor extends FormattedTextEditor
   }
 
  render() {
-    const { className, html, canEdit } = this.props;
+    const { className, html = this.state.text, canEdit } = this.props;
     const { editing } = this.state;
     return (
         <div cls={className}>           

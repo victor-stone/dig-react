@@ -12,16 +12,14 @@ const BoundInputControlMixin = target => class extends target {
   }
 
   stateFromStore(store) {
-    var props = {};
-    props[this.props.propName] = '';
-    props = store.getProperties(props);
+    var props = store.getProperties([this.props.propName]);
     return { text: props[this.props.propName] };
   }
 
   onDone(text) {
     var props = {};
-    props[this.props.name] = text;
-    this.state.store.applyProperties(props);
+    props[this.props.propName] = text;
+    this.props.store.applyProperties(props);
   }
 };
 
@@ -37,9 +35,9 @@ const BoundInputControlMixin = target => class extends target {
 class BoundInputFormField extends BoundInputControlMixin(ModelTracker.extender(React.Component))
 {
   render() {
-    const { title, staticOnly = false, store: { permissions: {canEdit = false} = {}  } } = this.props;
+    const { title, store: { permissions: {canEdit = false} = {}  } } = this.props;
     const { text } = this.state;
-    return <InputFormField text={text} title={title} canEdit={!staticOnly && canEdit} />;
+    return <InputFormField text={text} title={title} canEdit={canEdit} onDone={this.onDone} />;
   }
 }
 
@@ -52,9 +50,9 @@ class BoundInputFormField extends BoundInputControlMixin(ModelTracker.extender(R
 class BoundInputText extends BoundInputControlMixin(ModelTracker.extender(React.Component))
 {
   render() {
-    const { staticOnly = false, store: { permissions: {canEdit = false} = {}  } } = this.props;
+    const { store: { permissions: {canEdit = false} = {}  } } = this.props;
     const { text } = this.state;
-    return <InputText text={text} canEdit={!staticOnly && canEdit} />;
+    return <InputText text={text} canEdit={canEdit} onDone={this.onDone} />;
   }
 }
 

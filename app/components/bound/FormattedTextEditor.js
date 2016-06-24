@@ -14,16 +14,19 @@ import { ModelTracker }             from '../../mixins';
 class BoundInlineFormattedTextEditor extends BoundInputControlMixin(ModelTracker.extender(React.Component))
 {
   stateFromStore(store) {
-    var state = super.stateFromStore(store);
-    var props = {};
-    props[this.props.htmlProp] = '';
-    props = store.getProperties(props);
-    state.html = props[this.props.htmlProp];
+    const state = super.stateFromStore(store);
+    const props = store.getProperties([this.props.htmlName]);
+    state.html = props[this.props.htmlName];
     return state;
   }
 
   render() {
-    return <InlineFormattedTextEditor html={this.state.html} text={this.state.text} canEdit={this.props.store.permissions.canEdit} />;
+    return (<InlineFormattedTextEditor 
+              html={this.state.html} 
+              text={this.state.text} 
+              canEdit={this.props.store.permissions.canEdit} 
+              onDone={this.onDone}
+            />);
   }
 }
 

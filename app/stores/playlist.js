@@ -61,8 +61,9 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
       });
   }
 
-  getProperties(props) {
-    Object.keys(props).forEach( n => props[n] = this.model.head[n] );
+  getProperties(propNames) {
+    var props = {};
+    propNames.forEach( n => props[n] = this.model.head[n] );
     return props;
   }
 

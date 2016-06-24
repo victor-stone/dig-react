@@ -4,9 +4,9 @@ import qc                 from '../../models/query-configs';
 import PagingNavBar       from '../../components/bound/PagingNavBar';
 import pages              from '../../components/playlists/pages';
 
-var people = pages.People;
+var people = pages.PeopleFeaturedIn;
 
-people.path   = '/people/:userid/playlists/tracks';
+people.path   = '/people/:userid/playlists/featuredin';
 people.title  = 'People';
 people.subnav = PagingNavBar;
 

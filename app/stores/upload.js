@@ -28,19 +28,19 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
   }
 
   getPermissions(model) {
-    var success = function(user) {
+    const success = function(user) {
         return api.upload.permissions(model.upload.id,user).then( results => {
           return( Object.assign( {canEdit:user === model.upload.artist.id}, results ) );
         });
     };
 
-    var me = this;
+    const me = this;
 
-    var reject = function() {
+    const reject = function() {
       return me.nullPermissions;
     };
 
-    var pthen = function( perms ) {
+    const pthen = function( perms ) {
       me.permissions = perms;
       return model;
     };
@@ -67,14 +67,15 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
   }
 
   set tags(t) {
-    var tags = t.toString();
+    const tags = t.toString();
     this.applyProperties({tags}).then( () => {
       this.emit(events.TAGS_SELECTED);
     });
   }
 
-  getProperties(props) {
-    Object.keys(props).forEach( n => props[n] = this.model.upload[n] );
+  getProperties(propNames) {
+    let props = {};
+    propNames.forEach( n => props[n] = this.model.upload[n] );
     return props;
   }
 
@@ -99,11 +100,11 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
 
   find(id,userid,_flags) {
     
-    var flags = _flags === undefined ? Upload.ALL : _flags;
+    const flags = _flags === undefined ? Upload.ALL : _flags;
 
-    var model = null;
+    let model = null;
 
-    var queries = {
+    const queries = {
       upload:     this.info(id,'upload'),
       remixes:    flags & Upload.REMIXES    ? this.remixes(id,'remixes')    : [],
       trackbacks: flags & Upload.TRACKBACKS ? this.trackbacks(id,'trackbacks') : [],
@@ -113,7 +114,7 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
 
     this.error = null;
 
-    var _this = this;
+    const _this = this;
 
     return this.flushDefers(queries)
 
@@ -161,7 +162,7 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
   }
   
   trackbacks(forId,deferName) {
-    var trackbacksQ = {
+    const trackbacksQ = {
       trackbacksof: forId,
       dataview: 'trackbacks',
       sort: 'date',
@@ -172,7 +173,7 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
   }
   
   remixes(forId,deferName) {
-    var remixesQ = {
+    const remixesQ = {
       remixes: forId,
       dataview: 'links_u',
       sort: 'date',
@@ -182,7 +183,7 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
   }
   
   sources(forId,deferName) {
-    var sourcesQ = {
+    const sourcesQ = {
       sources: forId,
       dataview: 'links_u',
       datasource: 'uploads'
@@ -191,7 +192,7 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
   }
   
   info(id,deferName) {
-    var uploadQ = {
+    const uploadQ = {
       ids: id,
       dataview: 'default'
     };    
@@ -211,7 +212,7 @@ class Upload extends Permissions(TagsOwner(QueryBasic)) {
 Upload.MAX_TRACKBACK_FETCH = 25;
 
 Upload.storeFromQuery = function(id,user,flags) {
-  var uploadStore = new Upload();
+  const uploadStore = new Upload();
   return uploadStore.find(id,user,flags)
                         .then( model => {
                             uploadStore.model = model;

@@ -2,7 +2,8 @@ import React              from 'react';
 import TrackListItem      from './TrackListItem';
 
 /*
-  Display a list of Upload reacords
+  Display a list of Upload record, optionally with delete buttons
+  for playlist owner.
 
   props
     model     - object   from [stores/uploads].model (assumed to have item[])
@@ -18,7 +19,7 @@ function TrackList(props)
 {
   return (
     <ul className="track-list">
-     {props.model.items.map( t => <TrackListItem key={t.id} model={t} {...this.props} /> )}
+     {props.model.items.map( t => <TrackListItem key={t.id} {...props} model={t} /> )}
     </ul>
   );
 }
