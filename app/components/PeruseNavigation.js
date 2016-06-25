@@ -3,6 +3,8 @@ import Glyph       from './vanilla/Glyph';
 import Link        from './services/LinkToRoute';
 import lookup      from '../services';
 
+import LinkToUpload       from './services/LinkToUploadRoute';
+
 const NOT_FOUND = -1;
 
 var NextPeruse = React.createClass({
@@ -33,7 +35,7 @@ var NextPeruse = React.createClass({
     if( !m ) {
       return null;
     }
-    var url = '/files/' + m.artist.id + '/' + m.id;
+    var url = LinkToUpload.url(m);
     return (
       <div className="tree-perusal tree-next">
         <Link href={url}>
@@ -73,7 +75,7 @@ var PrevPeruse = React.createClass({
     if( !m ) {
       return null;
     }
-    var url = '/files/' + m.artist.id + '/' + m.id;
+    var url = LinkToUpload.url(m);
     return (
       <div className="tree-perusal tree-prev">
         <Link href={url}>

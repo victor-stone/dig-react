@@ -3,6 +3,7 @@ import Glyph               from '../vanilla/Glyph';
 import AudioService        from '../../services/audio-player';
 import Playlists           from '../../stores/playlists';
 import events              from '../../models/events';
+import LinkToPlaylist      from './LinkToPlaylistRoute';
 
 // TODO: generial - this is too Playlist aware
 
@@ -57,7 +58,7 @@ class PlaylistTracker extends React.Component
   }
 
   _playlistURL() {
-    return '/playlist/browse/' + this.props.playlist.id;
+    return LinkToPlaylist.url(this.props.playlist);
   }
 
   stop() {

@@ -6,20 +6,26 @@ import { sliceStr,
 function LinkToUploadRoute(props) {
 
   let { truncate = false, 
-        base = '/files/', 
-        model: { name, id, artist: {id: artistID },
+        base, 
+        model,
+        model: {name},
         className = ''
-      } } = props;
+      }  = props;
 
   name = truncate ? sliceStr({str:name}) : name;
   
-  const href = base + artistID + '/' + id;
+  const href = LinkToUploadRoute.url(model,base);
   const cls  = selectors('upload-link',className);
 
   return (
       <Link href={href} className={cls} {...props}>{name}{props.children}</Link>
     );
 }
+
+LinkToUploadRoute.url = function(model,altBase) {
+  const base = altBase === undefined ? '/files/' : altBase;
+  return base + model.artist.id + '/' + model.id;
+};
 
 module.exports = LinkToUploadRoute;
 

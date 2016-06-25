@@ -28,22 +28,6 @@ import { TagString,
     - upload                x      upload
     - admin                 x      tags
 
-  Complient stores:
-
-    Properties:
-      tags [TagString] - read/write
-      permissions.canEdit - read only
-
-    Methods:
-      toggleTag(tag,toggle)
-      clearTags()
-
-    Events source:
-      TAGS_SELECTED
-
-  See DelayedCommitTagStore for the minimum API
-  required for bound components.
-
 */
 
 /*
@@ -138,6 +122,20 @@ SelectableTag.css = `
 }
 `;
 
+function modelsToTagString(arr) {
+  if( arr instanceof TagString ) {
+    return new TagString(arr);
+  }
+  return new TagString(arr && arr.map(t => t.id));
+}
+
+function tagStringToModels(tagStr) {
+  if( !(tagStr instanceof TagString) ) {
+    return tagStr;
+  }
+  return (tagStr && tagStr.map( t => { return { id: t }; } )) || [];
+}
+
 /*
   Props: 
     - model array[model {
@@ -154,20 +152,6 @@ SelectableTag.css = `
         : checks
         : x
 */
-
-function modelsToTagString(arr) {
-  if( arr instanceof TagString ) {
-    return new TagString(arr);
-  }
-  return new TagString(arr && arr.map(t => t.id));
-}
-
-function tagStringToModels(tagStr) {
-  if( !(tagStr instanceof TagString) ) {
-    return tagStr;
-  }
-  return (tagStr && tagStr.map( t => { return { id: t }; } )) || [];
-}
 
 class SelectableTagList extends React.Component
 {
@@ -231,6 +215,26 @@ SelectableTagList.css = SelectableTag.css + `
   ul.tag-list-selectable.autoclear > li:last-child {
     float: none;
     clear: both;
+  }
+
+  /* Floating check boxes */
+  
+  ul.tag-list-selectable.floating li.tag-selectable.tag-selectable-checks {
+    cursor: pointer;
+    font-size: 12px;
+    display: inline-block;
+    border-radius: 5px;
+    background-color: #e8e8e8;
+    padding: 6px;
+    vertical-align: center;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    color: #555;
+    box-shadow: #777 2px 2px 3px;
+  }
+  
+  ul.tag-list-selectable.floating li.tag-selectable.tag-selectable-checks.tag-selected {
+    background-color: white;
   }
 `;
 
@@ -408,10 +412,15 @@ class SelectedTagList extends React.Component
   }
 }
 
+
+
 SelectedTagList.css = SelectableTagList.css + `
 .tag-list-selected-container {
   padding-bottom: 12px;
 }
+
+/* TODO: reconcile this with floating checks above */
+
 .tag-list-selected > li.tag-selectable-x {
   font-size: 12px;
   display: inline-block;

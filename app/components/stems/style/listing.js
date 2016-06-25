@@ -1,22 +1,47 @@
-/* stems-files css */
+const css = `
 
-/*
+.stems-listing > li {
+  clear: both;
+}
+
+.stems-detail {
+  clear: both;
+}
+
+/* DETAILS */
+
+.stems-detail {
+  margin:  7px;
+  padding: 4px;
+  border: 1px solid green;
+  border-radius: 5px;
+  min-height: 70px;
+}
+
+.stems-detail {
+  background-image: linear-gradient(to bottom, rgba(255,235,59,0.27) 0%, rgba(247,234,57,0.2) 100%);
+}
+
+
+/* FILES */
+
 .stems-browser .stems-files {
   margin-top: 8px;
   padding: 0px 12px 0px 13px;
 }
 
-.stems-browser .stems-files > li {
+.stems-browser .stems-files > li {  
   cursor: default;
   display: inline-block;
-  background-color: #eee;
+  background-color: #fcf8e3;
   border-radius: 4px;
-  min-width: 120px;
-  width: 40%;
+  /* min-width: 116px; */
+  width: 180px;
   overflow: hidden;
   white-space: nowrap;
   margin-right: 14px;
   margin-bottom: 8px;
+  float: left;
 }
 
 .stems-browser .stems-files > li .ext {
@@ -27,10 +52,11 @@
    font-size: 10px;
    color: black;
    box-shadow: 1px 1px #666;
-   margin-right: 6px;
+   margin-right: 4px;
    margin-left: 4px;
 }
 
+/* nic name */
 .stems-browsers .stems-files > li > span:nth-child(3) {
   min-width: 30px;
   display: inline-block;
@@ -47,7 +73,7 @@
 
 .stems-browser .stems-files > li > span.download-button-container {
   display: inline-block;
-  float: right;
+  /*float: right;*/
 }
 
 .stems-browser .stems-files > li > a.play-disabled,
@@ -77,5 +103,8 @@
 
 .stems-browser .stems-files > li.lo-hi {
 }
-*/
+
+`;
+
+module.exports = css;
 

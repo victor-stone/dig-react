@@ -2,8 +2,9 @@
 import React   from 'react';
 import Gallery from '../RemixTree/Gallery';
 import css     from './style/people';
-import { Followers,
-         FollowButton } from './Follow';
+
+import  Followers   from './Follow';
+import FollowButton from '../bound/FollowButton';
 
 import { TagString } from '../../unicorns';
 
@@ -52,18 +53,15 @@ const Header = React.createClass({
 const Overview = React.createClass({
   
   render() {
-    var a = this.props.store.model.artist;
-    var s = this.props.store;
+    const { store, store:{model:{artist}} } = this.props;
+    const { homepage, joined, name } = artist;
     return (
       <HorizontalForm>
-          <FormItem title="member since" wrap>{a.joined}</FormItem>
-          {a.homepage
-            ? <FormItem title="homepage" wrap><ExternalLink href={a.homepage} text={a.name} /></FormItem>
-            : null
-          }
-          <Followers store={s} followType="following" title="follows" />
-          <Followers store={s} followType="followers" title="followers" />
-          <FollowButton store={s} />
+          <FormItem title="member since" wrap>{joined}</FormItem>
+          {homepage && <FormItem title="homepage" wrap><ExternalLink href={homepage} text={name} /></FormItem>}
+          <Followers store={store} followType="following" title="follows" />
+          <Followers store={store} followType="followers" title="followers" />
+          <FollowButton store={store} />
       </HorizontalForm>
       );
   }

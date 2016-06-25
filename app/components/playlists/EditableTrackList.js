@@ -2,6 +2,7 @@ import React                  from 'react';
 import BoundEditableTrackList from '../bound/EditableTrackList';
 import { bindAll }            from '../../unicorns';
 import AudioService           from '../../services/audio-player';
+import LinkToPlaylist         from '../services/LinkToPlaylistRoute';
 
 /*
   An EditTrackList that is bound to a playlists 'model.tracks'
@@ -20,7 +21,7 @@ class EditableTrackList extends React.Component
   onPlay() {
     const { items,items:{queryParams:{playlist}} } = this.props.store.model;
 
-    AudioService.playlistURL = '/playlist/browse/' + playlist;
+    AudioService.playlistURL = LinkToPlaylist.url({id:playlist});
     AudioService.playlist = items;
   }
 

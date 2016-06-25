@@ -4,6 +4,7 @@ import Glyph      from '../vanilla/Glyph';
 
 import Link               from '../services/LinkToRoute';
 import LinkToPeople       from '../services/LinkToPeopleRoute';
+import LinkToPlaylist     from '../services/LinkToPlaylistRoute';
 
 import Toggle                  from '../bound/Toggle';
 import { EditableTagsDiv }     from '../bound/Tags';
@@ -35,12 +36,12 @@ class EditQueryLink extends React.Component
 
   render() {
     const { store } = this.props;
-    const { permissions:{canEdit=false}, model: {head:{isDynamic,id}} } = store;
+    const { permissions:{canEdit=false}, model:{head, head:{isDynamic}} } = store;
 
     if( !canEdit || !isDynamic ) {
       return null;
     }
-    var href = `/playlist/browse/${id}/edit`;
+    var href = LinkToPlaylist.url(head) + '/edit';
 
     return (<Link className="btn btn-success" href={href}><Glyph icon="edit" />{" edit query"}</Link>);
   }
@@ -50,7 +51,7 @@ function ShareURL(model) {
   if( global.IS_SERVER_REQUEST ) {
     return '#';
   }
-  return  `http://${document.location.href.replace(document.location.pathname,'')}/playlist/browse/${model.id}`;
+  return  LinkToPlaylist.url(model,true);
 }
 
 function Curator(props) {
@@ -84,7 +85,7 @@ function ActionButtonBar(props) {
 
   return(
       <div className="action-btn-toolbar playlist-bg-color">
-        <SharePopup     model={head} modelLink={ShareURL} med />
+        <SharePopup     model={head} modelLink={ShareURL} med nosubmit />
         <Feature        store={store} />
         <EditQueryLink  store={store} />
         <DeletePlaylist store={store} />

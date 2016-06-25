@@ -9,6 +9,7 @@ class CreateDynamicPopup extends Modal.Popup
   constructor() {
     super(...arguments);
     this.onSave = this.onSave.bind(this);
+    this.state = { error: null };
   }
 
   onSave() {
@@ -22,8 +23,7 @@ class CreateDynamicPopup extends Modal.Popup
   }
 
   render() {
-    return (  <Modal handleHideModal={this.handleHideModal} 
-                     title={"Save Dynamic Playlist"}
+    return (  <Modal title={"Save Dynamic Playlist"}
                      action={this.onSave}
                      error={this.state.error}
                      icon="cloud-upload"

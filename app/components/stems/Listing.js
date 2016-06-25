@@ -1,113 +1,98 @@
 import React            from 'react';
 import Files            from './Files';
-import Detail           from './Detail';
 import { NoTagHits }    from '../Tags';
-import { TagString,
-         browserScripts }       from '../../unicorns';
-import { ModelTracker,
-         SelectedTagsTracker  } from '../../mixins';
-import CloseButton        from '../vanilla/CloseButton';
-import LinkToPeople       from '../services/LinkToPeopleRoute';
+import { TagString }    from '../../unicorns';
+import { ModelTracker } from '../../mixins';
+import LinkToPeople     from '../services/LinkToPeopleRoute';
+import Collapse         from '../vanilla/CollapseGroup';
+import LinkToRemixTree  from '../services/LinkToRemixTree';
 
-const SCROLL_OFFSET = 100;
+import InlineCSS           from '../vanilla/InlineCSS';
+import {SelectableTagList} from '../models/tags';
 
-const Listing = React.createClass({
+/*
+  Display bound stems browser
 
-  mixins: [ ModelTracker, SelectedTagsTracker ],
+*/
 
-  getDefaultProps: function() {
-    return { skipUser: false,
-             noHitsComp: NoTagHits };
-  },
- 
+class StemsListing extends ModelTracker.extender(React.Component)
+{
+  constructor() {
+    super(...arguments);
+  }
+
   stateFromStore(store) {
-    var model       = store.model;
-    var queryParams = model.queryParams;
-    var expanded    = 0;
-    var searchTerms = null;
-    if( queryParams.searchp ) {
-      searchTerms = new TagString(queryParams.searchp.replace(/\s/g,','));
-    }
+    const { queryParams:{searchp} } = store.model;
+    return { model: store.model, searchTerms: searchp && new TagString(searchp.replace(/\s/g,','))  };
+  }
 
-    return { model, expanded, searchTerms };
-  },
-
-  /* globals $ */
-  onNameClick(id) {
-    var _this = this;
-
-    return function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if( _this.state.expanded ) {
-        var $e = $('#upload-detail-' + _this.state.expanded );
-        if( _this.state.expanded === id ) {
-          if ($e.is(':hidden')) {
-            $e.slideDown('slow', function() { 
-              browserScripts.scrollIntoView($e, SCROLL_OFFSET); 
-            } );
-          } else {
-            $e.slideUp('fast');
-          }
-          return;
-        } else {
-          $e.slideUp('fast', function() {
-            _this.setState( { expanded: id } );
-          });
-          return;
-        }
-      }
-      _this.setState( { expanded: id } );
-    };
-  },
-
-  onClose: function() {
-    var qp = this.state.model.queryParams;
-    delete qp['ids'];
-    this.props.store.refreshModel(qp);
-  },
-
-  render: function() {
-    var store = this.props.store;
-    var model = this.state.model;
+  render() {
+    const group = 'stems-list-parent';
+    const { store, selectedTags, noHitsComp } = this.props;
+    const { model, searchTerms } = this.state;
 
     if( !model || !model.total ) {
-      if( this.props.noHitsComp ) {
-        return (React.createElement(this.props.noHitsComp, { store }));
-      }
-      return (<h2>{"didn't catch that"}</h2>);
+      return noHitsComp ? <noHitsComp store={store} /> : <h2>{"didn't catch that"}</h2>;
     }
-    
-    var fo = this.props.filesOnly;
-    var nn = fo || this.props.namesOnly;
-    var fl = !!model.queryParams.ids;
-
-    var tags    = this.state.selectedTags;
-    var searchp = this.state.searchTerms;
 
     return (
-        <ul className="stems-listing">
-          {model.items.map( (u,i) => {
-            return (<li key={i}>
-                      {fl ? <CloseButton className="close" onClick={this.onClose} /> : null}
-                      {u.bpm ? <span className="bpm">{u.bpm}</span> : null}
-                      {fo ? null : <a href="#" className="stem-name" onClick={this.onNameClick(u.id)}>{u.name}</a>}
-                      {nn ? null : <LinkToPeople model={u.artist} className="stem-artist" />}
-                      <Files 
-                        model={u} 
-                        store={store} 
-                        tags={tags} 
-                        searchTerms={searchp} 
-                      />
-                      {fl || this.state.expanded === u.id
-                        ? <Detail model={u} store={store} />
-                        : null
-                      }
-                  </li>); })
-          }
+      <div className="stems-listing-widget">
+        <InlineCSS css={SelectableTagList.css} id="stem-listing-ex-css" />
+        <ul className="stems-listing" id={group}>
+          {model.items.map( (u,i) => <StemListingLine key={i} 
+                                        model={u}
+                                        selectedTags={selectedTags} 
+                                        store={store} 
+                                        group={group}
+                                        searchTerms={searchTerms} 
+                                     /> )}
         </ul>
+      </div>
       );
     }
-});
+}
 
-module.exports = Listing;
+StemsListing.defaultProps = { noHitsComp: NoTagHits };
+
+class StemsDetail extends React.Component
+{
+  render() {
+    const { model, selectedTags } = this.props;
+    const tags = new TagString(model.userTags);
+    return (
+      <div className="stems-detail">
+        <SelectableTagList glyphs="checks" floating model={tags} selected={selectedTags} />
+        <div className="clearfix"></div>
+        <LinkToRemixTree model={model} />
+      </div>
+    );
+  }
+}
+
+class StemListingLine extends React.Component
+{
+  render() {
+    const { model, group, store, selectedTags, searchTerms } = this.props;
+    const { bpm, artist, name, id } = model;
+    return(
+      <li className="panel">
+          {bpm && <span className="bpm">{bpm}</span>}
+          <Collapse.Toggle target={'stem-'+id} group={group} className="stem-name" text={name} />
+          <LinkToPeople model={artist} className="stem-artist" />
+          <Files 
+            model={model} 
+            store={store} 
+            tags={selectedTags} 
+            searchTerms={searchTerms} 
+          />
+          <div className="clearfix"></div>
+          <Collapse.Target target={'stem-'+id}>
+            <StemsDetail model={model} store={store} selectedTags={selectedTags} />
+          </Collapse.Target>
+      </li>
+    );
+  }
+}
+
+
+module.exports = StemsListing;

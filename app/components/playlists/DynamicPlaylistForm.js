@@ -14,24 +14,24 @@ import DisableScrollToTop from '../services/DisableScrollToTop';
 class DynamicForm extends DisableScrollToTop(React.Component)
 {
   render() {
-    var store = this.props.store;
-    var cls   = this.props.prefix + '-playlist-widget';
-    var id    = this.props.prefix = '-playlist-css';
+    const { prefix, title, store: {model:{tracks}} } = this.props;
+    var cls   = prefix + '-playlist-widget';
+    var id    = prefix + '-playlist-css';
     return (
         <div className={cls}>
           <InlineCSS css={css} id={id} />
-          <PageHeader icon="edit" title={this.props.title} />
+          <PageHeader icon="edit" title={title} />
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-8 col-md-offset-2">
                 <div className="row">
                   <div className="col-md-6">
-                    <QueryOptions store={store.model.tracks} />
+                    <QueryOptions store={tracks} />
                   </div>
                   <div className="col-md-6">
                     <h3>{"preview"}</h3>
-                    <StaticTrackList store={store.model.track} />
-                    <SaveButton onSave={this.onSave} />
+                    <StaticTrackList store={tracks} />
+                    <SaveButton onSave={this.props.onSave} />
                   </div>
                 </div>
               </div>

@@ -3,7 +3,8 @@ import { InlineCSS,
          Form,
          EditControls } from '../vanilla';
 import { TagString }    from '../../unicorns';
-import { bindAll }      from '../../unicorns';
+import { bindAll,
+         selectors }    from '../../unicorns';
 import TagStore         from '../../stores/tags';
 
 import { SelectedTagsTracker } from '../../mixins';
@@ -18,6 +19,23 @@ import {
 /* See app/models/Tags.js for explanations of concepts */
 
 /*
+
+  Complient stores:
+
+    Properties:
+      tags [TagString] - read/write
+      permissions.canEdit - read only
+
+    Methods: (these are supplied by tags-owner mixin)
+      toggleTag(tag,toggle)
+      clearTags()
+
+    Events source:
+      TAGS_SELECTED
+
+  See DelayedCommitTagStore for the minimum API
+  required for bound components.
+
   Props: 
     - category [CategoryTagBox.categories]
     - pairWith [string] (e.g. one of: remix, sample, acappella)
@@ -61,7 +79,8 @@ class CategoryTagBox extends React.Component
 
   render() {
     const { className = '' } = this.props;
-    var cls = 'tag-list-category ' + className;
+    var cls = selectors('tag-list-category',className);
+
     return (
         <div>
           <InlineCSS css={CategoryTagBox.css} id="category-tag-box-css" />
@@ -90,18 +109,16 @@ CategoryTagBox.css = CheckableTagsList.css + `
 
 */
 
-var BoundStaticTagList = React.createClass({
-
-  mixins: [ SelectedTagsTracker ],
-
+class BoundStaticTagList extends SelectedTagsTracker.stt(React.Component)
+{
   shouldComponentUpdate(nextProps) {
     return this.props.store.tags.hash !== nextProps.store.tags.hash;
-  },
+  }
 
   render() {
     return ( <StaticTagsList className="tag-list-bound" model={this.state.tags} />);
   }
-});
+}
 
 
 /*
@@ -112,18 +129,20 @@ var BoundStaticTagList = React.createClass({
     - category [BoundCategoryTagBox.categories]
 
 */
-var BoundCategoryTagBox = React.createClass({
-
-  // TODO: make SelectedTagsTracker a class mixin 
-  mixins: [ SelectedTagsTracker ],
+class BoundCategoryTagBox extends SelectedTagsTracker.stt(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    this.onSelected = this.onSelected.bind(this);
+  }
 
   onSelected(tag,toggle) {
     this.props.store.toggleTag(tag,toggle);
-  },
+  }
 
   render() {
     const { className = '' } = this.props;
-    var cls = 'tag-list-bound ' + className;
+    var cls = selectors('tag-list-bound', className);
 
     return (<CategoryTagBox                
                 category={this.props.category} 
@@ -133,7 +152,7 @@ var BoundCategoryTagBox = React.createClass({
                 className={cls}
             />);
   }
-});
+}
 
 BoundCategoryTagBox.categories = CategoryTagBox.categories;
 
@@ -146,21 +165,29 @@ BoundCategoryTagBox.categories = CategoryTagBox.categories;
     - category [BoundCategoryTagBox.categories]
 
 */
-var BoundSelectedTagList = React.createClass({
+class BoundSelectedTagList extends SelectedTagsTracker.stt(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    bindAll(this,'onRemove', 'onClear');
+  }
 
-  mixins: [ SelectedTagsTracker ],
+  componentWillMount() {
+    super.componentWillMount();
+  }
 
   onRemove(tag) {
     this.props.store.toggleTag(tag,false);
-  },
+  }
 
   onClear() {
     this.props.store.clearTags();
-  },
+  }
 
   render() {
     const { className = '' } = this.props;
-    var cls = 'tag-list-bound ' + className;
+    var cls = selectors('tag-list-bound', className);
+
     return (
         <SelectedTagList 
             model={this.state.tags} 
@@ -170,12 +197,16 @@ var BoundSelectedTagList = React.createClass({
         />
       );
   }
-});
+}
 
 const genreCat = BoundCategoryTagBox.categories.GENRE;
 
 class DualTagFieldWidget extends React.Component
 {
+  constructor() {
+    super(...arguments);
+  }
+
   componentDidMount() {
     /* globals $ */
     if( this.props.cancelCallback ) {
@@ -189,10 +220,11 @@ class DualTagFieldWidget extends React.Component
   }
   
   render() {
+    const { store, cancelCallback } = this.props;
     return(
-      <div id="blerg" style={this.props.cancelCallback && {display:'none'}}>
-        <BoundSelectedTagList store={this.props.store} />
-        <BoundCategoryTagBox category={genreCat} store={this.props.store} />
+      <div id="blerg" style={cancelCallback && {display:'none'}}>
+        <BoundSelectedTagList store={store} />
+        <BoundCategoryTagBox category={genreCat} store={store} />
       </div>
     );
   }

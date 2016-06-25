@@ -3,7 +3,6 @@ import React       from 'react';
 import { HorizontalForm, FormItem } from '../vanilla/Form';
 import { InputFormField }           from './InputField';
 import { EditableTagsField }        from './Tags';
-import { StaticTagsField }          from '../models/Tags';
 
 
 function EdPick(props) {

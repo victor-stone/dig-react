@@ -85,7 +85,7 @@ class GroupBase extends React.Component
 }
 
 // use to be 'bare'
-class InputGroup extends React.Component 
+class InputGroup extends GroupBase
 {
   render() {
     return this.state.editing
@@ -93,7 +93,7 @@ class InputGroup extends React.Component
                   <Done onDone={this._doneEdit} />
                   <Cancel onCancel={this._cancelEdit} />
                 </span>
-            : <span className="input-group-addon"><Edit onEdit={this.props.onEdit} /></span>;
+            : <span className="input-group-addon"><Edit onEdit={this._startEdit} /></span>;
     }
 }
 

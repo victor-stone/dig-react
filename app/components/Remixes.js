@@ -7,6 +7,7 @@ import AudioPlayerService from '../services/audio-player';
 import { ModelTracker }   from '../mixins';
 import { sliceStr }       from '../unicorns';
 import { ResetOptionsButton } from './QueryOptions';
+import LinkToUpload       from './services/LinkToUploadRoute';
 
 const MIN_LIMIT = 10;
 
@@ -14,7 +15,7 @@ var SongLink = React.createClass({
 
   render: function() {
     var u = this.props.model;
-    var href = '/files/' + u.artist.id + '/' + u.id;
+    var href = LinkToUpload.url(u);
     var name = this.props.truncate ? sliceStr({str:u.name}) : u.name;
 
     return (<span className="song-title"><Link id={'song-link-' + u.id} href={href}>{name}</Link></span> );

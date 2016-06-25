@@ -3,6 +3,7 @@ import QueryOptions       from './QueryOptions';
 import Glyph              from '../vanilla/Glyph';
 import DownloadPopup      from '../DownloadPopup';
 import Link               from '../services/LinkToRoute';
+import LinkToUpload       from '../services/LinkToUploadRoute';
 import { PlayButton }     from '../AudioPlayer';
 import { ModelTracker,
          NowPlayingTracker } from '../../mixins';
@@ -71,7 +72,7 @@ var PellDetail = React.createClass({
       return null;
     }
 
-    var treeURL = '/files/' + model.artist.id + '/' + model.id;
+    var treeURL = LinkToUpload.url(model);
 
     return (
         <div className="pell-detail">

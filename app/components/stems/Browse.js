@@ -1,9 +1,10 @@
 import React        from 'react';
 import Listing      from './Listing';
 import QueryOptions from './QueryOptions';
-import { TagsList } from './Tags';
+import Tags         from './Tags';
 import InlineCSS    from '../../components/vanilla/InlineCSS';
-import css          from '../../components/stems/style/browse';
+import css1         from '../../components/stems/style/browse';
+import css2         from '../../components/stems/style/listing';
 
 
 function Stems(props) {
@@ -11,10 +12,10 @@ function Stems(props) {
 
     return (
       <div className="stems-browser content-fluid">
-        <InlineCSS css={css} id="stems-css" />
+        <InlineCSS css={css1+css2} id="stems-css" />
         <div className="row stems-browser-widget">
           <div  className="col-md-3">
-            <TagsList store={store} />
+            <Tags store={store} />
           </div>
           <div className="col-md-6 stems-listing-widget">
             <Listing   store={store} />   
@@ -27,5 +28,15 @@ function Stems(props) {
     );
 }
 
+/*
+class Stems extends React.Component
+{
+  render() {
+    const model = this.props.store.model;
+    const sample= model.items[0];
+    return <h2>{sample.name}</h2>;
+  }
+}
+*/
 module.exports = Stems;
 

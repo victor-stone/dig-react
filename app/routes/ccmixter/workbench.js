@@ -1,10 +1,19 @@
 import React         from 'react';
 import T             from '../../components/bound/Tags';
 import InlineCSS     from '../../components/vanilla/InlineCSS';
+import qc               from '../../models/query-configs';
+import { mergeParams, TagString }  from '../../unicorns';
 
 import Upload from '../../stores/upload';
 import Remixes from '../../stores/remixes';
 import Playlist from '../../stores/playlist';
+import Samples from '../../stores/samples';
+
+import Stems  from '../../components/stems/Listing';
+import css1 from '../../components/stems/style/listing';
+import css2 from '../../components/stems/style/browse';
+
+const stemsCSS = css1 + css2;
 
 var wbCss = `
 
@@ -25,27 +34,70 @@ var upload = null;
 var remixes  = null;
 var playlist = null;
 var dynplaylist = null; // 36954
+var samples = null;
 
 /*
     QueryBasic
-      | -  Query
+      | -  Query (should be renamed 'CollectionQuery')
       |     |-- QueryWithTags
       |     |      | -- Acappella
       |     |      | -- Remixes
       |     |      |    |-- User
       |     |      | -- Samples
       |     |      |-- Playlists
-      |     | -- PlaylistTracks
+      |     |
+      |     |-- PlaylistTracks
       |     |-- Ratings
       |     |-- Tags
       |     |-- Topics
       |     |-- UserFeed
+      |
       | =  Playist
       | =  Upload
 
 */
 
 var workbench = React.createClass({
+
+  getInitialState() {
+    return { };
+  },
+
+  componentDidMount() {
+    var opts    = mergeParams( {type: 'any' }, qc.samples, qc.latest );
+    var qp = mergeParams( {tags:''}, opts);
+    Samples.storeFromQuery(qp,opts).then( store => {
+      samples = store;
+      this.fooler({loadedSamp: true});
+    });
+
+  },
+
+  fooler(obj) {
+    this.setState(obj);
+  },
+  
+
+  render() {
+    var ok = this.state.loadedSamp;
+
+    if( !ok ) {
+      return (<h1>{"waiting"}</h1>);
+    }
+    var tags = new TagString('drums,guitar');
+
+    return ( 
+      <div className="container-fluid workbench stems-browser">
+        <InlineCSS css={wbCss + stemsCSS} id="wbCss" />         
+        <Stems store={samples} selectedTags={tags} />
+      </div>
+      );
+  }
+});
+
+workbench.w1 = workbench1;
+
+var workbench1 = React.createClass({
 
   getInitialState() {
     return { };

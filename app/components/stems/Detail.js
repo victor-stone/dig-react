@@ -3,6 +3,7 @@ import React            from 'react';
 import Link             from '../services/LinkToRoute';
 import Glyph            from '../vanilla/Glyph';
 import { browserScripts } from '../../unicorns';
+import LinkToUpload       from '../services/LinkToUploadRoute';
 
 const SCROLL_OFFSET = 100;
 
@@ -46,7 +47,7 @@ const Detail = React.createClass({
   render: function() {
     var model   = this.state.model;
     var id      = 'upload-detail-' + model.id;
-    var url     = `/files/${model.artist.id}/${model.id}`;
+    var url     = LinkToUpload.url(model);
 
     return (
       <div className="stems-detail" id={id} >

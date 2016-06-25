@@ -25,28 +25,33 @@ var _methods = {
         this.props.store.removeListener( events.MODEL_UPDATED, this.onModelUpdate );
       }
       props.store.on( events.MODEL_UPDATED, this.onModelUpdate );
-      this.setState( this.stateFromStore(props.store) );
+      this.setState( this._stateFromStore(props.store) );
     }
   },
 
   onModelUpdate() {
     if( this._modelTrackMounted ) {
-      this.setState( this.stateFromStore(this.props.store) );
+      this.setState( this._stateFromStore(this.props.store) );
     }
   },
+
+  _stateFromStore(store) {
+    return this.stateFromStore ? this.stateFromStore(store) : {store};
+  }
 };
 
 var ModelTracker = Object.assign({
 
   getInitialState() {
-    return this.stateFromStore(this.props.store);
+    return this._stateFromStore(this.props.store);
   }
 }, _methods);
 
 const _classMixin = target => class extends target {
   constructor() {
     super(...arguments);
-    this.state = this.stateFromStore(this.props.store);
+    this._stateFromStore = _methods._stateFromStore.bind(this);
+    this.state = this._stateFromStore(this.props.store);
     this.onModelUpdate = this.onModelUpdate.bind(this);
   }
 

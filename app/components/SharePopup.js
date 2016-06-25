@@ -4,6 +4,8 @@ import Modal        from './services/Modal';
 import env          from '../services/env';
 import { bindAll }  from '../unicorns';
 
+import LinkToUpload from './services/LinkToUploadRoute';
+
 class SharePopup extends Modal.Popup {
 
   constructor() {
@@ -17,10 +19,8 @@ class SharePopup extends Modal.Popup {
     if( modelLink ) {
       return modelLink(model);
     }
-
-    const { id, artist:{id:artistId} } = model;
     
-    return 'http://dig.ccmixter.org/files/' + artistId + '/' + id;
+    return LinkToUpload.url(model,'http://dig.ccmixter.org/files/');
   }
   
   fbLink() {

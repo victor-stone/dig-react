@@ -48,13 +48,12 @@ const Modal = React.createClass({
   },
 
   render(){
-    var title    = this.props.title;
-    var subTitle = this.props.subTitle;
-    var action   = this.onSubmit;
-    var icon     = this.props.icon || 'share';
-    var text     = this._getButtonText();
-    var close    = ' ' + (this.props.closeText || 'Close');
-    var disabled = this.props.submitDisabler && this.props.submitDisabler() || false; 
+    const { title, subTitle, action, icon = 'share', 
+            error, closeText:close=' Close', submitDisabler } = this.props;
+    
+    const text     = this._getButtonText();
+    const disabled = submitDisabler && submitDisabler() || false; 
+    const cls      = 'modal-submit btn btn-primary btn-success';
 
     return (
       <div className="modal fade">
@@ -65,15 +64,12 @@ const Modal = React.createClass({
             <h4 className="modal-title"><span className="light-color">{subTitle}</span> {title}</h4>
           </div>
           <div className="modal-body">
-            {this.state.error && <Alert type="danger" noAutoFade onClose={this.onAlertClosed} text={this.props.error} />}
+            {error && <Alert type="danger" noAutoFade onClose={this.onAlertClosed} text={error} />}
             {this.props.children}
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-default" data-dismiss="modal">{close}</button>
-            {action 
-              ? <button disabled={disabled} className="modal-submit btn btn-primary btn-success" onClick={action}><Glyph icon={icon} /><span className="modal-submit-text">{text}</span></button>
-              : null
-            }
+            {action && <button disabled={disabled} className={cls} onClick={action}><Glyph icon={icon} />{text}</button>}
           </div>
           </div>
         </div>

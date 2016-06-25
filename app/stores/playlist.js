@@ -1,6 +1,6 @@
 import rsvp             from 'rsvp';
 import QueryBasic       from './query-basic';
-import Query            from './query';
+import QueryWithTags    from './query-with-tags';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import env              from '../services/env';
@@ -11,7 +11,7 @@ import events           from '../models/events';
 import TagsOwner        from '../mixins/tags-owner';
 import Permissions      from '../mixins/permissions';
 
-class PlaylistTracks extends Query {
+class PlaylistTracks extends QueryWithTags {
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName)
               .then( serialize(ccmixter.PlaylistTrack) );
@@ -131,18 +131,23 @@ class Playlist extends Permissions(TagsOwner(QueryBasic)) {
     actual query in the playlist head.
   */
   useUnderlyingQuery() {
-    var m = this.model;
+    const qp = this.underlyingQuery;
+    return this.model.tracks.refreshModel( qp ).then( () => this );
+  }
+  
+  get underlyingQuery() {
+    let m = this.model;
     delete m.tracks.model.queryParams['playlist'];
-    var qp = mergeParams( {}, m.tracks.model.queryParams, m.head.queryParams );
+    let qp = mergeParams( {}, m.tracks.model.queryParams, m.head.queryParams );
     // a hack to remove the .artist fetch in Uploads
     if( 'user' in qp ) {
       qp.u = qp.user;
       delete qp['user'];
     }
     delete qp['playlist'];
-    return this.model.tracks.refreshModel( qp ).then( () => this );
+    return qp;
   }
-  
+
   get uploads() {
     return this._tracksStore();
   }

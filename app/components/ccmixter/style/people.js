@@ -112,13 +112,16 @@ div.subnav-option-bar.people-subnav {
 } 
 
 .people-head button.follows:hover {
-    box-shadow: #DDD 1px 1px;
-    background-color: white;
+  box-shadow: #DDD 1px 1px;
+  background-color: white;
 }
 
-.people-head .followers .form-control {
-  max-height: 100px;
-  overflow: scroll;
+.people-head .followers .form-control li {
+  display: inline-block;
+}
+
+.people-head .followers .form-control li a {
+  font-weight: 300;
 }
 `;
 

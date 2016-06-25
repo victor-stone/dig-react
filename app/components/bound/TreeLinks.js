@@ -13,7 +13,7 @@ class TreeLinks extends ModelTracker.extender(React.Component)
   }
 
   render() {
-    return <_TreeLinks model={this.state.model} />;
+    return <_TreeLinks title={this.props.title} model={this.state.model} />;
   }
 }
 

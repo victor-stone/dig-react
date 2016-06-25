@@ -1,6 +1,6 @@
-import React         from 'react';
+import React                from 'react';
 import DynamicPlaylistForm  from '../DynamicPlaylistForm';
-import Link                 from '../../services/LinkToRoute';
+import LinkToPlaylist       from '../../services/LinkToPlaylistRoute';
 
 class EditDynamicPlaylist extends React.Component
 {
@@ -10,13 +10,16 @@ class EditDynamicPlaylist extends React.Component
   }
 
   onSave() {
-    this.props.store.applyQuery().then( () => Link.navigateTo( `/playlist/browse/${this.props.store.model.head.id}`));
+    const { store } = this.props;
+
+    store.applyQuery(store.underlyingQuery)
+      .then( () => LinkToPlaylist.navigateTo( store.model.head ));
   }
 
   render() {
-    var store = this.props.store;
-    var title = this.props.store.model.head.name;
-    return (<DynamicPlaylistForm store={store} onSave={this.onSave} title={title} prefix="edit" />);
+    const { store, store: {model:{head}} } = this.props;
+
+    return (<DynamicPlaylistForm store={store} onSave={this.onSave} title={head.name} prefix="edit" />);
   }
 }
 
