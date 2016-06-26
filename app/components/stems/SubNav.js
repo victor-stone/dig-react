@@ -4,7 +4,7 @@ import SubNavBar               from '../bound/SubNavBar';
 function StemsSubNav(props) {
   return (
       <SubNavBar paging store={props.store} >
-        <b>{"this is the tags page"}</b>
+        <b>{"Select tags to limit results"}</b>
       </SubNavBar>
   );
 }

@@ -3,25 +3,18 @@ import React from 'react';
 // http://stackoverflow.com/questions/19425165/bootstrap-3-accordion-button-toggle-data-parent-not-working
 
 /*
-  Target must be direct decendent of element with className="panel"
+    Because of a bug/feature in bootstrap the 'sometarget' has to be an immediate child of "panel"
+    and, in turn, "panel" has to be an immediate child of 'someparent'. 
+    
+    <ul id="someparent">
+      <li class="panel">
+          <a data-target="#sometarget" data-toggle="collapse" data-parent="#someparent">click me</a>
+          <div id="sometarget" class="collapse">
+          </div>
+      </li>
+    </ul>
 
-  <Outergroup-can-be-div-or-ul-or-any=container id="myGroup">
-    <Direct-descendent-of-Outergroup className="panel">
-      <C.Toggle group="mygroup" target="mypanel1">{"Show 1st panel"}</C.Toggle>
-      <SomeRandomContent />
-      <C.Target target="mypanel1">
-        <ThisIsHidden until="toggle" is="activated" />
-      </C.Target>
-    </Direct-descendent-of-Outergroup>
-    <Direct-descendent-of-Outergroup className="panel">
-      <C.Toggle group="mygroup" target="mypanel2">{"Show 2st panel"}</C.Toggle>
-      <SomeRandomContent />
-      <C.Target target="mypanel2">
-        <ThisIsHidden until="toggle" is="activated" />
-      </C.Target>
-    </Direct-descendent-of-Outergroup>
-  </Outergroup-can-be-div-or-ul-or-any=container>
-*/
+  */
 
 
 function CollapseToggle(props) {

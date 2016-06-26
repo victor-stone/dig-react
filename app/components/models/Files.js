@@ -1,12 +1,14 @@
 import React            from 'react';
 import DownloadPopup    from '../DownloadPopup';
-import ZIPContentPopup  from '../ZIPContentPopup';
 import AudioPlayer      from '../AudioPlayer';
 import Glyph            from '../vanilla/Glyph';
 import env              from '../../services/env';
 import DeadLink         from '../vanilla/DeadLink';
+import css              from './style/files';
+import ZIPContentPopup  from './ZIPContentPopup';
 
-const Files = React.createClass({
+class Files extends React.Component
+{
 
   highlights(tags) {
     if( !tags || tags.isEmpty() ) {
@@ -33,7 +35,7 @@ const Files = React.createClass({
     }
 
     return highlights;
-  },
+  }
 
   oneFile(f,cls,model) {
       cls = `stem-files-line ${cls}`;
@@ -42,39 +44,29 @@ const Files = React.createClass({
         <li key={f.id} className={cls} >
           <DownloadPopup fixed btnClass="sm-download" model={model} file={f} />
           {" "}
-          {f.isMP3
-            ? <AudioPlayer.PlayButton className="play-button" fixed model={f} />
-            : null
-          }
-          {f.isFLAC
-            ? (env.supportFLAC
-                ? <AudioPlayer.PlayButton className="play-button" fixed model={f} />
-                : <DeadLink className="btn btn-info btn-lg play-disabled"><Glyph icon="play" fixed /></DeadLink>
-              )
-            : null
-          }
-          {f.isZIP
-            ? <ZIPContentPopup model={f} store={this.props.store} />
-            : null
-          }
+          {f.isMP3 && <AudioPlayer.PlayButton className="play-button" fixed model={f} />}
+          {f.isFLAC && <DeadLink className="btn btn-info btn-lg play-disabled"><Glyph icon="play" fixed /></DeadLink>}
+          {f.isZIP && <ZIPContentPopup model={f} store={this.props.store} />}
           {" "}
           <span className="ext">{f.extension}</span>
           {" "}
           <span className="nic">{f.nicName}</span>
         </li>);
-  },
+  }
 
-  render: function() {
-    var files = this.props.model.files;
-    var highs = this.highlights(this.props.searchTerms || this.props.tags);
+  render() {
+    const { model, tags, model:{files} } = this.props;
+    
+    var highs = this.highlights(tags);
 
     return(
         <ul className="stems-files">
-          {files.map( f => this.oneFile(f,highs[f.id]||'',this.props.model) )}
+          {files.map( f => this.oneFile(f,highs[f.id]||'',model) )}
         </ul>
       );
   }
-});
+}
 
+Files.css = css;
 
 module.exports = Files;
