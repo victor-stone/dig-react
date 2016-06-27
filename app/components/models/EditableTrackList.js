@@ -1,6 +1,6 @@
   /* globals $ */
 import React           from 'react';
-import Tracklist       from './Tracklist';
+import Tracklist       from './TrackList';
 import StaticTrackList from './StaticTrackList';
 import EditControls    from '../vanilla/EditControls';
 import { bindAll }     from '../../unicorns';
