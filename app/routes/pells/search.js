@@ -3,8 +3,7 @@ import qc                 from '../../models/query-configs';
 import Acappellas         from '../../stores/acappellas';
 import { mergeParams }    from '../../unicorns';
 import { Browse }         from '../../components/pells';
-import { Paging,
-         SearchHeader,
+import { SearchHeader,
          DidYouMean }     from '../../components';
 
 function NoHits() {
@@ -18,9 +17,6 @@ function search(props) {
             <DidYouMean store={store} artists><NoHits /></DidYouMean>
             <div className="container pells-page">
               <div className="row">
-                <div className="col-md-2 pell-paging">
-                  <Paging store={store} disableBumping />
-                </div>
                 <div className="col-md-7 pell-browser">
                   <div className="tab-content">
                     <Browse.PellsListing store={store} />

@@ -1,7 +1,9 @@
-import pagingStats    from './paging-stats';
 import TagString      from './tag-string';
 import selectors      from './selectors';
 import browserScripts from './browser-scripts';
+
+// TODO: break TagString into separate npm module
+// TODO: move browser scripts somewhere else
 
 const NOT_FOUND = -1;
 
@@ -387,7 +389,6 @@ module.exports = {
   mergeParams,
   hashParams,
   oassign,
-  pagingStats,
   selectors,
   sliceStr,
   trim,

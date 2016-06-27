@@ -17,6 +17,8 @@ var edpicks = React.createClass({
 
 edpicks.title = 'Editors Picks';
 
+edpicks.subnav = FeaturedPage.subnav;
+
 edpicks.store = function(params,queryParams) {
   var opts    = mergeParams( { reqtags: 'editorial_pick' }, qc.remixes );
   var qparams = mergeParams( {}, opts, qc.recent, queryParams );

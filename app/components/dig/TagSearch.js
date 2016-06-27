@@ -1,6 +1,5 @@
 import React         from 'react';
 import Glyph         from '../vanilla/Glyph'; 
-import Paging        from '../bound/Paging'; 
 import Tags          from '../Tags';
 import Remixes       from '../Remixes';
 import QueryOptions  from './QueryOptions';
@@ -106,7 +105,6 @@ var TagSearch = React.createClass({
     return (
       <div>
         <RemixTagSelectionSection store={store}  />
-        <Paging store={store} ref="paging"/>
         <Remixes store={store}>   
           <QueryOptions store={store} />
         </Remixes>

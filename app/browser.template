@@ -10,6 +10,8 @@ var env = require('./services/env');
 
 require('./services/analytics')();
 
+var satHost = 'http://<%= satellite_host %>/';
+
 env.set( { 
   debugMode: <%= debug %>,
   browser: true,
@@ -18,7 +20,7 @@ env.set( {
   rpcHost: 'http://<%= apihost %>/api/',
   queryHost: 'http://<%= apihost %>/api/query?',
   queriesHost: 'http://<%= apihost %>/api/queries?',
-  selfHost: '<%= satellite_host %>' ? 'http://<%= satellite_host %>/' : '/'
+  selfHost: satHost && '/'
 });
 
 var app = require('./<%= app%>');

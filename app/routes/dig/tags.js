@@ -20,6 +20,8 @@ tags.title = 'Tags';
 
 tags.path = '/tags/:tags';
 
+tags.subnav = FeaturedPage.subnav;
+
 tags.store = function(params,queryParams) {
   var opts    = mergeParams( {}, qc.remixes );
   var qparams = mergeParams( {}, opts, { tags: params.tags }, queryParams );

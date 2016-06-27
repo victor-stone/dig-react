@@ -1,6 +1,6 @@
+// deprecated
 import React            from 'react';
 import Listing          from './Listing';
-import Paging           from '../Paging';
 import PeopleHeader     from '../models/PeopleHeader';
 
 function NoPeopleSamples() {
@@ -19,9 +19,6 @@ var StemsPeople = React.createClass({
           <div className="row">
             <div className="col-md-6 col-md-offset-3 stems-listing-widget">
               <Listing store={store} namesOnly noHitsComp={NoPeopleSamples} />
-            </div>
-            <div className="col-md-2">
-              <Paging store={store} ref="paging" disableBumping />
             </div>
           </div>
         </div>

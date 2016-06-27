@@ -16,6 +16,8 @@ var games = React.createClass({
 
 games.title = 'Music for Video Games';
 
+games.subnav = FeaturedPage.subnav;
+
 games.store = function(params,queryParams) {
   var opts    = mergeParams( {}, qc.remixes, qc.instrumental );
   var qparams = mergeParams( {}, opts, qc.recent, qc.games, queryParams );

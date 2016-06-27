@@ -1,4 +1,4 @@
-.paging {
+.outlet-wrap .paging {
   position: fixed;
   top: 300px;
   border-radius: 4px;
@@ -12,23 +12,23 @@
   text-align: center;
 }
 
-.pagination a {
+.outlet-wrap .pagination a {
   font-size: 70%
 }
 
-.paging > label.limit-label {
+.outlet-wrap .paging > label.limit-label {
   background-color: transparent;
   color: white;
   border: 0px;
   margin-top: 9px;
 }
 
-.paging > label.limit-label > span {
+.outlet-wrap .paging > label.limit-label > span {
   width: 50%;
   margin-right: 9px;
 }
 
-.paging > label.limit-label > select {
+.outlet-wrap .paging > label.limit-label > select {
   display: inline-block;
   font-size: 12px;
   height: initial;
@@ -37,7 +37,7 @@
 
 @media screen and (max-width: 770px) {
 
-  .paging {
+  .outlet-wrap .paging {
     position: initial;
     width: 100%;
     padding: 0px;
@@ -46,12 +46,12 @@
     border: 0px;
   }
 
-  .paging ul {
+  .outlet-wrap .paging ul {
     margin: 0px;
   }
 
-  .paging > label.limit-label,
-  .paging > div.paging-caption {
+  .outlet-wrap .paging > label.limit-label,
+  .outlet-wrap .paging > div.paging-caption {
     display: none;
   }
 

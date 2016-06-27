@@ -6,8 +6,7 @@ import Rmx              from '../../stores/remixes';
 import {  QueryOptions }     from '../../components/dig'; 
 import PeopleHeader      from '../../components/models';
 import Remixes          from '../../components/Remixes';
-import Paging           from '../../components/bound/Paging';
-
+import SubNav           from '../../components/dig/SubNav';
 
 var people = React.createClass({
 
@@ -21,7 +20,6 @@ var people = React.createClass({
     return  (
       <div>
         <PeopleHeader model={store.model.artist} />
-        <Paging store={store} />
         <Remixes store={store} skipUser>
           <QueryOptions store={store} />
         </Remixes>
@@ -35,6 +33,8 @@ var people = React.createClass({
 people.path = '/people/:userid';
 
 people.title = 'People';
+
+people.subnav = SubNav;
 
 people.store = function(params,queryParams) {
   var opts    = mergeParams( {}, qc.remixes );

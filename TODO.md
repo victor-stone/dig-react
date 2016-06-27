@@ -8,6 +8,8 @@
 | app/stores/playlist.js | 80 | make this a property
 | app/stores/totals.js | 12 | investigate if this should include 't' and 'template'
 | app/stores/upload.js | 128 | check if artist is really needed!
+| app/unicorns/index.js | 5 | break TagString into separate npm module
+| app/unicorns/index.js | 6 | move browser scripts somewhere else
 | app/components/AudioPlayer/WavImage.js | 35 | export full xml+svg and put in <img> tag
 | app/components/bound/PagingLimit.js | 7 | make QueryParamTracker a mixin class
 | app/components/bound/ReqTagsNavTabs.js | 30 | replace all oassign with Object.assign

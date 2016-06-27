@@ -1,22 +1,18 @@
 import React        from 'react';
 import Remixes      from '../Remixes';
 import PageHeader   from '../vanilla/PageHeader';
-import Paging       from '../bound/Paging';
 import QueryOptions from './QueryOptions';
+import SubNav       from './SubNav';
 
 const FeaturedPage = React.createClass({
 
   render: function() {
 
-    var store    = this.props.store;
-    var icon     = this.props.icon;
-    var title    = this.props.title;
-    var subTitle = this.props.subTitle || null;
+    const { store, icon, title, subTitle = null } = this.props;
 
     return (
       <div className="playlist">
         <PageHeader icon={icon} title={title} subTitle={subTitle} />
-        <Paging store={store} />
         <Remixes store={store}>
           <QueryOptions store={store} />
         </Remixes>
@@ -27,6 +23,8 @@ const FeaturedPage = React.createClass({
   },
 
 });
+
+FeaturedPage.subnav = SubNav;
 
 module.exports = FeaturedPage;
 

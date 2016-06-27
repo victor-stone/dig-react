@@ -91,7 +91,7 @@ var PrevPeruse = React.createClass({
 module.exports = {
   PrevPeruse,
   NextPeruse
-}
+};
 
 
 //

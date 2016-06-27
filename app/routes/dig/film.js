@@ -16,6 +16,8 @@ var film = React.createClass({
 
 film.title = 'Instrumental Music for Film and Video';
 
+film.subnav = FeaturedPage.subnav;
+
 film.store = function(params,queryParams) {
   var opts    = mergeParams( {}, qc.remixes, qc.film, qc.instrumental, qc.recent );
   var qparams = mergeParams( {}, opts, queryParams );

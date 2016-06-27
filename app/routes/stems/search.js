@@ -4,8 +4,7 @@ import Samples          from '../../stores/samples';
 
 import { mergeParams }    from '../../unicorns';
 
-import {  Paging,
-          PageHeader }       from '../../components';
+import {  PageHeader }       from '../../components/vanilla';
 
 import Listing               from '../../components/stems/Listing';
 import { QueryParamTracker } from '../../mixins';
@@ -39,9 +38,6 @@ function stemsSearch(props) {
           <div className="row">
             <div className="col-md-6 stems-listing-widget col-md-offset-3">
               <Listing store={store} noHitsComp={NoSearchHits} />   
-            </div>
-            <div className="col-md-2">
-              <Paging store={store} disableBumping />
             </div>
           </div>
         </div>

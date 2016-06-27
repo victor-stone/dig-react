@@ -10,7 +10,8 @@ import { DidYouMean,
           }          from '../../components';
 import Glyph         from '../../components/vanilla/Glyph';
 import Link          from '../../components/services/LinkToRoute';
-import Paging        from '../../components/bound/Paging';
+import SubNav           from '../../components/dig/SubNav';
+
 import { mergeParams }  from '../../unicorns';
 
 
@@ -30,7 +31,6 @@ function search(props) {
     <div>
       <SearchHeader store={store} />
       <DidYouMean store={store} artists genres ><NoHits /></DidYouMean>
-      <Paging store={store} />
       <Remixes store={store}>
         <QueryOptions store={store} />
       </Remixes>
@@ -40,6 +40,8 @@ function search(props) {
 }
 
 search.title = 'Search';
+
+search.subnav = SubNav;
 
 search.store = function( params, queryParams ) {
 

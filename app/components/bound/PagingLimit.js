@@ -19,7 +19,7 @@ const PaginLimit = React.createClass({
 
   render() {
     var cls = this.props.store.model.total > MIN_LIMIT ? '' : 'hidden';
-    return <_PagingLimit cls={cls} limit={this.state.limit} />;
+    return <_PagingLimit cls={cls} limit={this.state.limit} onLimitChange={this.onLimitChange} />;
   }
 
 });

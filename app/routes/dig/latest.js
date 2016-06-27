@@ -1,3 +1,4 @@
+// depreciated
 import React            from 'react';
 import { FeaturedPage } from '../../components/dig';
 import { mergeParams }  from '../../unicorns';

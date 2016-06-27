@@ -16,6 +16,8 @@ var free = React.createClass({
 
 free.title = 'Free for Commercial Use';
 
+free.subnav = FeaturedPage.subnav;
+
 free.store = function(params,queryParams) {
   var opts    = mergeParams( {}, qc.remixes, { lic: 'open', reqtags: '-autoplay' }, qc.magicSort );
   var qparams = mergeParams( {}, opts, queryParams );    
