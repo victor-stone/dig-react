@@ -4,9 +4,9 @@ import qc               from '../../models/query-configs';
 import Rmx              from '../../stores/remixes';
 
 import {  QueryOptions }     from '../../components/dig'; 
-import {  People,
-          Remixes,
-          Paging   }    from '../../components';
+import PeopleHeader      from '../../components/models';
+import Remixes          from '../../components/Remixes';
+import Paging           from '../../components/bound/Paging';
 
 
 var people = React.createClass({
@@ -20,7 +20,7 @@ var people = React.createClass({
     
     return  (
       <div>
-        <People.Header model={store.model.artist} />
+        <PeopleHeader model={store.model.artist} />
         <Paging store={store} />
         <Remixes store={store} skipUser>
           <QueryOptions store={store} />

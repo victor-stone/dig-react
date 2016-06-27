@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link, Glyph } from '../../components';
+import { Glyph } from '../../components/vanilla';
+import Link from '../../components/services/LinkToRoute';
 
 
 const homePage = (

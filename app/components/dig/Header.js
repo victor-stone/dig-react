@@ -6,7 +6,6 @@ import Glyph        from '../vanilla/Glyph';
 import LoadingGlyph from '../services/LoadingGlyph';
 import DeadLink     from '../vanilla/DeadLink';
 import NavbarHeader from '../vanilla/NavbarHeader';
-import serviceLookup from '../../services';
 
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">
@@ -42,8 +41,7 @@ function homeLink() {
 const Header = React.createClass({
 
   submitSearch(text) {
-    var router = serviceLookup('router');
-    router.navigateTo( '/search?searchp=' + text );
+    Link.navigateTo( '/search?searchp=' + text );
   },
 
   render: function() {

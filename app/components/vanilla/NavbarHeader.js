@@ -11,7 +11,7 @@ var NavbarHeader = React.createClass({
           <span className="icon-bar"></span>
           <span className="icon-bar"></span>
           </button>
-          <HomeLink />
+          {HomeLink}
         </div>
       );
   }

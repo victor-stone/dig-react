@@ -1,6 +1,6 @@
 import React         from 'react';
 import Glyph         from '../vanilla/Glyph'; 
-import Paging        from '../Paging'; 
+import Paging        from '../bound/Paging'; 
 import Tags          from '../Tags';
 import Remixes       from '../Remixes';
 import QueryOptions  from './QueryOptions';
@@ -58,7 +58,7 @@ const RemixTagSelectionSection = React.createClass({
 
   componentWillMount: function() {
     if( !global.IS_SERVER_REQUEST ) {
-      this.props.store.tags.remixCategories().then( cats => {
+      this.props.store.tagStore.remixCategories().then( cats => {
         this.setState( {
           model: cats,
           loading: false });

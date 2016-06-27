@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Link            from '../services/LinkToRoute';
-import TrackbackList   from '../Trackbacks';
-import People          from '../People';
+import LinkToPeople    from '../services/LinkToPeopleRoute';
+import TrackbackList   from '../models/TrackbackList';
 import SharePopup      from '../SharePopup';
 import LicenseInfo     from '../LicenseInfo'; 
 import DownloadPopup   from '../DownloadPopup';
@@ -61,7 +61,7 @@ var UploadHeader = React.createClass({
     var model = this.props.model;
     return (
       <div>
-        <People.Link model={model.artist} avatar />
+        <LinkToPeople model={model.artist} avatar />
         <Featuring featuring={model.featuring} />
       </div>
       );

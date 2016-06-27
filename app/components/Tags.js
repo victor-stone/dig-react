@@ -65,7 +65,7 @@ const SelectableTagList = React.createClass({
   render: function() {
     var tags    = this.props.model;
     var store   = this.props.store;
-    var selTags = this.state.selectedTags;
+    var selTags = this.state.tags;
     var catID   = this.props.catID;
 
     return (
@@ -148,7 +148,7 @@ const SelectedTags = React.createClass({
   },
 
   render: function() {
-    var tags       = this.state.selectedTags;
+    var tags       = this.state.tags;
     var store      = this.props.store;
     var matchAnyOK = tags.getLength() > 1;
 

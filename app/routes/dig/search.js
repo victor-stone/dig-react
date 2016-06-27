@@ -5,11 +5,12 @@ import Rmx       from '../../stores/remixes';
 import { QueryOptions } from '../../components/dig';
 
 import { DidYouMean,
-         Link,
-         Glyph,
          Remixes,
-         SearchHeader,
-         Paging }       from '../../components';
+         SearchHeader
+          }          from '../../components';
+import Glyph         from '../../components/vanilla/Glyph';
+import Link          from '../../components/services/LinkToRoute';
+import Paging        from '../../components/bound/Paging';
 import { mergeParams }  from '../../unicorns';
 
 

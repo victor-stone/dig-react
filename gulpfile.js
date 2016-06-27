@@ -80,7 +80,7 @@ config.apps.forEach( a => {
 
 config.isSatellite = config.satellites.indexOf( config.app ) !== -1;
 
-gutil.log( gutil.colors.blue.bgWhite('config:'), '\n', config );
+gutil.log( gutil.colors.white.bgBlack('config:'), '\n', config );
 
 /*************** 
       TOOLS 
@@ -332,7 +332,7 @@ gulp.task('todo', function() {
 
 gulp.task('lint', task_lint );
 
-gulp.task('make-indecies',  task_make_indecies );
+gulp.task('make-indecies',  ['todo'], task_make_indecies );
 
 gulp.task('vendor-css',    task_vendor_css );
 gulp.task('vendor-js',     task_vendor_js );

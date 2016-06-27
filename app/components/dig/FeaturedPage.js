@@ -1,7 +1,7 @@
 import React        from 'react';
 import Remixes      from '../Remixes';
-import PageHeader   from '../PageHeader';
-import Paging       from '../Paging';
+import PageHeader   from '../vanilla/PageHeader';
+import Paging       from '../bound/Paging';
 import QueryOptions from './QueryOptions';
 
 const FeaturedPage = React.createClass({
