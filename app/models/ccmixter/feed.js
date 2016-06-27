@@ -1,4 +1,4 @@
-import Model from '../Model';
+import Model from '../model';
 import {UserFeedObjTypes} from '../user-feed-types';
 
 /*
