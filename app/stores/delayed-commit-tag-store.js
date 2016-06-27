@@ -1,6 +1,6 @@
 import {TagsOwner}  from '../mixins';
 import {TagString} from '../unicorns';
-import Eventer from '../services/Eventer';
+import Eventer from '../services/eventer';
 import events from '../models/events';
 
 /*
