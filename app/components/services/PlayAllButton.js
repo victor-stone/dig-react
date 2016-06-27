@@ -48,7 +48,7 @@ class PlaylistTracker extends React.Component
 
   playAll() {
     var url = this._playlistURL();
-    // TODO: bug: this assuming this is cleared out somewhere
+    // FIXME: this assuming this is cleared out somewhere
     var id = this.props.playlist.id;
     var playlists = new Playlists();
     playlists.tracksForPlaylist( id ).then( tracks => {

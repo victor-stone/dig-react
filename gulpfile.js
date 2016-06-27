@@ -27,9 +27,11 @@ var chmod      = require('gulp-chmod');
 var uglify     = require('gulp-uglify');
 var cssmin     = require('gulp-clean-css');
 var gutil      = require('gulp-util');
+var todo       = require('gulp-todo');
 var log        = gutil.log;
 var argv       = require('minimist')(process.argv.slice(2));
 
+ 
 const DEFAULT_WEB_SHARE = 755;
 
 /************************* 
@@ -320,6 +322,13 @@ function task_vendor_js() {
 /********************** 
     DEPENDENCIES
 ***********************/
+
+// generate a todo.md from your javascript files 
+gulp.task('todo', function() {
+    gulp.src('app/**/*.js', { base: './' })
+        .pipe(todo())
+        .pipe(gulp.dest('./'));
+});
 
 gulp.task('lint', task_lint );
 

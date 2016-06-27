@@ -45,5 +45,5 @@ const PlaylistButton = React.createClass({
   }
 });
 
-module.exports = PlaylistButton;
+module.exports = global.IS_SERVER_REQUEST ? <span></span> : PlaylistButton;
 
