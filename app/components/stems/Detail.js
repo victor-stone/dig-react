@@ -3,8 +3,8 @@ import LinkToRemixTree     from '../services/LinkToRemixTree';
 import { TagString }       from '../../unicorns';
 import css                 from './style/detail';
 
-import { BoundSelectableTagList } from '../bound/tags';
-import { StaticTagsList }         from '../models/tags';
+import { BoundSelectableTagList } from '../bound/Tags';
+import { StaticTagsList }         from '../models/Tags';
 
 /*
   So this is a little weird because of how it is 
