@@ -1,6 +1,7 @@
-import React  from 'react';
-import Glyph  from '../vanilla/Glyph';
-import events from '../../models/events';
+import React    from 'react';
+import Glyph    from '../vanilla/Glyph';
+import DeadLink from '../vanilla/DeadLink';
+import events   from '../../models/events';
 
 import AudioService from '../../services/audio-player';
 
@@ -32,10 +33,8 @@ var PlayButton = React.createClass({
   },
 
   bindToModel(model) {
-    if( !global.IS_SERVER_REQUEST ) {
-      if( !AudioService.bindToNowPlaying(model) ) {
-        AudioService.attachMedia(model);
-      }
+    if( !AudioService.bindToNowPlaying(model) ) {
+      AudioService.attachMedia(model);
     }
     return model.media;
   },
@@ -57,9 +56,7 @@ var PlayButton = React.createClass({
     }
   },
 
-  togglePlay(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  togglePlay() {
     AudioService.togglePlay(this.props.model);
     this.props.onPlay && this.props.onPlay(this.props.model);
   },
@@ -74,7 +71,7 @@ var PlayButton = React.createClass({
     var cls      = 'btn ' + btnType + ' btn-lg ' + (this.props.className || '');
     var sz       = this.props.big ? 'x4' : '';
     var fixed    = this.props.fixed || false;
-    return (<a className={cls} href="#" onClick={this.togglePlay}><Glyph fixed={fixed} sz={sz} icon={playStop} /></a>);
+    return (<DeadLink className={cls} onClick={this.togglePlay}><Glyph fixed={fixed} sz={sz} icon={playStop} /></DeadLink>);
   },
 
 });

@@ -1,6 +1,11 @@
 
 import PageAdapter from '../services/page-adapter';
 
+/*
+  Wraps the PageAdapter service to look like
+  a store. (Supposedly fetches raw html from
+  the host )
+*/
 class Page  {
 
   constructor() {

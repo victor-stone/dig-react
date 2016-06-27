@@ -1,8 +1,8 @@
-import Query         from './Query';
+import Collection    from './collection';
 import TagsOwner     from '../mixins/tags-owner';
 import { TagString } from '../unicorns';
 
-class QueryWithTags extends TagsOwner(Query) {
+class TaggedCollection extends TagsOwner(Collection) {
 
   get tags() {
     return new TagString(this.model.queryParams.tags);
@@ -15,4 +15,4 @@ class QueryWithTags extends TagsOwner(Query) {
 
 }
 
-module.exports = QueryWithTags;
+module.exports = TaggedCollection;

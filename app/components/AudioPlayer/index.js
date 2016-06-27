@@ -43,10 +43,8 @@ const AudioPlayer = React.createClass({
   },
 
   componentWillUnmount() {
-    if( !global.IS_SERVER_REQUEST ) {
-      AudioService.removeListener( events.NOW_PLAYING ,this.onNowPlaying);
-      AudioService.removeListener( events.PLAYLIST,    this.onPlaylist);
-    }
+    AudioService.removeListener( events.NOW_PLAYING ,this.onNowPlaying);
+    AudioService.removeListener( events.PLAYLIST,    this.onPlaylist);
   },
 
   onNowPlaying(nowPlaying) {
@@ -63,20 +61,21 @@ const AudioPlayer = React.createClass({
   },
 
   onPlaylist() {
-    var np = AudioService.nowPlaying;
+    const { isPaused, isPlaying } = AudioService.nowPlaying || {};
     var controls = {
-        isPaused:  np.isPaused,
-        isPlaying: np.isPlaying,
+        isPaused,
+        isPlaying,
         hasNext:   AudioService.hasNext(),
         hasPrev:   AudioService.hasPrev()
       };
     this.setState( { controls } );
   },
 
-  onControls(nowPlaying) {
+  onControls(nowPlaying = {}) {
+    const { isPaused, isPlaying } = nowPlaying;
     var controls = {
-        isPaused:  nowPlaying.isPaused,
-        isPlaying: nowPlaying.isPlaying,
+        isPaused,
+        isPlaying,
         hasNext:   AudioService.hasNext(),
         hasPrev:   AudioService.hasPrev()
       };
@@ -92,12 +91,15 @@ const AudioPlayer = React.createClass({
   },
 
   render() {
-    if( !this.state.nowPlaying ) {
+
+    if( global.IS_SERVER_REQUEST ) {
       return null;
     }
-    var nowPlaying = this.state.nowPlaying;
-    var position   = this.state.position;
-    var controls   = this.state.controls;
+
+    const { nowPlaying, position, controls } = this.state;
+    if( !nowPlaying ) {
+      return null;
+    }
 
     var articleClass = 'container-fluid clearfix audio-player ' + ( this.state.isPlaying ? 'is-playing' : '' );
 

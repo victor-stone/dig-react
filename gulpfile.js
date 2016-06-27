@@ -116,6 +116,7 @@ function generateIndexJS(cfg) {
     var name = path.parse(f).name;
     var rname = camel(name);
     if( skip.indexOf(rname) === -1 ) {
+      rname = rname.replace(/-/g,'_');
       exportNames.push(rname);
       str += `import ${rname} from './${name}';\n`;
     }

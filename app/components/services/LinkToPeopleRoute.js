@@ -1,14 +1,7 @@
 import React         from 'react';
 import Link          from './LinkToRoute';
 import Glyph         from '../vanilla/Glyph';
-import env           from '../../services/env';
-
-const thumbStyle = id => { return { backgroundImage:     `url('${env.rpcHost}user/thumbnail/${id}')`,
-                                    backgroundRepeat:    'no-repeat',
-                                    paddingLeft:         '24px',
-                                    backgroundPositionY: 'center',
-                                    marginRight:         '8px'
-                                  };};
+import thumbStyle    from './people-thumb-style';
 
 const LinkToPeopleRoute = React.createClass({
 

@@ -1,4 +1,4 @@
-import events from './events';
+import events          from './events';
 
 /*
   Some things to note:
@@ -152,8 +152,8 @@ function _serialize(jsonData,model,bindParent) {
       
 **/
 
-function serialize(jsonDataOrModel,model) {
-  if( typeof(model) === 'undefined' ) {
+function serialize(jsonDataOrModel,model=null) {
+  if( model === null ) {
     return jsonData => _serialize(jsonData,jsonDataOrModel);
   }
   return _serialize(jsonDataOrModel,model);

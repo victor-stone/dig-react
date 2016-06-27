@@ -52,27 +52,23 @@ const PlaybackScrubber = React.createClass({
 
   loadingWidth() {
 
-    if( this.state.position.percentLoaded ) {
-      return this.state.position.percentLoaded + '';
+    const { position: {percentLoaded, bytesLoaded, bytesTotal} } = this.state;
+
+    if( percentLoaded ) {
+      return percentLoaded + '';
     }
 
-    var loaded = this.state.position.bytesLoaded;
-    var val = 0;
-    if( loaded > 0  ) {
-      val = ONE_HUNDRED * (loaded /  this.state.position.bytesTotal);
-    }
-    return val + '';
-    
+    var val = bytesLoaded > 0 ? ONE_HUNDRED * (bytesLoaded / bytesTotal) : 0;
+
+    return val + '';    
   },
 
   positionWidth() {
 
-    var position = this.state.position.position;
-    var duration = this.state.position.duration;
-    var val = 0;
-    if( position > 0 && duration > 0 ) {
-      val = ONE_HUNDRED * (position / duration);
-    }
+    const { position: {position, duration } } = this.state;
+
+    var val = position > 0 && duration > 0 ? ONE_HUNDRED * (position / duration) : 0;
+
     return (val + '');      
 
   },

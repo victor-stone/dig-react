@@ -1,5 +1,5 @@
 import React      from 'react';
-import Query      from '../stores/query-basic';
+import Query      from '../stores/query';
 
 import { QueryParamTracker,
          DefaultParamTracker,

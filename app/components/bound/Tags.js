@@ -14,6 +14,7 @@ import {
           StaticTagsList,
           CheckableTagsList,
           SelectedTagList,
+          SelectableTagList
       } from '../models/Tags';
 
 /* See app/models/Tags.js for explanations of concepts */
@@ -120,6 +121,28 @@ class BoundStaticTagList extends SelectedTagsTracker.stt(React.Component)
   }
 }
 
+class BoundSelectableTagList extends SelectedTagsTracker.stt(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    this.onSelected = this.onSelected.bind(this);
+  }
+
+  onSelected(tag,toggle) {
+    this.props.store.toggleTag(tag,toggle);
+  }
+
+  render() {
+    const { tags:selected } = this.state;
+    
+    const { model, className:cls, glyphs, floating } = this.props;
+
+    const className = selectors('tag-list-selectable-bound', cls );
+    const props     = { selected, model, glyphs, floating, className };
+
+    return( <SelectableTagList {...props} onSelected={this.onSelected} /> );
+  }
+}
 
 /*
   Props: 
@@ -141,13 +164,16 @@ class BoundCategoryTagBox extends SelectedTagsTracker.stt(React.Component)
   }
 
   render() {
-    const { className = '' } = this.props;
+    const { tags } = this.state;
+
+    const { className = '', category, minCount } = this.props;
+
     var cls = selectors('tag-list-bound', className);
 
-    return (<CategoryTagBox                
-                category={this.props.category} 
-                minCount={this.props.minCount} 
-                selected={this.state.tags} 
+    return (<CategoryTagBox 
+                category={category} 
+                minCount={minCount} 
+                selected={tags} 
                 onSelected={this.onSelected} 
                 className={cls}
             />);
@@ -170,10 +196,6 @@ class BoundSelectedTagList extends SelectedTagsTracker.stt(React.Component)
   constructor() {
     super(...arguments);
     bindAll(this,'onRemove', 'onClear');
-  }
-
-  componentWillMount() {
-    super.componentWillMount();
   }
 
   onRemove(tag) {
@@ -324,13 +346,14 @@ class EditableTagsDiv extends TagEditMixin(React.Component)
 EditableTagsDiv.defaultProps = { controlsCls: 'tag-edit-controls' };
 
 module.exports = {
-  CategoryTagBox,
-  BoundStaticTagList,
   BoundCategoryTagBox,
+  BoundSelectableTagList,
   BoundSelectedTagList,
-  EditableTagsField,
+  BoundStaticTagList,
+  CategoryTagBox,
   DualTagFieldWidget,
   EditableTagsDiv,
+  EditableTagsField,
 
   tagOccurrances
 };

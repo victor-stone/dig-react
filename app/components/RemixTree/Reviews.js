@@ -1,13 +1,12 @@
-/*eslint "react/no-danger":0 */
 import React                 from 'react';
 import { AccordianPanel }    from '../vanilla/Accordian';
-import Glyph                 from '../vanilla/Glyph';
 import ReviewsPopup          from '../bound/ReviewsPopup';
+import ReviewsPanel          from '../models/ReviewsPanel';
+import InlineCSS             from '../vanilla/InlineCSS';
 import Topics                from '../../stores/topics';
 import { ModelTracker,
         DelayLoadModel }    from '../../mixins';
 
-// TODO: factor out Review display to ../models
 var Reviews = React.createClass({
 
   mixins: [ModelTracker,DelayLoadModel],
@@ -36,24 +35,6 @@ var Reviews = React.createClass({
     return this.topics.reviewsFor(id);
   },
 
-  // TODO: bug: indenting isn't working
-  _renderReview(r,i) {
-    return (
-        <div key={i} className={'panel panel-info panel-offset-' + r.indent}>
-          <div className="panel-heading">
-            <h3 className="panel-title">
-              {r.indent 
-                ? <span><Glyph icon="arrow-circle-right" />{' ' + r.author.name}</span>
-                : <span><img src={r.author.avatarURL} />{' ' + r.author.name}</span>
-              }
-            </h3>
-          </div>
-          <div className="panel-body" dangerouslySetInnerHTML={{__html: r.html}} />
-          <div className="panel-footer">{r.date}</div>
-        </div>
-      );
-  },
-
   render() {
     const { numItems, model } = this.state;
     var title = `Reviews (${numItems})`;
@@ -68,7 +49,8 @@ var Reviews = React.createClass({
           onOpen={this.onOpen} 
           onClose={this.onClose} 
         >
-          {model && model.map( this._renderReview )}
+          <InlineCSS css={ReviewsPanel.css} id="review-panel-css" />
+          <ReviewsPanel model={model} />
         </AccordianPanel>
       );
   }

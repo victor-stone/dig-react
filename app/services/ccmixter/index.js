@@ -22,10 +22,12 @@ class CCMixter extends Eventer
 
   _call_wrap(promise,debug) {
     return promise.then( result=> {
-      if( !result || typeof result.status === 'undefined' || result.status === 'error' ) {
-        throw result && result.errmsg || 'because error ' + debug;
+      const { status = null, errmsg = 'because error ' + debug, data = null } = result;
+      
+      if( !result || !status || result.status === 'error' ) {
+        throw errmsg;
       }
-      return result.data === undefined ? result : result.data;
+      return data || result;
     });
   }
 

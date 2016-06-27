@@ -1,6 +1,6 @@
 import rsvp             from 'rsvp';
-import QueryBasic       from './query-basic';
-import QueryWithTags    from './query-with-tags';
+import Query            from './query';
+import TaggedCollection from './tagged-collection';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import env              from '../services/env';
@@ -11,7 +11,7 @@ import events           from '../models/events';
 import TagsOwner        from '../mixins/tags-owner';
 import Permissions      from '../mixins/permissions';
 
-class PlaylistTracks extends QueryWithTags {
+class PlaylistTracks extends TaggedCollection {
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName)
               .then( serialize(ccmixter.PlaylistTrack) );
@@ -23,7 +23,7 @@ PlaylistTracks.storeFromQuery = function(params,defaults) {
   return pl.getModel(params).then( () => pl );  
 };
 
-class Playlist extends Permissions(TagsOwner(QueryBasic)) {
+class Playlist extends Permissions(TagsOwner(Query)) {
 
   constructor() {
     super(...arguments);

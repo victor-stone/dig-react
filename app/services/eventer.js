@@ -1,7 +1,7 @@
 'use strict';
 
-import EventEmitter from 'events';
-import events       from '../models/events';
+import EventEmitter    from 'events';
+import events          from '../models/events';
 
 var _knownEvents = null;
 function isValidEvent(event) {
@@ -18,10 +18,10 @@ const MAX_LISTENERS = 50;
 
 class Eventer {
 
-  constructor(validateEvents) {
+  constructor(validateEvents = true) {
     this.__events = new EventEmitter();
     this.__events.setMaxListeners( MAX_LISTENERS );
-    this._validateEvents = typeof(validateEvents) === 'undefined' || validateEvents;
+    this._validateEvents = validateEvents;
   }
 
   on(name,cb) {

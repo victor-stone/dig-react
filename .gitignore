@@ -32,3 +32,6 @@ testem.log
 .DS_Store
 build.log
 
+# dev
+js.js
+

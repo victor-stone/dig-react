@@ -18,7 +18,7 @@ function Stems(props) {
             <Tags store={store} />
           </div>
           <div className="col-md-6 stems-listing-widget">
-            <BoundListing   store={store} />   
+            <BoundListing store={store} />   
           </div>
           <div className="col-md-2 stems-fixed-column">
             <QueryOptions store={store} />

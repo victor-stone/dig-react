@@ -2,7 +2,6 @@ import React            from 'react';
 import DownloadPopup    from '../DownloadPopup';
 import AudioPlayer      from '../AudioPlayer';
 import Glyph            from '../vanilla/Glyph';
-import env              from '../../services/env';
 import DeadLink         from '../vanilla/DeadLink';
 import css              from './style/files';
 import ZIPContentPopup  from './ZIPContentPopup';

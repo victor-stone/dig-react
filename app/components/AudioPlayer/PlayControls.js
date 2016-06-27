@@ -1,5 +1,6 @@
 import React        from 'react';
 import Glyph        from '../vanilla/Glyph';
+import DeadLink     from '../vanilla/DeadLink';
 import { oassign }  from '../../unicorns';
 import AudioService from '../../services/audio-player';
 import env          from '../../services/env';
@@ -14,48 +15,32 @@ const PlayControls = React.createClass({
     this.setState( oassign( {}, props.controls ) );
   },
 
-  playPrevious(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  playPrevious() {
     AudioService.playPrevious();
   },
 
-  togglePause(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  togglePause() {
     AudioService.togglePause();
   },
 
-  playNext(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  playNext() {
     AudioService.playNext();
   },
 
   render: function() {
 
-    var prevClass    = 'btn play-previous ' + ( this.state.hasPrev ? '' : 'disabled' );
-    var nextClass    = 'btn play-next '     + ( this.state.hasNext ? '' : 'disabled' );
-    var playIcon     = (this.state.isPlaying && !this.state.isPaused) ? 'pause' : 'play';
+    const { hasPrev, hasNext, isPlaying, isPaused } = this.state;
+
+    var prevClass    = 'btn play-previous ' + ( hasPrev ? '' : 'disabled' );
+    var nextClass    = 'btn play-next '     + ( hasNext ? '' : 'disabled' );
+    var playIcon     = (isPlaying && !isPaused) ? 'pause' : 'play';
     var canPlaylist  = env.supportPlaylist;
 
     return (
       <div className="controls">
-        {canPlaylist
-          ? <a href="#" onClick={this.playPrevious} className={prevClass} >
-              <Glyph icon="backward" />
-            </a>
-          : null
-        }
-          <a href="#" onClick={this.togglePause}  className="btn play"  >
-            <Glyph icon={playIcon} />
-          </a>
-        {canPlaylist
-          ? <a href="#" onClick={this.playNext}     className={nextClass}>
-              <Glyph icon="forward" />
-            </a>
-          : null
-        }
+        {canPlaylist && <DeadLink onClick={this.playPrevious} className={prevClass} ><Glyph icon="backward" /></DeadLink>}
+        <DeadLink onClick={this.togglePause}  className="btn play"  ><Glyph icon={playIcon} /></DeadLink>
+        {canPlaylist && <DeadLink onClick={this.playNext} className={nextClass}><Glyph icon="forward" /></DeadLink>}
       </div>
     );
   },

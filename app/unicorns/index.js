@@ -2,25 +2,30 @@ import pagingStats    from './paging-stats';
 import TagString      from './tag-string';
 import selectors      from './selectors';
 import browserScripts from './browser-scripts';
-import _              from 'underscore';
 
 const NOT_FOUND = -1;
 
+// for all the crazy talk like this:
+// http://stackoverflow.com/questions/3390396/how-to-check-for-undefined-in-javascript#3390426
+// it turns out that babel is genering this particular way of testing ALL OVER THE PLACE
+// so we might as well do it here
+const isUndefined = obj => obj === undefined;
+
 if (!Array.isArray) {
-  Array.isArray = _.isArray;
+  Array.isArray = obj => Object.prototype.toString.call(obj) === '[object Array]';
 }
 
-if( typeof Array.prototype.contains === 'undefined' ) {
+if( isUndefined(Array.prototype.contains) ) {
   Array.prototype.contains = function(obj) {
     return this.indexOf(obj) !== NOT_FOUND;
   };
 }
 
-if( typeof Array.prototype.includes === 'undefined' ) {
+if( isUndefined(Array.prototype.includes) ) {
   Array.prototype.includes = Array.prototype.contains;
 }
 
-if( typeof Array.prototype.remove === 'undefined' ) {  
+if( isUndefined(Array.prototype.remove) ) {  
   Array.prototype.remove = function(obj) {
     var index = this.indexOf(obj);
     if( index !== NOT_FOUND ) {
@@ -29,9 +34,9 @@ if( typeof Array.prototype.remove === 'undefined' ) {
   };
 }
 
-if( typeof Array.prototype.findBy === 'undefined' ) {
+if( isUndefined(Array.prototype.findBy) ) {
   Array.prototype.findBy = function(key,value) {
-    var valIsDefined = typeof value !== 'undefined';
+    var valIsDefined = !isUndefined(value);
     for( var i = 0; i < this.length; i++ ) {
       if( valIsDefined ) {
         if( this[i][key] === value ) {
@@ -47,20 +52,20 @@ if( typeof Array.prototype.findBy === 'undefined' ) {
   };
 }
 
-if( typeof Array.prototype.find === 'undefined' ) {
+if( isUndefined(Array.prototype.find) ) {
   Array.prototype.find = function(cb) {
     for( var i = 0; i < this.length; i++ ) {
       if( cb(this[i]) ) {
         return this[i];
       }
     }
-    return null;
+    return undefined;
   };
 }
 
-if( typeof Array.prototype.indexOfElement === 'undefined' ) {
+if( isUndefined(Array.prototype.indexOfElement ) ) {
   Array.prototype.indexOfElement = function(key,value) {
-    var valIsDefined = typeof value !== 'undefined';
+    var valIsDefined = isUndefined(value);
     for( var i = 0; i < this.length; i++ ) {
       if( valIsDefined ) {
         if( this[i][key] === value ) {
@@ -76,8 +81,10 @@ if( typeof Array.prototype.indexOfElement === 'undefined' ) {
   };
 }
 
-if( typeof Array.prototype.filter === 'undefined' ) {
-  Array.prototype.filter = function(cb) {
+const _old_array_filter = Array.prototype.filter;
+
+Array.prototype.filter = function(cb) {
+  if( isUndefined(_old_array_filter) ) {
     var results = [];
     if( cb instanceof RegExp ) {
       for( var n = 0; n < this.length; n++ ) {
@@ -93,21 +100,20 @@ if( typeof Array.prototype.filter === 'undefined' ) {
       }
     }
     return results;
-  };
-}
-
-if( typeof Array.prototype.match === 'undefined' ) {
-  Array.prototype.match = function(regex) {
-    for( var n = 0; n < this.length; n++ ) {
-      if( this[n].match(regex) ) {
-        return this[n];
-      }
+  } else {
+    if( cb instanceof RegExp ) {
+      cb = cb.test.bind(cb);
     }
-    return null;
-  };
+    return _old_array_filter.apply(this,arguments);
+  }
+};
+
+
+if( isUndefined(Array.prototype.match) ) {
+  Array.prototype.match = function(regex) { return this.find(regex.test.bind(regex)); };
 }
 
-if( typeof Array.prototype.filterBy === 'undefined' ) {
+if( isUndefined(Array.prototype.filterBy) ) {
   Array.prototype.filterBy = function(key,value) {
     var results = [];
     var valIsDefined = typeof value !== 'undefined';
@@ -126,7 +132,7 @@ if( typeof Array.prototype.filterBy === 'undefined' ) {
   };
 }
 
-if( typeof Array.prototype.rejectBy === 'undefined' ) {
+if( isUndefined(Array.prototype.rejectBy) ) {
   Array.prototype.rejectBy = function(key,value) {
     return this.filter( function(obj) {
       return obj[key] !== value;
@@ -136,22 +142,24 @@ if( typeof Array.prototype.rejectBy === 'undefined' ) {
 
 const ELLIPSE = '...';
 
-if( typeof String.prototype.ellipse === 'undefined' ) {
-  String.prototype.ellipse = function(len) {
-    if( this.length > len ) {
-      return this.substr(0,len-ELLIPSE.length) + ELLIPSE;
+function ellipse(str,len) {
+    if( str.length > len ) {
+      return str.substr(0,len-ELLIPSE.length) + ELLIPSE;
     }
-    return this;
-  };
+    return str;
 }
 
 function bindAll(obj,...arr) {
+  bindAllTo(obj,obj,...arr);
+}
+
+function bindAllTo(obj,target,...arr) {
   for( const f of arr ) {
-    obj[f] = obj[f].bind(obj);
+    obj[f] = target[f].bind(target);
   }
 }
 
-if( typeof String.prototype.hashCode === 'undefined' ) {
+if( isUndefined(String.prototype.hashCode) ) {
   const HASH_SHIFT = 5;
   String.prototype.hashCode = function() {
     var hash = 0, i, chr, len;
@@ -231,7 +239,9 @@ function sliceStr( {str='', maxWords = TRUNCATED_WORD_MAX, maxStr = TRUNCATED_ST
           .join(' ');
 }
 
-Object.values = obj => Object.keys(obj).map(key => obj[key]);
+if( !Object.values ) {
+  Object.values = obj => Object.keys(obj).map(key => obj[key]);
+}
 
 var oassign = Object.assign || function (target,...sources) 
 { 
@@ -323,6 +333,7 @@ var debounce = function(func, wait, immediate) {
     };
 };
 
+
 function cleanSearchString(str) {
   return str.replace(/[^a-zA-Z0-9\s_()\*\.]/g,'').replace(/\b(with|the|a|an|for|to|in|of|at)\b/g,' ');
 }
@@ -362,6 +373,7 @@ var cookies = {
 
 module.exports = {
   bindAll,
+  bindAllTo,
   browserScripts,
   camelize,
   cleanSearchString,
@@ -370,6 +382,8 @@ module.exports = {
   dasherize,
   debounce,
   decamlize,
+  ellipse,
+  isUndefined,
   mergeParams,
   hashParams,
   oassign,

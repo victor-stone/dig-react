@@ -1,5 +1,4 @@
 import rsvp         from 'rsvp';
-import _            from 'underscore';
 import API          from './api';
 import UserStore    from '../../stores/user';
 import events       from '../../models/events';
@@ -8,6 +7,8 @@ import { cookies }  from '../../unicorns';
 import { bindAll }  from '../../unicorns';
 
 const NOT_LOGGED_IN = null;
+
+// TODO: convert all the this._currentUser magic to a 'Set'
 
 class User extends API
 {
@@ -61,7 +62,7 @@ class User extends API
       return rsvp.reject( NOT_LOGGED_IN );
     }
 
-    if( !_.isUndefined(this._currentUser) ) {
+    if( '_currentUser' in this ) {
       return this._currentUser ? rsvp.resolve( this._currentUser ) : rsvp.reject( NOT_LOGGED_IN );
     }
 
@@ -84,7 +85,7 @@ class User extends API
   }
 
   currentUserProfile() {
-    if( !_.isUndefined(this._currentProfile) ) {
+    if( '_currentProfile' in this ) {
       return rsvp.resolve(this._currentProfile);
     }
 

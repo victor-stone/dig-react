@@ -1,8 +1,8 @@
-import QueryWithTags    from './query-with-tags';
+import TaggedCollection from './tagged-collection';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 
-class Samples extends QueryWithTags {   
+class Samples extends TaggedCollection {   
 
   constructor() {
     super(...arguments);

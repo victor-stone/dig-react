@@ -1,4 +1,4 @@
-import QueryWithTags    from './query-with-tags';
+import TaggedCollection from './tagged-collection';
 import Upload           from './upload';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
@@ -15,7 +15,7 @@ const DEFAULT_SEARCH_MINITEMS = 1;
 const DEFAULT_USER_MINITEMS   = '-1';
 const DEFAULT_MINITEMS        = 5;
 
-class Playlists extends QueryWithTags {
+class Playlists extends TaggedCollection {
 
   constructor() {
     super(...arguments);

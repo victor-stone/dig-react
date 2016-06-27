@@ -1,4 +1,4 @@
-import Query           from './query-basic';
+import Query           from './query';
 import ccmixter        from '../models/ccmixter';
 import serialize       from '../models/serialize';
 import rsvp            from 'rsvp';
@@ -12,18 +12,12 @@ const MIN_SAMPLE_TAG_PAIR = 5;
 const SORT_UP = 1;
 const SORT_DOWN = -1;
 
-var _tagsCache = {
-
-};
+var _tagsCache = new Map();
 
 class Tags extends Query {
 
   constructor() {
     super(...arguments);
-    /*
-    this.selectedTags = {};
-    this.selectedTags[DEFAULT_CAT] = new TagString();
-    */
     this.typeValues = Object.keys(Tags.categories.types).map( t => Tags.categories.types[t] );
   }
 
@@ -47,16 +41,11 @@ class Tags extends Query {
     });
   }
   
+  // return a big fat TagString
   forCategories(categories,pairWith) {
     var hash = {};
     categories.forEach( c => { hash[c] = this.forCategory(c,pairWith,c); } );
-    return this.flushDefers(hash).then( arr => {
-      var ts = arr[0];
-      for( var i = 1; i < arr.length; i++ ) {
-        ts.add(arr[i]);
-      }
-      return ts;
-    });
+    return this.flushDefers(hash).then( arr => new TagString().concat(...arr) );
   }
   
   // return an array of Tag models
@@ -130,11 +119,11 @@ class Tags extends Query {
 
   _checkCache(params) {
     var key = hashParams(params);
-    return { models: _tagsCache[ key ], key, category: params.category };
+    return { models: _tagsCache.get(key), key, category: params.category };
   }
 
   _putCache(key,tags) {
-    _tagsCache[ key ] = tags;
+    _tagsCache.set(key,tags);
   }
   
   _contactCats(cats) {

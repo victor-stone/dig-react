@@ -7,10 +7,8 @@ import { TagString,
          selectors }    from '../../unicorns';
 
 /*
-  In this context 'static' means non-interactive
-  on the page.
 
-  Use cases for displaying static tags
+  Use cases for displaying static (non-interactive) tags
 
       scenario            query    store
     -------------------  -------  ----------
@@ -28,16 +26,33 @@ import { TagString,
     - upload                x      upload
     - admin                 x      tags
 
+
 */
 
 /*
+  Display a tag. This component can represent
+  three styles of interaction glyphs
+
+    (no-glyph) non-interactive, like tags that 
+               describe a document. Using css:hover
+               and onSelected callback they can
+               be made to act as links.
+
+    checkbox   tag can be toggled
+
+    x          tag can only be de-selected
+
+  This component will NOT change it's internal
+  state - all state comes from the 'selected'
+  property
+  
   Props: 
     - model {
               id: 'tag_name'
               count: usage_count (optional)
              }
     - onSelected(model,boolean) [callback] (optional)
-    - selected [boolean] (optional)
+    - selected [boolean] for toggled, set to ON state
     - glyph [string-enum]  <-- N.B. singluar
         : none (default)
         : checks
@@ -137,6 +152,8 @@ function tagStringToModels(tagStr) {
 }
 
 /*
+  SelectableTagList
+
   Props: 
     - model array[model {
               id: 'tag_name'

@@ -1,11 +1,11 @@
-import Query     from './query-basic';
-import serialize from '../models/serialize';
-import ccmixter  from '../models/ccmixter';
-import rsvp      from 'rsvp';
+import Collection from './collection';
+import serialize  from '../models/serialize';
+import ccmixter   from '../models/ccmixter';
+import rsvp       from 'rsvp';
 
 //import { oassign } from '../unicorns';
 
-class Ratings extends Query {
+class Ratings extends Collection {
 
   constructor() {
     super(...arguments);
@@ -13,11 +13,12 @@ class Ratings extends Query {
   }
 
   recommendedBy(id) {
-    // ?f=jsex&t=recc&match=53148
     if( !id ) {
       return rsvp.resolve({});
     }
 
+    // ?f=jsex&t=recc&match=53148
+    
     var args = {
       t: 'recc',
       match: id

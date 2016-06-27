@@ -1,5 +1,5 @@
 import React    from 'react';
-import Query    from '../../stores/query-basic';
+import Query    from '../../stores/query';
 import Blobs    from '../../stores/blobs';
 import SubNav   from '../../components/playlists/SubNav';
 import pages    from '../../components/playlists/pages';
@@ -15,6 +15,8 @@ curators.subnav = function(props) {
 };
 
 curators.path = '/playlists/curators';
+
+// TODO: this is too much code for here
 
 curators.store = function(/*params,queryParams */) {
   var blobs = new Blobs();

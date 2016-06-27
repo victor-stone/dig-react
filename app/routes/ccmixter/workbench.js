@@ -10,7 +10,7 @@ import Playlist from '../../stores/playlist';
 import Samples from '../../stores/samples';
 
 import Stems  from '../../components/stems/Listing';
-import css1 from '../../components/stems/style/listing';
+import css1 from '../../components/stems/style/detail';
 import css2 from '../../components/stems/style/browse';
 
 const stemsCSS = css1 + css2;
@@ -35,27 +35,6 @@ var remixes  = null;
 var playlist = null;
 var dynplaylist = null; // 36954
 var samples = null;
-
-/*
-    QueryBasic
-      | -  Query (should be renamed 'CollectionQuery')
-      |     |-- QueryWithTags
-      |     |      | -- Acappella
-      |     |      | -- Remixes
-      |     |      |    |-- User
-      |     |      | -- Samples
-      |     |      |-- Playlists
-      |     |
-      |     |-- PlaylistTracks
-      |     |-- Ratings
-      |     |-- Tags
-      |     |-- Topics
-      |     |-- UserFeed
-      |
-      | =  Playist
-      | =  Upload
-
-*/
 
 var workbench = React.createClass({
 

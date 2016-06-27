@@ -1,44 +1,54 @@
 import rsvp from 'rsvp';
+import { bindAllTo } from '../../unicorns';
 
 class API
 {
   constructor(transport) {
    this.transport = transport;
-   this.cache = {};
-   [ 'post', 'patch', 'on', 'once', 'emit', 'removeListener'].forEach( f => this[f] = transport[f].bind(transport) );
+   this.cache = new Map();
+   this.cacheCats = new Map();
+
+   bindAllTo(this, transport, 'post', 'patch', 'on', 'once', 'emit', 'removeListener');
+   this.get = this.call; // for completeness   
+  }
+
+  _addCmdToCat(cacheCat,cmd) {
+    if( !this.cacheCats.has(cacheCat) ) {
+      this.cacheCats.set(cacheCat,new Set());
+    }
+    this.cacheCats.get(cacheCat).add(cmd);
   }
 
   call(cmd,cacheCat) {
     if( cacheCat ) {
-      if( this.cache[cacheCat]  && this.cache[cacheCat][cmd] ) {
-          if( this.cache[cacheCat][cmd].promise ) {
-            return this.cache[cacheCat][cmd].promise;
-          } else if( this.cache[cacheCat][cmd].value ) {
-            return rsvp.resolve(this.cache[cacheCat][cmd].value);
-          }
-      } else {
-        this.cache[cacheCat]      = {};
-        this.cache[cacheCat][cmd] = {};
+      const { promise, value } = this.cache.get(cmd) || {};
+      if( promise ) {
+        return promise;
+      }
+      if( value ) {
+        return rsvp.resolve(value);
       }
     }
 
-    var promise = this.transport._call(cmd).then( result => {
+    var promise = this.transport._call(cmd).then( value => {
       if( cacheCat ) {
-        this.cache[cacheCat][cmd].promise = null;
-        this.cache[cacheCat][cmd].value = result;          
+        this.cache.set(cmd,{ promise: null, value });
       }
-      return result;
+      return value;
     });
 
     if( cacheCat ) {
-      this.cache[cacheCat][cmd].promise = promise;
+      this._addCmdToCat(cacheCat,cmd);
+      this.cache.set(cmd,{promise});
     }
 
     return promise;
   }
 
   invalidateCacheCat(cacheCat) {
-    this.cache[cacheCat] = null;
+    var cats = this.cacheCats.get(cacheCat)||[];
+
+    [...cats].forEach( cc => this.cache.delete(cc) );
   }
 
 }

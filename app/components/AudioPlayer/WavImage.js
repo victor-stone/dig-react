@@ -12,13 +12,13 @@ const WavImage = React.createClass({
   },
 
   componentWillMount: function() {
-    if( !global.IS_SERVER_REQUEST && env.supportWavImg ) {
+    if( env.supportWavImg ) {
       AudioService.on( events.NOW_PLAYING, this.onNowPlaying);
     }
   },
 
   componentWillUnmount: function() {
-    if( !global.IS_SERVER_REQUEST  && env.supportWavImg ) {
+    if( env.supportWavImg ) {
       AudioService.removeListener( events.NOW_PLAYING, this.onNowPlaying);
     }
   },

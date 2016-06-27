@@ -1,4 +1,4 @@
-import Query     from './query-basic';
+import Query     from './query';
 import serialize from '../models/serialize';
 import ccmixter  from '../models/ccmixter';
 import rsvp      from 'rsvp';

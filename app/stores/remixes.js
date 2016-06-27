@@ -1,14 +1,13 @@
-import QueryWithTags    from './query-with-tags';
+import TaggedCollection from './tagged-collection';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 
 
-class Remixes extends QueryWithTags {
-
+class Remixes extends TaggedCollection 
+{
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName).then( serialize(ccmixter.Upload) );
   }
-
 }
 
 Remixes.storeFromQuery = function(params,defaults) {

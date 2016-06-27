@@ -1,9 +1,10 @@
 import RouteRecognizer  from 'route-recognizer';
 import rsvp             from 'rsvp';
+import querystring      from 'querystring';
+
 import Eventer          from './eventer';
 import env              from './env';
 import events           from '../models/events';
-import querystring      from 'querystring';
 
 class Router extends Eventer
 {
@@ -16,9 +17,7 @@ class Router extends Eventer
     this.rewrites = [];
     this.__currRoute = {};
 
-    if( typeof window !== 'undefined' ) {
-      window.onpopstate = this.updateURL.bind(this);
-    }
+    (typeof window !== 'undefined') && (window.onpopstate = this.updateURL.bind(this));
   }
   
   get _currentRoute() {

@@ -1,4 +1,4 @@
-import QueryWithTags    from './query-with-tags';
+import TaggedCollection from './tagged-collection';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import TotalsCache      from './totals';
@@ -7,8 +7,8 @@ const PELL_FILTERS = [ 'featured', 'spoken_word', 'melody', 'rap' ];
 
 var totals = new TotalsCache(PELL_FILTERS);
 
-class ACappellas extends QueryWithTags {
-
+class ACappellas extends TaggedCollection 
+{
   constructor() {
     super(...arguments);
     this.totalsCache = totals;

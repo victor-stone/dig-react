@@ -4,8 +4,9 @@ import AudioService        from '../../services/audio-player';
 import Playlists           from '../../stores/playlists';
 import events              from '../../models/events';
 import LinkToPlaylist      from './LinkToPlaylistRoute';
+import {bindAll}           from '../../unicorns';
 
-// TODO: generial - this is too Playlist aware
+// TODO: this is too Playlist aware
 
 // This is broken out in it's own class in case
 // it might be needed in the future somewhere
@@ -15,7 +16,7 @@ class PlaylistTracker extends React.Component
   constructor() {
     super(...arguments);
     this.state = { playlistOn: this._isOurPlaylistPlaying() };
-    this.togglePlay = this.togglePlay.bind(this);
+    bindAll(this,'togglePlay','onNowPlaying');
   }
 
   componentWillMount() {

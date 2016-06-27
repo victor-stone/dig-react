@@ -1,62 +1,49 @@
-/* globals $ */
-import React            from 'react';
-import Link             from '../services/LinkToRoute';
-import Glyph            from '../vanilla/Glyph';
-import { browserScripts } from '../../unicorns';
-import LinkToUpload       from '../services/LinkToUploadRoute';
+import React               from 'react';
+import LinkToRemixTree     from '../services/LinkToRemixTree';
+import { TagString }       from '../../unicorns';
+import css                 from './style/detail';
 
-const SCROLL_OFFSET = 100;
+import { BoundSelectableTagList } from '../bound/tags';
+import { StaticTagsList }         from '../models/tags';
 
-const DetailTags = React.createClass({
+/*
+  So this is a little weird because of how it is 
+  used.
 
-  onAddTag(tag) {
-    var _this = this;
-    return function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      var tags = _this.props.store.queryParams.tags;
-      tags.add(tag);
-      _this.props.store.refreshModel( { tags: tags.toString() } );
-    };
-  },
+  The 'model' represents the stems upload, we want to
+  display its tags.
 
-  render: function() {
-    var style = { fontSize: '18px' };
+  The 'store' represents a Collection store that has been
+  filtered by a set of tags that the model belongs to.
 
-    var tags = this.props.tags.map( t =>     
-        (<div className="btn-group btn-tag" key={t} >
-           <Link href={'/stems?tags=' + t} className="btn btn-success btn-xs"><Glyph icon="tag" />{' ' + t}</Link>
-           <a href="#" className="btn btn-success btn-xs tag-add" style={style} onClick={this.onAddTag(t)}><Glyph icon="plus-circle" /></a>
-         </div>));
+  When displaying the details, the filtering tags will be
+  'checked' and the other ones will be unchecked.
 
-    return( <div className="upload-tags" >{tags}</div> );
-  }
-});
+  When the user toggles a check, that will send that 
+  info to the Collection store and it will trigger a 
+  new query.
 
-const Detail = React.createClass({
-
-  getInitialState: function() {
-    return { model: this.props.model };
-  },
-
-  componentDidMount: function() {
-   var $e = $('#upload-detail-' + this.state.model.id );
-   $e.slideDown('slow', function() { browserScripts.scrollIntoView($e, SCROLL_OFFSET); });
-  },
-
-  render: function() {
-    var model   = this.state.model;
-    var id      = 'upload-detail-' + model.id;
-    var url     = LinkToUpload.url(model);
+*/
+class StemsDetail extends React.Component
+{
+  render() {
+    const { model, store } = this.props;
+    
+    // TODO: these tags used to be filtered by genre/instrument
+    const userTags = new TagString(model.userTags);
 
     return (
-      <div className="stems-detail" id={id} >
-        <DetailTags tags={model.userTags} store={this.props.store} />
-        <Link href={url} className="ccmixter-link btn btn-sm btn-warning"><Glyph icon="arrow-left" />{" Remix Tree "}<Glyph icon="arrow-right" /></Link>
-        <div className="clearfix" ></div>
-      </div>);
+      <div className="stems-detail">
+        {store
+          ? <BoundSelectableTagList glyphs="checks" floating model={userTags} store={store} />
+          : <StaticTagsList floating model={userTags} />
+        }
+        <LinkToRemixTree model={model} />
+      </div>
+    );
   }
-});
+}
 
+StemsDetail.css = css;
 
-module.exports = Detail;
+module.exports = StemsDetail;

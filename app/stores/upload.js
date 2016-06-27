@@ -1,4 +1,4 @@
-import QueryBasic       from './query-basic';
+import Query            from './query';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import events           from '../models/events';
@@ -15,7 +15,7 @@ function _fixFeaturing(model) {
   return model;
 }
 
-class Upload extends Permissions(TagsOwner(QueryBasic)) {
+class Upload extends Permissions(TagsOwner(Query)) {
 
   constructor() {
     super(...arguments);
