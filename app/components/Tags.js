@@ -133,6 +133,7 @@ const SelectedTag = React.createClass({
 
 });
 
+/*
 const SelectedTags = React.createClass({
 
   mixins: [ SelectedTagsTracker, UriParamTracker ],
@@ -166,6 +167,7 @@ const SelectedTags = React.createClass({
   },
 
 });
+*/
 
 const MatchAllButton = React.createClass({
 
@@ -186,6 +188,10 @@ const MatchAllButton = React.createClass({
   },
 
   render: function() {
+    const { tags:{length} } = this.props.store;
+    if( length < 2 ) {
+      return null;
+    }
     return (  <label className="btn btn-primary btn-xs">
                 <input onChange={this.performQuery} 
                        checked={this.state.toggle} 
@@ -251,7 +257,6 @@ module.exports = {
   SelectableTag,
   SelectableTagList,
   SelectedTag,
-  SelectedTags,
   TagCategoryBox,
   NoTagHits,
   MatchAllButton,

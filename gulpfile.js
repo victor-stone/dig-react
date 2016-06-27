@@ -223,6 +223,12 @@ function task_browser_css() {
           .pipe(gulp.dest(`./dist/${config.app}/browser/css`));
 }
 
+gulp.task('test-css', function() {
+  gulp.src( 'app/components/dig/style/subnav.js')
+        .pipe( cssmin() )
+        .pipe( gulp.dest('./subnav.css.min.js') );
+});
+
 function task_browser_static() {
   return [ 'shared', config.app ].forEach( dir => 
             gulp.src( `public/${dir}/{*.html,*.ico,*.xml,*.txt,*.png,images/*.*}`)
@@ -329,6 +335,7 @@ gulp.task('todo', function() {
         .pipe(todo())
         .pipe(gulp.dest('./'));
 });
+
 
 gulp.task('lint', task_lint );
 

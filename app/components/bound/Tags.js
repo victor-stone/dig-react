@@ -184,11 +184,11 @@ BoundCategoryTagBox.categories = CategoryTagBox.categories;
 
 
 /*
+  Mirrors and tracks the .tags property in a store - if a tag is clicked
+  on it will be removed from the store. (aka de-selected)
+
   Props: 
     - store 
-    - minCount [number] (only show tags that h
-            ave been used this much - default 100)
-    - category [BoundCategoryTagBox.categories]
 
 */
 class BoundSelectedTagList extends SelectedTagsTracker.stt(React.Component)
@@ -207,7 +207,7 @@ class BoundSelectedTagList extends SelectedTagsTracker.stt(React.Component)
   }
 
   render() {
-    const { className = '' } = this.props;
+    const { className = '', css, autoclear = true } = this.props;
     var cls = selectors('tag-list-bound', className);
 
     return (
@@ -216,6 +216,8 @@ class BoundSelectedTagList extends SelectedTagsTracker.stt(React.Component)
             onRemove={this.onRemove} 
             onClear={this.onClear} 
             className={cls}
+            css={css}
+            autoclear={autoclear}
         />
       );
   }

@@ -72,6 +72,12 @@ import { TagString,
 
 */
 
+const glyphMap = {
+  checks: { [true]:'check-square-o', [false]:'square-o',     selector:'tag-selectable-checks' },
+       x: { [true]:'times-circle',   [false]:'times-circle', selector:'tag-selectable-x' },
+  [true]: 'tag-selected'
+ };
+
 class SelectableTag extends React.Component
 {
   constructor() {
@@ -100,18 +106,13 @@ class SelectableTag extends React.Component
 
   render() {
     const { model: {id,count=0}, glyph, onSelected } = this.props;
+
     const { selected } = this.state;
     
-    const icon = glyph === 'checks'
-                  ? (selected ? 'check-square-o' : 'square-o')
-                  : glyph === 'x' 
-                    ? 'times-circle'
-                    : null;
+    const { [glyph]:{[selected]:icon, selector} = {}, [selected]:selSelector } = glyphMap;
 
-    const cls = selectors(
-                  'tag-selectable',
-                  glyph && glyph !== 'none' ? 'tag-selectable-' + glyph : null,
-                  selected ? 'tag-selected' : null );
+    const cls = selectors('tag-selectable', selector, selSelector );
+
     return (
         <li className={cls} onClick={onSelected && this.onClick}>
           {icon && id && <Glyph icon={icon} />}
@@ -194,7 +195,7 @@ class SelectableTagList extends React.Component
 
   render() {
 
-    const { floating, autoclear, className, glyphs, onSelected } = this.props;
+    const { floating, autoclear = floating, className, glyphs, onSelected } = this.props;
     const { tags, selected } = this.state;
 
     const cls = selectors(
@@ -407,12 +408,16 @@ class SelectedTagList extends React.Component
   }
 
   render() {
-    const { className, css = SelectedTagList.css, onClear } = this.props;
+    let   { className, css = SelectedTagList.css, onClear, autoclear = true } = this.props;
     const { model } = this.state;
-    const cls = selectors( 'tag-list-selected', className );
+    const noAutoCls = autoclear === false ? 'no-autoclear' : '';
+    const cls = selectors( 'tag-list-selected', className, noAutoCls );
+    const outerCls = selectors('tag-list-selected-container', noAutoCls );
+
+    css += SelectedTagList.noAutoCSS;
 
     return (
-        <div className="tag-list-selected-container">
+        <div className={outerCls}>
           <InlineCSS css={css} id="tag-list-selected-css" />
           <SelectableTagList 
             model={tagStringToModels(model)} 
@@ -421,15 +426,21 @@ class SelectedTagList extends React.Component
             className={cls}
             glyphs="x"
             floating
+            autoclear={autoclear}
           />
           {this.state.model.length > 1 && (<ClearButton className="btn-xs tags-clear" onClear={onClear} />)}
-          <div className="clearfix" />
+          {autoclear && <div className="clearfix" />}
       </div>
       );
   }
 }
 
-
+SelectedTagList.noAutoCSS = `
+div.no-autoclear,
+ul.no-autoclear {
+  display: inline-block;
+}
+`;
 
 SelectedTagList.css = SelectableTagList.css + `
 .tag-list-selected-container {

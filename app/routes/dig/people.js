@@ -4,7 +4,7 @@ import qc               from '../../models/query-configs';
 import Rmx              from '../../stores/remixes';
 
 import {  QueryOptions }     from '../../components/dig'; 
-import PeopleHeader      from '../../components/models';
+import PeopleHeader      from '../../components/models/PeopleHeader';
 import Remixes          from '../../components/Remixes';
 import SubNav           from '../../components/dig/SubNav';
 

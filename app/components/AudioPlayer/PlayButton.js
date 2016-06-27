@@ -76,5 +76,5 @@ var PlayButton = React.createClass({
 
 });
 
-module.exports = global.IS_SERVER_REQUEST ? <span></span> : PlayButton;
+module.exports = global.IS_SERVER_REQUEST ? () => <span></span> : PlayButton;
 

@@ -15,7 +15,7 @@
 | app/components/bound/ReqTagsNavTabs.js | 30 | replace all oassign with Object.assign
 | app/components/models/EditableTrackList.js | 8 | All these lists that are model.items[] should just be model[]
 | app/components/models/StaticTrackList.js | 5 | allow multiple of these on a page
-| app/components/models/Tags.js | 439 | reconcile this with floating checks above
+| app/components/models/Tags.js | 450 | reconcile this with floating checks above
 | app/components/services/PlayAllButton.js | 9 | this is too Playlist aware
 | app/components/services/PlayAllButton.js | 44 | check this code
 | app/components/stems/Detail.js | 32 | these tags used to be filtered by genre/instrument

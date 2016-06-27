@@ -5,9 +5,13 @@ import Remixes       from '../Remixes';
 import QueryOptions  from './QueryOptions';
 import events        from '../../models/events';
 
+import { BoundSelectedTagList } from '../bound/Tags';
+
+import css from './style/tags';
+
 const TagCategoryRow = React.createClass({
 
-  render: function() {
+  render() {
     var catNames   = Object.keys(this.props.model);
     var categories = this.props.model;
     var store      = this.props.store;
@@ -22,25 +26,30 @@ const TagCategoryRow = React.createClass({
   
 });
 
-const SelectedTagRow = React.createClass({
+// <Tags.SelectedTags {...this.props}/>
 
-  render: function() {
+class SelectedTagRow extends React.Component
+{
+  render() {
+    const { store } = this.props;
+
     return (
         <div className="row">
-          <div className="col-md-8 col-md-offset-2 tags editable">
-            <Tags.SelectedTags {...this.props}/>
+          <div className="col-md-8 col-md-offset-2 dig-tags">
+            <BoundSelectedTagList css={css} x floating autoclear={false} store={store}  />
+            <Tags.MatchAllButton store={store} />
           </div>   
           <div className="col-md-2 whaaaaaat">
           </div>
         </div>
       );
-  },
+  }
 
-});
+}
 
 const TagsLoading = React.createClass({
 
-  render: function() {
+  render() {
     return(
       <h4 className="center-text">{"Loading Tags "}<Glyph icon="spinner" pulse /></h4>
       );
@@ -49,13 +58,13 @@ const TagsLoading = React.createClass({
 
 const RemixTagSelectionSection = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return { loading: true,
              model: {},
             };
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     if( !global.IS_SERVER_REQUEST ) {
       this.props.store.tagStore.remixCategories().then( cats => {
         this.setState( {
@@ -65,11 +74,11 @@ const RemixTagSelectionSection = React.createClass({
     }
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     this.props.store.emit( events.COMPONENT_UPDATE );
   },
 
-  render: function() {
+  render() {
 
     if( global.IS_SERVER_REQUEST ) {
       return null;
