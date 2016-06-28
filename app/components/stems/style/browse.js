@@ -29,6 +29,10 @@ var css =
   display: inline-block;
 }
 
+.stems-browser .tag-list-checkable-container {
+  margin-bottom: 12px;
+}
+
 .stems-browser .stems-listing-widget {
   border: 1px solid #7DCF1F;
   border-radius: 7px ;
