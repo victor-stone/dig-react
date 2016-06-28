@@ -223,7 +223,7 @@ class BoundSelectedTagList extends SelectedTagsTracker.stt(React.Component)
   }
 }
 
-const genreCat = BoundCategoryTagBox.categories.GENRE;
+const GENRE = BoundCategoryTagBox.categories.GENRE;
 
 class DualTagFieldWidget extends React.Component
 {
@@ -243,12 +243,13 @@ class DualTagFieldWidget extends React.Component
     return this.props.store.tags.hash !== nextProps.store.tags.hash;
   }
   
+  // TODO: tag cats should be navtabs, not just stacked on top of each other
   render() {
-    const { store, cancelCallback } = this.props;
+    const { store, cancelCallback, cats = [GENRE] } = this.props;
     return(
       <div id="blerg" style={cancelCallback && {display:'none'}}>
         <BoundSelectedTagList store={store} />
-        <BoundCategoryTagBox category={genreCat} store={store} />
+        {cats.map( (cat,i) => <BoundCategoryTagBox key={i} category={cat} store={store} />)}
       </div>
     );
   }

@@ -7,8 +7,9 @@ class StemsTagEditor extends React.Component
     super(...arguments);
   }
 
+  // TODO: use real defines here
   render() {
-    return <DualTagFieldWidget store={this.props.store} />;
+    return <DualTagFieldWidget store={this.props.store} cats={['genre','instr']}/>;
   }
 }
 

@@ -14,8 +14,19 @@ var css =
 }
 
 .stems-browser {
-  margin-left: -15px; /* make up for container-fluid */
   margin-top: -10px;
+}
+
+/* not a hack. not at all. */
+#blerg {
+  margin-left: 20px;
+}
+
+/* again. not a bit */
+.subnav-wrapper > b {
+  margin-top: 10px;
+  margin-left: 10;
+  display: inline-block;
 }
 
 .stems-browser .stems-listing-widget {

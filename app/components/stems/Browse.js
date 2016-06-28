@@ -17,7 +17,7 @@ function Stems(props) {
           <div  className="col-md-3">
             <Tags store={store} />
           </div>
-          <div className="col-md-6 stems-listing-widget">
+          <div className="col-md-7 stems-listing-widget">
             <BoundListing store={store} />   
           </div>
           <div className="col-md-2 stems-fixed-column">

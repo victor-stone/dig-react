@@ -49,7 +49,7 @@ var PellsListing = React.createClass({
     var artist   = this.state.model.artist;
     var lines    = items.map(pellLine.bind(this));
 
-    return React.createElement( 'ul', null, lines );
+    return React.createElement( 'ul', {className:'tab-content'}, lines );
     }
 });
 

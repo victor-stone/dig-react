@@ -1,17 +1,7 @@
 var browser =
 `
-.pells-page .page-header h2 a {
-  font-size: 14px;
-  display: inline-block;
-  vertical-align: bottom;
-  position: relative;
-  left: -130px;
-}
-
-.pells-page .page-header h2 img {
-  border-radius: 15px;
-  box-shadow: 4px 7px 14px #AAA;
-  margin-right: 18px;
+.container.pells-page {
+  width: 95%;
 }
 
 .pell-detail-description,
@@ -24,22 +14,9 @@ var browser =
   margin-bottom: 40px;
 }
 
-.pell-browser .nav-tabs > li > a.active {
-  border-top: 1px solid #e2e2e2;
-  border-right: 1px solid #e2e2e2;
-  border-left: 1px solid #e2e2e2;
-}
-
-.pell-browser .nav-tabs .badge {
-  font-size: 9px;
-  font-weight: normal;
-  background-color: brown;
-}
 
 .pell-browser .tab-content {
-  border-bottom: 1px solid #e2e2e2;
-  border-right: 1px solid #e2e2e2;
-  border-left: 1px solid #e2e2e2;
+    border: 1px solid #e2e2e2;
 }
 
 .pell-browser .tab-content ul {
