@@ -6,7 +6,7 @@ import { mergeParams }    from '../../unicorns';
 
 import {  PageHeader }       from '../../components/vanilla';
 
-import Listing               from '../../components/stems/Listing';
+import Listing               from '../../components/stems/ListingWidget';
 import { QueryParamTracker } from '../../mixins';
 
 var SearchHead = React.createClass({

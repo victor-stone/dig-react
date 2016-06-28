@@ -1,5 +1,5 @@
-import Upload            from '../../stores/upload';
-import { RemixTree }     from '../../components';
+import Upload    from '../../stores/upload';
+import RemixTree from '../../components/RemixTree';
 
 const Tree =RemixTree;
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import Glyph from './Glyph';
 
+import { selectors } from '../../unicorns';
 
 class Toggle extends React.Component
 {
@@ -16,8 +17,11 @@ class Toggle extends React.Component
   }
 
   render() {
-    var icon = this.props.toggle ? 'toggle-on' : 'toggle-off';
-    return <button onClick={this.onClick} {...this.props}><Glyph icon={icon} x2 />{' ' + this.props.text}</button>;
+    const { toggle, className } = this.props;
+    const icon = toggle ? 'toggle-on' : 'toggle-off';
+    const cls = selectors('toggle', className);
+
+    return <button onClick={this.onClick} {...this.props} className={cls}><Glyph icon={icon} x2 />{' ' + this.props.text}</button>;
   }
 }
 

@@ -3,12 +3,11 @@ import env    from './services/env';
 import routes from './routes/dig';
 import App    from './app';
 
-import {
-          Header,
-          Footer
-        } from './components/dig';
+import Header from './components/dig/Header';
+import Footer from './components/dig/Footer';
 
 var rewriteRules = [
+  { regex: /^\/faq/,                         now: '/news/230791' },
   { regex: /^\/free_music/,                  now: '/free' },
   { regex: /^\/music_for_film_and_video/,    now: '/film' },
   { regex: /^\/video/,                       now: '/film' },

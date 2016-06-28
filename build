@@ -7,7 +7,7 @@ a) APIHOST="--apihost=${OPTARG}";;
 s) SATHOST="--sathost=${OPTARG}";;
 esac 
 done
-gulp clean 
+# gulp clean 
 # server
 gulp server-js   -p ${APIHOST} ${SATHOST}
 # apps

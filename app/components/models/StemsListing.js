@@ -3,8 +3,6 @@ import Files            from '../models/Files';
 import LinkToPeople     from '../services/LinkToPeopleRoute';
 import Collapse         from '../vanilla/CollapseGroup';
 
-import InlineCSS        from '../vanilla/InlineCSS';
-
 /*
   Display stems browser
 
@@ -21,13 +19,12 @@ class StemsListing extends React.Component
 {
   render() {
     const group = 'stems-list-parent';
-    const { model, tags, detailElem, css ='' } = this.props;
+    const { model, tags, detailElem } = this.props;
 
-    const lineProps = { tags, group, detailElem};
+    const lineProps = { tags, group, detailElem };
 
     return (
       <div className="stems-listing-widget stems-browser">
-        <InlineCSS css={Files.css+css} id="stem-files-css" />
         <ul className="stems-listing" id={group}>
           {model.map( (modl,i) => <StemListingLine key={i} model={modl} {...lineProps} /> )}
         </ul>
@@ -39,10 +36,8 @@ class StemsListing extends React.Component
 class StemListingLine extends React.Component
 {
   render() {
-    const { model, group, tags, detailElem } = this.props;
+    const { model, group, tags, detailElem:Detail } = this.props;
     const { bpm, artist, name, id } = model;
-
-    var detail = React.createElement(detailElem,{model});
 
     return(
       <li className="panel">
@@ -52,7 +47,7 @@ class StemListingLine extends React.Component
           <Files model={model} tags={tags} />
           <div className="clearfix"></div>
           <Collapse.Target target={'stem-'+id}>
-            {detail}
+            <Detail model={model} tags={tags} />
           </Collapse.Target>
       </li>
     );

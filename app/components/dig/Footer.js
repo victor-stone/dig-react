@@ -4,7 +4,7 @@ import Footer from '../Footer';
 
 function DigFooter() {
   return (
-    <Footer>
+    <Footer contactURL="/faq">
       <h1>{"There"}</h1>
       <div className="row">
         <div className="col-md-6">

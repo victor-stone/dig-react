@@ -120,13 +120,12 @@ var AddToPlaylistLink = React.createClass({
   showPlaylistPopup() {
     var playlists = new Playlists();
     playlists.autoFilterTags = false;
-    var opts = {
-      limit: 200,
-      dynamic: '-1',
-      user: this.state.user.id
-    };
-    playlists.getModel( opts )
-      .then( () => AddToPlaylistPopup.show( AddToPlaylistPopup,{ store: playlists, model: this.props.store.model.upload, user: opts.u } ));
+
+    var model = this.props.store.model.upload;
+    var user  = this.state.user.id;
+
+    playlists.getModel( { limit: 200, dynamic: '-1', user } )
+      .then( () => AddToPlaylistPopup.show( AddToPlaylistPopup,{ store: playlists, model, user } ));
   },
 
   render() {

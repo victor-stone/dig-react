@@ -150,31 +150,31 @@ var css = `
   color: black;
 }
 
-.playlist-detail-page .playlist-tracks > li {
+.playlist-detail-page .track-list> li {
   margin-bottom: 8px;
 }
 
 
-.playlist-detail-page .playlist-tracks > li > .delete-track-button {
+.playlist-detail-page .track-list> li > .delete-track-button {
   margin-right: 10px ;
   font-weight: 200;
   padding: 4px;
 }
 
-.playlist-detail-page .playlist-tracks > li > .delete-track-button:hover::after {
+.playlist-detail-page .track-list> li > .delete-track-button:hover::after {
   content: 'remove track';
   margin-left: 5px;
 }
 
 
-.playlist-detail-page .playlist-tracks .track-name {
+.playlist-detail-page .track-list .track-name {
   margin-left: 8px;
   font-size: 18px;
   font-weight: bold;
   color: #555;
 }
 
-.playlist-detail-page .playlist-tracks .track-artist {
+.playlist-detail-page .track-list .track-artist {
   margin-left: 8px;
   font-size: 16px;
   color: #777;
@@ -184,22 +184,22 @@ var css = `
   float: right;
 }
 
-.tracks-widget .track-list.ui-sortable {
+.tracks-widget .track-list .ui-sortable {
   padding: 0px;
 }
 
-.tracks-widget .track-list.ui-sortable > li {
+.tracks-widget .track-list .ui-sortable > li {
   padding-bottom: 8px;
   font-size: 17px;
   cursor: pointer;
   color: #777;
 }
 
-.tracks-widget .track-list.ui-sortable > li:hover {
+.tracks-widget .track-list .ui-sortable > li:hover {
   color: black;
 }
 
-.tracks-widget .track-list.ui-sortable > li > .dragger {
+.tracks-widget .track-list .ui-sortable > li > .dragger {
   margin: 4px;
   padding: 4px;
   border-radius: 2px;

@@ -3,10 +3,9 @@ import env    from './services/env';
 import routes from './routes/ccmixter';
 import App    from './app';
 
-import {
-          Header,
-          Footer
-        } from './components/ccmixter';
+import Header from './components/ccmixter/Header';
+import Footer from './components/ccmixter/Footer';
+
 
 var rewriteRules = [
 ];

@@ -13,12 +13,13 @@
 | app/components/AudioPlayer/WavImage.js | 35 | export full xml+svg and put in <img> tag
 | app/components/bound/PagingLimit.js | 7 | make QueryParamTracker a mixin class
 | app/components/bound/ReqTagsNavTabs.js | 30 | replace all oassign with Object.assign
+| app/components/bound/Tags.js | 246 | tag cats should be navtabs, not just stacked on top of each other
 | app/components/models/EditableTrackList.js | 8 | All these lists that are model.items[] should just be model[]
 | app/components/models/StaticTrackList.js | 5 | allow multiple of these on a page
 | app/components/models/Tags.js | 450 | reconcile this with floating checks above
 | app/components/services/PlayAllButton.js | 9 | this is too Playlist aware
 | app/components/services/PlayAllButton.js | 44 | check this code
-| app/components/stems/Detail.js | 32 | these tags used to be filtered by genre/instrument
+| app/components/stems/Detail.js | 35 | these tags used to be filtered by genre/instrument
 | app/components/stems/Tags.js | 10 | use real defines here
 | app/components/vanilla/Paging.js | 5 | don't assume that ?offset= is the proper URL formation
 | app/components/vanilla/PagingLimit.js | 3 | don't assume 10, 20, 40, etc.

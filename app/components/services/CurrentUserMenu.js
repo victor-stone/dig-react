@@ -1,6 +1,7 @@
 import React         from 'react';
 import Glyph         from '../vanilla/Glyph';
 import DeadLink      from '../vanilla/DeadLink';
+import DropdownMenu  from '../vanilla/DropdownMenu';
 import FeedBadge     from './FeedBadge';
 import { ellipse }   from '../../unicorns';
 import thumbStyle    from '../services/people-thumb-style';
@@ -39,13 +40,12 @@ const CurrentUserMenu = React.createClass({
 
     var children = React.Children.map( this.props.children, c => c.type.name === 'MenuDivider' ? c : <li>{c}</li> );
 
+    var head = <span>{ellipse(name,MAX_NAME_LEN)}{" "}{feedbadge && <FeedBadge />}</span>;
+
     return (
-      <li className="dropdown">
-        <a href="#" id="user-menu" className="dropdown-toggle" style={thumbStyle(user)} data-toggle="dropdown" >
-            {ellipse(name,MAX_NAME_LEN)}{" "}{feedbadge && <FeedBadge />}{" "}<Glyph icon="chevron-down" />
-        </a>
-        <ul id="user-menu-items" className="dropdown-menu">{children}</ul>
-      </li>
+      <DropdownMenu id="user-menu" style={thumbStyle(user)} head={head}>
+        {children}
+      </DropdownMenu>
     );
   }
 

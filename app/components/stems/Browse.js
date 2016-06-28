@@ -1,5 +1,5 @@
-import React        from 'react';
-import BoundListing      from './BoundListing';
+import React         from 'react';
+import ListingWidget from './ListingWidget';
 import QueryOptions from './QueryOptions';
 import Tags         from './Tags';
 
@@ -7,6 +7,24 @@ import InlineCSS    from '../../components/vanilla/InlineCSS';
 import css          from './style/browse';
 import Files        from '../models/Files';
 
+/*
+  BrowseStems (this file)
+    |
+    |-> ListingWidget
+    |       |
+    |       |-> BoundListing {StemDetail} ----------------|
+    |                  |                                  |
+    |                  |-> StemsListing                   |
+    |                           |                         |
+    |                          |-> StemListing Line       |
+    |                                  |                  |
+    |                                  |-> {Detail}   <---|
+    |-> Tags
+          |
+          |-> DualTagFieldWidget      
+
+
+*/
 function Stems(props) {
     var store = props.store;
 
@@ -18,7 +36,7 @@ function Stems(props) {
             <Tags store={store} />
           </div>
           <div className="col-md-7 stems-listing-widget">
-            <BoundListing store={store} />   
+            <ListingWidget store={store} />   
           </div>
           <div className="col-md-2 stems-fixed-column">
             <QueryOptions store={store} />

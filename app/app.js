@@ -6,8 +6,8 @@ import env         from './services/env';
 import events      from './models/events';
 
 import { browserScripts } from './unicorns';
-import { Banner,
-         AudioPlayer }    from './components';
+import Banner             from './components/Banner';
+import AudioPlayer        from './components/AudioPlayer';
 
 import TitleSetter  from './components/vanilla/TitleSetter';
 import ErrorDisplay from './components/services/ErrorDisplay';

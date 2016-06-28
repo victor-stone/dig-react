@@ -6,6 +6,7 @@ import Glyph        from '../vanilla/Glyph';
 import LoadingGlyph from '../services/LoadingGlyph';
 import DeadLink     from '../vanilla/DeadLink';
 import NavbarHeader from '../vanilla/NavbarHeader';
+import DropdownMenu from '../vanilla/DropdownMenu';
 
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">
@@ -21,16 +22,13 @@ const NavbarRight = (
       <li className="hidden-xs hidden-sm">
         <Link href="/dig"><Glyph icon="tags" />{" tag search"}</Link>
       </li>
-      <li>
-        <a  href="#" className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{"featured "}<Glyph icon="chevron-down" /></a>
-        <ul className="dropdown-menu">
+      <DropdownMenu head="featured">
           <li><Link href="/film"><Glyph fixed icon="film" />{" music for film"}</Link></li>
           <li><Link href="/games"><Glyph fixed icon="gamepad" /> {"music for games"}</Link></li>
           <li className="divider"></li>            
           <li><Link href="/free"><Glyph fixed icon="beer" />{" free for commercial use"}</Link></li>
           <li><Link href="/ccplus"><Glyph fixed icon="usd" /> {"royalty free licensed"}</Link></li>
-        </ul>            
-      </li>
+      </DropdownMenu>            
     </ul>    
 );
 

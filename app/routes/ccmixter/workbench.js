@@ -9,7 +9,7 @@ import Remixes from '../../stores/remixes';
 import Playlist from '../../stores/playlist';
 import Samples from '../../stores/samples';
 
-import Stems  from '../../components/stems/Listing';
+import Stems  from '../../components/stems/ListingWidget';
 import css1 from '../../components/stems/style/detail';
 import css2 from '../../components/stems/style/browse';
 

@@ -27,7 +27,10 @@ import { StaticTagsList }         from '../models/Tags';
 class StemsDetail extends React.Component
 {
   render() {
-    const { model, store } = this.props;
+    const { 
+            store, // this has selected tags in it
+            model  // this is the upload we're displaying details for
+          } = this.props;
     
     // TODO: these tags used to be filtered by genre/instrument
     //       maybe this should be store.tags

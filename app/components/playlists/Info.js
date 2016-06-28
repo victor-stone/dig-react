@@ -23,7 +23,7 @@ class Feature extends CurrentUserTracker.cut(React.Component)
 
   render() {
     const { user: {isAdmin=false} = {} } = this.state;
-    return isAdmin && <Toggle store={this.props.store} propName="isFeatured" text="Featured" />;
+    return isAdmin && <Toggle store={this.props.store} className="featured" propName="isFeatured" text="Featured" />;
   }
 }
 

@@ -4,6 +4,8 @@ import Link from './services/LinkToRoute';
 
 
 function Footer(props) {
+    const { contactURL = 'http://ccmixter.org/media/people/contact/admin'} = props;
+    
     return (
       <div className="container-fluid footer footer-pad">
         <div className="row">
@@ -36,7 +38,7 @@ function Footer(props) {
               <li><a href="https://github.com/victor-stone/dig-react"><i className="fa fa-github"></i>{" GitHub"}</a></li>
               <li><a href="http://ccmixter.org/query-api">{"Query API"}</a></li>
               <li><a href="https://ccmixter.org/forum">{"Forums"}</a></li>
-              <li><a href="http://ccmixter.org/media/people/contact/admin">{"Contact"}</a></li>
+              <li><a href={contactURL}>{"Contact"}</a></li>
             </ul>
           </div>
         </div>
