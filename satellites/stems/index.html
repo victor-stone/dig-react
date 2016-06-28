@@ -35,6 +35,23 @@
 </head>
 
 <body>
+    <style>
+    .beta {position: absolute;
+    width: 100px;
+    top: 10;
+    display: hidden;
+    z-index: 200;
+    left: 300;
+    padding: 6px;
+    background: white;
+    text-align: center;
+    border-radius: 8px;
+    letter-spacing: 2;
+    font-weight: 500;}
+    </style>
+    <div class="beta">BETA</div>
+
+
     <div id="content">
         <div >
             <div id="modal-container" ></div>
@@ -48,10 +65,10 @@
                             <a href="http://<%= satellite_host %>/" class="navbar-brand" ><img src="./stems_files/logo.png" ></a>
                         </div>
                         <div class="collapse navbar-collapse" id="dig-collapse" >
-                            <div role="search" class="navbar-form navbar-right" >
+                            <!-- div role="search" class="navbar-form navbar-right" >
                                 <form id="search" method="get" action="http://<%= satellite_host %>/stems/search" class="form-group input-group input-group-sm" >
                                     <input type="text" name="s" class="form-control" value="" placeholder="genre, instrument, etc." size="30" id="searchText" ><span class="input-group-addon" ><a href="#" onclick="document.getElementById('search').submit(); return true;" ><i class="fa fa-search" ></i></a></span></form>
-                            </div>
+                            </div -->
                             <ul class="nav navbar-nav navbar-right" >
                                 <li >
                                     <a href="http://<%= satellite_host %>/#" >

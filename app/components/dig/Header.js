@@ -34,9 +34,10 @@ const NavbarRight = (
     </ul>    
 );
 
-function homeLink() {
-  return( <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.titles} /></Link> );
-}
+
+// function homeLink() {
+//   return( <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.titles} /></Link> );
+// }
 
 const Header = React.createClass({
 
@@ -45,7 +46,7 @@ const Header = React.createClass({
   },
 
   render: function() {
-    var homeLink = <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.titles} /></Link>;
+    var homeLink = <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.title} /></Link>;
 
     return  ( 
         <nav className="navbar navbar-inverse">

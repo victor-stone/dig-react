@@ -35,6 +35,22 @@
 </head>
 
 <body>
+    <style>
+    .beta {position: absolute;
+    width: 100px;
+    top: 10;
+    display: hidden;
+    z-index: 200;
+    left: 300;
+    padding: 6px;
+    background: white;
+    text-align: center;
+    border-radius: 8px;
+    letter-spacing: 2;
+    font-weight: 500;}
+    </style>
+    <div class="beta">BETA</div>
+
     <div id="content">
         <div >
             <div id="modal-container" ></div>
@@ -51,10 +67,10 @@
                                     <noscript ></noscript>
                                 </li>
                             </ul>
-                            <div role="search" class="navbar-form navbar-right" >
-                                <form id="search" method="GET" action="http://<%= satellite_host %>/stems/search" class="form-group input-group input-group-sm" >
+                            <!-- div role="search" class="navbar-form navbar-right" >
+                                <form id="search" method="GET" action="http://<%= satellite_host %>/pells/search" class="form-group input-group input-group-sm" >
                                     <input type="text" class="form-control" value="" placeholder="genre, title, etc." size="30" id="searchText" ><span class="input-group-addon" ><a href="#" onclick="document.getElementById('search').submit(); return true;" ><i class="fa fa-search" ></i></a></span></form>
-                            </div>
+                            </div -->
                             <ul class="nav navbar-nav navbar-right" >
                                 <li ><a href="http://<%= satellite_host %>/pells" >browse</a></li>
                                 <!--li ><a href="http://<%= satellite_host %>/licenses" >licenses</a></li -->

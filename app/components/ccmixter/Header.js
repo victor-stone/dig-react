@@ -14,10 +14,6 @@ import CurrentUserMenu from '../services/CurrentUserMenu';
 import Alert           from '../services/Alert';
 import Login           from './Login';
 
-function homeLink(props) {
-  return( <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={props.titles} /></Link> );
-}
-
 const UserMenu = React.createClass({
 
   mixins: [CurrentUserTracker],
@@ -78,11 +74,26 @@ const Header = React.createClass({
       }
     }
   },
+  // <!-- li><Link href="/workbench">{"workbench"}</Link></li -->
+
 
   render: function() {
-
+    const homeLink = <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.title} /></Link>;
     return  (        
         <nav className="navbar navbar-inverse top-navbar">
+    <div style={{
+      position: 'absolute',
+      width: 100,
+      top: 10,
+      zIndex: 200,
+      left: 300,
+      padding: 6,
+      background: 'white',
+      textAlign: 'center',
+      borderRadius: 8,
+      letterSpacing: 2,
+      fontWeight: 500}}
+    >{"BETA"}</div>
           <div className="container-fluid">
             <NavbarHeader title="ccMixter" homeLink={homeLink} />
             <div className="collapse navbar-collapse" id="dig-collapse">
@@ -91,8 +102,6 @@ const Header = React.createClass({
                 <li>
                   <DeadLink><LoadingGlyph /></DeadLink>
                 </li>
-                                <li><Link href="/workbench">{"workbench"}</Link></li>
-
                 <li  id="tree_menu_tab" >
                   <Link href="/tree">{"remix tree"}</Link>
                 </li>
