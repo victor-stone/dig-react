@@ -3,6 +3,7 @@
 # compiled output
 /dist
 /tmp
+/tmp-build
 /app/index.js
 app/mixins/index.js
 app/components/index.js

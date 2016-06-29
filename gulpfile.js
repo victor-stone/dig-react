@@ -86,7 +86,9 @@ config.apps.forEach( a => {
 
 config.isSatellite = config.satellites.indexOf( config.app ) !== -1;
 
-gutil.log( gutil.colors.white.bgBlack('config:'), '\n', config );
+function showConfig() {
+  gutil.log( gutil.colors.white.bgBlack('config:'), '\n', config );
+}
 
 /*************** 
       TOOLS 
@@ -341,8 +343,8 @@ gulp.task('todo', function() {
 });
 
 gulp.task('publish', function(){
-  gulp.src(`${temp_target}/**/*.*`, { base: './' })
-  .pipe(gulp.dest('./dist'));
+  gulp.src([`${temp_target}/**/*.*`])
+  .pipe(gulp.dest('dist'));
 });
 
 gulp.task('lint', task_lint );
