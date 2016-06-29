@@ -341,13 +341,13 @@ gulp.task('todo', function() {
 });
 
 gulp.task('publish', function(){
-  gulp.src('./tmp/**/*.*', { base: './' })
+  gulp.src(`${temp_target}/**/*.*`, { base: './' })
   .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('lint', task_lint );
 
-gulp.task('make-indecies',  ['todo'], task_make_indecies );
+gulp.task('make-indecies', task_make_indecies );
 
 gulp.task('vendor-css',    task_vendor_css );
 gulp.task('vendor-js',     task_vendor_js );
