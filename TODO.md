@@ -3,13 +3,13 @@
 |:------|:------:|:------
 | app/components/QueryOptions.js | 16 | care
 | app/routes/credits.js | 7 | Get this the hell out of /routes
+| app/unicorns/index.js | 5 | break TagString into separate npm module
+| app/unicorns/index.js | 6 | move browser scripts somewhere else
 | app/stores/collection.js | 141 | don't assume this behavoir and have a policy flag
 | app/stores/playlist.js | 53 | make this a property
 | app/stores/playlist.js | 80 | make this a property
 | app/stores/totals.js | 12 | investigate if this should include 't' and 'template'
 | app/stores/upload.js | 128 | check if artist is really needed!
-| app/unicorns/index.js | 5 | break TagString into separate npm module
-| app/unicorns/index.js | 6 | move browser scripts somewhere else
 | app/components/AudioPlayer/WavImage.js | 35 | export full xml+svg and put in <img> tag
 | app/components/bound/PagingLimit.js | 7 | make QueryParamTracker a mixin class
 | app/components/bound/ReqTagsNavTabs.js | 30 | replace all oassign with Object.assign
@@ -33,4 +33,5 @@
 | Filename | line # | FIXME
 |:------|:------:|:------
 | app/routes/nowplaying.js | 8 | now playing from audio player is broken
+| app/components/models/ZIPFile.js | 3 | incoming tags are not being highlighted
 | app/components/services/PlayAllButton.js | 51 | this assuming this is cleared out somewhere

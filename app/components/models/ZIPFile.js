@@ -1,5 +1,6 @@
 import React  from 'react';
 
+// FIXME: incoming tags are not being highlighted
 class ZIPFile extends React.Component
 {
   render() {

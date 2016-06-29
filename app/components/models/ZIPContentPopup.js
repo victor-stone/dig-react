@@ -26,7 +26,12 @@ class ZIPFilesPopup extends Modal.Popup
 
 class ZIPContentPopup extends React.Component
 {
-  onShow() {
+  constructor() {
+    super(...arguments);
+    this.onInfo = this.onInfo.bind(this);
+  }
+  
+  onInfo() {
     const { model, tags } = this.props;
     ZIPFilesPopup.show( ZIPFilesPopup, {model,tags} );
   }
@@ -34,7 +39,7 @@ class ZIPContentPopup extends React.Component
   render() {
     return (
         <span className="zip-link-container">
-          <InfoButton onShow={this.onShow} fixed className="zip-link" size="lg" />
+          <InfoButton onInfo={this.onInfo} fixed className="zip-link" size="lg" />
         </span>
       );
   }
