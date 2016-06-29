@@ -1,7 +1,7 @@
 import React from 'react';
+
 import { BoundInputControlMixin }   from './InputField';
 import { InlineFormattedTextEditor }from '../vanilla/FormattedTextEditor';
-import { ModelTracker }             from '../../mixins';
 
 /*
   Emit inline html with unformatted text backing that is optionally 
@@ -11,12 +11,12 @@ import { ModelTracker }             from '../../mixins';
     propName := name of the store's property for the unformatted text [read/write]
     htmlProp := name of the store's property for the formatted html [read only]
 */
-class BoundInlineFormattedTextEditor extends BoundInputControlMixin(ModelTracker.extender(React.Component))
+class BoundInlineFormattedTextEditor extends BoundInputControlMixin(React.Component)
 {
-  stateFromStore(store) {
-    const state = super.stateFromStore(store);
-    const props = store.getProperties([this.props.htmlName]);
-    state.html = props[this.props.htmlName];
+  _inputStateFromProps(props) {
+    const state      = super._inputStateFromProps(props);
+    const storeProps = props.store.getProperties([props.htmlName]);
+    state.html = storeProps[props.htmlName];
     return state;
   }
 

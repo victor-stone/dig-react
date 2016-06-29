@@ -15,6 +15,7 @@ import { CurrentUserTracker,
 
 import BoundInlineFormattedTextEditor  from '../bound/FormattedTextEditor';
 
+// FIXME: feature button is ugly
 class Feature extends CurrentUserTracker.cut(React.Component)
 {
   constructor() {

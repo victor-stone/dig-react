@@ -90,6 +90,8 @@ function showConfig() {
   gutil.log( gutil.colors.white.bgBlack('config:'), '\n', config );
 }
 
+showConfig();
+
 /*************** 
       TOOLS 
 *****************/

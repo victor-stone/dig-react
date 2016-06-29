@@ -1,19 +1,35 @@
 import React       from 'react';
 
-import { ModelTracker }     from '../../mixins';
 import { InputFormField,
          InputText       }  from '../vanilla/InputField';
 
+/*
+  Note: the parent component is assumed to be tracking store
+        updates and passing new props down to these controls
 
+        class SomeComponent extends ModelTracker.extender(React.Component) {
+
+          render() {
+            <BoundInputText store={this.state.store} propName="hooya" />
+          }
+        }
+*/
 const BoundInputControlMixin = target => class extends target {
   constructor() {
     super(...arguments);
+    this.state = this._inputStateFromProps(this.props);
     this.onDone = this.onDone.bind(this);
   }
 
-  stateFromStore(store) {
-    var props = store.getProperties([this.props.propName]);
-    return { text: props[this.props.propName] };
+  // TODO: should implement shouldComponentUppdate
+  
+  componentWillReceiveProps(nextProps) {
+    this.setState( this._inputStateFromProps(nextProps) );
+  }
+
+  _inputStateFromProps(props) {
+    var storeProps = props.store.getProperties([props.propName]);
+    return { text: storeProps[props.propName] };    
   }
 
   onDone(text) {
@@ -32,7 +48,7 @@ const BoundInputControlMixin = target => class extends target {
     title - form field title
 */
 
-class BoundInputFormField extends BoundInputControlMixin(ModelTracker.extender(React.Component))
+class BoundInputFormField extends BoundInputControlMixin(React.Component)
 {
   render() {
     const { title, store: { permissions: {canEdit = false} = {}  } } = this.props;
@@ -47,7 +63,7 @@ class BoundInputFormField extends BoundInputControlMixin(ModelTracker.extender(R
   props
     propName = name of the store's property
 */
-class BoundInputText extends BoundInputControlMixin(ModelTracker.extender(React.Component))
+class BoundInputText extends BoundInputControlMixin(React.Component)
 {
   render() {
     const { store: { permissions: {canEdit = false} = {}  } } = this.props;
@@ -59,8 +75,10 @@ class BoundInputText extends BoundInputControlMixin(ModelTracker.extender(React.
 
 
 module.exports = {
-  InputFormField: BoundInputFormField,
+  InputFormField: BoundInputFormField, // deprecated: don't use
   InputText:      BoundInputText,
+  BoundInputFormField,
+  BoundInputText,
   BoundInputControlMixin
 };
 

@@ -1,3 +1,4 @@
+/*eslint "react/no-danger":0 */
 import React from 'react';
 import EditControls from './EditControls';
 
@@ -10,11 +11,19 @@ class FormattedTextEditor extends React.Component
   constructor() {
     super(...arguments);
     bindAll(this, 'onChange' );
-    let text;
-    ({ text, focusId:this.focusId = 'element_' + ++nextID } = this.props);
-    this.state = { text, orgText: text };
+    ({ focusId:this.focusId = 'element_' + ++nextID } = this.props);
+    this.state = this._editorStateFromProps(this.props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState( this._editorStateFromProps(nextProps) );
+  }
+
+  _editorStateFromProps(props) {
+    const { text } = props;
+    return { text, orgText: text };
+  }
+  
   onChange(e) {
     this.setState({text:e.target.value});
   }
@@ -52,14 +61,11 @@ class FormattedTextEditor extends React.Component
 */
 class InlineFormattedTextEditor extends FormattedTextEditor
 {
-  /*eslint "react/no-danger":0 */
   constructor() {
     super(...arguments);
     bindAll(this, 'onCancel', 'onEdit', 'onDone' );
-    const { text } = this.props;
-    this.state = { text, orgText: text };
-
   }
+
   onEdit() {
     /* globals $ */
     this.setState( { editing: true }, () =>  $('#'+this.focusId).focus() );

@@ -11,8 +11,16 @@ const InputControlMixin = target => class extends target {
   constructor() {
     super(...arguments);
     bindAll(this, 'onCancel', 'onEdit', 'onDone' );
-    this.state = { text: this.props.text, orgText: this.props.text };
+    this.state = this._stateFromProps(this.props);
     this.focusId = this.props.focusId || 'element_' + ++nextID;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState( this._stateFromProps(nextProps) );
+  }
+
+  _stateFromProps(props) {
+    return { text: props.text, orgText: props.text };
   }
 
   onEdit() {

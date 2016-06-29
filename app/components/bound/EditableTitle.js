@@ -3,7 +3,9 @@ import Glyph            from '../vanilla/Glyph';
 import { InputText }    from './InputField';
 import { ModelTracker } from '../../mixins';
 
-class _EditableTitle extends React.Component
+// FIXME: Edit controls styles on EditableTitle are wacky
+
+class EditableTitle extends ModelTracker.extender(React.Component)
 {
   render() {
     const { icon = 'music', store } = this.props;
@@ -19,11 +21,6 @@ class _EditableTitle extends React.Component
   }
 }
 
-class EditableTitle extends ModelTracker.extender(_EditableTitle) {
-  stateFromStore(store) {
-    return {store};
-  }
-}
 
 module.exports = EditableTitle;
 
