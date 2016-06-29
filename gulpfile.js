@@ -60,6 +60,11 @@ const SATELLITE_HOST = 'beta.ccmixter.org';
 var apihost   = argv.apihost || QUERY_HOST;
 var sathost = argv.sathost || SATELLITE_HOST;
 
+var temp_target = './tmp-build';
+
+var target = argv.p ? temp_target : './dist';
+
+
 var config = {
   debug: !argv.p,
   apihost: apihost || 'ccmixter.org',
@@ -67,7 +72,8 @@ var config = {
   buildDate: new Date() + '',
   app: 'ccmixter',
   apps: [ 'ccmixter', 'dig' ],
-  satellites: [ 'pells', 'stems', 'playlists' ]
+  satellites: [ 'pells', 'stems', 'playlists' ],
+  target: target
 };
 
 config.apps = config.apps.concat(config.satellites);
@@ -159,41 +165,41 @@ function task_make_indecies() {
 }
 
 function task_browser_clean() {
-  return del( `./dist/${config.app}/browser` );
+  return del( `${target}/${config.app}/browser` );
 }
 
 function task_server_clean() {
-  return del( './dist/server' );
+  return del( `${target}/server` );
 }
 
 function task_satellite_clean() {
-  return del( `./dist/${config.app}` );
+  return del( `${target}/${config.app}` );
 }
 
 function task_clean() {
-  return del( './dist' );
+  return del( target );
 }
 
 function task_satellite_stub() {
   return gulp.src(`satellites/${config.app}/index.html`)
           .pipe(template(config))
-          .pipe(gulp.dest(`./dist/${config.app}/`));
+          .pipe(gulp.dest(`${target}/${config.app}/`));
 }
 
 function task_satellite_files() {
   gulp.src( 'node_modules/font-awesome/fonts/*.*' )
-    .pipe(gulp.dest(`./dist/${config.app}/fonts`));
+    .pipe(gulp.dest(`${target}/${config.app}/fonts`));
   gulp.src( [ `satellites/${config.app}/**/*`, `!satellites/${config.app}/index.html`, `!satellites/${config.app}/**/*.css`] )
-    .pipe(gulp.dest(`./dist/${config.app}/`));  
+    .pipe(gulp.dest(`${target}/${config.app}/`));  
   gulp.src(`satellites/${config.app}/**/*.css`)
     .pipe( cssmin() )
-    .pipe(gulp.dest(`./dist/${config.app}/`));  
+    .pipe(gulp.dest(`${target}/${config.app}/`));  
 }
 
 function task_satellite_chmod() {
-  return gulp.src(`dist/${config.app}/**/*`)
+  return gulp.src(`${target}/${config.app}/**/*`)
           .pipe(chmod(DEFAULT_WEB_SHARE))
-          .pipe(gulp.dest(`dist/${config.app}`));
+          .pipe(gulp.dest(`${target}/${config.app}`));
 }
 
 function task_browser_stub() {
@@ -217,20 +223,20 @@ function task_browser_js() {
     .pipe(source(`${config.app}.js`))
     .pipe(config.debug ? gutil.noop() : buffer()) 
     .pipe(config.debug ? gutil.noop() : uglify())
-    .pipe(gulp.dest(`./dist/${config.app}/browser/js`));
+    .pipe(gulp.dest(`${target}/${config.app}/browser/js`));
 }
 
 function task_browser_css() {
   return gulp.src( `public/{shared,${config.app}}/css/*.css` )
           .pipe(concat(`${config.app}.css`))
           .pipe(config.debug ? gutil.noop() : cssmin() )
-          .pipe(gulp.dest(`./dist/${config.app}/browser/css`));
+          .pipe(gulp.dest(`${target}/${config.app}/browser/css`));
 }
 
 function task_browser_static() {
   return [ 'shared', config.app ].forEach( dir => 
             gulp.src( `public/${dir}/{*.html,*.ico,*.xml,*.txt,*.png,images/*.*}`)
-                .pipe(  gulp.dest( `./dist/${config.app}/browser` ) )
+                .pipe(  gulp.dest( `${target}/${config.app}/browser` ) )
             );
 }
 
@@ -238,20 +244,20 @@ function task_server_stub() {
   return gulp.src('app/server.template')
           .pipe(template(config))
           .pipe(rename('index.js'))
-          .pipe(gulp.dest('./dist/' + config.app)); 
+          .pipe(gulp.dest(`${target}/${config.app}`)); 
 }
 
 function task_server_js() {
   return gulp.src('app/**/*.js')
           .pipe(babel())
-          .pipe(gulp.dest('./dist/server'));
+          .pipe(gulp.dest(`${target}/server`));
 }
 
 function task_vendor_static() {
   gulp.src( 'node_modules/font-awesome/fonts/*.*' )
-    .pipe(gulp.dest(`./dist/${config.app}/browser/fonts`));
+    .pipe(gulp.dest(`${target}/${config.app}/browser/fonts`));
   gulp.src( 'node_modules/soundmanager2/swf/soundmanager2{_flash9.swf,.swf}' )
-    .pipe(gulp.dest(`./dist/${config.app}/browser/swf`));  
+    .pipe(gulp.dest(`${target}/${config.app}/browser/swf`));  
 }
 
 function task_vendor_css() {
@@ -275,7 +281,7 @@ function task_vendor_css() {
   };
   
   var mode = config.debug && !config.isSatellite ? 'dev' : 'prod';
-  var dest = `./dist/${config.app}/` + (config.isSatellite ? `${config.app}_files` : '/browser/css');
+  var dest = `${target}/${config.app}/` + (config.isSatellite ? `${config.app}_files` : '/browser/css');
 
   return gulp.src( vendorCSSSources[mode] )
             .pipe(concat('vendor.css'))
@@ -316,7 +322,7 @@ function task_vendor_js() {
   */
 
   var mode = config.debug && !config.isSatellite ? 'dev' : 'prod';
-  var dest = `./dist/${config.app}/` + (config.isSatellite ? `${config.app}_files` : '/browser/js');
+  var dest = `${target}/${config.app}/` + (config.isSatellite ? `${config.app}_files` : '/browser/js');
 
   return gulp.src( vendorJSSources[mode] )
           .pipe(concat('vendor.js'))
@@ -334,6 +340,10 @@ gulp.task('todo', function() {
         .pipe(gulp.dest('./'));
 });
 
+gulp.task('publish', function(){
+  gulp.src('./tmp/**/*.*', { base: './' })
+  .pipe(gulp.dest('./dist'));
+});
 
 gulp.task('lint', task_lint );
 

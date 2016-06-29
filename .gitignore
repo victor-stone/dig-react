@@ -35,3 +35,7 @@ build.log
 # dev
 js.js
 
+
+app/components/playlists/pages/index.js
+
+app/components/vanilla/index.js

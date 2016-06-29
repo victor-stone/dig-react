@@ -32,4 +32,5 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
+| app/routes/nowplaying.js | 8 | now playing from audio player is broken
 | app/components/services/PlayAllButton.js | 51 | this assuming this is cleared out somewhere

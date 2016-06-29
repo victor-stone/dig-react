@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 while getopts a:s: option 
 do 
 case "${option}" 
@@ -7,13 +8,21 @@ a) APIHOST="--apihost=${OPTARG}";;
 s) SATHOST="--sathost=${OPTARG}";;
 esac 
 done
-# gulp clean 
+
+gulp clean       -p
+
 # server
 gulp server-js   -p ${APIHOST} ${SATHOST}
+
 # apps
 gulp --ccmixter  -p ${APIHOST} ${SATHOST}
 gulp --dig       -p ${APIHOST} ${SATHOST}
+
 # satellites
 gulp --stems     -p ${SATHOST}
 gulp --playlists -p ${SATHOST}
 gulp --pells     -p ${SATHOST}
+
+# move tmp build dir to /dist
+gulp publish
+

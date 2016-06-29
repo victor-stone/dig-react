@@ -5,6 +5,8 @@ import NowPlaying from '../stores/nowplaying';
 import { PageHeader,
          Remixes } from '../components';
 
+// FIXME: now playing from audio player is broken
+
 var nowplaying = React.createClass({
 
   render() {
