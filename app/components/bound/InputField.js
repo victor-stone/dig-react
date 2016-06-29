@@ -36,6 +36,7 @@ const BoundInputControlMixin = target => class extends target {
     var props = {};
     props[this.props.propName] = text;
     this.props.store.applyProperties(props);
+    this.setState( { text: InputText.LoadingText } );
   }
 };
 

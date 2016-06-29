@@ -1,6 +1,6 @@
 import React            from 'react';
 import Glyph            from '../vanilla/Glyph';
-import { InputText }    from './InputField';
+import { BoundInputText }    from './InputField';
 import { ModelTracker } from '../../mixins';
 
 // FIXME: Edit controls styles on EditableTitle are wacky
@@ -14,7 +14,7 @@ class EditableTitle extends ModelTracker.extender(React.Component)
           <h1 className="center-text">
             <Glyph icon={icon} /> 
             {" "}
-            <InputText store={store} propName="name" />
+            <BoundInputText store={store} propName="name" />
           </h1>
         </div>
       );

@@ -3,6 +3,10 @@ import React       from 'react';
 import { FormItem } from './Form';
 import EditControls from './EditControls';
 
+// TODO: make a generic LoadingGlyph
+
+import LoadingGlyph from '../services/LoadingGlyph';
+
 import { bindAll }           from '../../unicorns';
 
 var nextID = 0;
@@ -84,20 +88,26 @@ class InputText extends InputControlMixin(React.Component)
   }
 
   render() {
+    const { text, editing } = this.state;
+
     if( this.props.canEdit ) {
       return(
           <span>
-            {this.state.editing 
+            {editing 
               ? this.htmlInput()
-              : this.state.text}
+              : text === InputText.LoadingText
+                  ? <LoadingGlyph />
+                  : text}
             <EditControls.ButtonGroup onEdit={this.onEdit} onCancel={this.onCancel} onDone={this.onDone} />
           </span>
         );
     }
-    return <span>{this.state.text}</span>;
+
+    return <span>{text}</span>;
   }
 }
 
+InputText.LoadingText = 'thinking...';
 
 module.exports = {
   InputFormField,
