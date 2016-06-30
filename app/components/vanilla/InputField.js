@@ -5,7 +5,7 @@ import EditControls from './EditControls';
 
 // TODO: make a generic LoadingGlyph
 
-import LoadingGlyph from '../services/LoadingGlyph';
+import LoadingGlyph from '../vanilla/LoadingGlyph';
 
 import { bindAll }           from '../../unicorns';
 
@@ -96,7 +96,7 @@ class InputText extends InputControlMixin(React.Component)
             {editing 
               ? this.htmlInput()
               : text === InputText.LoadingText
-                  ? <LoadingGlyph />
+                  ? <LoadingGlyph color="inherit" loading />
                   : text}
             <EditControls.ButtonGroup onEdit={this.onEdit} onCancel={this.onCancel} onDone={this.onDone} />
           </span>

@@ -1,9 +1,10 @@
 /* globals $*/
 import React        from 'react';
 import Glyph        from './Glyph';
-import LoadingGlyph from '../services/LoadingGlyph';
 import DeadLink     from './DeadLink';
 import { bindAll }  from '../../unicorns';
+
+import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
 
 var AccordianButton = React.createClass({
 
@@ -111,7 +112,7 @@ class AccordianPanel extends React.Component {
             </h4>
          </div>
         <div id={id} className={'panel-collapse collapse' + clsIn} > 
-          <LoadingGlyph />
+          <AjaxLoadingGlyph color="black" />
           {this.state.open 
             ? <div className={clsChild}>{p.children}</div>
             : null

@@ -4,10 +4,11 @@ import lookup                 from '../../services';
 import api                    from '../../services/ccmixter';
 import { CurrentUserTracker } from '../../mixins';
 
+import AjaxLoadingGlyph    from '../services/AjaxLoadingGlyph';
+
 import Link            from '../services/LinkToRoute';
 import Glyph           from '../vanilla/Glyph';
 import FeedBadge       from '../services/FeedBadge';
-import LoadingGlyph    from '../services/LoadingGlyph';
 import NavbarHeader    from '../vanilla/NavbarHeader';
 import DeadLink        from '../vanilla/DeadLink';
 import CurrentUserMenu from '../services/CurrentUserMenu';
@@ -100,7 +101,7 @@ const Header = React.createClass({
 
               <ul className="nav navbar-nav navbar-right">
                 <li>
-                  <DeadLink><LoadingGlyph /></DeadLink>
+                  <DeadLink><AjaxLoadingGlyph /></DeadLink>
                 </li>
                 <li  id="tree_menu_tab" >
                   <Link href="/tree">{"remix tree"}</Link>

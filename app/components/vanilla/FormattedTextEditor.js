@@ -1,8 +1,9 @@
 /*eslint "react/no-danger":0 */
 import React from 'react';
-import EditControls from './EditControls';
-
-import { bindAll } from '../../unicorns';
+import EditControls  from './EditControls';
+import LoadingGlyph  from './LoadingGlyph';
+import { InputText } from './InputField';
+import { bindAll }   from '../../unicorns';
 
 var nextID = 0;
 
@@ -87,7 +88,9 @@ class InlineFormattedTextEditor extends FormattedTextEditor
         <div cls={className}>           
           {editing
             ? this.htmlTextarea()
-            : <span dangerouslySetInnerHTML={{ __html: html }}></span>
+            : html === InputText.LoadingText
+                ? <LoadingGlyph color="inherit" loading />
+                : <span dangerouslySetInnerHTML={{ __html: html }} />
           }
           {canEdit && <EditControls.ButtonGroup onEdit={this.onEdit} onCancel={this.onCancel} onDone={this.onDone} />}
         </div>

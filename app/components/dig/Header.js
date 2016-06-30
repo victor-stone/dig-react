@@ -3,10 +3,11 @@ import Link      from '../services/LinkToRoute';
 import SearchBox from '../SearchBox';
 
 import Glyph        from '../vanilla/Glyph';
-import LoadingGlyph from '../services/LoadingGlyph';
 import DeadLink     from '../vanilla/DeadLink';
 import NavbarHeader from '../vanilla/NavbarHeader';
 import DropdownMenu from '../vanilla/DropdownMenu';
+
+import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
 
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">
@@ -52,7 +53,7 @@ const Header = React.createClass({
             <NavbarHeader title="dig.ccMixter" homeLink={homeLink}/>
             <div className="collapse navbar-collapse" id="dig-collapse">
               <ul className="nav navbar-nav">
-                <li><DeadLink><LoadingGlyph /></DeadLink></li>    
+                <li><DeadLink><AjaxLoadingGlyph /></DeadLink></li>    
               </ul>
               <div role="search" className="navbar-form navbar-right">
                 <SearchBox submitSearch={this.submitSearch}/>
