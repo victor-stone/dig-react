@@ -67,7 +67,7 @@ if( isUndefined(Array.prototype.find) ) {
 
 if( isUndefined(Array.prototype.indexOfElement ) ) {
   Array.prototype.indexOfElement = function(key,value) {
-    var valIsDefined = isUndefined(value);
+    var valIsDefined = !isUndefined(value);
     for( var i = 0; i < this.length; i++ ) {
       if( valIsDefined ) {
         if( this[i][key] === value ) {
@@ -106,7 +106,7 @@ Array.prototype.filter = function(cb) {
     if( cb instanceof RegExp ) {
       cb = cb.test.bind(cb);
     }
-    return _old_array_filter.apply(this,arguments);
+    return _old_array_filter.apply(this,[cb]);
   }
 };
 
@@ -118,7 +118,7 @@ if( isUndefined(Array.prototype.match) ) {
 if( isUndefined(Array.prototype.filterBy) ) {
   Array.prototype.filterBy = function(key,value) {
     var results = [];
-    var valIsDefined = typeof value !== 'undefined';
+    var valIsDefined = !isUndefined(value);
     for( var i = 0; i < this.length; i++ ) {
       if( valIsDefined ) {
         if( this[i][key] === value ) {

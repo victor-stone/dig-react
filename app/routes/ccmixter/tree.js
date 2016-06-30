@@ -17,7 +17,7 @@ tree.subnav = function(props) {
 };
 
 tree.store = function(params,queryParams) {
-  var defaultOpts = oassign({},qc.remixes);
+  var defaultOpts = oassign({},qc.remixes,qc.latest);
   if( queryParams && 'reqtags' in queryParams ) {
     defaultOpts.reqtags = queryParams.reqtags;
   }

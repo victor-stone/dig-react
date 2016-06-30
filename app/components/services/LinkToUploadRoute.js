@@ -22,6 +22,11 @@ function LinkToUploadRoute(props) {
     );
 }
 
+LinkToUploadRoute.navigateTo = function(model) {
+  const href = LinkToUploadRoute.url(model);
+  Link.navigateTo(href);
+};
+
 LinkToUploadRoute.url = function(model,altBase) {
   const base = altBase === undefined ? '/files/' : altBase;
   return base + model.artist.id + '/' + model.id;
