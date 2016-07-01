@@ -1,10 +1,10 @@
 var css =
-`.curators-page .curators-list {
+`.curators-page .people-list {
   margin: 10px 10px;
   padding: 0px;
 }
 
-.curators-page .curators-list li {
+.curators-page .people-list li {
   display: inline-table;
   text-align: center;
   width: 220px;
@@ -14,21 +14,21 @@ var css =
   border-radius: 5px;
 }
 
-.curators-page .curators-list li:hover {
+.curators-page .people-list li:hover {
   background-color: #DDD;
 }
 
-.curators-page .curators-list li > a {
+.curators-page .people-list li > a {
   display: block;
   vertical-align: bottom;
 }
 
-.curators-page .curators-list li a img {
+.curators-page .people-list li a img {
   display: block;
   margin: 0px auto 9px auto;
 }
 
-.curators-page .curators-list li a > span > span {
+.curators-page .people-list li a > span > span {
   color: black;
   font-weight: bold;
 }

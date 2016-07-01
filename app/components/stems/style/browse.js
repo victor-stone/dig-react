@@ -77,14 +77,13 @@ var css =
 }
 
 .stems-browser .stems-listing > li .bpm {
-  float: right;
   font-size: 12px;
-  margin-top: 32px;
+  display: inline-block;
+  margin-left: 20px;
 }
 
-.stems-browser .stems-listing > li .bpm::before{
-  content: 'bpm';
-  margin-right: 4px;
+.stems-browser .stems-listing > li .bpm::after{
+  content: ' bpm';
 }
 
 

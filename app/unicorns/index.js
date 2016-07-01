@@ -103,10 +103,16 @@ Array.prototype.filter = function(cb) {
     }
     return results;
   } else {
+    // to be honest, I don't know why I can't
+    // dovetail these 2 calls into one but
+    // but it seems to break callbacks that
+    // assume 'this' is in the Array instance
+    
     if( cb instanceof RegExp ) {
       cb = cb.test.bind(cb);
+      return _old_array_filter.apply(this,[cb]);
     }
-    return _old_array_filter.apply(this,[cb]);
+    return _old_array_filter.apply(this,arguments);
   }
 };
 

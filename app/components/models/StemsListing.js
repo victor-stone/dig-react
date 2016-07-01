@@ -41,9 +41,9 @@ class StemListingLine extends React.Component
 
     return(
       <li className="panel">
-          {bpm && <span className="bpm">{bpm}</span>}
           <Collapse.Toggle target={'stem-'+id} group={group} className="stem-name" text={name} />
           <LinkToPeople model={artist} className="stem-artist" />
+          {bpm && <span className="bpm">{bpm}</span>}
           <Files model={model} tags={tags} />
           <div className="clearfix"></div>
           <Collapse.Target target={'stem-'+id}>
