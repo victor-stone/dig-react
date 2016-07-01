@@ -1,8 +1,7 @@
 import React         from 'react';
-import css           from './style/subnav';
+import subNavCSS     from './style/subnav';
 import InlineCSS     from './InlineCSS';
-
-// TODO subnavbar is not in sync
+import { selectors } from '../../unicorns';
 
 /*
   Display a navbar of tabs. The actual tabs are children 
@@ -17,12 +16,13 @@ import InlineCSS     from './InlineCSS';
 */
 function SubNavBar(props)
 {
-  var cls        = 'subnav-option-bar ' + (props.className || '');
-  var stylesheet = props.css || css;
-  var Extra      = props.extra;
+  const { className, css = subNavCSS, extra:Extra } = props;
+
+  var cls = selectors('subnav-option-bar',className);
+
   return(
     <div className={cls}>
-      <InlineCSS css={stylesheet} id="subnav-option-bar-css" />
+      <InlineCSS css={css} id="subnav-option-bar-css" />
       {Extra && <Extra />}
       <div className="subnav-wrapper hidden-xs hidden-sm">
         {props.children}

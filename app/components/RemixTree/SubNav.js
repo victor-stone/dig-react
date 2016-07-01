@@ -15,7 +15,7 @@ function GallerySubNav(props) {
   return (
       <SubNavBar {...props}>
         <InlineCSS css={css} id="gallery-subnav-css" />
-        <ReqTagsNavTabs tabs={UPLOAD_TYPES} store={props.store} tab="remix" />
+        <ReqTagsNavTabs tabs={UPLOAD_TYPES} all={props.all} store={props.store} tab="remix" />
       </SubNavBar>
   );
 }

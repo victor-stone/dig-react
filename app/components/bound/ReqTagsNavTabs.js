@@ -18,18 +18,18 @@ import { TagString,
 
 
 */
-class _ReqTagsNavTabs extends SubNavTabs
+class ReqTagsNavTabs extends ModelTracker.extender(SubNavTabs)
 {
-
   constructor() {
     super(...arguments);
-    this.state = { badges: null, tab: this.props.tab };
-    this.filter = new RegExp( '^' + Object.keys(this.props.tabs).join('|') + '$');
+    //this.state = { badges: null, tab: this.props.tab };
   }
 
   // TODO: replace all oassign with Object.assign
   get tabs() { 
-    return oassign( this.props.all ? { all: 'all' } : {}, this.props.tabs ); 
+    const { all, tabs } = this.props;
+
+    return oassign( all ? { all: 'all' } : {}, tabs ); 
   }
 
   get tab() {
@@ -38,6 +38,13 @@ class _ReqTagsNavTabs extends SubNavTabs
 
   get badges() {
     return this.state.badges;
+  }
+
+  get filter() {
+    if( !this._filter ) {
+      this._filter = new RegExp( '^' + Object.keys(this.props.tabs).join('|') + '$');
+    }
+    return this._filter;
   }
 
   stateFromStore(store) {
@@ -54,20 +61,6 @@ class _ReqTagsNavTabs extends SubNavTabs
   }
 }
 
-class ReqTagsNavTabs extends ModelTracker.extender(_ReqTagsNavTabs)
-{
-  constructor() {
-    super(...arguments);
-  }
-
-  componentWillMount() {
-    super.componentWillMount();
-    this.bogus();
-  }
-  bogus() {
-
-  }
-}
 module.exports = ReqTagsNavTabs;
 
 //

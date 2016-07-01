@@ -57,7 +57,7 @@ class SubNavTabs extends React.Component
   }
 
   checkActive(tab) {
-    return tab === this.tab ? 'active' : '';
+    return tab === this.tab;
   }
 
   render() {
@@ -71,7 +71,7 @@ class SubNavTabs extends React.Component
           return null;
         }
         return (
-          <li key={t} className={this.checkActive(t)} >
+          <li key={t} className={this.checkActive(t) ? 'active' : ''} >
             <a href="#" onClick={this.onSelect(t)}>
               {tabs[t]}
               {badges && badges[t] > 0

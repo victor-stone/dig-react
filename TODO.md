@@ -13,7 +13,7 @@
 | app/components/AudioPlayer/WavImage.js | 35 | export full xml+svg and put in <img> tag
 | app/components/bound/InputField.js | 24 | should implement shouldComponentUppdate
 | app/components/bound/PagingLimit.js | 7 | make QueryParamTracker a mixin class
-| app/components/bound/ReqTagsNavTabs.js | 30 | replace all oassign with Object.assign
+| app/components/bound/ReqTagsNavTabs.js | 28 | replace all oassign with Object.assign
 | app/components/bound/Tags.js | 246 | tag cats should be navtabs, not just stacked on top of each other
 | app/components/models/EditableTrackList.js | 8 | All these lists that are model.items[] should just be model[]
 | app/components/models/StaticTrackList.js | 5 | allow multiple of these on a page
@@ -22,10 +22,10 @@
 | app/components/services/PlayAllButton.js | 44 | check this code
 | app/components/stems/Detail.js | 35 | these tags used to be filtered by genre/instrument
 | app/components/stems/Tags.js | 10 | use real defines here
+| app/components/vanilla/InputField.js | 6 | make a generic LoadingGlyph
 | app/components/vanilla/Paging.js | 5 | don't assume that ?offset= is the proper URL formation
 | app/components/vanilla/PagingLimit.js | 3 | don't assume 10, 20, 40, etc.
 | app/components/vanilla/Ribbon.js | 3 | ribbon text is horked
-| app/components/vanilla/SubNavBar.js | 5 | subnavbar is not in sync
 | app/routes/playlists/curators.js | 19 | this is too much code for here
 | app/routes/playlists/search.js | 1 | this page is broken
 | app/services/ccmixter/user.js | 11 | convert all the this._currentUser magic to a 'Set'
