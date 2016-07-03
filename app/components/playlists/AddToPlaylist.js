@@ -1,7 +1,7 @@
 import React    from 'react';
 import Glyph    from '../vanilla/Glyph';
 import DeadLink from '../vanilla/DeadLink';
-import CrossFadeContent from '../vanilla/CrossFadeContent';
+import CrossfadeContent from '../vanilla/CrossfadeContent';
 
 import Modal    from '../services/Modal';
 import Alert    from '../services/Alert';
@@ -116,7 +116,7 @@ class AddToPlaylistPopup extends Modal.Popup {
              submitDisabler={this.shouldSubmitDisable}
              {...this.props}
       >
-        <CrossFadeContent elem={elem} elemName={slug} />
+        <CrossfadeContent elem={elem} elemName={slug} />
       </Modal>
       );
   }  

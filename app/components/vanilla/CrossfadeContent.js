@@ -4,7 +4,7 @@ const DEFAULT_FADE_DURATION = 250;
 
 var nextID = 0;
 
-class CrossFadeContent extends React.Component {
+class CrossfadeContent extends React.Component {
   constructor() {
     super(...arguments);
     this.state = { elem: this.props.elem };
@@ -31,6 +31,6 @@ class CrossFadeContent extends React.Component {
   }
 }
 
-module.exports = CrossFadeContent;
+module.exports = CrossfadeContent;
 
 //

@@ -40,3 +40,5 @@ js.js
 app/components/playlists/pages/index.js
 
 app/components/vanilla/index.js
+
+lab.js
