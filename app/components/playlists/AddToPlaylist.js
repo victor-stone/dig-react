@@ -29,13 +29,20 @@ class AddToPlaylistPopup extends Modal.Popup {
     bindAll(this, 'onChange','onNewPlaylistName','onToggleShow','onSubmit','shouldSubmitDisable');
   }
 
+  componentDidMount() {
+    $('.modal select').css('color', '#ccc');
+  }
+
   onChange(e){
     var selectedValue = e.target.value;
     if( selectedValue === 'new' ) {
       this.onToggleShow();
       selectedValue = '';
     } 
-    this.setState({selectedValue,disableSubmit:!selectedValue});
+    this.setState({selectedValue,disableSubmit:!selectedValue}, () => {
+      /* globals $ */
+      $('.modal select').css('color', selectedValue ? 'black' : '#ccc');
+    });
   }
 
   onNewPlaylistName(e) {
@@ -49,14 +56,16 @@ class AddToPlaylistPopup extends Modal.Popup {
   }
 
   onSubmit() {
+    const { model:{id}, store } = this.props;
+    const { showList, newPlaylistName, selectedValue } = this.state;
+    
     this.setState( { error: null } );
-    var id   = this.props.model.id;
 
-    if( this.state.showList ) {
-      var store = this.this.props.store.model.items.findBy('id',this.state.selectedValue);
-      store.addTrack(id).then( () => this._alertAndClose('Track added to playlist') );
+    if( showList ) {
+      var head = store.model.items.findBy('id',selectedValue);
+      Playlist.storeFromModel(head).addTrack(id).then( () => this._alertAndClose('Track added to playlist') );
     } else {
-      Playlist.create(this.state.newPlaylistName,id).then( () => this._alertAndClose('New playlist created and track added') );
+      Playlist.create(newPlaylistName,id).then( () => this._alertAndClose('New playlist created and track added') );
     }
   }
 
@@ -65,49 +74,49 @@ class AddToPlaylistPopup extends Modal.Popup {
   }
 
   shouldSubmitDisable() {
-    return this.state.showList || !this.state.newPlaylistName.trim().length;
+    const { showList, selectedValue, newPlaylistName } = this.state;
+
+    return showList ? (!selectedValue) : !newPlaylistName.trim().length;
   }
 
   render() {
-    var sl = this.state.showList;
-    var style = !this.state.selectedValue  ? { color: '#ccc'} : {};
+    const { showList, error } = this.state;
+    const { store, model:{name} } = this.props;
 
-    var elem = sl 
+    var elem = showList
           ? <div className="form-group">
-              <select defaultValue="placehoder" onChange={this.onChange} className="form-control" style={style}>
+              <select defaultValue="placehoder" onChange={this.onChange} className="form-control">
                 <option value="">{"Select a playlist"}</option>
                 <option value="new">{" + Add to new playlist"}</option>
-                {this.props.store.model.items.map( (p,i) => <option value={p.id} key={i}>{p.name}</option>)}
+                {store.model.items.map( (p,i) => <option value={p.id} key={i}>{p.name}</option>)}
               </select>
             </div>
           : <div className="form-group input-group">
               <input
                   type="text"
                   className="form-control"
-                  value={this.state.newPlaylistName}
-                  placeholder="new playlist name"
                   onChange={this.onNewPlaylistName}
-                  ref="newPlaylistName"
                   size="30"
               />
               <span className="input-group-addon">              
-                <a href="#" onClick={this.onToggleShow}><Glyph icon="list-ul"/>{' Show list'}</a>
+                <DeadLink onClick={this.onToggleShow}><Glyph icon="list-ul"/>{' Show list'}</DeadLink>
               </span>
-            </div>;     
-    var name = sl ? 'list' : 'edit';
+            </div>;    
+
+    var slug = showList ? 'list' : 'edit';
 
     return (
       <Modal action={this.onSubmit} 
              subTitle="Add to playlist"
-             title={this.props.model.name}  
+             title={name}  
              icon="plus"
              buttonText="Add" 
              closeText="Cancel" 
-             error={this.state.error}
+             error={error}
              submitDisabler={this.shouldSubmitDisable}
              {...this.props}
       >
-        <CrossFadeContent elem={elem} elemName={name} />
+        <CrossFadeContent elem={elem} elemName={slug} />
       </Modal>
       );
   }  
@@ -118,6 +127,7 @@ var AddToPlaylistLink = React.createClass({
   mixins: [CurrentUserTracker],
 
   showPlaylistPopup() {
+    // FIXME: filter out dynamic playlists
     var playlists = new Playlists();
     playlists.autoFilterTags = false;
 

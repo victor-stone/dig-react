@@ -226,13 +226,19 @@ SelectableTagList.css = SelectableTag.css + `
     padding: 0px;
     margin: 0px;
   }
+
   ul.tag-list-selectable.floating > li {
     float: left;
     margin-left: 5px;     
   } 
+  
+
+  ul.tag-list-selectable.autoclear > li.tag-selectable.tag-selectable-checks:last-child,
   ul.tag-list-selectable.autoclear > li:last-child {
     float: none;
     clear: both;
+    background: transparent;
+    box-shadow: 0 0;
   }
 
   /* Floating check boxes */

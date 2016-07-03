@@ -9,12 +9,10 @@ import Share            from '../SharePopup';
 
 import {CurrentUserTracker} from '../../mixins';
 
-var UploadMenu = React.createClass({
-
-  mixins: [CurrentUserTracker],
-
+class UploadMenu extends CurrentUserTracker.cut(React.Component)
+{
   render() {
-    const { userLoading, user, user:{isAdmin} } = this.state;
+    const { userLoading, user, user:{isAdmin=false}  = {} } = this.state;
 
     if( userLoading ) {
       return null;
@@ -34,7 +32,7 @@ var UploadMenu = React.createClass({
       </div>
      );
   }
-});
+}
 
 module.exports = UploadMenu;
 

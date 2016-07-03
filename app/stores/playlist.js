@@ -190,6 +190,7 @@ class Playlist extends Permissions(TagsOwner(Query)) {
   }
 }
 
+// TODO: this should return a Playlist store (no?)
 Playlist.create = function(name,track,qstring) {
   if( qstring ) {
     return api.playlists.createDynamic(name,qstring);
@@ -203,6 +204,12 @@ Playlist.PlaylistTracks = PlaylistTracks;
 Playlist.storeFromQuery = function(id) {
   var pl = new Playlist();
   return pl.find(id).then( () => pl );
+};
+
+Playlist.storeFromModel = function(model) {
+  const pl = new Playlist();
+  pl.model = {head:model};
+  return pl;
 };
 
 Playlist.storeFromUploadsQuery = function(qparams, opts) {

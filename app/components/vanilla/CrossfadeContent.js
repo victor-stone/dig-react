@@ -27,8 +27,7 @@ class CrossFadeContent extends React.Component {
   }
 
   render() {
-    var Section = this.state.elem;
-    return <div id={this.id}><Section /></div>;
+    return (<div id={this.id}>{this.state.elem}</div>);
   }
 }
 

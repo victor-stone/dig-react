@@ -19,7 +19,6 @@ function DetailStub(store) {
 */
 class StemsWidget extends React.Component
 {
-
   render() {
     const { store, noHitsComp, store:{model:{total}} } = this.props;
 

@@ -75,8 +75,6 @@ const Header = React.createClass({
       }
     }
   },
-  // <!-- li><Link href="/workbench">{"workbench"}</Link></li -->
-
 
   render: function() {
     const homeLink = <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.title} /></Link>;

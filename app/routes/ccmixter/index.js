@@ -10,8 +10,6 @@ import login     from  './login';
 import userfeed  from  './userfeed';
 import tree      from  './tree';
 
-import workbench from './workbench';
-
 import playlists_browse   from  '../playlists/browse';
 import playlists_curators from  '../playlists/curators';
 import playlists_curator  from  '../playlists/curator';
@@ -49,7 +47,6 @@ module.exports = {
     stems,
     tree,
     upload,
-    userfeed,
-    workbench
+    userfeed
 };
 

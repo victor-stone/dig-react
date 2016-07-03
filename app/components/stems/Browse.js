@@ -16,7 +16,7 @@ import Files        from '../models/Files';
     |                  |                                  |
     |                  |-> StemsListing                   |
     |                           |                         |
-    |                          |-> StemListing Line       |
+    |                           |-> StemListing Line      |
     |                                  |                  |
     |                                  |-> {Detail}   <---|
     |-> Tags

@@ -12,6 +12,7 @@ import Recommends  from './Recommends';
 import Reviews     from './Reviews';
 import Overview    from './Overview';
 import Description from '../bound/UploadDescription';
+import UploadMenu  from './UploadMenu';
 import css         from './style/tree';
 
 import { PrevPeruse,
@@ -38,6 +39,7 @@ var Tree = React.createClass({
           </div>
           <div className="col-md-6 col-md-offset-1">
             <Description store={store} />
+            <UploadMenu store={store} />
           </div>
           <div className="col-md-2 col-md-offset-1">
             <NextPeruse store={store}/>

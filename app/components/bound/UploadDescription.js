@@ -1,11 +1,8 @@
 import React              from 'react';
-import _UploadDescription from '../models/UploadDescription';
+import UploadDescription from '../models/UploadDescription';
 import { ModelTracker }   from '../../mixins';
-//import UploadMenu         from './UploadMenu';
 
-//         <UploadMenu store={this.state.store} />
-
-class UploadDescription extends ModelTracker.extender(React.Component)
+class BoundUploadDescription extends ModelTracker.extender(React.Component)
 {
   constructor() {
     super(...arguments);
@@ -23,12 +20,12 @@ class UploadDescription extends ModelTracker.extender(React.Component)
     var model = this.state.store.model.upload;
 
     return(
-      <_UploadDescription model={model} />
+      <UploadDescription model={model} />
     );
   }
 }
 
 
-module.exports = UploadDescription;
+module.exports = BoundUploadDescription;
 
 //
