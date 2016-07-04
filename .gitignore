@@ -4,20 +4,7 @@
 /dist
 /tmp
 /tmp-build
-/app/index.js
-app/mixins/index.js
-app/components/index.js
-app/components/stems/index.js
-app/components/ccmixter/index.js
-app/components/dig/index.js
-app/components/pells/index.js
-app/components/playlists/index.js
-app/components/playlists/pages/index.js 
-app/components/models/index.js 
-app/components/bound/index.js 
-app/components/services/index.js 
-app/components/vanilla/index.js 
-
+/work
 /logs
 /bpm
 
@@ -35,10 +22,4 @@ build.log
 
 # dev
 js.js
-
-
-app/components/playlists/pages/index.js
-
-app/components/vanilla/index.js
-
 lab.js
