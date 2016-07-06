@@ -12,7 +12,7 @@ import Collapse         from '../vanilla/CollapseGroup';
     searchTerms  = user search terms to highlight
 
   See the 'Collapse' component for some magic going 
-  on here to get accordian collapsing of the Details
+  on here to get accordion collapsing of the Details
 
 */
 class StemsListing extends React.Component

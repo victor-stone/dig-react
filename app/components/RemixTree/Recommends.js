@@ -1,5 +1,5 @@
 import React               from 'react';
-import { AccordianPanel }  from '../vanilla/Accordian';
+import { AccordionPanel }  from '../vanilla/Accordion';
 import PeopleList          from '../models/PeopleList';
 import Ratings             from '../../stores/ratings';
 import { DelayLoadModel,
@@ -34,7 +34,7 @@ var Recommends = React.createClass({
     var title = `Recommends (${this.state.numItems})`;
     var recButton = <RecommendsButton store={this.props.store} className="pull-right" />;
     return (
-      <AccordianPanel disabled={!this.state.numItems} 
+      <AccordionPanel disabled={!this.state.numItems} 
                       title={title} 
                       id="recc" 
                       icon="thumbs-o-up" 
@@ -46,7 +46,7 @@ var Recommends = React.createClass({
           ? <PeopleList className="recommends-list" thumb model={this.state.model} />
           : null
         }
-      </AccordianPanel>
+      </AccordionPanel>
     );
   }
 });

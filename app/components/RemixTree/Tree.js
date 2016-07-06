@@ -1,7 +1,7 @@
 import React       from 'react';
 import InlineCSS   from '../vanilla/InlineCSS';
-import { Accordian
-               }   from '../vanilla/Accordian';
+import { Accordion
+               }   from '../vanilla/Accordion';
 
 import { ModelTracker }    from '../../mixins';
 import { SamplesFrom, 
@@ -18,19 +18,18 @@ import css         from './style/tree';
 import { PrevPeruse,
         NextPeruse } from '../PeruseNavigation';
 
-var Tree = React.createClass({
 
-  mixins: [ModelTracker],
-
+class Tree extends ModelTracker.extender(React.Component)
+{
   stateFromStore(store) {
     return { store };
-  },
+  }
 
   render() {
     var store = this.state.store;
     var upload = store.model.upload;
 
-  return( 
+    return( 
       <div className="container-fluid">
         <InlineCSS css={css} id="tree"/>
         <div className="row">  
@@ -55,18 +54,18 @@ var Tree = React.createClass({
         </div>
         <div className="row">  
           <div className="col-md-6 col-md-offset-3">
-            <Accordian>
+            <Accordion withExpandAll>
               <Overview store={store} />
               <FileSection store={store} />
               <Recommends store={store} numItems={upload.numRecommends} />
               <Reviews store={store} numItems={upload.numReviews} />
-            </Accordian>
+            </Accordion>
           </div>
         </div>
       </div>
     );
   }
-});
+}
 
 module.exports = Tree;
 

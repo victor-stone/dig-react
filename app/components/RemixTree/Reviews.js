@@ -1,5 +1,5 @@
 import React                 from 'react';
-import { AccordianPanel }    from '../vanilla/Accordian';
+import { AccordionPanel }    from '../vanilla/Accordion';
 import ReviewsPopup          from '../bound/ReviewsPopup';
 import ReviewsPanel          from '../models/ReviewsPanel';
 import InlineCSS             from '../vanilla/InlineCSS';
@@ -40,7 +40,7 @@ var Reviews = React.createClass({
     var title = `Reviews (${numItems})`;
     var revButton = <ReviewsPopup store={this.props.store} />;
     return (
-        <AccordianPanel 
+        <AccordionPanel 
           disabled={!numItems} 
           headerContent={revButton} 
           title={title} 
@@ -51,7 +51,7 @@ var Reviews = React.createClass({
         >
           <InlineCSS css={ReviewsPanel.css} id="review-panel-css" />
           <ReviewsPanel model={model} />
-        </AccordianPanel>
+        </AccordionPanel>
       );
   }
 

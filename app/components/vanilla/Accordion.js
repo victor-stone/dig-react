@@ -2,15 +2,18 @@
 import React        from 'react';
 import Glyph        from './Glyph';
 import DeadLink     from './DeadLink';
-import { bindAll }  from '../../unicorns';
+import { bindAll,
+        selectors }  from '../../unicorns';
 
 import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
 
-var AccordianButton = React.createClass({
-
-  getInitialState() {
-    return { open: this.props.open };
-  },
+class AccordionButton extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.state = { open: this.props.open };
+    bindAll( this, '_doOpen', '_doClose' );
+  }
 
   componentDidMount() {
     if( global.IS_SERVER_REQUEST ) {
@@ -18,34 +21,34 @@ var AccordianButton = React.createClass({
     }
 
     this.setUpEvents();
-  },
+  }
 
   componenWillUnmount() {
     $('#' + this.props.id)
       .off('show.bs.collapse', this._doOpen )
       .off('hide.bs.collapse', this._doClose );
 
-  },
+  }
 
   setUpEvents() {
     $('#' + this.props.id)
       .on('show.bs.collapse', this._doOpen )
       .on('hide.bs.collapse', this._doClose );
-  },
+  }
 
   _doOpen() {
     this.setState( { open: true } );
     if( this.props.onOpen ) {
       this.props.onOpen();
     }
-  },
+  }
 
   _doClose() {
     this.setState( { open: false } ); 
     if( this.props.onClose ) {
       this.props.onClose();
     }
-  },
+  }
 
   render() {
     var style = { float: 'right', display: 'block' };
@@ -57,15 +60,16 @@ var AccordianButton = React.createClass({
         </a>
       );
   }
-});
+}
 
-class AccordianPanel extends React.Component {
+// TODO: #accordion should be property.id
+
+class AccordionPanel extends React.Component 
+{
   constructor(props) {
     super(props);
-    this.state = {
-      disabled: this.props.disabled,
-      open: false
-    };
+    const { disabled, open = false } = this.props;
+    this.state = { disabled, open };
     bindAll(this, 'onOpen','onClose' );
   }
 
@@ -91,30 +95,29 @@ class AccordianPanel extends React.Component {
   }
 
   render() {
-    var clsIn = !this.state.diabled && this.props.open ? ' in' : '';
-    var clsChild = (this.props.className || '') + ' panel-body';    
-    var p = this.props;
-    var id = p.id;
-    var btn = this.state.disabled ? null : <AccordianButton id={id} open={p.open} onClose={this.onClose} onOpen={this.onOpen} />;
+    const { disabled, open } = this.state;
+    const { className, id, icon, headerContent, title, children } = this.props;
+    const clsChild = selectors( className, 'panel-body' );
+    const cls = selectors('panel-collapse collapse',!disabled && open ? ' in' : '');
 
     return (
       <div className="panel panel-default">
         <div className="panel-heading" id={id + '_heading'}>
             <h4 className="panel-title">
-              {btn}
-              <Glyph icon={p.icon} />
+              {!disabled && <AccordionButton id={id} open={open} onClose={this.onClose} onOpen={this.onOpen} />}
+              <Glyph icon={icon} />
               <span className="heading_spacer">{" "}</span>
               {this.state.disabled 
-                ? <DeadLink>{p.title}</DeadLink>
-                : <a data-toggle="collapse" data-parent="#accordion" href={'#' + id}>{p.title}</a>
+                ? <DeadLink>{title}</DeadLink>
+                : <a data-toggle="collapse" data-parent="#accordion" href={'#' + id}>{title}</a>
               }
-              {p.headerContent}
+              {headerContent}
             </h4>
          </div>
-        <div id={id} className={'panel-collapse collapse' + clsIn} > 
+        <div id={id} className={cls} > 
           <AjaxLoadingGlyph color="black" />
           {this.state.open 
-            ? <div className={clsChild}>{p.children}</div>
+            ? <div className={clsChild}>{children}</div>
             : null
           }
         </div>
@@ -123,19 +126,47 @@ class AccordianPanel extends React.Component {
   }
 }
 
-var Accordian = React.createClass({
+class Accordion extends React.Component
+{
   render() {
+    const { children, withExpandAll, id = 'selector' } = this.props;
     return (
-      <div id="accordion" className="panel-group">
-        {this.props.children}
+      <div id={id} className="panel-group">
+        {withExpandAll && <AccordionExpandAll className="expand-all" selector={`#${id} .collapse`} />}
+        {children}
       </div>
     );
-    }
-});
+  }
+}
+
+class AccordionExpandAll extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.onExpandAll = this.onExpandAll.bind(this);
+    this.state = { isOpen: false };
+  }
+
+  onExpandAll() {
+    /* globals $ */
+    const { isOpen } = this.state;    
+    const cmd = isOpen ? 'hide' : 'show';
+    $(this.props.selector).collapse(cmd);
+    this.setState( {isOpen: !isOpen} );
+  }
+
+  render() {
+    const { isOpen } = this.state;    
+    const icon = isOpen ? 'angle-double-down' : 'angle-double-up';
+    const text = isOpen ? 'close all' : 'expand all';
+    return <DeadLink className={this.props.className} icon={icon} text={text} onClick={this.onExpandAll} />;
+  }
+}
 
 module.exports = {
-  AccordianPanel,
-  Accordian
+  AccordionPanel,
+  Accordion,
+  AccordionExpandAll
 };
 
 //

@@ -1,2 +1,0 @@
-#!/bin/bash
-watchify app/index.js -v -u http -u stream-http -o dist/ccmixter/browser/js/ccmixter.js

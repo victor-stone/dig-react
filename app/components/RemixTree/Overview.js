@@ -1,16 +1,13 @@
 import React               from 'react';
-import { AccordianPanel }  from '../vanilla/Accordian';
+import { AccordionPanel }  from '../vanilla/Accordion';
 import UploadOverview      from '../bound/UploadOverview';
 
-var Overview = React.createClass({
-
-  render() {
-    return (
-      <AccordianPanel title="Overview" id="overview" icon="info-circle" >
-        <UploadOverview {...this.props} lineCls="col-md-12" />
-      </AccordianPanel>
+function Overview(props) {
+  return(
+      <AccordionPanel title="Overview" id="overview" icon="info-circle" >
+        <UploadOverview {...props} lineCls="col-md-12" />
+      </AccordionPanel>
       );
-  }
-});
+}
 
 module.exports = Overview;

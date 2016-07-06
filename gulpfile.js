@@ -14,6 +14,7 @@
 
 */
 
+var fs         = require('fs');
 var del        = require('del');
 var gulp       = require('gulp');
 var template   = require('gulp-template');
@@ -21,6 +22,7 @@ var rename     = require('gulp-rename');
 var source     = require('vinyl-source-stream');
 var buffer     = require('vinyl-buffer');
 var browserify = require('browserify');
+var watchify   = require('watchify');
 var babel      = require('gulp-babel');
 var eslint     = require('gulp-eslint');
 var concat     = require('gulp-concat');
@@ -57,7 +59,7 @@ const SATELLITE_HOST = 'beta.ccmixter.org';
      CONFIG FOR THIS RUN
 *****************************/
 
-var apihost   = argv.apihost || QUERY_HOST;
+var apihost = argv.apihost || QUERY_HOST;
 var sathost = argv.sathost || SATELLITE_HOST;
 
 var work_target = './work';
@@ -176,13 +178,29 @@ function task_browser_stub() {
           .pipe(gulp.dest(`${work_target}/app`));
 }
 
-function task_browser_js() {
-  return browserify({
+function _b_output() {
+  return `${target}/${config.app}/browser/js`;
+}
+
+function _b_options(watch) {
+  const opts = {
     entries: `${work_target}/app/index.js`,
     debug: config.debug,
     noParse: 'http',
     fullPaths: config.debug
-  })
+  };
+  if( watch ) {
+    Object.assign( opts, { 
+      cache: {},
+      packageCache: {},
+      plugin: [watchify]});
+  }
+  const b = browserify(opts);
+  if( watch ) {
+    b.on('update', () => b.bundle().pipe(fs.createWriteStream(_b_output()+`/${config.app}.js`)) );
+    b.on('log', msg => gutil.log(msg) );
+  }
+  return b
     .exclude('http')
     .exclude('stream-http')
     .external(['react','react-dom','underscore'])
@@ -190,7 +208,15 @@ function task_browser_js() {
     .pipe(source(`${config.app}.js`))
     .pipe(config.debug ? gutil.noop() : buffer()) 
     .pipe(config.debug ? gutil.noop() : uglify())
-    .pipe(gulp.dest(`${target}/${config.app}/browser/js`));
+    .pipe(gulp.dest(_b_output()));
+}
+
+function task_browser_js() {
+  return _b_options(false);
+}
+
+function task_watchify() {
+  return _b_options(true);
 }
 
 function task_browser_css() {
@@ -339,6 +365,7 @@ gulp.task('server-js',        ['-server-prep-1'], task_server_js );
 
 gulp.task('browser-stub',   ['copy-to-work'], task_browser_stub );
 gulp.task('browser-js',     ['make-indecies','browser-stub'], task_browser_js );
+gulp.task('watchify',       ['make-indecies','browser-stub'], task_watchify );
 gulp.task('browser-static', task_browser_static);
 gulp.task('browser-css',    task_browser_css );
 

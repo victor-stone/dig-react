@@ -50,22 +50,19 @@ gulp browser-static --dig
 
 To rebuild ccmixter on the fly install `watchify` and run
 ```
-watchify app/index.js -o dist/ccmixter/browser/js/ccmixter.js
+gulp watchify 
 ```
 or for dig
 ```
-watchify app/index.js -o dist/ccmixter/browser/js/dig.js
-```
-N.B. as of this writing the file `app/index.js` needs to be rebult if you switch between apps. (Yea, sorry.) 
-The way to do that is with:
-```
-gulp server-stub --ccmixter
-```
-or
-```
-gulp server-stub --dig
-```
+gulp watchify --dig
 
+N.B.: This will watch the `./work/app` directory, not the `./app` source files so as you work in `./app` you'll want to copy what you save to `./work/app`. In order to automate that in Sublime you can set up a build rule that looks like:
+
+```javascript
+{
+  "shell_cmd":  "cp $file ${file/app\\//work\\/app\\//}",
+}
+```
 
 ### Run
 

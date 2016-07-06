@@ -104,8 +104,14 @@ span.ribbon.edpick {
 .tree-link-name {
   font-style: italic;
 }
+
 .tree-link-artist {
   color: black;
+}
+
+.expand-all {
+  display: block;
+  text-align: right;
 }
 
 #accordion .form-control {
