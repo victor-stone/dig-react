@@ -6,6 +6,7 @@
 | app/stores/collection.js | 141 | don't assume this behavoir and have a policy flag
 | app/stores/playlist.js | 53 | make this a property
 | app/stores/playlist.js | 80 | make this a property
+| app/stores/playlist.js | 193 | this should return a Playlist store (no?)
 | app/stores/totals.js | 12 | investigate if this should include 't' and 'template'
 | app/stores/upload.js | 128 | check if artist is really needed!
 | app/unicorns/index.js | 5 | break TagString into separate npm module
@@ -17,11 +18,12 @@
 | app/components/bound/Tags.js | 246 | tag cats should be navtabs, not just stacked on top of each other
 | app/components/models/EditableTrackList.js | 8 | All these lists that are model.items[] should just be model[]
 | app/components/models/StaticTrackList.js | 5 | allow multiple of these on a page
-| app/components/models/Tags.js | 450 | reconcile this with floating checks above
+| app/components/models/Tags.js | 456 | reconcile this with floating checks above
 | app/components/services/PlayAllButton.js | 9 | this is too Playlist aware
 | app/components/services/PlayAllButton.js | 44 | check this code
 | app/components/stems/Detail.js | 35 | these tags used to be filtered by genre/instrument
 | app/components/stems/Tags.js | 10 | use real defines here
+| app/components/vanilla/Accordion.js | 65 | #accordion should be property.id
 | app/components/vanilla/InputField.js | 6 | make a generic LoadingGlyph
 | app/components/vanilla/Paging.js | 5 | don't assume that ?offset= is the proper URL formation
 | app/components/vanilla/PagingLimit.js | 3 | don't assume 10, 20, 40, etc.
@@ -36,5 +38,6 @@
 | app/routes/nowplaying.js | 8 | now playing from audio player is broken
 | app/components/bound/EditableTitle.js | 6 | Edit controls styles on EditableTitle are wacky
 | app/components/models/ZIPFile.js | 3 | incoming tags are not being highlighted
+| app/components/playlists/AddToPlaylist.js | 130 | filter out dynamic playlists
 | app/components/playlists/Info.js | 18 | feature button is ugly
 | app/components/services/PlayAllButton.js | 51 | this assuming this is cleared out somewhere
