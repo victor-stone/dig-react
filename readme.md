@@ -55,6 +55,7 @@ gulp watchify
 or for dig
 ```
 gulp watchify --dig
+```
 
 N.B.: This will watch the `./work/app` directory, not the `./app` source files so as you work in `./app` you'll want to copy what you save to `./work/app`. In order to automate that in Sublime you can set up a build rule that looks like:
 
