@@ -1,4 +1,4 @@
-import Topics         from '../stores/Topics';
+import Topics         from '../stores/topics';
 import BoundTopicPage from '../components/bound/TopicPage';
 
 
