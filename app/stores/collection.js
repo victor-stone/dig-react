@@ -228,6 +228,8 @@ class Collection extends Query {
     return hash;
   }
 
+  // TODO: investigate generalizing cachedFetch
+  
   cachedFetch(queryParams, deferName) {
     if( !env.debugMode && !this.gotCache ) {
       var qp = oassign( {}, queryParams);

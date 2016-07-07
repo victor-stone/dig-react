@@ -19,7 +19,7 @@ class Topics extends Query {
 
     id = Number(id) || Topics.namedTopics[id];
     
-    var args = {
+    const args = {
       dataview: 'topics_dig',
       ids: id
     };
@@ -29,7 +29,7 @@ class Topics extends Query {
   }
 
   reviewsFor(id) {
-    var args = {
+    const args = {
       t: 'reviews_upload',
       match: id
     };
@@ -37,12 +37,12 @@ class Topics extends Query {
   }
 
   type(topicType) {
-    var args = {
+    const args = {
       dataview: 'topics',
       type: topicType,
       limit: 10
     };
-    var hash = {
+    const hash = {
       items: this.query(args).then( serialize( ccmixter.Topic ) ),
       total: this.count(args)
     };
@@ -54,7 +54,7 @@ class Topics extends Query {
   }
 
   count(queryParams) {
-    var qp = oassign( {}, queryParams );
+    const qp = oassign( {}, queryParams );
     qp.dataview = 'count_topics';
     return this.queryOne(qp);
   }
@@ -68,10 +68,11 @@ Topics.namedTopics = {
   aboutFLAC: 225798,
 };
 
-Topics.storeFromTopicName = function( name ) {
-  var topics = new Topics();
-  return topics.find( name )
-          .then( () => { return topics; } );
+
+Topics.storeFromTopicName = function( name ) { 
+  const topics = new Topics();
+  return topics.find(name)
+          .then( () => { return topics; } );  
 };
 
 module.exports = Topics;

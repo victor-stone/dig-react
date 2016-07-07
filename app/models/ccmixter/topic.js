@@ -16,7 +16,8 @@ class Topic extends Model {
     this.getHtml = function() {
       var fmt = Number(this.topic_format);
       if( fmt === BB_FORMAT ) {
-        return this.topic_text_html;
+        return this.topic_text_html.replace(/(<img.*src=")(\/mixter-files)/g,'$1http://ccmixter.org$2')
+                                   .replace(/http:\/\/ccmixter.org\/files\//g,'/files/');
       } else if( fmt === HTML_FORMAT ) {
         return this.topic_text; // sic (!)
       } 
@@ -28,7 +29,28 @@ class Topic extends Model {
 
 const INDENT_CONSTANT = 30;
 
-class Review extends Model {
+class ForumHead extends Model {
+  constructor() {
+    super(...arguments);
+    this.nameBinding = '_bindParent.forum_name';
+    this.idBinding = '_bindParent.forum_id';
+  }
+}
+
+class ThreadHead extends Model {
+  constructor() {
+    super(...arguments);
+    this._modelSubtree = {
+      author: DetailUploadUser,
+      forum: ForumHead
+    };
+    this.idBinding = 'forum_thread_id';
+    this.dateBinding = 'forum_thread_date';
+    this.nameBinding = 'forum_thread_name';
+  }
+}    
+
+class ThreadTopic extends Model {
   constructor() {
     super(...arguments);
     this._modelSubtree = {
@@ -47,6 +69,8 @@ class Review extends Model {
 }
 
 module.exports = {
-  Review,
+  ThreadHead,
+  ThreadTopic,
+  Review: ThreadTopic,
   Topic,
 };

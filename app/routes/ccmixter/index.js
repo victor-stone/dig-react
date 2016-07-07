@@ -21,12 +21,15 @@ import playlists_people   from  '../playlists/people';
 import playlists_tags     from  '../playlists/tags';
 import playlists_track    from  '../playlists/track';
 
+import forum_thread   from '../forums/thread';
+
 import stems     from  '../stems/browse';
 
 import pells     from '../pells/browse';
 
 module.exports = { 
     credits,
+    forum_thread,
     index,    
     licenses,
     login,

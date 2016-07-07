@@ -1,17 +1,14 @@
-import React          from 'react';
-import { TopicPage,
-         TopicBody }  from '../components/Topic';
-import Topics         from '../stores/topics';
+import Topics         from '../stores/Topics';
+import BoundTopicPage from '../components/bound/TopicPage';
 
-function news(props) {
-  return <TopicPage title={props.store.model.name}><TopicBody store={props.store} /></TopicPage>;
-}
+
+const news = BoundTopicPage;
 
 news.path = '/news/:topic';
 
 news.title = 'News';
 
-news.store = function(params/*,queryParams*/) {
+news.store = function(params) {
   return Topics.storeFromTopicName(params.topic)
             .then( store => {
               news.title = store.model.name;

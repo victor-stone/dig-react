@@ -1,3 +1,4 @@
+/* globals $ */
 import React    from 'react';
 import Glyph    from '../vanilla/Glyph';
 import DeadLink from '../vanilla/DeadLink';
@@ -33,6 +34,10 @@ class AddToPlaylistPopup extends Modal.Popup {
     $('.modal select').css('color', '#ccc');
   }
 
+  componentDidUpdate() {
+    !this.state.showList && $('#new-playlist-name').focus();
+  }
+
   onChange(e){
     var selectedValue = e.target.value;
     if( selectedValue === 'new' ) {
@@ -40,7 +45,6 @@ class AddToPlaylistPopup extends Modal.Popup {
       selectedValue = '';
     } 
     this.setState({selectedValue,disableSubmit:!selectedValue}, () => {
-      /* globals $ */
       $('.modal select').css('color', selectedValue ? 'black' : '#ccc');
     });
   }
@@ -94,6 +98,7 @@ class AddToPlaylistPopup extends Modal.Popup {
           : <div className="form-group input-group">
               <input
                   type="text"
+                  id="new-playlist-name"
                   className="form-control"
                   onChange={this.onNewPlaylistName}
                   size="30"
