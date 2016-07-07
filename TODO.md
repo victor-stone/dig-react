@@ -4,6 +4,7 @@
 | app/components/QueryOptions.js | 16 | care
 | app/routes/credits.js | 7 | Get this the hell out of /routes
 | app/stores/collection.js | 141 | don't assume this behavoir and have a policy flag
+| app/stores/collection.js | 231 | investigate generalizing cachedFetch
 | app/stores/playlist.js | 53 | make this a property
 | app/stores/playlist.js | 80 | make this a property
 | app/stores/playlist.js | 193 | this should return a Playlist store (no?)
@@ -38,6 +39,6 @@
 | app/routes/nowplaying.js | 8 | now playing from audio player is broken
 | app/components/bound/EditableTitle.js | 6 | Edit controls styles on EditableTitle are wacky
 | app/components/models/ZIPFile.js | 3 | incoming tags are not being highlighted
-| app/components/playlists/AddToPlaylist.js | 130 | filter out dynamic playlists
+| app/components/playlists/AddToPlaylist.js | 135 | filter out dynamic playlists
 | app/components/playlists/Info.js | 18 | feature button is ugly
 | app/components/services/PlayAllButton.js | 51 | this assuming this is cleared out somewhere
