@@ -1,5 +1,5 @@
 import React             from 'react';
-import UserFeed          from '../../services/userfeed';
+import userFeed          from '../../services/userfeed';
 import qc                from '../../models/query-configs';
 import { mergeParams }   from '../../unicorns';
 import FeedPage          from '../../components/ccmixter/FeedPage';
@@ -14,8 +14,11 @@ FeedPage.subnav = function(props) {
   };
 
 FeedPage.store = function(params,queryParams) {  
+  var service = userFeed(qc.userfeed);
+  if( !params.user ) {
+    return service.getSiteFeed().then( () => service );
+  }
   var qparams = mergeParams( {}, qc.userfeed, params, queryParams );
-  var service = UserFeed(qc.userfeed);
   return service.getModel(mergeParams(qparams,service.defaultParams)).then( () => service );
 };
 

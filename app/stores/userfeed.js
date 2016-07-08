@@ -1,9 +1,10 @@
+import rsvp            from 'rsvp';
 import Collection      from './collection';
 import ccmixter        from '../models/ccmixter';
 import serialize       from '../models/serialize';
-import { oassign }     from '../unicorns';
 
 const DEFAULT_STICKY_ITEMS = 4;
+const MAX_SITE_FEED_ITEMS = 200;
 
 class UserFeed extends Collection {
 
@@ -16,7 +17,28 @@ class UserFeed extends Collection {
   }
 
   fetch(queryParams,deferName) {
+    if( 'site' in queryParams ) {
+      queryParams.cache = 'sitefeed' + queryParams.offset;
+    }
     return this.query(queryParams,deferName).then( serialize(ccmixter.UserFeedItem) );
+  }
+
+  getSiteFeed() {
+    const args = {
+      datasource: 'feed',
+      dataview: 'userfeed',
+      site: 1,
+      offset: 0,
+      limit: 40
+    };
+    return this.getModel(args);
+  }
+
+  count(queryArgs,deferName) {
+    if( 'site' in queryArgs ) {
+      return rsvp.resolve(MAX_SITE_FEED_ITEMS);
+    }
+    return super.count(queryArgs,deferName);
   }
 
   getStickyItems(numItems) {
@@ -30,7 +52,7 @@ class UserFeed extends Collection {
   }
   
   lastSeenCount(userid) {
-    var params = oassign( {}, this.defaultParams, { sinced: 'lastseen', user: userid } );
+    var params = Object.assign( {}, this.defaultParams, { sinced: 'lastseen', user: userid } );
     return this.count(params);
   }
 
