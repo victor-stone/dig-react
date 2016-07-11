@@ -4,6 +4,6 @@ import Topic          from '../models/Topic';
 
 
 function BoundTopicPage(props) {
-  return <TopicPage title={props.store.model.name}><Topic store={props.store.model} /></TopicPage>;
+  return <TopicPage title={props.store.model.name}><Topic model={props.store.model} /></TopicPage>;
 }
 module.exports = BoundTopicPage;

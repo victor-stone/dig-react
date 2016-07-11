@@ -2,18 +2,25 @@ import Topics         from '../stores/topics';
 import BoundTopicPage from '../components/bound/TopicPage';
 
 
-const news = BoundTopicPage;
+const news = Object.assign(BoundTopicPage,{
 
-news.path = '/news/:topic';
+  path: '/news/:topic',
 
-news.title = 'News';
+  title: 'News',
 
-news.store = function(params) {
-  return Topics.storeFromTopicName(params.topic)
-            .then( store => {
-              news.title = store.model.name;
-              return store;
-            });
-};
+  store(params) {
+    return Topics.storeFromTopicName(params.topic)
+              .then( store => {
+                news.title = store.model.name;
+                return store;
+              });
+  },
+
+  urlFromStore(store) {
+    return '/news/' + store.model.id;
+  }
+
+});
+
 
 module.exports = news;
