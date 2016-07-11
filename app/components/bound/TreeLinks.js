@@ -2,7 +2,7 @@ import React             from 'react';
 import _TreeLinks        from '../models/TreeLinks';
 import { ModelTracker }  from '../../mixins';
 
-class TreeLinks extends ModelTracker.extender(React.Component)
+class TreeLinks extends ModelTracker(React.Component)
 {
   shouldComponentUpdate(nextProps) {
     return this.props.store.model.upload.id !== nextProps.store.model.upload.id;

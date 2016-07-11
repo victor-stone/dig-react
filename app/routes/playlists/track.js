@@ -2,19 +2,30 @@ import Playlists from '../../stores/playlists';
 import pages     from '../../components/playlists/pages';
 import SubNav    from '../../components/playlists/SubNav';
 
-var track = pages.Tracks;
+/*
+  Display playlists that include a particular track
+*/
 
-track.path = '/tracks/:userid/:id';
-track.title = 'Track';
-track.subnav = SubNav;
+var track = Object.assign(pages.Tracks,{
 
-track.store = function(params /*,queryParams */) {
-  var id = { upload: params.id };
-  return Playlists.storeFromQuery(id).then( store => {
-    track.title = store.model.upload.name;
-    return store;
-  });
-};
+  path: '/tracks/:userid/:id',
+  title: 'Track',
+  subnav: SubNav,
+
+  store(params) {
+    const id = { upload: params.id };
+    return Playlists.storeFromQuery(id).then( store => {
+      track.title = store.model.upload.name;
+      return store;
+    });
+  },
+
+  urlFromStore(store) {
+    const { upload:{id,artist} } = store.model; 
+    return `/tracks/${artist.id}/${id}`;
+  }
+
+});
 
 module.exports = track;
 

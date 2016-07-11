@@ -27,8 +27,6 @@ var Events = {
   ACTION_START:       'action_start',
   ACTION_END:         'action_end',
   
-  COMPONENT_UPDATE:   'component_update',
-  
   INSPECT_ZIP:        'inspect_zip',
   
   SAMPLE_TAG_TAB:     'sample_tag_tab',

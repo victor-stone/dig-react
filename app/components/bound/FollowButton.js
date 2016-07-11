@@ -6,20 +6,23 @@ import Glyph from '../vanilla/Glyph';
 
 import api from '../../services/ccmixter';   
 
-const FollowButton = React.createClass({
-
-  mixins: [CurrentUserTracker,ModelTracker],
-
+class FollowButton extends CurrentUserTracker(ModelTracker(React.Component))
+{
+  constructor() {
+    super(...arguments);
+    this.toggleFollow = this.toggleFollow.bind(this);
+  }
+  
   stateFromStore(store) {
     var state = this._calcState(this.state && this.state.follower,store.model.artist);
     state.store = store;
     return state;
-  },
+  }
 
   stateFromUser(user) {
     var store = this.state.store || this.props.store;
     return this._calcState(user,store.model.artist);
-  },
+  }
 
   _calcState(follower,followee) {
     if( follower && followee && followee.id !== follower.id ) {
@@ -30,7 +33,7 @@ const FollowButton = React.createClass({
                followeeId: followee.id };
     }
     return { show: false, follower: follower };
-  },
+  }
 
   toggleFollow(e) {
     e.stopPropagation();
@@ -40,7 +43,7 @@ const FollowButton = React.createClass({
           this.state.store.followers(this.state.followeeId) 
         ); 
     this.setState( { toggle: !this.state.toggle } );
-  },
+  }
 
   render() {
     if( !this.state.show ) {
@@ -54,7 +57,7 @@ const FollowButton = React.createClass({
     );
   }
 
-});
+}
 
 module.exports = FollowButton;
 

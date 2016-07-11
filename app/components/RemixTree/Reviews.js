@@ -7,25 +7,25 @@ import Topics                from '../../stores/topics';
 import { ModelTracker,
         DelayLoadModel }    from '../../mixins';
 
-var Reviews = React.createClass({
-
-  mixins: [ModelTracker,DelayLoadModel],
-
-  getInitialState() {
-    return { numItems: this.props.numItems };
-  },
+class Reviews extends DelayLoadModel(ModelTracker(React.Component))
+{
+  constructor() {
+    super(...arguments);
+    this.state = { numItems: this.props.numItems };
+  }
 
   componentWillReceiveProps(nextProps) {
+    super.componentWillReceiveProps(nextProps);
     this.setState({ numItems: nextProps.numItems });
-  },
+  }
 
   speakNow(nextProps,nextState) {
     return this.state.numItems !== nextState.numItems;
-  },
+  }
 
   stateFromStore(store) {
     return { id: store.model.upload.id };
-  },
+  }
   
   refreshModel(store) {
     if( !this.topics ) {
@@ -33,29 +33,30 @@ var Reviews = React.createClass({
     }
     var id = store ? store.model.upload.id : this.state.id;
     return this.topics.reviewsFor(id);
-  },
+  }
 
   render() {
     const { numItems, model } = this.state;
-    var title = `Reviews (${numItems})`;
-    var revButton = <ReviewsPopup store={this.props.store} />;
+
+    const accProps = {
+      disabled:      !numItems,
+      headerContent: <ReviewsPopup store={this.props.store} />,
+      title:         `Reviews (${numItems})`,
+      id:            'reviews',
+      icon:           'pencil', 
+      onOpen:         this.onOpen,
+      onClose:        this.onClose
+    };
+
     return (
-        <AccordionPanel 
-          disabled={!numItems} 
-          headerContent={revButton} 
-          title={title} 
-          id="reviews" 
-          icon="pencil" 
-          onOpen={this.onOpen} 
-          onClose={this.onClose} 
-        >
+        <AccordionPanel {...accProps}>
           <InlineCSS css={ReviewsPanel.css} id="review-panel-css" />
           <ReviewsPanel model={model} />
         </AccordionPanel>
       );
   }
 
-});
+}
 
 module.exports = Reviews;
 

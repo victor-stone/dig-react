@@ -18,7 +18,7 @@ import { TagString,
 
 
 */
-class ReqTagsNavTabs extends ModelTracker.extender(SubNavTabs)
+class ReqTagsNavTabs extends ModelTracker(SubNavTabs)
 {
   constructor() {
     super(...arguments);

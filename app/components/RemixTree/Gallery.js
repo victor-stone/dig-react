@@ -4,7 +4,7 @@ import TreeGallery         from '../models/TreeGallery';
 import { ModelTracker,
         PushPeruseModel }  from '../../mixins';
 
-class Gallery extends PushPeruseModel(ModelTracker.extender(PlayCapture(React.Component)))
+class Gallery extends PushPeruseModel(ModelTracker(PlayCapture(React.Component)))
 {
 
   stateFromStore(store) {

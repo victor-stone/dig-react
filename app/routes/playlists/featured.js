@@ -4,20 +4,25 @@ import Playlists        from '../../stores/playlists';
 import pages            from '../../components/playlists/pages';
 import SubNav           from '../../components/playlists/SubNav';
 
-var featured = pages.Featured;
+var featured = Object.assign(pages.Featured,{
+  title: 'Featured',
 
-featured.title = 'Featured';
+  path: '/playlists/featured',
 
-featured.subnav = function(props) {
-  return (<SubNav store={props.store} tab="featured" paging/>);
-};
+  subnav(props){
+    return (<SubNav store={props.store} tab="featured" paging/>);
+  },
 
-featured.store = function(params,queryParams) {
-  var qparams = mergeParams( { type: 'featured', minitems: '0' }, queryParams );
-  return Playlists.storeFromQuery( qparams );
-};
+  store(params,queryParams) {
+    var opts = { type: 'featured', minitems: '0' };
+    var qparams = mergeParams( {}, opts, queryParams );
+    return Playlists.storeFromQuery( qparams, opts );
+  },
 
-featured.path = '/playlists/featured';
+  urlFromStore(store) {
+    return featured.path + store.queryString;
+  }
+});
 
 module.exports = featured;
 

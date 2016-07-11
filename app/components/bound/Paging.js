@@ -10,7 +10,7 @@ var emptyStats = {
                 total:  0
               };    
 
-class Paging extends ModelTracker.extender(React.Component)
+class Paging extends ModelTracker(React.Component)
 {
   constructor() {
     super(...arguments);

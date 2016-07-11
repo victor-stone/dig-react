@@ -9,7 +9,7 @@ import { ModelTracker } from '../../mixins';
     propName := property name (boolean)
     text := display text    
 */
-class BoundToggle extends ModelTracker.extender(React.Component)
+class BoundToggle extends ModelTracker(React.Component)
 {
   constructor() {
     super(...arguments);

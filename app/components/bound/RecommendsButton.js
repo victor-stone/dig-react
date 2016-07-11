@@ -3,7 +3,7 @@ import { ModelTracker }  from '../../mixins';
 import Glyph             from '../vanilla/Glyph';
 import { selectors }     from '../../unicorns';
 
-class _RecommendsButton extends React.Component
+class RecommendsButton extends ModelTracker(React.Component)
 {
   constructor() {
     super(...arguments);
@@ -38,13 +38,6 @@ class _RecommendsButton extends React.Component
         ? <button id={domId} onClick={this.onRecommends} className={cls}><Glyph icon="thumbs-up" /></button>
         : null
     );
-  }
-}
-
-class RecommendsButton extends ModelTracker.extender(_RecommendsButton)
-{
-  constructor() {
-    super(...arguments);
   }
 }
 

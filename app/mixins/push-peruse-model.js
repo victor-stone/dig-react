@@ -9,6 +9,7 @@ const PushPeruseModel = target => class extends target {
   }
   
   componentDidMount() {
+    super.componentDidMount && super.componentDidMount();
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
@@ -16,9 +17,7 @@ const PushPeruseModel = target => class extends target {
   }
 
   componentWillUnmount() {
-    if( global.IS_SERVER_REQUEST ) {
-      return;
-    }
+    super.componentWillUnmount && super.componentWillUnmount();
     lookup('router').removeListener( events.PRE_NAVIGATE, this.onPreNavigate );
   }
 

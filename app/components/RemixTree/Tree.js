@@ -19,15 +19,11 @@ import { PrevPeruse,
         NextPeruse } from '../PeruseNavigation';
 
 
-class Tree extends ModelTracker.extender(React.Component)
+class Tree extends ModelTracker(React.Component)
 {
-  stateFromStore(store) {
-    return { store };
-  }
-
   render() {
-    var store = this.state.store;
-    var upload = store.model.upload;
+    const store = this.state.store;
+    const { upload:{numRecommends,numReviews} } = store.model;
 
     return( 
       <div className="container-fluid">
@@ -57,8 +53,8 @@ class Tree extends ModelTracker.extender(React.Component)
             <Accordion withExpandAll>
               <Overview store={store} />
               <FileSection store={store} />
-              <Recommends store={store} numItems={upload.numRecommends} />
-              <Reviews store={store} numItems={upload.numReviews} />
+              <Recommends store={store} numItems={numRecommends} />
+              <Reviews store={store} numItems={numReviews} />
             </Accordion>
           </div>
         </div>

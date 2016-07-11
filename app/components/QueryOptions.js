@@ -6,7 +6,6 @@ import { CloseButton,
          Glyph }       from './vanilla';
 
 import { ModelTracker,
-          DirtyParamTracker,
           QueryParamTracker 
         } from '../mixins';
 
@@ -19,26 +18,29 @@ function LicenseInfoPopup() {
   return <Link href="/licenses" className="lic-help"><Glyph icon="question-circle" /></Link>;
 }
 
-const LicenseFilter = React.createClass({
-
-  mixins: [QueryParamTracker,DirtyParamTracker],
+class LicenseFilter extends QueryParamTracker(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    this.performQuery = this.performQuery.bind(this);
+  }
 
   stateFromParams(queryParams) {
     return { lic: queryParams.lic };
-  },
+  }
 
   onAreParamsDirty(queryParams,defaults,isDirty) {
     if( !isDirty.isDirty) {
       isDirty.isDirty = queryParams.lic !== defaults.lic;
     }
-  },
+  }
 
-  performQuery: function() {
+  performQuery() {
     var lic = this.refs['lic'].value;
     this.props.store.refreshModel( { lic } );
-  },
+  }
 
-  render: function() {
+  render() {
 
     var ccPlusFilter = this.props.ccPlusFilter || 'ccplus';
 
@@ -53,22 +55,25 @@ const LicenseFilter = React.createClass({
       </div>
       );
   }
-});
+}
 
-const SortFilterWrap = React.createClass({ 
-
-  mixins: [QueryParamTracker],
+class SortFilterWrap extends QueryParamTracker(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    this.performQuery = this.performQuery.bind(this);
+  }
 
   stateFromParams(queryParams) {
     return { digrank: queryParams.digrank};
-  },
+  }
 
-  performQuery: function() {
+  performQuery() {
     var digrank = this.refs['sort'].value;
     this.props.store.refresh( { digrank } );
-  },
+  }
   
-  render: function() {
+  render() {
     return (
         <select ref="sort" id="sort" value={this.state.digrank} onChange={this.performQuery} className="form-control" >
           {this.props.children}
@@ -76,7 +81,7 @@ const SortFilterWrap = React.createClass({
       );
   }
 
-});
+}
 
 function SortFilter(props) {
   return (
@@ -90,27 +95,30 @@ function SortFilter(props) {
 }
 
 
-const ResetOptionsButton = React.createClass({
-
-  mixins: [ModelTracker],
+class ResetOptionsButton extends ModelTracker(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    this.onReset = this.onReset.bind(this);
+  }
 
   stateFromStore(store) {
     return { dirty: store.paramsDirty() };
-  },
+  }
 
-  onReset: function() {
+  onReset() {
     if( this.state.dirty ) {
       this.props.store.applyDefaults();
     }
-  },
+  }
 
-  render: function() {
+  render() {
     var resetCls = 'reset-options btn btn-warning btn-sm' + (this.state.dirty ? '' : ' disabled');
 
     return <button onClick={this.onReset} className={resetCls}><Glyph icon="power-off" />{" reset"}</button>;
   }
 
-});
+}
 
 function OptionsWrap(props) {
   return <ul className="query-options-elements">{props.children}</ul>;
@@ -160,21 +168,24 @@ function QueryOptionsPanel(props)
     );
 }
 
-const QueryOptions = React.createClass({
-
-  mixins: [ModelTracker],
-
-  handleShowOptions: function(){
+class QueryOptions extends ModelTracker(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    this.onShowOptions = this.onShowOptions.bind(this);
+  }
+  
+  onShowOptions(){
     var showOptions = !this.state.showOptions;
     this.setState( { showOptions } );
-  },
+  }
 
   stateFromStore(store) {
     var dirty = store.supportsOptions && store.paramsDirty();
     return { dirty };
-  },
+  }
 
-  render: function() {
+  render() {
 
     if( !this.props.store.supportsOptions ) {
       return null;
@@ -187,15 +198,15 @@ const QueryOptions = React.createClass({
 
     return (
       <div className={cls}>
-        <QueryOptionsBox show={showP} store={this.props.store} handleShowOptions={this.handleShowOptions}>
+        <QueryOptionsBox show={showP} store={this.props.store} handleShowOptions={this.onShowOptions}>
           {this.props.children}
         </QueryOptionsBox>
-        <button className={cls3} style={buttonColor} onClick={this.handleShowOptions} ><Glyph icon="gear" />{" filters"}</button>
+        <button className={cls3} style={buttonColor} onClick={this.onShowOptions} ><Glyph icon="gear" />{" filters"}</button>
       </div>
     );
   }
 
-});
+}
 
 module.exports = {
   QueryOptions,

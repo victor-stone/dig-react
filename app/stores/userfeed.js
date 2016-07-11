@@ -8,11 +8,8 @@ const MAX_SITE_FEED_ITEMS = 200;
 
 class UserFeed extends Collection {
 
-  constructor(defaults) {
-    var defs = defaults || {};
-    defs.dataview = 'userfeed';
-    defs.datasource = 'feed';
-    super(defs);
+  constructor(defaults = {}) {
+    super(Object.assign({},defaults,{dataview:'userfeed',datasource:'feed'}));
     this.autoFetchUser = false;
   }
 
@@ -23,6 +20,30 @@ class UserFeed extends Collection {
     return this.query(queryParams,deferName).then( serialize(ccmixter.UserFeedItem) );
   }
 
+  count(queryArgs,deferName) {
+    if( 'site' in queryArgs ) {
+      return rsvp.resolve(MAX_SITE_FEED_ITEMS);
+    }
+    return super.count(queryArgs,deferName);
+  }
+
+  get defaultParams() {
+    // Not sure if this is the right thing to do here...
+    // When creating a queryString, the 'defaultParams'
+    // will be left out of the string. Because the feed
+    // urls include user and following (/feed/victor and
+    // /feed/victor/following) we don't want the those
+    // query parameters in the string like
+    // /feed/victor?user=victor
+    // so by stuffing user and following into the 
+    // defaultParams we can prevent that from happening
+    var def = Object.assign({},this._defaultParams);
+    const { user, following } = this.queryParams;
+    user && (def.user = user);
+    following && (def.following = following);
+    return def;
+  }
+  
   getSiteFeed() {
     const args = {
       datasource: 'feed',
@@ -32,13 +53,6 @@ class UserFeed extends Collection {
       limit: 40
     };
     return this.getModel(args);
-  }
-
-  count(queryArgs,deferName) {
-    if( 'site' in queryArgs ) {
-      return rsvp.resolve(MAX_SITE_FEED_ITEMS);
-    }
-    return super.count(queryArgs,deferName);
   }
 
   getStickyItems(numItems) {
@@ -51,8 +65,9 @@ class UserFeed extends Collection {
     return this.getModel(params);
   }
   
+  // FIXME: this is not the right user of defaultParams
   lastSeenCount(userid) {
-    var params = Object.assign( {}, this.defaultParams, { sinced: 'lastseen', user: userid } );
+    var params = Object.assign( {}, this._defaultParams, { sinced: 'lastseen', user: userid } );
     return this.count(params);
   }
 

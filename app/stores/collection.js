@@ -32,7 +32,7 @@ class Collection extends Query {
   constructor(defaultParams) {
     super(...arguments);
     this.model         = {};
-    this.defaultParams = defaultParams || {};
+    this._defaultParams = defaultParams || {};
     this.gotCache      = false;
     this._tags         = null;
     this.tagFields     = ['tags', 'reqtags', 'oneof'];
@@ -44,8 +44,17 @@ class Collection extends Query {
     return true;
   }
 
+  get defaultParams() {
+    return this._defaultParams;
+  }
+
+  set defaultParams(defaultParams) {
+    this._defaultParams = defaultParams;
+  }
+  
   get queryString() {
-    return this._queryString(false);
+    const qs = this._queryString(false);
+    return qs ? '?' + qs : '';
   }
 
   get queryStringWithDefaults() {
@@ -93,10 +102,6 @@ class Collection extends Query {
 
   applyDefaults() {
     return this._applyDefaults([events.GET_PARAMS_DEFAULT]);
-  }
-
-  applyURIDefault() {
-    return this._applyDefaults([ events.GET_PARAMS_DEFAULT, events.GET_PARAMS_URI ]);
   }
 
   paramsDirty() {
@@ -294,32 +299,34 @@ class Collection extends Query {
   }
 
   _queryString(withDefault) {
-    var qp   = this.model.queryParams;
-    var defs = this.defaultParams;
-    var copy = withDefault ? oassign( {}, defs) : {};
-    var skip = [ 'f', 'dataview'];
+    const qp   = this.model.queryParams;
+    const defs = this.defaultParams;
+    const copy = withDefault ? oassign( {}, defs) : {};
+    const skip = [ 'f', 'dataview', 'reqtags'];
 
-    for( var k in qp ) {
-      if( !skip.includes(k) ) {
-        if( k === 'offset' ) {
-          if( qp.offset > 0 ) {
-            copy.offset = qp.offset;
-          }
-        } else {
-          if( !withDefault && k in defs ) {
-            if( this.tagFields.includes(k) ) {
-              if( qp[k] && !(new TagString(defs[k])).isEqual(qp[k]) ) {
-                copy[k] = qp[k];
-              }
-            } else {
-              if( qp[k] !== defs[k] ) {
-                copy[k] = qp[k];
-              }
+    for( const paramName in qp ) {
+      if( skip.includes(paramName) ) {
+        continue;
+      }
+      const value = qp[paramName];
+      if( paramName === 'offset' ) {
+        if( qp.offset > 0 ) {
+          copy.offset = value;
+        }
+      } else {
+        if( !withDefault && paramName in defs ) {
+          if( this.tagFields.includes(paramName) ) {
+            if( value && !(new TagString(defs[paramName])).isEqual(value) ) {
+              copy[paramName] = value;
             }
           } else {
-            if( qp[k] ) {
-              copy[k] = qp[k];
+            if( value !== defs[paramName] ) {
+              copy[paramName] = value;
             }
+          }
+        } else {
+          if( value ) {
+            copy[paramName] = value;
           }
         }
       }

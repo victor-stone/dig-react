@@ -7,9 +7,10 @@ import events from '../models/events';
   Pretends to be store to Tags components
 
   Normally the store would commit each tag
-  assignment but will wait until the 'commitTags'
-  method is called to commit the tags to the
-  underlying wrapped store
+  assignment but this store will wait until 
+  the 'commitTags' method is called to 
+  commit the tags to the underlying wrapped 
+  store
 */
 class DelayedCommitTagStore extends TagsOwner(Eventer)
 {

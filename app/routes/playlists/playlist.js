@@ -3,26 +3,32 @@ import Playlist     from '../../stores/playlist';
 import SubNav       from '../../components/playlists/SubNav';
 import pages        from '../../components/playlists/pages';
 
-var playlist = pages.Playlist;
+const playlist = Object.assign(pages.Playlist, {
+
+  path: '/playlist/browse/:id',
+
+  title: 'Playlist',
+
+  subnav(props) {
+    const { head:{isDynamic:paging}, tracks } = props.store.model;
+    return (<SubNav store={paging && tracks} tab="" paging={paging} />);
+  },
+
+  store(params) {
+    const id = params.id;
+    return Playlist.storeFromID(id).then( store => {
+      playlist.title = store.model.head.name;
+      return store;
+    });
+  },
+
+  urlFromStore(store) {
+    const { head:{id}, tracks } = store.model;
+    return `/playlist/browse/${id}${tracks.queryString}`;
+  }
+
+});
   
-playlist.path = '/playlist/browse/:id';
-
-playlist.title = 'Playlist';
-
-playlist.subnav = function(props) {
-  var paging = props.store.model.head.isDynamic;
-  var store  = paging ? props.store.model.tracks : null;
-  return (<SubNav store={store} tab="" paging={paging} />);
-};
-
-
-playlist.store = function(params /*,queryParams */) {
-  var id = params.id;
-  return Playlist.storeFromQuery(id).then( store => {
-    playlist.title = store.model.head.name;
-    return store;
-  });
-};
 
 module.exports = playlist;
 

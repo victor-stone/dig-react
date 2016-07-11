@@ -2,7 +2,7 @@ import React              from 'react';
 import UploadDescription from '../models/UploadDescription';
 import { ModelTracker }   from '../../mixins';
 
-class BoundUploadDescription extends ModelTracker.extender(React.Component)
+class BoundUploadDescription extends ModelTracker(React.Component)
 {
   constructor() {
     super(...arguments);
@@ -10,10 +10,6 @@ class BoundUploadDescription extends ModelTracker.extender(React.Component)
 
   shouldComponentUpdate(nextProps,nextState) {
     return this.state.store.model.upload.id !== nextState.store.model.upload.id;
-  }
-
-  stateFromStore(store) {
-    return { store };
   }
 
   render() {

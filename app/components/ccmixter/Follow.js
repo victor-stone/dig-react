@@ -1,27 +1,25 @@
 import React                from 'react';
 import events               from '../../models/events';
-import {  ModelTracker,
-          StoreEvents   }   from '../../mixins';
+import {  ModelTracker  }   from '../../mixins';
 import Form                 from '../vanilla/Form';
 import CollapsingPeopleList from '../models/CollapsingPeopleList';
 
 var FormItem = Form.FormItem;
 
-const Followers = React.createClass({
+class Followers extends ModelTracker(React.Component)
+{
 
-  mixins: [StoreEvents,ModelTracker],
-
-  getDefaultProps: function() {
-    return { storeEvent: events.FOLLOW_CHANGED };
-  },
+  get storeEvents() {
+    return [events.FOLLOW_CHANGED].concat(super.storeEvents);
+  }
 
   stateFromStore(store) {
     return { store, model: store.model.artist.social[this.props.followType] };
-  },
+  }
 
-  onFollowChanged: function() {
+  onFollowChanged() {
     this.setState( this.stateFromStore(this.state.store) );
-  } ,
+  }
 
   render() {
     return (
@@ -32,7 +30,7 @@ const Followers = React.createClass({
         : null 
       );
   }
-});
+}
 
 
 module.exports = Followers;

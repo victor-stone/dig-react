@@ -1,37 +1,41 @@
 import React     from 'react';
 
-import { QueryParamTracker,
-         DefaultParamTracker,
-         DirtyParamTracker }   from '../mixins';
+import { QueryParamTracker }   from '../mixins';
 
-const UnmixedOnlyFilter = React.createClass({
-
-  mixins: [QueryParamTracker, DirtyParamTracker, DefaultParamTracker],
+class UnmixedOnlyFilter extends QueryParamTracker(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    this.performQuery = this.performQuery.bind(this);
+  }
 
   stateFromParams(queryParams) {
     var toggle = queryParams.remixmax === '0';
     return { toggle };
-  },
+  }
 
   onAreParamsDirty(queryParams,defaults,isDirty) {
     if( !isDirty.isDirty) {
       isDirty.isDirty = queryParams.remixmax === '0';
     }
-  },
+  }
 
   onGetParamsDefault(queryParams) {
     queryParams.remixmax = null;
-  },
+  }
 
-  performQuery: function() {
+  performQuery() {
     this.refreshModel( { remixmax: !this.state.toggle ? '0' : '' });
-  },
+  }
 
-  render: function() {
+  render() {
     return (
-        <label className="form-control" htmlFor="unmixed">{"only unmixed "}<input onChange={this.performQuery} checked={this.state.toggle} type="checkbox" id="unmixed" /></label>
+        <label className="form-control" htmlFor="unmixed">{"only unmixed "}<input onChange={this.performQuery} 
+                                                                                  checked={this.state.toggle} 
+                                                                                  type="checkbox" id="unmixed" 
+                                                                           /></label>
       );
   }
-});
+}
 
 module.exports = UnmixedOnlyFilter;

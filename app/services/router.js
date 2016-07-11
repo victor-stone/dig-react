@@ -1,6 +1,5 @@
 import RouteRecognizer  from 'route-recognizer';
 import rsvp             from 'rsvp';
-import querystring      from 'querystring';
 
 import Eventer          from './eventer';
 import env              from './env';
@@ -20,60 +19,53 @@ class Router extends Eventer
     (typeof window !== 'undefined') && (window.onpopstate = this.updateURL.bind(this));
   }
   
-  get _currentRoute() {
-    return this.__currRoute;
+  get _currentPath() {
+    const { search = '', pathname } = document.location;
+    return pathname + search;
   }
 
-  addRoutes(routes, rewrites) {
+  addRoutes(routes, rewrites = {}) {
 
-    this.routes = routes;
-    this.rewrites = rewrites || [];
+    this.routes   = routes;
+    this.rewrites = rewrites;
+
+    const noopStore  = () => rsvp.resolve({});
+    const genericUrl = path => store => path + (store.queryString || '');
+
     // baby steps: nothing nested for now
 
-    if( !('error' in this.routes) ) {
-      this.routes.error = require('../routes/error');
-    }
-
-    for( var handler in routes ) {
-      var component = routes[handler];
-      if( !component.path ) {
-        component.path = '/' + handler;
-      }
-      if( !component.store ) {
-        component.store = function() { return rsvp.resolve({}); };
-      }
-      var paths = Array.isArray( component.path ) ? component.path : [ component.path ];
+    for( const handler in routes ) {
+      const { path = ['/' + handler], store = noopStore, urlFromStore } = routes[handler];
+      const paths = Array.isArray( path ) ? path : [ path ];
+      Object.assign( routes[handler], { path, store, urlFromStore: urlFromStore || genericUrl(paths[0]) } );
       paths.forEach( path => this.recognizer.add( [ { path, handler } ] ) );
     }
   }
   
   runRewrites(url) {
     if( url ) {
-      for( var i = 0; i < this.rewrites.length; i++) {
-        var rule = this.rewrites[i];
-        if( url.match(rule.regex) !== null ) {
-          return url.replace(rule.regex,rule.now);
-        }
-      }
+      url = this.rewrites.find( rule => url.match(rule.regex) ) || url;
     }
     return url;
   }
 
+  /*
+    convert a url into a component based handler
+  */
   resolve(url) {
     this._ensureRoutes();
     url = this.runRewrites(url);
-    var results = this.recognizer.recognize(url);
-    if( results ) {
-      var handlers = results.slice();
-      var queryParams = results.queryParams || {};
-      var routes = this.routes;
-      return handlers.map( function(h) { 
-                                return { 
-                                  component: routes[h.handler], 
-                                  params: h.params || {},
-                                  queryParams 
-                                };
-                              });
+    const handlers = this.recognizer.recognize(url);
+    if( handlers ) {
+      // result is an array-like object with a 'queryParams' property
+      var queryParams = handlers.queryParams || {};
+      return handlers.slice().map( h => { 
+                                    return { 
+                                      component: this.routes[h.handler], 
+                                      params: h.params || {},
+                                      queryParams 
+                                    };
+                                  });
     }
     return null;
   }
@@ -100,12 +92,10 @@ class Router extends Eventer
     }
   }
 
+  // Called from .navigateTo() and when user hits 'back' or 'foward' button
   updateURL() {
-    var q = document.location.search || '';
-    var pathname = document.location.pathname + q;
-    var handlers = this.resolve(pathname);
+    var handlers = this.resolve(this._currentPath);
     if (!handlers ) {
-      // ummmmm
       return window.alert('Not Found');
     }
     if( handlers.length > 1 ) {
@@ -113,90 +103,54 @@ class Router extends Eventer
     }
     var handler = handlers[0];
 
-    if( this.__currRoute.component &&
-        !this.__currRoute.component.noReuse &&
-        document.location.pathname === this.__currRoute.component.path &&
-        this.__currRoute.store.refreshModel ) {
+    handler.component.store(handler.params, handler.queryParams)
+      .then( store => {
+  
+          const meta = {
+            store,              
+            name:        handler.component.displayName, 
+            component:   handler.component,
+            path:        handler.component.path,
+            params:      handler.params,
+            queryParams: handler.queryParams,
+            hash:        document.location.hash || ''
+          };
+          
+          this.emit( events.PRE_NAVIGATE, meta, this.__currRoute );
 
-          var store = this.__currRoute.store;
-          this.ignoreEvents = true;
-          if( q ) {
-            var qp = querystring.parse(q.substr(1));
-            store.applyURIQuery(qp).finally( this._postInRouteNavigate.bind(this) );
-          } else {
-            store.applyURIDefault().finally( this._postInRouteNavigate.bind(this) );
+          const prevStore = this.__currRoute.store;
+          if( prevStore && prevStore.removeListener ) {
+            prevStore.removeListener( events.MODEL_UPDATED, this.modelChanged.bind(this,prevStore) );
           }
 
-    } else {
+          this.__currRoute = {
+            component: handler.component,
+            store
+          };
 
-      handler.component.store(handler.params, handler.queryParams)
-        .then( store => {
-    
-            var meta = {
-              store,              
-              name:        handler.component.displayName, 
-              component:   handler.component,
-              path:        handler.component.path,
-              params:      handler.params,
-              queryParams: handler.queryParams,
-              hash:        document.location.hash || ''
-            };
-            
-            this.emit( events.PRE_NAVIGATE, meta, this.__currRoute );
+          store.on && store.on( events.MODEL_UPDATED, this.modelChanged.bind(this,store) );
 
-            var prevStore = this.__currRoute.store;
-            if( prevStore && prevStore.removeListener ) {
-              prevStore.removeListener( events.PARAMS_CHANGED, this.paramChanged.bind(this) );
-            }
-            this.__currRoute = {
-              component: handler.component,
-              store
-            };
-            if( store.on ) {
-              store.on( events.PARAMS_CHANGED, this.paramChanged.bind(this) );
-            }
-            this.emit( events.NAVIGATE_TO, {
-              store,              
-              name:        handler.component.displayName, 
-              component:   handler.component,
-              path:        handler.component.path,
-              params:      handler.params,
-              queryParams: handler.queryParams,
-              hash:        document.location.hash || ''
-            });
-        }).catch( error => {
-          env.error( error );
-        });
-    }
+          this.emit( events.NAVIGATE_TO, meta);
+          
+      }).catch( error => {
+        env.error( error );
+      });
   }
 
-  paramChanged(queryParams,store) {
-    if( !this.ignoreEvents ) {
-      var str = store.queryString;
-      if( str.length === 0 ) {
-        str = this.__currRoute.component.path;
-      } else {
-        str = '?' + str;
-      }
-      this.setBrowserAddressBar( str );
-      this._postInRouteNavigate();
-    }    
+  modelChanged() {
+    const { component, store } = this.__currRoute;
+    var url = component.urlFromStore( store );
+    if( url !== this._currentPath ) {
+      this.setBrowserAddressBar( url );
+      this.emit( events.NAVIGATE_TO_THIS );
+    }
   }
 
   _ensureRoutes() {
-    if( this.routes !== null ) {
-      return;
-    }
-    if( env.routes ) {
+    if( this.routes === null && env.routes) {
       this.addRoutes( env.routes, env.rewriteRules );
     }
   }
-
-  _postInRouteNavigate() {
-    this.ignoreEvents = false;
-    this.emit( events.NAVIGATE_TO_THIS );
-  }
-
 }
     
 module.exports = new Router();

@@ -4,20 +4,24 @@ import { mergeParams }  from '../../unicorns';
 import pages            from '../../components/playlists/pages';
 import SubNav           from '../../components/playlists/SubNav';
 
-var browse = pages.Browse;
+const browse = Object.assign(pages.Browse,{
+  title: 'Browse Playlists',
 
-browse.title = 'Browse Playlists';
+  path: '/playlists/browse',
 
-browse.subnav = function(props) {
-  return (<SubNav store={props.store} tab="browse" paging/>);
-};
+  subnav(props) {
+    return (<SubNav store={props.store} tab="browse" paging/>);  
+  },
 
-browse.store = function(params,queryParams) {
-  var qparams = mergeParams( { dynamic: 1, minitems: 4 }, queryParams );
-  return Playlists.storeFromQuery(qparams);
-};
+  store(params,queryParams) {
+      const qparams = mergeParams( { dynamic: 1, minitems: 4 }, queryParams );
+      return Playlists.storeFromQuery(qparams);
+  },
 
-browse.path = '/playlists/browse';
+  urlFromStore(store) {
+    return browse.path + store.queryString;
+  }
+});
 
 module.exports = browse;
 

@@ -1,4 +1,4 @@
-  /*eslint "react/no-danger":0 */
+/* eslint "react/no-danger":0 */
 import React   from 'react';
 import Gallery from '../RemixTree/Gallery';
 import css     from './style/people';
@@ -18,24 +18,21 @@ import {  InlineCSS,
 var HorizontalForm = Form.HorizontalForm;
 var FormItem       = Form.FormItem;
 
-var Description = React.createClass({
-
-  mixins: [ModelTracker],
-
+class Description extends ModelTracker(React.Component)
+{
   stateFromStore(store) {
-    var model = store.model.artist;
-    return { html: model.descriptionHTML };
-  },
+    return { html: store.model.artist.descriptionHTML };
+  }
 
   render() {
     return (<CollapsingText html={this.state.html} />);
   }
 
-});
+}
 
-const Header = React.createClass({
-
-  render: function() {
+class Header extends React.Component
+{
+  render() {
     var a = this.props.store.model.artist;
     var html = { __html: a.name };
     return(
@@ -48,10 +45,10 @@ const Header = React.createClass({
         </div>
     );
   }
-});
+}
 
-const Overview = React.createClass({
-  
+class Overview extends React.Component
+{
   render() {
     const { store, store:{model:{artist}} } = this.props;
     const { homepage, joined, name } = artist;
@@ -65,18 +62,12 @@ const Overview = React.createClass({
       </HorizontalForm>
       );
   }
-});
+}
 
 const UPLOAD_FILTER = /(remix|editorial_pick|sample|acappella)/;
 
-var PeoplePage = React.createClass({
-
-  mixins: [ModelTracker],
-
-  stateFromStore(store) {
-    return { store };
-  },
-
+class PeoplePage extends ModelTracker(React.Component)
+{
   render() {
     var store  = this.state.store;
 
@@ -104,7 +95,7 @@ var PeoplePage = React.createClass({
     );
   }
 
-});
+}
 
 module.exports = PeoplePage;
 

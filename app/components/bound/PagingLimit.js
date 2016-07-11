@@ -1,30 +1,32 @@
 import React                 from 'react';
-import _PagingLimit          from '../vanilla/PagingLimit';
+import PagingLimit           from '../vanilla/PagingLimit';
 import { QueryParamTracker } from '../../mixins';
 
 const MIN_LIMIT = 10;
 
-// TODO: make QueryParamTracker a mixin class
-const PaginLimit = React.createClass({ 
-
-  mixins: [QueryParamTracker],
-
+class BoundPagingLimit extends QueryParamTracker(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    this.onLimitChange = this.onLimitChange.bind(this);
+  }
+  
   stateFromParams(queryParams) {
     return { limit: queryParams.limit };
-  },
+  }
 
   onLimitChange(limit) {
     this.props.store.refreshModel( { limit } );
-  },
+  }
 
   render() {
     var cls = this.props.store.model.total > MIN_LIMIT ? '' : 'hidden';
-    return <_PagingLimit cls={cls} limit={this.state.limit} onLimitChange={this.onLimitChange} />;
+    return <PagingLimit cls={cls} limit={this.state.limit} onLimitChange={this.onLimitChange} />;
   }
 
-});
+}
 
 
-module.exports = PaginLimit;
+module.exports = BoundPagingLimit;
 
 

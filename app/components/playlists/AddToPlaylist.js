@@ -127,10 +127,8 @@ class AddToPlaylistPopup extends Modal.Popup {
   }  
 }
 
-var AddToPlaylistLink = React.createClass({
-
-  mixins: [CurrentUserTracker],
-
+class AddToPlaylistLink extends CurrentUserTracker(React.Component) 
+{
   showPlaylistPopup() {
     // FIXME: filter out dynamic playlists
     var playlists = new Playlists();
@@ -141,14 +139,14 @@ var AddToPlaylistLink = React.createClass({
 
     playlists.getModel( { limit: 200, dynamic: '-1', user } )
       .then( () => AddToPlaylistPopup.show( AddToPlaylistPopup,{ store: playlists, model, user } ));
-  },
+  }
 
   render() {
     return(
         <DeadLink onClick={this.showPlaylistPopup} icon="music" text=" Add to Playlist" />
       );
   }
-});
+}
 
 module.exports = AddToPlaylistLink;
 

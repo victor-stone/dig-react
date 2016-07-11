@@ -15,7 +15,7 @@ import EditableTrackList   from '../models/EditableTrackList';
     onPlay(model)    - user clicked on 'play' button 
     onSort(sortkeys) - user is done sorting tracks   
 */
-class BoundEditableTrackList extends ModelTracker.extender(React.Component)
+class BoundEditableTrackList extends ModelTracker(React.Component)
 {
   stateFromStore(store) {
     return { model: store.model };

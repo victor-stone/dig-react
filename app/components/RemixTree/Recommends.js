@@ -6,21 +6,20 @@ import { DelayLoadModel,
          ModelTracker }    from '../../mixins';
 import RecommendsButton    from '../bound/RecommendsButton';
 
-var Recommends = React.createClass({
-
-  mixins: [ModelTracker,DelayLoadModel],
-
+class Recommends extends DelayLoadModel(ModelTracker(React.Component))
+{
   componentWillReceiveProps(nextProps) {
+    super.componentWillReceiveProps(nextProps);
     this.setState({ numItems: nextProps.numItems });
-  },
+  }
 
   speakNow(nextProps,nextState) {
     return this.state.numItems !== nextState.numItems;
-  },
+  }
 
   stateFromStore(store) {
     return { id: store.model.upload.id, numItems: store.model.upload.numRecommends };
-  },
+  }
 
   refreshModel(store) {
     if( !this.ratings ) {
@@ -28,28 +27,28 @@ var Recommends = React.createClass({
     }
     var id = store ? store.model.upload.id : this.state.id;
     return this.ratings.recommendedBy(id);
-  },
+  }
 
   render() {
-    var title = `Recommends (${this.state.numItems})`;
-    var recButton = <RecommendsButton store={this.props.store} className="pull-right" />;
+    const { numItems, model, open } = this.state;
+
+    var penProps = {
+      disabled:     !numItems,      
+      title:        `Recommends (${numItems})`,
+      id:           'recc',
+      icon:         'thumbs-o-up',
+      headerContent: <RecommendsButton store={this.props.store} className="pull-right" />,
+      onOpen:       this.onOpen,
+      onClose:      this.onClose,
+    };
+
     return (
-      <AccordionPanel disabled={!this.state.numItems} 
-                      title={title} 
-                      id="recc" 
-                      icon="thumbs-o-up" 
-                      headerContent={recButton} 
-                      onOpen={this.onOpen}
-                      nClose={this.onClose} 
-      >
-        {this.state.model && this.state.open
-          ? <PeopleList className="recommends-list" thumb model={this.state.model} />
-          : null
-        }
+      <AccordionPanel {...penProps}>
+        {model && open && <PeopleList className="recommends-list" thumb model={model} />}
       </AccordionPanel>
     );
   }
-});
+}
 
 module.exports = Recommends;
 

@@ -4,15 +4,16 @@ import Glyph  from './vanilla/Glyph';
 
 import { ModelTracker } from '../mixins';
 
-var DidYouMean = React.createClass({
-
-  mixins: [ ModelTracker ],
+class DidYouMean extends ModelTracker(React.Component)
+{
 
   stateFromStore(store) {
 
+    const { genres, artists } = this.props;
+
     var model = [];
     
-    if( this.props.genres ) {
+    if( genres ) {
       model.push({
             name:  'Genres',
             route: 'tags',
@@ -21,7 +22,7 @@ var DidYouMean = React.createClass({
           });
     }
 
-    if( this.props.artists ) {
+    if( artists ) {
       model.push({
             name:  'Artists',
             route: 'people',
@@ -31,13 +32,13 @@ var DidYouMean = React.createClass({
     }
 
     return { model };
-  },
+  }
 
-  render: function() {
+  render() {
 
     var groups = [];
 
-    this.state.model.forEach( function(g) {
+    this.state.model.forEach( g => {
 
       if( g.items.length ) {
         var items = g.items.map( i => <Link key={i.id} href={'/' + g.route + '/' + i.id} ><Glyph icon={g.icon}/> {i.name}</Link> );
@@ -55,9 +56,9 @@ var DidYouMean = React.createClass({
     } else {
       return (<div>{this.props.children}</div>);
     }
-  },
+  }
 
-});
+}
 
 module.exports = DidYouMean;
 

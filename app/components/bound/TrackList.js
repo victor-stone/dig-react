@@ -15,7 +15,7 @@ import TrackList      from '../models/TrackList';
     onPlay(model)    - user clicked on 'play' button 
 */
 
-class BoundTrackList extends ModelTracker.extender(React.Component)
+class BoundTrackList extends ModelTracker(React.Component)
 {
   render() {
     <TrackList {...this.props} model={this.state.store.model} />;

@@ -1,136 +1,106 @@
 import React              from 'react';
 import QueryOptions       from './QueryOptions';
-import Glyph              from '../vanilla/Glyph';
 import DownloadPopup      from '../DownloadPopup';
-import Link               from '../services/LinkToRoute';
-import LinkToUpload       from '../services/LinkToUploadRoute';
+import LinkToRemixTree    from '../services/LinkToRemixTree';
+import LinkToPeople       from '../services/LinkToPeopleRoute';
 import { PlayButton }     from '../AudioPlayer';
 import { ModelTracker,
          NowPlayingTracker } from '../../mixins';
-
+import { bindAll }        from '../../unicorns';
 import InlineCSS          from '../vanilla/InlineCSS';
 import browserCSS         from './style/browser';
 
-var PellsListing = React.createClass({
-
-  mixins: [ModelTracker],
-
+class PellsListing extends ModelTracker(React.Component)
+{
   stateFromStore(store) {
     return { model: store.model };
-  },
+  }
 
   selectLine(pell) {
-    return (e) => {
+    return e => {
       e.stopPropagation();
       e.preventDefault();
       this.props.onSelectedPell(pell);
     };
-  },
+  }
 
-  render: function() {
+  render() {
 
-    function pellLine(pell) {
+    const { items, artist } = this.state.model;
+
+    const pellLine = pell => {
 
       return (<li className="pell" key={pell.id}>        
-                  {pell.bpm
-                    ? <span className="bpm">{'bpm: ' + pell.bpm}</span>
-                    : null
-                  }
+                  {pell.bpm && <span className="bpm">{'bpm: ' + pell.bpm}</span>}
                   <span className="title" onClick={this.selectLine(pell)}>{pell.name}</span>
                   <PlayButton model={pell} className="pell-play btn-sm" />
-                  {artist
-                    ? null
-                    : <span className="artist"><Link href={'/people/' + pell.artist.id}>{pell.artist.name}</Link></span>
-                  }
+                  {!artist && <span className="artist"><LinkToPeople model={pell.artist} /></span>}
               </li>);
-    }
+    };
 
-    var items    = this.state.model.items;
-    var artist   = this.state.model.artist;
-    var lines    = items.map(pellLine.bind(this));
+    return React.createElement( 'ul', {className:'tab-content'}, items.map(pellLine) );
+  }
+}
 
-    return React.createElement( 'ul', {className:'tab-content'}, lines );
-    }
-});
-
-var PellDetail = React.createClass({
-
-  getInitialState: function() {
-    return { 
+class PellDetail extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.state = { 
       model: this.props.model,
       show: 'listing'};
-  },
+  }
 
   componentWillReceiveProps(newProps) {
     this.setState( { model: newProps.model } );
-  },
+  }
 
-  render: function() {
-    var model       = this.state.model;
+  render() {
+    const { model, model:{name,artist,files} = {} } = this.state;
 
     if( !model ) {
       return null;
     }
 
-    var treeURL = LinkToUpload.url(model);
-
     return (
         <div className="pell-detail">
           <ul className="download-list">
-            <li>
-              <span className="name">{model.name}</span>
-            </li>
-            <li>
-              <Link className="artist" href={'/people/'+model.artist.id}>{model.artist.name}</Link>
-            </li>
-            {model.files.map( file => {
+            <li><span className="name">{name}</span></li>
+            <li><LinkToPeople className="artist" model={artist} /></li>
+            {files.map( file => {
+              const { id, extension, nicName, playTime } = file;
               return (
-                <li className="dl-list" key={file.id} >
-                    <DownloadPopup btnClass="sm-download" 
-                                   model={model} 
-                                   file={file} 
-                    /> 
-                    {" "}
-                    <span className="ext">{file.extension}</span> 
-                    {" "}
-                    {file.playTime 
-                      ? <span className="playtime">{file.playTime}</span>
-                      : null
-                    }                      
-                    {" "}
-                    <span className="nic">{file.nicName}</span>
-                </li>
+                  <li className="dl-list" key={id} >
+                      <DownloadPopup btnClass="sm-download" model={model} file={file} />{" "}
+                      <span className="ext">{extension}</span>{" "}
+                      {playTime && <span className="playtime">{playTime}</span>}{" "}
+                      <span className="nic">{nicName}</span>
+                  </li>
                 );})
             }
-            <li>
-              
-            </li>
-            <li>
-              <Link className="ccm-link pell-detail-foot" href={treeURL}>
-                <Glyph icon="arrow-left" />
-                {" Remix Tree "}
-                <Glyph icon="arrow-right" />
-              </Link>
-            </li>
+            <li><LinkToRemixTree className="ccm-link pell-detail-foot" model={model} /></li>
           </ul>
         </div>
       );
   }
-});
+}
 
-var  PellsBrowser = React.createClass({
-
-  mixins: [NowPlayingTracker],
+class PellsBrowser extends NowPlayingTracker(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    bindAll( this, 'onNowPlayingState', 'onSelectedPell' );
+  }
 
   onNowPlayingState(selected) {
     this.setState( { selected } );
-  },
+  }
 
   onSelectedPell(selected) {
     this.setState( { selected });
-  },
+  }
 
-  render: function() {
+  render() {
     var store = this.props.store;
     return (
       <div className="container pells-page">
@@ -150,7 +120,7 @@ var  PellsBrowser = React.createClass({
     );      
   }
 
-});
+}
 
 module.exports = {
   PellDetail,

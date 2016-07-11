@@ -13,6 +13,10 @@ class TaggedCollection extends TagsOwner(Collection) {
     return tags;
   }
 
+  get currentReqtag() {
+    return this.totalsCache.filter(this.model.queryParams.reqtags).toString();
+  }
+
 }
 
 module.exports = TaggedCollection;

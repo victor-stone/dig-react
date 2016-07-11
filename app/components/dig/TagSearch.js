@@ -1,16 +1,19 @@
 import React         from 'react';
-import Glyph         from '../vanilla/Glyph'; 
-import Tags          from '../Tags';
 import Remixes       from '../Remixes';
 import QueryOptions  from './QueryOptions';
-import events        from '../../models/events';
+
+import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
 
 import { BoundSelectedTagList } from '../bound/Tags';
 
+import TagCategoryBox from './tags/TagCategoryBox';
+import MatchAllButton from './tags/MatchAllButton';
+import TagNoHits      from '../bound/TagNoHits';
+
 import css from './style/tags';
 
-const TagCategoryRow = React.createClass({
-
+class TagCategoryRow extends React.Component
+{
   render() {
     var catNames   = Object.keys(this.props.model);
     var categories = this.props.model;
@@ -19,14 +22,11 @@ const TagCategoryRow = React.createClass({
     return (
       <div className="row">
         <div className="col-md-1 hmmmmmm"></div>
-        {catNames.map( n => <Tags.TagCategoryBox model={categories[n]} key={n} catID={n} store={store} /> )}
+        {catNames.map( n => <TagCategoryBox model={categories[n]} key={n} catID={n} store={store} /> )}
       </div>
       );
-  },
-  
-});
-
-// <Tags.SelectedTags {...this.props}/>
+  }
+}
 
 class SelectedTagRow extends React.Component
 {
@@ -37,7 +37,7 @@ class SelectedTagRow extends React.Component
         <div className="row">
           <div className="col-md-8 col-md-offset-2 dig-tags">
             <BoundSelectedTagList css={css} x floating autoclear={false} store={store}  />
-            <Tags.MatchAllButton store={store} />
+            <MatchAllButton store={store} />
           </div>   
           <div className="col-md-2 whaaaaaat">
           </div>
@@ -47,22 +47,12 @@ class SelectedTagRow extends React.Component
 
 }
 
-const TagsLoading = React.createClass({
-
-  render() {
-    return(
-      <h4 className="center-text">{"Loading Tags "}<Glyph icon="spinner" pulse /></h4>
-      );
+class RemixTagSelectionSection extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.state = { loading: true, model: {} };
   }
-});
-
-const RemixTagSelectionSection = React.createClass({
-
-  getInitialState() {
-    return { loading: true,
-             model: {},
-            };
-  },
 
   componentWillMount() {
     if( !global.IS_SERVER_REQUEST ) {
@@ -72,11 +62,7 @@ const RemixTagSelectionSection = React.createClass({
           loading: false });
       });
     }
-  },
-
-  componentDidUpdate() {
-    this.props.store.emit( events.COMPONENT_UPDATE );
-  },
+  }
 
   render() {
 
@@ -84,15 +70,16 @@ const RemixTagSelectionSection = React.createClass({
       return null;
     }
 
-    var model = this.state.model;
+    const { loading, model } = this.state;
+    
     var store = this.props.store;
 
     return (
         <div className="page-header">
           <div className="container">
             {
-              this.state.loading 
-                ? <TagsLoading />
+              loading 
+                ? <AjaxLoadingGlyph />
                 : <div>
                     <TagCategoryRow store={store} model={model} />
                     <SelectedTagRow store={store}  />
@@ -102,7 +89,7 @@ const RemixTagSelectionSection = React.createClass({
         </div>
       );
   }
-});
+}
 
 
 var TagSearch = React.createClass({
@@ -117,7 +104,7 @@ var TagSearch = React.createClass({
         <Remixes store={store}>   
           <QueryOptions store={store} />
         </Remixes>
-        <Tags.NoTagHits store={store}  />     
+        <TagNoHits store={store}  />     
       </div>
     );
   }

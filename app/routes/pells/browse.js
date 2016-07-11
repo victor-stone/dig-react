@@ -1,27 +1,34 @@
-import React              from 'react';
 import qc                 from '../../models/query-configs';
 import Acappellas         from '../../stores/acappellas';
 import { mergeParams }    from '../../unicorns';
 import Browse             from '../../components/pells/Browse';
 import SubNav             from '../../components/pells/SubNav';
 
-function pells(props) {
-  return (<Browse.PellsBrowser {...props} />);
-}
+const pells = Object.assign(Browse.PellsBrowser,{
 
-pells.title = 'A Cappella Browser';
+  title: 'A Cappella Browser',
 
-pells.path = '/pells';
+  path: [ '/pells', '/pells/:reqtags'],
 
-pells.subnav = SubNav;
+  subnav: SubNav,
 
-pells.store = function(params,queryParams) {
-  
-  var featured = ('reqtags' in queryParams) ? {} : qc.pellsFeatured;
-  var qparams  = mergeParams( {}, qc.pells, featured, queryParams );
+  store(params,queryParams) {
+    const { reqtags = 'featured' } = params;
+    const opts = mergeParams( {reqtags}, qc.pells );
+    const qparams  = mergeParams( {}, opts, queryParams );
+    return Acappellas.storeFromQuery(qparams, opts);
+  },
 
-  return Acappellas.storeFromQuery(qparams, qc.pells);
-};
+  urlFromStore(store) {
+    const reqtag = store.currentReqtag;
+    let path = '/pells';
+    if( reqtag !== 'featured' ) {
+      path += '/' + reqtag;
+    }
+    return path + store.queryString;
+  }
+
+});
 
 module.exports = pells;
 

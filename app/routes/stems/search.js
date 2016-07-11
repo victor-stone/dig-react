@@ -9,23 +9,22 @@ import {  PageHeader }       from '../../components/vanilla';
 import Listing               from '../../components/stems/ListingWidget';
 import { QueryParamTracker } from '../../mixins';
 
-var SearchHead = React.createClass({
-
-  mixins: [ QueryParamTracker ],
-
+class SearchHead extends QueryParamTracker(React.Component)
+{
   stateFromParams(queryParams) {
     return { searchTerm: queryParams.searchp };
-  },
+  }
 
-  render: function() {
+  render() {
     return (<PageHeader icon="search" subTitle="Search" title={this.state.searchTerm}/>);
   }
 
-});
+}
 
 function NoSearchHits() {
   return (<div className="well no-search-hits">{"wups - no matches for that search"}</div>);
 }
+
 function stemsSearch(props) {
 
   var store = props.store;

@@ -9,7 +9,7 @@ import _PlaylistList      from '../models/PlaylistList';
     store     - object   from [stores/playlists] assumes .model.items[]
 */
 
-class PlaylistList extends ModelTracker.extender(React.Component)
+class PlaylistList extends ModelTracker(React.Component)
 {
   stateFromStore(store) {
     return { model: store.model };

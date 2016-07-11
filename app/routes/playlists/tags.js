@@ -3,19 +3,26 @@ import Playlists from '../../stores/playlists';
 import pages     from '../../components/playlists/pages';
 import SubNav    from '../../components/playlists/SubNav';
 
-var tags = pages.Tags;
+var tags = Object.assign(pages.Tags,{
 
-tags.path = '/playlists/tags/:tags';
+  path: '/playlists/tags/:tags',
 
-tags.title = 'Tags';
+  title: 'Tags',
 
-tags.subnav = function(props) {
-  return (<SubNav store={props.store} tab="" paging/>);
-};
+  subnav(props) {
+    return (<SubNav store={props.store} tab="" paging/>);
+  },
 
-tags.store = function(params /*,queryParams */) {
-  return Playlists.storeFromQuery( { tags: params.tags, minitems: '0', dynamic: 1 } );
-};
+  store(params) {
+    return Playlists.storeFromQuery( { tags: params.tags, minitems: '0', dynamic: 1 } );
+  },
+
+  urlFromStore(store) {
+    const tags = store.model.queryParams.tags.toString();
+    return `/playlists/tags/${tags}`;
+  }
+});
+
 
 module.exports = tags;
 

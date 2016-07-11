@@ -7,7 +7,7 @@ import { InputFormField,
   Note: the parent component is assumed to be tracking store
         updates and passing new props down to these controls
 
-        class SomeComponent extends ModelTracker.extender(React.Component) {
+        class SomeComponent extends ModelTracker(React.Component) {
 
           render() {
             <BoundInputText store={this.state.store} propName="hooya" />

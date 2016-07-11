@@ -79,6 +79,8 @@ module.exports = {
   },
 
   userfeed: {
+    dataview: 'userfeed',
+    datasource: 'feed',
     limit: 40
   }
 

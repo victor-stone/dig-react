@@ -2,29 +2,34 @@ import React      from 'react';
 import qc         from '../../models/query-configs';
 import Store      from '../../stores/remixes';
 
-import { mergeParams, 
-         oassign }    from '../../unicorns';
+import { mergeParams }    from '../../unicorns';
 
 import Gallery from '../../components/RemixTree/Gallery';
 import SubNav  from '../../components/RemixTree/SubNav';
 
-const tree = Gallery;
+const tree = Object.assign(Gallery, {
+  title: 'Remix Tree',
 
-tree.title = 'Remix Tree';
+  path: [ '/tree', '/tree/:reqtags' ],
 
-tree.subnav = function(props) {
-  return (<SubNav paging store={props.store} className="tree-subnav" tab="remix" />);
-};
+  subnav(props) {
+    return (<SubNav paging store={props.store} className="tree-subnav" tab="remix" />);  
+  },
 
-tree.store = function(params,queryParams) {
-  var defaultOpts = oassign({},qc.remixes,qc.latest);
-  if( queryParams && 'reqtags' in queryParams ) {
-    defaultOpts.reqtags = queryParams.reqtags;
+  store(params={},queryParams={}) {
+    const opts = Object.assign({},qc.remixes,qc.latest,'reqtags' in params ? {reqtags:params.reqtags} : {});
+    const qparams = mergeParams( {}, opts, queryParams );
+    return Store.storeFromQuery(qparams, opts);
+  },
+
+  urlFromStore(store) {
+    let   path = '/tree';
+    const reqtag = SubNav.isTab(store.model.queryParams.reqtags);
+    reqtag && (path += '/' + reqtag);
+    return path + store.queryString;
   }
-  mergeParams( defaultOpts, qc.latest );
-  var qparams = mergeParams( {}, defaultOpts, queryParams );
-  return Store.storeFromQuery(qparams, defaultOpts);
-};
+});
+
 
 module.exports = tree;
 

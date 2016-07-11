@@ -9,23 +9,29 @@ import { LicenseFilter,
          SortFilter,
          OptionsWrap }    from '../QueryOptions';
 
-const TypeFilter = React.createClass({ 
-
-  mixins: [QueryParamTracker],
+class TypeFilter extends QueryParamTracker(React.Component)
+{
+  constructor() {
+    super(...arguments);
+    this.performQuery = this.performQuery.bind(this);
+  }
 
   stateFromParams(queryParams) {
     return { reqtags: new TagString( queryParams.reqtags ).filter(/^(remix|sample|acappella)$/) };
-  },
+  }
 
-  performQuery: function() {
+  performQuery() {
+    const { store } = this.props;
+    const { model:{queryParams:{reqtags}} } = store;
+
     var typetag = this.refs['typelist'].value;
-    var tags    = new TagString(this.props.store.model.queryParams.reqtags)
+    var tags    = new TagString(reqtags)
                         .remove('remix,sample,acappella')
                         .add(typetag);
-    this.props.store.refresh( { reqtags: tags.toString() } );
-  },
+    store.refresh( { reqtags: tags.toString() } );
+  }
   
-  render: function() {
+  render() {
     return (
         <select ref="typelist" id="typelist" value={this.state.reqtags} onChange={this.performQuery} className="form-control" >
           <option value="remix">{"remixes"}</option>
@@ -35,7 +41,7 @@ const TypeFilter = React.createClass({
       );
   }
 
-});
+}
 
 
 function PlaylistQueryOptions(props) {

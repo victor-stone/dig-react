@@ -1,70 +1,66 @@
-import { camelize } from '../unicorns';
+var changeCase = require('change-case');
 /*
-  Implementors must implement 
+  Event name(s) must be returned in 'storeEvents' property
 
-    on<EventName>(...) { }
-
-  name and arguments depends on event.
-
-  Event name(s) can be setup in 
-
-    getDefaultProps: function() {
-      return { storeEvent: events.SELECTED_TAGS };
+    get storeEvents() {
+      return [ events.SELECTED_TAGS, events.SOME_OTHER_EVENT ];
     }
 
-    onSelectedTags: function() {}
+  and handled thusly
 
-  OR: 
-
-    getDefaultProps: function() {
-      return { storeEvents: ['foo', 'bar'] }; // <-- note the storeEvent(s)
-    }
-
-    onFoo: function() {}
-
-    onBar: function() {}
+    onSelectedTags() {
   
+    }
+
+    onSomeOtherEvent() {
+  
+    }
+
+  N.B. Do NOT .bind(this) the handlers (that will happen in this mixin)
 
 */
-var StoreEvents = {
+var StoreEvents = target => class extends target {
 
-  componentWillMount: function() {
-    this._storeEventHandlers = {};
-    this._getStoreEvents().forEach( event => {
-      var handlerName = 'on' + camelize(event);
-      this._storeEventHandlers[event] = this[handlerName];
-    });
+  componentWillMount() {
+    this._modelTrackMounted = true;
+    super.componentWillMount && super.componentWillMount();
     this._subscribeToStoreEvents(this.props.store);
-  },
+  }
 
-  componentWillUnmount: function() {
+  get storeEvents() {
+    throw new Error('derived class from mixin must implement "storeEvents" property');
+  }
+
+  componentWillUnmount() {
+    this._modelTrackMounted = false;
+    super.componentWillUnmount && super.componentWillUnmount;
     this._unsubscribeFromStoreEvents(this.props.store);
-  },
+  }
 
-  componentWillReceiveProps: function( props ) {
+  componentWillReceiveProps( props ) {
+    super.componentWillReceiveProps && super.componentWillReceiveProps(props);
     if( this.props.store !== props.store ) {
       if( this.props.store ) {
         this._unsubscribeFromStoreEvents(this.props.store);
       }
       this._subscribeToStoreEvents(props.store);
     }
-  },
+  }
 
   _subscribeToStoreEvents(store) {
-    this._getStoreEvents().forEach( event => store.on(event,this._storeEventHandlers[event]));
-  },
+    this.storeEvents.forEach( event => store.on( event, this._safeGenericCallback.bind(this,event) ) );
+  }
 
   _unsubscribeFromStoreEvents(store) {
-    this._getStoreEvents().forEach( event => store.removeListener(event,this._storeEventHandlers[event]) );
-  },
+    this.storeEvents.forEach( event => store.removeListener( event, this._safeGenericCallback.bind(this,event) ) );
+  }
 
-  _getStoreEvents: function() {
-    if( this.props.storeEvent ) {
-      return [ this.props.storeEvent ];
-    } else {
-      return this.props.storeEvents;
+  _safeGenericCallback(event,...args) {
+    if( this._modelTrackMounted ) {
+      const handler = 'on' + changeCase.pascalCase(event);
+      this[handler].apply(this,args);
     }
-  },
+  }
 
 };
 

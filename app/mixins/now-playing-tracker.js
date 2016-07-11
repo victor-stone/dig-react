@@ -2,41 +2,39 @@ import AudioService from '../services/audio-player';
 import Upload       from '../stores/upload';
 import events       from '../models/events';
 
-var NowPlayingTracker = {
+const NowPlayingTracker = target => class extends target {
 
-  getInitialState: function() {
-    return { nowPlaying: null };
-  },
+  constructor() {
+    super(...arguments);
+    this.onNowPlaying = this.onNowPlaying.bind(this);
+    this.state = { nowPlaying: null };    
+  }
 
-  componentWillMount: function() {
+  componentWillMount() {
     if( !global.IS_SERVER_REQUEST ) {
       AudioService.on( events.NOW_PLAYING, this.onNowPlaying);
       this.modelFromNowPlaying( AudioService.nowPlaying );
     }
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     if( !global.IS_SERVER_REQUEST ) {
       AudioService.removeListener( events.NOW_PLAYING, this.onNowPlaying);
     }
-  },
+  }
 
   onNowPlaying(nowPlaying) {
     this.modelFromNowPlaying(nowPlaying);
-  },
+  }
 
   modelFromNowPlaying(np) {
     if( np ) {
       var upload = new Upload();
-      upload.info(np.id).then( nowPlaying => {
-        if( this.onNowPlayingState ) {
-          this.onNowPlayingState(nowPlaying);
-        } else {
-          this.setState( {nowPlaying} );
-        }
-      });
+      upload.info(np.id).then( nowPlaying => this.onNowPlayingState  
+                                               ? this.onNowPlayingState(nowPlaying)
+                                               : this.setState( {nowPlaying} ) );
     }
-  },
+  }
 
 };
 

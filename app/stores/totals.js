@@ -14,11 +14,11 @@ class TotalsCache {
   }
 
   cacheableTagFromTags(tags) {
-    return this.filter(new TagString(tags)).toString();
+    return this.filter(tags).toString();
   }
 
   filter(tags) {
-    return tags.filter( this._regex );
+    return (new TagString(tags)).filter( this._regex );
   }
 
   getTotals(params,store) {

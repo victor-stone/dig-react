@@ -28,6 +28,8 @@ class Playlist extends Permissions(TagsOwner(Query)) {
   constructor() {
     super(...arguments);
     this.model = {};
+    this._updateForwarder = this._updateForwarder.bind(this);
+    this._prevTracks = null;
   }
 
   get nullPermissions() {
@@ -107,9 +109,23 @@ class Playlist extends Permissions(TagsOwner(Query)) {
 
     return rsvp.hash(model)
               .then( model => { 
+                  this._wireTracks(model);
                   this.model = model; 
                   this.emit(events.MODEL_UPDATED);
               });
+  }
+
+  // In order to keep the browser URL and other states in sync
+  // we forward the model update event from model.tracks to
+  // event listeners of this store
+  _wireTracks(newModel) {
+    this._prevTracks && this._prevTracks.removeListener(events.MODEL_UPDATED,this._updateForwarder);
+    newModel.tracks.on(events.MODEL_UPDATED,this._updateForwarder);
+    this._prevTracks = newModel.tracks;
+  }
+
+  _updateForwarder() {
+    this.emit(events.MODEL_UPDATED);
   }
 
   getPermissions(head) {
@@ -172,11 +188,11 @@ class Playlist extends Permissions(TagsOwner(Query)) {
   }
 
   _fetchTracks(id) {
-    var pl = {
+    const pl = {
       playlist: id,
       limit: 10,
     };
-    return this.uploads.getModel(pl)
+    return this._tracksStore(pl).getModel(pl)
                             .then( model => {
                                 model.items.forEach( t => {
                                   try {                                      
@@ -201,7 +217,7 @@ Playlist.create = function(name,track,qstring) {
 
 Playlist.PlaylistTracks = PlaylistTracks;
 
-Playlist.storeFromQuery = function(id) {
+Playlist.storeFromID = function(id) {
   var pl = new Playlist();
   return pl.find(id).then( () => pl );
 };

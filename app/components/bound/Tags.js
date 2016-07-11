@@ -110,7 +110,7 @@ CategoryTagBox.css = CheckableTagsList.css + `
 
 */
 
-class BoundStaticTagList extends SelectedTagsTracker.stt(React.Component)
+class BoundStaticTagList extends SelectedTagsTracker(React.Component)
 {
   shouldComponentUpdate(nextProps) {
     return this.props.store.tags.hash !== nextProps.store.tags.hash;
@@ -121,7 +121,7 @@ class BoundStaticTagList extends SelectedTagsTracker.stt(React.Component)
   }
 }
 
-class BoundSelectableTagList extends SelectedTagsTracker.stt(React.Component)
+class BoundSelectableTagList extends SelectedTagsTracker(React.Component)
 {
   constructor() {
     super(...arguments);
@@ -152,7 +152,7 @@ class BoundSelectableTagList extends SelectedTagsTracker.stt(React.Component)
     - category [BoundCategoryTagBox.categories]
 
 */
-class BoundCategoryTagBox extends SelectedTagsTracker.stt(React.Component)
+class BoundCategoryTagBox extends SelectedTagsTracker(React.Component)
 {
   constructor() {
     super(...arguments);
@@ -191,7 +191,7 @@ BoundCategoryTagBox.categories = CategoryTagBox.categories;
     - store 
 
 */
-class BoundSelectedTagList extends SelectedTagsTracker.stt(React.Component)
+class BoundSelectedTagList extends SelectedTagsTracker(React.Component)
 {
   constructor() {
     super(...arguments);

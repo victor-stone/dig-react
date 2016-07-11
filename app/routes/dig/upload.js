@@ -6,24 +6,31 @@ function uploadNotFound() {
   return (<div className="well"><h1>{"Wups - can't find that music!"}</h1></div>);
 }
 
-function uploadRoute(props) {
+function upload(props) {
   if( props.store.error ) {
     return uploadNotFound();
   }
   return (<Upload {...props} />);
 }
 
-uploadRoute.title = 'Files';
+Object.assign(upload,{
+  title: 'Files',
 
-uploadRoute.path = '/files/:userid/:uploadid';
+  path: '/files/:userid/:uploadid',
 
-uploadRoute.store = function(params/*,queryParams*/) {
-  return Uploads.storeFromQuery(params.uploadid,params.userid).then( store =>
-            { 
-                uploadRoute.title = !store.error && store.model.upload.name;
-                return store;
-            });
-};
+  store(params) {
+    return Uploads.storeFromQuery(params.uploadid,params.userid).then( store =>
+              { 
+                  upload.title = !store.error && store.model.upload.name;
+                  return store;
+              });
+  },
 
-module.exports = uploadRoute;
+  urlFromStore(store) {
+    const { model:{upload:{artist,id}} } = store;
+    return '/files/' + artist.id + '/' + id;
+  }
+});
+
+module.exports = upload;
 

@@ -8,18 +8,18 @@ import PeopleHeader      from '../../components/models/PeopleHeader';
 import Remixes          from '../../components/Remixes';
 import SubNav           from '../../components/dig/SubNav';
 
-var people = React.createClass({
+const people = React.createClass({
 
   render() {
-    var store  = this.props.store;
+    const { store, store:{error=null,model} } = this.props;
 
-    if( store.error ) {
+    if( error ) {
       return (<div className="well"><h1>{"wups, can't find that artist"}</h1></div>);
     }
     
     return  (
       <div>
-        <PeopleHeader model={store.model.artist} />
+        <PeopleHeader model={model.artist} />
         <Remixes store={store} skipUser>
           <QueryOptions store={store} />
         </Remixes>
@@ -30,21 +30,29 @@ var people = React.createClass({
 
 });
 
-people.path = '/people/:userid';
+Object.assign(people,{
+  path: '/people/:userid',
 
-people.title = 'People';
+  title: 'People',
 
-people.subnav = SubNav;
+  subnav: SubNav,
 
-people.store = function(params,queryParams) {
-  var opts    = mergeParams( {}, qc.remixes );
-  var qparams = mergeParams( {}, opts, { u: params.userid }, queryParams );
-  return Rmx.storeFromQuery(qparams,opts)
-          .then( store => {
-            people.title = !this.error && store.model.artist.name;
-            return store;
-          });
-};
+  store(params,queryParams) {
+    const opts    = mergeParams( {}, qc.remixes );
+    const qparams = mergeParams( {}, opts, { u: params.userid }, queryParams );
+    return Rmx.storeFromQuery(qparams,opts)
+            .then( store => {
+              people.title = !this.error && store.model.artist.name;
+              return store;
+            });
+  },
 
+  urlFromStore(store) {
+    const { model:{artist:{id}}, queryString } = store;
+    return '/people/' + id + queryString;
+  }
+
+
+});
 module.exports = people;
 

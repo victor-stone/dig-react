@@ -4,35 +4,40 @@ import { CurrentUserTracker,
 import events           from '../../models/events';
 import UserFeed         from '../../services/userfeed';
 
-var FeedBadge = React.createClass({
+class FeedBadge extends CurrentUserTracker(StoreEvents(React.Component))
+{
+  get store() {
+    if( !this._store ) {
+      this._store = UserFeed();
+    }
+    return this._store;
+  }
 
-  mixins: [ CurrentUserTracker, StoreEvents ],
-
-  getDefaultProps: function() {
-    return { storeEvent: events.FEED_SEEN,
-             store:  UserFeed() };
-  },
+  get storeEvents() {
+    return [events.FEED_SEEN];
+  }
 
   shouldComponentUpdate(nextProps,nextState) {
     return this.state.feedcount !== nextState.feedcount;
-  },
+  }
 
   onFeedseen() {
     this.setState( { feedcount: 0 } );
-  },
+  }
 
   onLastSeenCount(feedcount) {
     this.setState( {feedcount} );
-  },
+  }
 
   stateFromUser(user) {
     if( user ) { 
-      if( !this.state  || !this.state.user || user.id !== this.state.user.id ) {
-        this.props.store.lastSeenCount(user.id).then( this.onLastSeenCount );
+      const { state:{user:{id = null} = {} } = {} } = this;
+      if( user.id !== id ) {
+        this.store.lastSeenCount(user.id).then( feedcount => this.onLastSeenCount(feedcount) );
       }
     }
     return { user };
-  },
+  }
 
   render() {
     if( this.state.feedcount ) {
@@ -41,7 +46,7 @@ var FeedBadge = React.createClass({
     return null;
   }
 
-});
+}
 
 module.exports = FeedBadge;
 

@@ -1,5 +1,5 @@
 import React            from 'react';
-import { NoTagHits }    from '../Tags';
+import TagNoHits        from '../bound/TagNoHits';
 import StemsDetail      from './Detail';
 
 import BoundStemsListing     from '../bound/StemsListing';
@@ -30,6 +30,6 @@ class StemsWidget extends React.Component
   }
 }
 
-StemsWidget.defaultProps = { noHitsComp: NoTagHits };
+StemsWidget.defaultProps = { noHitsComp: TagNoHits };
 
 module.exports = StemsWidget;

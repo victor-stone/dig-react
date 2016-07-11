@@ -2,7 +2,7 @@ import React            from 'react';
 import { ModelTracker } from '../../mixins';
 import StemsListing     from '../models/StemsListing';
 
-class BoundStemsListing extends ModelTracker.extender(React.Component)
+class BoundStemsListing extends ModelTracker(React.Component)
 {
   constructor() {
     super(...arguments);

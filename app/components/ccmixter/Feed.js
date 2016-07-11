@@ -137,10 +137,8 @@ var FeedItemPretty = React.createClass({
 
 var FeedItem = /*lookup('env').debugMode ? FeedItemDebug : */ FeedItemPretty;
 
-var Feed = React.createClass({
-
-  mixins: [ModelTracker],
-
+class Feed extends ModelTracker(React.Component)
+{
   componentDidMount() {
     if( global.IS_SERVER_REQUEST ) {
       return;
@@ -149,11 +147,7 @@ var Feed = React.createClass({
     if( u ) {
       api.feed.markAsSeen(u).then( () => this.props.store.emit(events.FEED_SEEN) );
     }
-  },
-
-  stateFromStore(store) {
-    return {store};
-  },
+  }
 
   render() {
     var cls = 'user-feed container-fluid ' + this.props.className;
@@ -171,7 +165,7 @@ var Feed = React.createClass({
       </div>
     );
   }
-});
+}
 
 Feed.__supress_lint_warning = FeedItemDebug;
 

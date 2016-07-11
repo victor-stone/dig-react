@@ -3,9 +3,7 @@ import lookup from '../services';
 const PopPeruseModel = target => class extends target {
 
   componentWillUnmount() {
-    if( global.IS_SERVER_REQUEST ) {
-      return;
-    }
+    super.componentWillUnmount && super.componentWillUnmount();
     lookup('env').set({perusingModel:null});
   }
 };

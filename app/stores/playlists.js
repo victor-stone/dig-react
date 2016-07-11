@@ -145,8 +145,8 @@ class Playlists extends TaggedCollection {
   }
 }
 
-Playlists.storeFromQuery = function(queryParams) {
-  var playlists = new Playlists();
+Playlists.storeFromQuery = function(queryParams,defaults) {
+  var playlists = new Playlists(defaults);
   return playlists.getModel(queryParams).then( () => playlists );  
 };
 

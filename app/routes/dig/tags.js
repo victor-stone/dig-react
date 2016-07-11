@@ -16,17 +16,24 @@ var tags = React.createClass({
   },
 });
 
-tags.title = 'Tags';
+Object.assign(tags,{
+  title: 'Tags',
 
-tags.path = '/tags/:tags';
+  path: '/tags/:tags',
 
-tags.subnav = FeaturedPage.subnav;
+  subnav: FeaturedPage.subnav,
 
-tags.store = function(params,queryParams) {
-  var opts    = mergeParams( {}, qc.remixes );
-  var qparams = mergeParams( {}, opts, { tags: params.tags }, queryParams );
-  return Remixes.storeFromQuery(qparams, opts);
-};
+  store(params,queryParams) {
+    var opts    = mergeParams( {}, qc.remixes );
+    var qparams = mergeParams( {}, opts, { tags: params.tags }, queryParams );
+    return Remixes.storeFromQuery(qparams, opts);
+  },
+
+  urlFromStore(store) {
+    return '/tags/' + store.queryParams.tags;
+  }
+
+});
 
 module.exports = tags;
 

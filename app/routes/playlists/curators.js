@@ -6,29 +6,29 @@ import pages    from '../../components/playlists/pages';
 
 const CURATORS_BLOB = 226312;
 
-var curators = pages.Curators;
+const curators = Object.assign(pages.Curators, {
+  title: 'Featured Curators',
 
-curators.title = 'Featured Curators';
+  path: '/playlists/curators',
 
-curators.subnav = function(props) {
-  return (<SubNav store={props.store} tab="curators"/>);
-};
+  subnav(props) {
+    return (<SubNav store={props.store} tab="curators"/>);  
+  },
 
-curators.path = '/playlists/curators';
+  // TODO: this is too much code for here
 
-// TODO: this is too much code for here
-
-curators.store = function(/*params,queryParams */) {
-  var blobs = new Blobs();
-  return blobs.find( CURATORS_BLOB ).then( blob => {
-    var ids = blob.text;
-    var query = new Query();
-    return query.findUsers( { ids } ).then( curators =>{
-      query.model = curators;
-      return query;
+  store() {
+    var blobs = new Blobs();
+    return blobs.find( CURATORS_BLOB ).then( blob => {
+      var ids = blob.text;
+      var query = new Query();
+      return query.findUsers( { ids } ).then( curators =>{
+        query.model = curators;
+        return query;
+      });
     });
-  });
-};
+  }
+});
 
 module.exports = curators;
 

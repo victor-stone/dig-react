@@ -1,16 +1,27 @@
 import Upload    from '../../stores/upload';
 import RemixTree from '../../components/RemixTree';
 
-const Tree =RemixTree;
+const Tree = Object.assign(RemixTree,{
 
-Tree.path = '/files/:user/:id';
+  path: '/files/:user/:id',
 
-Tree.store = function(params/*,queryParams*/) {
-  return Upload.storeFromQuery(params.id,params.user,Upload.ALL).then( store =>
-            { 
-                Tree.title = !store.error && store.model.upload.name;
-                return store;
-            });
-};
+  title: 'Tree',
+
+  store(params) {
+    const { id, user} = params;
+    return Upload.storeFromQuery(id,user,Upload.ALL).then( store =>
+              { 
+                  Tree.title = !store.error && store.model.upload.name;
+                  return store;
+              });
+  },
+
+  urlFromStore(store) {
+    const { model:{artist,id} } = store;
+
+    return `/files/${artist.id}/${id}`;
+  }
+
+});
 
 module.exports = Tree;

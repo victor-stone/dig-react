@@ -2,6 +2,7 @@ import React         from 'react';
 import Link          from './LinkToRoute';
 import Glyph         from '../vanilla/Glyph';
 import thumbStyle    from './people-thumb-style';
+import { selectors } from '../../unicorns';
 
 const LinkToPeopleRoute = React.createClass({
 
@@ -14,7 +15,7 @@ const LinkToPeopleRoute = React.createClass({
   },
 
   render() {
-    const { model: { id, name, avatarURL } } = this.state;
+    const { model, model: { id, name, avatarURL } } = this.state;
     let   { suburl = null, 
             className = '', 
             skipUser = false,
@@ -30,9 +31,9 @@ const LinkToPeopleRoute = React.createClass({
 
     icon = this.props.icon === true ? 'user' : this.props.icon;
 
-    var href       = `/people/${id}${suburl?'/'+suburl:''}`;
-    var cls        = 'people-link ' + className;
-    var ts         = thumb ? thumbStyle(id) : null;
+    const href       = LinkToPeopleRoute.url(model) + (suburl ? '/' + suburl : '');
+    const cls        = selectors('people-link', className);
+    const ts         = thumb ? thumbStyle(id) : null;
 
     return( 
         <Link {...this.props} className={cls} style={ts} href={href}>
@@ -47,9 +48,15 @@ const LinkToPeopleRoute = React.createClass({
   }
 });
 
-LinkToPeopleRoute.navigateTo = function(model) {
-  Link.navigateTo('/people/' + model.id);  
-};
+LinkToPeopleRoute.url = model => '/people/' + model.id;
+
+LinkToPeopleRoute.playlistsUrl = model => LinkToPeopleRoute.url(model) + '/playlists';
+
+// TODO: this belongs somewhere else
+LinkToPeopleRoute.feedUrl = model => '/feed/' + model.id;
+
+LinkToPeopleRoute.navigateTo = model => Link.navigateTo(LinkToPeopleRoute.url(model));  
+
 
 module.exports = LinkToPeopleRoute;
 

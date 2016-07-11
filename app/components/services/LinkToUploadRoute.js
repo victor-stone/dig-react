@@ -18,16 +18,13 @@ function LinkToUploadRoute(props) {
   const cls  = selectors('upload-link',className);
 
   return (
-      <Link href={href} className={cls} {...props}>{name}{props.children}</Link>
+      <Link {...props} href={href} className={cls} >{name}{props.children}</Link>
     );
 }
 
-LinkToUploadRoute.navigateTo = function(model) {
-  const href = LinkToUploadRoute.url(model);
-  Link.navigateTo(href);
-};
+LinkToUploadRoute.navigateTo = model => Link.navigateTo(LinkToUploadRoute.url(model));
 
-LinkToUploadRoute.url = function(model,altBase) {
+LinkToUploadRoute.url = (model,altBase) => {
   const base = altBase === undefined ? '/files/' : altBase;
   return base + model.artist.id + '/' + model.id;
 };

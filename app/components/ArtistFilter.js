@@ -1,38 +1,37 @@
 import React      from 'react';
 import Query      from '../stores/query';
 
-import { QueryParamTracker,
-         DefaultParamTracker,
-         DirtyParamTracker }   from '../mixins';
+import { QueryParamTracker }   from '../mixins';
 
 import SearchBox               from './SearchBox';
-import { debounce }            from '../unicorns';
 
-const SEARCH_DEBOUNCE = 800;
+// import { debounce }            from '../unicorns';
+// const SEARCH_DEBOUNCE = 800;
 
-const ArtistList = React.createClass({
+class ArtistList extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.state = { search: this.props.search, artists: [] };
+  }
 
-  getInitialState: function() {
-    return { search: this.props.search, artists: [] };
-  },
-
-  componentWillMount: function() {
+  componentWillMount() {
     this.query = new Query();
     this.getArtists();
-  },
+  }
 
   componentWillReceiveProps(props) {
     this.setState( { search: props.search }, () => this.getArtists() );
-  },
+  }
 
-  getArtists: function() {
+  getArtists() {
     if( this.state.search ) {
       this.query.lookUpUsers( this.state.search, { remixmin: 1 } )
         .then( artists => this.setState( { artists } ) );
     } else {
       this.setState( { artists: [] } );
     }
-  },
+  }
 
   artistSelect(a) {
     return (e) => {
@@ -40,39 +39,37 @@ const ArtistList = React.createClass({
       e.stopPropagation();
       this.props.artistSelect(a);
     };
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <ul className="artist-list">
         {this.state.artists.map( a => <li key={a.id} onClick={this.artistSelect(a)}>{a.name}</li>)}
       </ul>
       );
   }  
-});
+}
 
-const ArtistFilter = React.createClass({
-
-  mixins: [QueryParamTracker, DirtyParamTracker, DefaultParamTracker],
-
+class ArtistFilter extends QueryParamTracker(React.Component)
+{
   stateFromParams(queryParams) {
     var val = queryParams.u || null;
     return { u: val, propValue: val };
-  },
+  }
 
   onAreParamsDirty(queryParams,defaults,isDirty) {
     if( !isDirty.isDirty) {
       isDirty.isDirty = !!queryParams.u;
     }
-  },
+  }
 
   onGetParamsDefault(queryParams) {
     queryParams.u = null;
-  },
+  }
 
-  triggerSearch: debounce( function(u) {
-    this.setState( {u} );
-  }, SEARCH_DEBOUNCE ),
+  // triggerSearch: debounce( function(u) {
+  //   this.setState( {u} );
+  // }, SEARCH_DEBOUNCE ),
 
   filter(u, isIcon, filterCB) {
     
@@ -89,14 +86,14 @@ const ArtistFilter = React.createClass({
     } else {
       kill();
     }
-  },
+  }
 
   artistSelect(a) {
     this.refreshModel( { u: a.id } );
     this.refs['edit'].setState( { value: a.id } );
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <div className="artist-filter" >
           <SearchBox icon="times" ref="edit" defaultValue={this.state.u} placeholder="artist name" submitSearch={this.filter}  anyKey />
@@ -107,7 +104,7 @@ const ArtistFilter = React.createClass({
       </div>
       );
   }
-});
+}
 
 module.exports = ArtistFilter;
 

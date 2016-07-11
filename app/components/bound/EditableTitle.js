@@ -5,7 +5,7 @@ import { ModelTracker } from '../../mixins';
 
 // FIXME: Edit controls styles on EditableTitle are wacky
 
-class EditableTitle extends ModelTracker.extender(React.Component)
+class EditableTitle extends ModelTracker(React.Component)
 {
   render() {
     const { icon = 'music', store } = this.props;

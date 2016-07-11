@@ -13,7 +13,7 @@ import StaticTrackList  from '../models/StaticTrackList';
                jQueryUI 'sortable' to kick in
 */
 
-class BoundStaticTrackList extends ModelTracker.extender(React.Component)
+class BoundStaticTrackList extends ModelTracker(React.Component)
 {
   render() {
     return <StaticTrackList model={this.state.store.model} sortable={this.props.sortable} />;
