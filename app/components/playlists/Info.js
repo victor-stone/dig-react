@@ -72,8 +72,8 @@ class Tags extends React.Component
   }
 
   render() {
-    const { tags: {length}, permissions: {canEdit=false} = {} } = this.props.store;
-    return (length || canEdit ?
+    const { tags: {length}, isDynamic, permissions: {canEdit=false} = {} } = this.props.store;
+    return (length || (!isDynamic && canEdit)?
             <div className="playlist-tags playlist-bg-color">
               <EditableTagsDiv store={this.props.store} delayCommit />
             </div> : null);

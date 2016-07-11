@@ -153,9 +153,8 @@ class Playlist extends Permissions(TagsOwner(Query)) {
   }
   
   get underlyingQuery() {
-    let m = this.model;
-    delete m.tracks.model.queryParams['playlist'];
-    let qp = mergeParams( {}, m.tracks.model.queryParams, m.head.queryParams );
+    const { model:{head, tracks} } = this;
+    let qp = Object.assign({}, head.queryParams, tracks.model.queryParams);
     // a hack to remove the .artist fetch in Uploads
     if( 'user' in qp ) {
       qp.u = qp.user;

@@ -5,6 +5,8 @@ import { QueryParamTracker }   from '../mixins';
 
 import SearchBox               from './SearchBox';
 
+import { bindAll } from '../unicorns';
+
 // import { debounce }            from '../unicorns';
 // const SEARCH_DEBOUNCE = 800;
 
@@ -34,7 +36,7 @@ class ArtistList extends React.Component
   }
 
   artistSelect(a) {
-    return (e) => {
+    return e => {
       e.preventDefault();
       e.stopPropagation();
       this.props.artistSelect(a);
@@ -52,6 +54,11 @@ class ArtistList extends React.Component
 
 class ArtistFilter extends QueryParamTracker(React.Component)
 {
+  constructor() {
+    super(...arguments);
+    bindAll( this, 'filter', 'artistSelect' ); 
+  }
+
   stateFromParams(queryParams) {
     var val = queryParams.u || null;
     return { u: val, propValue: val };
