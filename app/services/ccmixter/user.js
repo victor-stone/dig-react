@@ -86,7 +86,7 @@ class User extends API
 
   currentUserProfile() {
     if( '_currentProfile' in this ) {
-      return rsvp.resolve(this._currentProfile);
+      return this._currentUser ? rsvp.resolve(this._currentProfile) :  rsvp.reject( NOT_LOGGED_IN );
     }
 
     if( this._currentProfilePromise ) {
@@ -112,7 +112,8 @@ class User extends API
     this._currentUserPromise = null;
     return this._currentUser;
   }
-
 }
+
+User.NOT_LOGGED_IN = NOT_LOGGED_IN;
 
 module.exports = User;

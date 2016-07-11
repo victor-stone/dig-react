@@ -48,7 +48,8 @@ class Done extends ButtonBase
     this._onClick = this.props.onDone;
   }
   render() {
-    return <a href="#" onClick={this.__onClick} className="btn btn-success"><Glyph icon="check" /></a>;
+    const { icon = 'check' } = this.props;
+    return <a href="#" onClick={this.__onClick} className="btn btn-success"><Glyph icon={icon} /></a>;
   }
 }
 
@@ -88,9 +89,10 @@ class GroupBase extends React.Component
 class InputGroup extends GroupBase
 {
   render() {
+    const { doneIcon } = this.props;
     return this.state.editing
             ? <span className="input-group-btn">
-                  <Done onDone={this._doneEdit} />
+                  <Done onDone={this._doneEdit} icon={doneIcon} />
                   <Cancel onCancel={this._cancelEdit} />
                 </span>
             : <span className="input-group-addon"><Edit onEdit={this._startEdit} /></span>;
@@ -100,14 +102,26 @@ class InputGroup extends GroupBase
 class ButtonGroup extends GroupBase 
 {
   render() {
+    const { doneIcon } = this.props;
     const { editing } = this.state;
     return(
       <div className="btn-group btn-group-sm edit-controls">
         {!editing && <Edit onEdit={this._startEdit} />}
-        {editing  && <Done onDone={this._doneEdit} />}
+        {editing  && <Done onDone={this._doneEdit} icon={doneIcon} />}
         {editing  && <Cancel onCancel={this._cancelEdit} />}
       </div>);
   }
+}
+
+class InputEditGroup extends GroupBase
+{
+  render() {
+    const { doneIcon } = this.props;
+    return (<span className="input-group-btn">
+              <Done onDone={this._doneEdit} icon={doneIcon} />
+              <Cancel onCancel={this._cancelEdit} />
+            </span>);
+    }
 }
 
 module.exports = {
@@ -115,5 +129,6 @@ module.exports = {
   Cancel,
   Done,
   InputGroup,
-  ButtonGroup
+  ButtonGroup,
+  InputEditGroup
 };

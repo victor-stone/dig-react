@@ -17,6 +17,8 @@ import {
           SelectableTagList
       } from '../models/Tags';
 
+import MatchAllButton from './TagsMatchAllButton';
+
 /* See app/models/Tags.js for explanations of concepts */
 
 /*
@@ -245,10 +247,11 @@ class DualTagFieldWidget extends React.Component
   
   // TODO: tag cats should be navtabs, not just stacked on top of each other
   render() {
-    const { store, cancelCallback, cats = [GENRE] } = this.props;
+    const { store, cancelCallback, withMatchAll = false, cats = [GENRE] } = this.props;
     return(
       <div id="blerg" style={cancelCallback && {display:'none'}}>
         <BoundSelectedTagList store={store} />
+        {withMatchAll && <MatchAllButton store={store} />}
         {cats.map( (cat,i) => <BoundCategoryTagBox key={i} category={cat} store={store} />)}
       </div>
     );

@@ -7,6 +7,7 @@ function LinkToUploadRoute(props) {
 
   let { truncate = false, 
         base, 
+        host = '',
         model,
         model: {name},
         className = ''
@@ -14,7 +15,7 @@ function LinkToUploadRoute(props) {
 
   name = truncate ? sliceStr({str:name}) : name;
   
-  const href = LinkToUploadRoute.url(model,base);
+  const href = host + LinkToUploadRoute.url(model,base);
   const cls  = selectors('upload-link',className);
 
   return (

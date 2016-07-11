@@ -130,7 +130,7 @@ class AddToPlaylistPopup extends Modal.Popup {
 class AddToPlaylistLink extends CurrentUserTracker(React.Component) 
 {
   showPlaylistPopup() {
-    // FIXME: filter out dynamic playlists
+
     var playlists = new Playlists();
     playlists.autoFilterTags = false;
 

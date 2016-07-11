@@ -16,13 +16,14 @@ const LinkToPeopleRoute = React.createClass({
 
   render() {
     const { model, model: { id, name, avatarURL } } = this.state;
+
     let   { suburl = null, 
             className = '', 
+            host = '',
             skipUser = false,
             avatar = false,
             icon = null, 
             thumb = false } = this.props;
-
 
     // for compat with dig legacy lol
     if( skipUser ) {
@@ -31,9 +32,9 @@ const LinkToPeopleRoute = React.createClass({
 
     icon = this.props.icon === true ? 'user' : this.props.icon;
 
-    const href       = LinkToPeopleRoute.url(model) + (suburl ? '/' + suburl : '');
-    const cls        = selectors('people-link', className);
-    const ts         = thumb ? thumbStyle(id) : null;
+    const href  = host + LinkToPeopleRoute.url(model) + (suburl ? '/' + suburl : '');
+    const cls   = selectors('people-link', className);
+    const ts    = thumb ? thumbStyle(id) : null;
 
     return( 
         <Link {...this.props} className={cls} style={ts} href={href}>

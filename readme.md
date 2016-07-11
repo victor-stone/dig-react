@@ -30,9 +30,24 @@ Options to gulp:
   					   Future: ccmixter.org
 ```               
 
-N.B. The app build will *only* build the browser app. To sync the server JS use:
+#### Examples
+
+Build `ccmxter` for debugging (it is the default build)
 ```
-gulp server-js --<appname>
+gulp
+```
+Build `dig` for debugging
+```
+gulp --dig
+```
+Build `pells` satellite
+```
+gulp --pells
+```
+
+Build the server runtime
+```
+gulp server-js 
 ```
 
 See `gulpfile.js` for all possible tasks. It's all very atomic. So for example if you make a change to one of the public css files in ccmixter you can just:
@@ -91,9 +106,9 @@ options:
 examples:
 
 ```
-  node dig
-  node dig --port=4000
-  node dig -c
+  node dist/dig
+  node dist/ccmixter --port=4000
+  node dist/dig -c
 ```
   
 ## Logs

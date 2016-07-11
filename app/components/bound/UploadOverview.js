@@ -1,7 +1,7 @@
 import React       from 'react';
 
 import { HorizontalForm, FormItem } from '../vanilla/Form';
-import { InputFormField }           from './InputField';
+import { BoundInputFormField }      from './InputField';
 import { EditableTagsField }        from './Tags';
 
 
@@ -49,7 +49,7 @@ function UploadOverview(props)
         {featuring && <Featuring model={model} cls={cls} />}
         <FormItem title="uploaded" cls={cls} wrap>{date}</FormItem>
         <License model={model} cls={cls} />
-        {bpm && <InputFormField store={store} cls={cls} propName="bpm" title="BPM" />}
+        {bpm && <BoundInputFormField store={store} cls={cls} propName="bpm" title="BPM" />}
         {nsfw && <FormItem title="NSFW" cls={cls} wrap>{"This music may be NSFW"}</FormItem>}
         <EditableTagsField store={store} delayCommit />
         {props.children}

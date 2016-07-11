@@ -10,7 +10,10 @@ class DeletePlaylistPopup extends Modal.Popup
   }
 
   doDelete() {
-    this.props.store.deletePlaylist().then( () => window.history.back() );
+    this.props.store.deletePlaylist().then( () =>  {
+      this.manualClose();
+      window.history.back();
+    });
   }
 
   render() {
@@ -35,7 +38,7 @@ class DeletePlaylist extends React.Component
   }
 
   onDelete() {
-    DeletePlaylistPopup.show( DeletePlaylistPopup.show, { store: this.props.store } );    
+    DeletePlaylistPopup.show( DeletePlaylistPopup, { store: this.props.store } );    
   }
 
   render() {

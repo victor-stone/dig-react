@@ -4,11 +4,14 @@ import serviceLookup from '../../services';
 var Link = React.createClass({
   
   handleClick(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    if( typeof this.props.href === 'string' && this.props.href !== '#') {
-      var router = serviceLookup('router');
-      router.navigateTo( this.props.href );
+    const { href, host } = this.props;
+
+    if( !host ) {
+      e.preventDefault();
+      e.stopPropagation();
+      if( typeof href === 'string' && href !== '#') {
+        Link.navigateTo(href);
+      }
     }
     return true;
   },

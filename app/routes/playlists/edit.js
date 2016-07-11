@@ -1,13 +1,19 @@
 import Playlist  from '../../stores/playlist';
 import pages     from '../../components/playlists/pages';
 
-var Edit = pages.EditDynamicPlaylist;
+const Edit = Object.assign(pages.EditDynamicPlaylist,{
 
-Edit.path = '/playlist/browse/:id/edit';
+  path: '/playlist/browse/:id/edit',
+  
+  store(params) {
+   return Playlist.storeFromID(params.id).then( store => store.useUnderlyingQuery() );
+  },
 
-Edit.store = function(params) {
-  return Playlist.storeFromQuery(params.id).then( store => store.useUnderlyingQuery() );
-};
+  urlFromStore(store) {
+    const id = store.model.head.id;
+    return `/playlist/browse/${id}/edit`;
+  }
+});
 
 module.exports = Edit;
 

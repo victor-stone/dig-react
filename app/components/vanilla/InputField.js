@@ -3,9 +3,7 @@ import React       from 'react';
 import { FormItem } from './Form';
 import EditControls from './EditControls';
 
-// TODO: make a generic LoadingGlyph
-
-import LoadingGlyph from '../vanilla/LoadingGlyph';
+import LoadingGlyph from './LoadingGlyph';
 
 import { bindAll }           from '../../unicorns';
 
@@ -24,7 +22,8 @@ const InputControlMixin = target => class extends target {
   }
 
   _stateFromProps(props) {
-    return { text: props.text, orgText: props.text };
+    const { text = '' } = props;
+    return { text, orgText: text };
   }
 
   onEdit() {
@@ -34,6 +33,7 @@ const InputControlMixin = target => class extends target {
 
   onCancel() {
     this.setState( { text: this.state.orgText, editing: false } );
+    this.props.onCancel && this.props.onCancel();
   }
 
   onDone() {
@@ -59,15 +59,17 @@ const InputControlMixin = target => class extends target {
 */
 class InputFormField extends InputControlMixin(React.Component)
 {
-
   render() {
+    const { title, cls, canEdit } = this.props;
+    const { editing, text } = this.state;
+
     return(
-        <FormItem title={this.props.title} cls={this.props.cls}>
-          {this.state.editing
+        <FormItem title={title} cls={cls}>
+          {editing
             ? this.htmlInput()
-            : <span className="form-control">{this.state.text}</span>
+            : <span className="form-control">{text}</span>
           }
-          {this.props.canEdit && <EditControls.InputGroup onEdit={this.onEdit} onCancel={this.onCancel} onDone={this.onDone} />}
+          {canEdit && <EditControls.InputGroup onEdit={this.onEdit} onCancel={this.onCancel} onDone={this.onDone} />}
         </FormItem>
       );
   }
@@ -109,9 +111,68 @@ class InputText extends InputControlMixin(React.Component)
 
 InputText.LoadingText = 'thinking...';
 
+/*
+  Emit input field for text that optionally automatically clears itself onDone
+
+  props
+    text - text 
+    onDone(text) callback for receiving text when user has selected 'save' button
+*/
+class InputBase extends InputControlMixin(React.Component)
+{
+  constructor() {
+    super(...arguments);
+  }
+
+  onDone() {
+    super.onDone();
+    if( this.props.autoclear ) {
+      this.refs.editor.value = '';
+    }
+  }
+
+  onCancel() {
+    super.onCancel();
+    if( this.props.autoclear ) {
+      this.refs.editor.value = '';
+    }
+  }
+
+  controls(doneIcon) {
+    return <EditControls.InputEditGroup onCancel={this.onCancel} onDone={this.onDone} doneIcon={doneIcon} />;
+  }
+}
+
+class Input extends InputBase
+{
+  render() {
+    return(
+      <span>
+        {this.htmlInput()}
+        {this.controls(this.props.doneIcon)}
+      </span>
+    );
+  }
+}
+
+class InputFormItem extends InputBase
+{
+  render() {
+    const { title, cls, sz } = this.props;
+    return(
+      <FormItem title={title} cls={cls} sz={sz} >
+        {this.htmlInput()}
+        {this.controls(this.props.doneIcon)}
+      </FormItem>
+    );
+  }
+}
+
 module.exports = {
+  Input,
+  InputText,
   InputFormField,
-  InputText
+  InputFormItem
 };
 
 //

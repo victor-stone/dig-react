@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { QueryParamTracker } from '../../../mixins';
+import { QueryParamTracker } from '../../mixins';
 
 class MatchAllButton extends QueryParamTracker(React.Component)
 {
@@ -24,7 +24,7 @@ class MatchAllButton extends QueryParamTracker(React.Component)
     if( length < 2 ) {
       return null;
     }
-    return (  <label className="btn btn-primary btn-xs">
+    return (  <label className="btn btn-primary btn-xs match-all">
                 <input onChange={this.performQuery} checked={this.state.toggle} type="checkbox"/>
                 {" match all"}
               </label>

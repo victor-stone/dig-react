@@ -9,6 +9,9 @@ import { LicenseFilter,
          SortFilter,
          OptionsWrap }    from '../QueryOptions';
 
+import TagsExtra from '../TagsExtra';
+
+
 class TypeFilter extends QueryParamTracker(React.Component)
 {
   constructor() {
@@ -66,7 +69,10 @@ function PlaylistQueryOptions(props) {
           <ArtistFilter store={store} />
         </li>
         <li>
-          <DualTagFieldWidget store={store} />
+          <DualTagFieldWidget store={store} withMatchAll />
+        </li>
+        <li>
+          <TagsExtra store={store} />
         </li>
       </OptionsWrap>
     );

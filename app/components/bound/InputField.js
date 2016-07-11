@@ -73,11 +73,7 @@ class BoundInputText extends BoundInputControlMixin(React.Component)
   }
 }
 
-
-
 module.exports = {
-  InputFormField: BoundInputFormField, // deprecated: don't use
-  InputText:      BoundInputText,
   BoundInputFormField,
   BoundInputText,
   BoundInputControlMixin

@@ -2,10 +2,10 @@ import React     from 'react';
 import qc        from '../../models/query-configs';
 import Rmx       from '../../stores/remixes';
 
-import { QueryOptions } from '../../components/dig';
+import { QueryOptions, 
+         Remixes } from '../../components/dig';
 
 import { DidYouMean,
-         Remixes,
          SearchHeader
           }          from '../../components';
 import Glyph         from '../../components/vanilla/Glyph';

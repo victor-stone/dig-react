@@ -132,20 +132,16 @@ var css =
   width: 50%;
   margin: 0 auto;
 }
+
 .query-options-elements input[type="checkbox"] {
-  margin-left: 10px;
+  margin-left: 3px;
 }
 
-/*
-.query-options-elements .bpm-display {
-  text-align: center;
+.query-options-elements .match-all {
   display: block;
+  margin: 12px 8px;
+  text-align: center;
 }
-
-.query-options-elements .bpm-title {
-  font-weight: bold;
-}
-*/
 
 .track-list {
   padding: 8px;

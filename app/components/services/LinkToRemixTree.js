@@ -1,13 +1,14 @@
 import React        from 'react';
 import Glyph        from '../vanilla/Glyph';
-import LinkToRoute  from './LinkToRoute';
+import Link         from './LinkToRoute';
+import LinkToUpload from './LinkToUploadRoute';
 
 function LinkToRemixTree(props) {
-  var upload  = props.model;
-  var ccmLink = '/files/' + upload.artist.id + '/' + upload.id;
-  return <LinkToRoute href={ccmLink} className="btn btn-info"><Glyph icon="arrow-left" />{" Remix tree "}<Glyph icon="arrow-right" /></LinkToRoute>;
+  const { model, host = null  } = props;
+  const cls = 'btn btn-info';
+  const url = host + LinkToUpload.url(model);
+  return <Link host={host} href={url} className={cls}><Glyph icon="arrow-left" />{" Remix tree "}<Glyph icon="arrow-right" /></Link>;
 }
-
 
 module.exports = LinkToRemixTree;
 

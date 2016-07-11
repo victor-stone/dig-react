@@ -1,11 +1,11 @@
 import React              from 'react';
-import DownloadPopup      from './DownloadPopup';
-import LinkToPeople       from './services/LinkToPeopleRoute';
-import { PlayButton }     from './AudioPlayer';
-import AudioPlayerService from '../services/audio-player';
-import { ModelTracker }   from '../mixins';
-import { ResetOptionsButton } from './QueryOptions';
-import LinkToUpload       from './services/LinkToUploadRoute';
+import DownloadPopup      from '../DownloadPopup';
+import LinkToPeople       from '../services/LinkToPeopleRoute';
+import { PlayButton }     from '../AudioPlayer';
+import AudioPlayerService from '../../services/audio-player';
+import { ModelTracker }   from '../../mixins';
+import { ResetOptionsButton } from '../QueryOptions';
+import LinkToUpload           from '../services/LinkToUploadRoute';
 
 const MIN_LIMIT = 10;
 

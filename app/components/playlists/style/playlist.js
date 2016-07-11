@@ -1,10 +1,5 @@
 var css = `
 
-.playlist-detail-page .paging {
-  margin: 0px auto 12px auto;
-}
-
-
 .playlist-detail-page .edit-controls .btn span {
   margin: -4px 4px;
   display: inline-block;
@@ -25,10 +20,13 @@ var css = `
   height: 30px;
 }
 
+.playlist-info > div {
+  margin-bottom: 12px;
+}
+
 .playlist-detail-page .playlist-curator {
   text-align: center;
   border-radius: 5px;
-  margin-bottom: 12px;
 }
 
 .playlist-detail-page .playlist-curator span {

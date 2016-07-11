@@ -1,57 +1,26 @@
-import React                   from 'react';
-import Glyph                   from './vanilla/Glyph';
-import { TagString,
-         bindAll }             from '../unicorns';
-import { QueryParamTracker }   from '../mixins';
+import React                  from 'react';
+import { InputFormItem }      from './vanilla/InputField';
+import currentUserProfile     from './services/CurrentUserProfile';
 
-class TagsExtra extends QueryParamTracker(React.Component)
+class TagsExtra extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.state = { value: (this.props.tags || '').toString() };
-    bindAll(this,'onSave', 'onClear', 'onChage');
+    this.onSave = this.onSave.bind(this);
+    this.state = { isAdmin: false };
+    currentUserProfile().then( profile => profile && profile.isAdmin && this.setState({isAdmin:true}) );
   }
 
-  stateFromParams(queryParams) {
-    if( this.state && this.state.value ) {
-      var qptags = new TagString(queryParams.tags);
-      return { value: qptags.intersection(this.state.value).toString() };
-    }
-    return {};
-  }
-
-  onSave() {
-    var tags    = new TagString(this.state.value);
-    var oldtags = this.state.value;
-    this.setState( { value: tags.toString() }, () => {
-      var store   = this.props.store;
-      var qptags  = store.queryParams.tags.replace( oldtags, this.state.value);
-      store.refreshModel( { tags: qptags.toString() } );
-    });
-  }
-
-  onClear() {
-    var oldtags = this.state.value;
-    this.setState( { value: '' }, () => {
-      var store   = this.props.store;
-      var qptags  = store.queryParams.tags.remove(oldtags);
-      store.refreshModel( { tags: qptags.toString() } );
-    });
-  }
-
-  onChange(event) {
-    this.setState({value: event.target.value} );
+  onSave(value) {
+    this.props.store.toggleTag(value, true);
   }
 
   render() {
+    if( !this.state.isAdmin ) {
+      return null;
+    }
     return (
-      <div className="input-group input-group-sm">
-        <input type="text" onChange={this.onChange} value={this.state.value} className="form-control input-sm"  placeholder="extra tags..." />
-        <span className="input-group-btn">
-          <button type="button" onClick={this.onSave}  className="btn btn-default"><Glyph icon="check" /></button>
-          <button type="button" onClick={this.onClear} className="btn btn-default"><Glyph icon="times" /></button>
-        </span>
-      </div>
+        <InputFormItem autoclear sz="sm" doneIcon="plus" cls="admin-tags" title="admin tag" onDone={this.onSave} />
       );
   }
 }

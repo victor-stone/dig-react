@@ -1,5 +1,5 @@
 import React        from 'react';
-import Remixes      from '../Remixes';
+import Remixes      from './Remixes';
 import PageHeader   from '../vanilla/PageHeader';
 import QueryOptions from './QueryOptions';
 import SubNav       from './SubNav';

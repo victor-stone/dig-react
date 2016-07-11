@@ -1,5 +1,5 @@
 import React         from 'react';
-import Remixes       from '../Remixes';
+import Remixes       from './Remixes';
 import QueryOptions  from './QueryOptions';
 
 import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
@@ -7,7 +7,7 @@ import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
 import { BoundSelectedTagList } from '../bound/Tags';
 
 import TagCategoryBox from './tags/TagCategoryBox';
-import MatchAllButton from './tags/MatchAllButton';
+import MatchAllButton from '../bound/TagsMatchAllButton';
 import TagNoHits      from '../bound/TagNoHits';
 
 import css from './style/tags';

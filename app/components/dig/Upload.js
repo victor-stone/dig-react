@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Link            from '../services/LinkToRoute';
+import LinkToRemixTree from '../services/LinkToRemixTree';
 import LinkToPeople    from '../services/LinkToPeopleRoute';
 import TrackbackList   from '../models/TrackbackList';
 import SharePopup      from '../SharePopup';
@@ -58,11 +59,11 @@ var Featuring = React.createClass({
 var UploadHeader = React.createClass({
 
   render: function() {
-    var model = this.props.model;
+    const { artist, featuring } = this.props.model;
     return (
       <div>
-        <LinkToPeople model={model.artist} avatar />
-        <Featuring featuring={model.featuring} />
+        <LinkToPeople model={artist} avatar />
+        <Featuring featuring={featuring} />
       </div>
       );
   }
@@ -108,9 +109,11 @@ var LicenseSection = React.createClass({
         <li className="license-badge">
           <CcPlusLink model={model} />
         </li>
-        <li>
-          <ExternalLink className="btn btn-success" href={model.url} text="@ccMixter" />
-        </li>
+        {!global.IS_SERVER_REQUEST &&
+          <li>
+            <LinkToRemixTree host="http://beta.ccmixter.org" model={model} />
+          </li>
+        }
       </ul>
       );
   }

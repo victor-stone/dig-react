@@ -83,6 +83,7 @@ class ModalPopup extends React.Component {
   constructor() {
     super(...arguments);
     this.handleActionResponse = this.handleActionResponse.bind(this);
+    this.state = { error: '' };
   }
 
   manualClose() {
@@ -94,9 +95,11 @@ class ModalPopup extends React.Component {
   handleActionResponse(result) {
     if( result.status === 'error') {
       this.setState( { error: result.errmsg || 'fAIL' } );
-    } else {
-      this.manualClose();
-    }
+      return false;
+    } 
+
+    this.manualClose();
+    return true;
   }
 }
 

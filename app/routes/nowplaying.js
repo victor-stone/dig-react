@@ -1,33 +1,13 @@
-import React      from 'react';
-import rsvp       from 'rsvp';
-import NowPlaying from '../stores/nowplaying';
+import rsvp           from 'rsvp';
+import NowPlaying     from '../stores/nowplaying';
+import NowPlayingPage from '../components/NowPlaying';
 
-import { PageHeader,
-         Remixes } from '../components';
-
-// FIXME: now playing from audio player is broken
-
-var nowplaying = React.createClass({
-
-  render() {
-    var store  = this.props.store;
-
-    return  (
-      <div>
-        <PageHeader icon="music" title={nowplaying.title} />
-        <Remixes store={store} />
-      </div>
-    );
-  },
-
+const nowplaying = Object.assign(NowPlayingPage,{
+  title: 'Now Playing',
+  store() {
+    return rsvp.resolve( new NowPlaying() );
+  }
 });
-
-nowplaying.title = 'Now Playing';
-
-nowplaying.store = function( /*params,queryParams*/ ) {
-  var store = new NowPlaying();
-  return rsvp.resolve( store );
-};
 
 module.exports = nowplaying;
 
