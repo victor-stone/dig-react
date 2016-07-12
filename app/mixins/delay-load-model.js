@@ -4,7 +4,11 @@ const DelayLoadModel = target => class extends target {
 
   constructor() {
     super(...arguments);
-    this.state = { model: null };
+    if( 'state' in this ) {
+      this.state.model = null;
+    } else {
+      this.state = { model: null };
+    }
     this.hasComponentWillReceiveProps = !!super.componentWillReceiveProps;
     bindAll( this, 'onOpen', 'onClose' );
   }

@@ -44,7 +44,7 @@ class Recommends extends DelayLoadModel(ModelTracker(React.Component))
 
     return (
       <AccordionPanel {...penProps}>
-        {model && open && <PeopleList className="recommends-list" thumb model={model} />}
+        {model && open && <PeopleList className="recommends-list" floating thumb model={model} />}
       </AccordionPanel>
     );
   }

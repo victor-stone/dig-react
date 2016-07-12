@@ -4,8 +4,7 @@ import TaggedCollection from './tagged-collection';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import env              from '../services/env';
-import { TagString,
-         mergeParams }  from '../unicorns';
+import { TagString }    from '../unicorns';
 import api              from '../services/ccmixter';
 import events           from '../models/events';
 import TagsOwner        from '../mixins/tags-owner';
@@ -132,7 +131,7 @@ class Playlist extends Permissions(TagsOwner(Query)) {
     // TODO: this should be on at the server 
     return api.user.currentUserProfile()
       .then( profile => {
-        this.permissions = { canEdit: profile.isAdmin || profile.id === head.curator.id };
+        this.permissions = { canEdit: profile.id === head.curator.id };
         return head;
       }, () => {
         this.permissions = this.nullPermissions;
@@ -153,15 +152,22 @@ class Playlist extends Permissions(TagsOwner(Query)) {
   }
   
   get underlyingQuery() {
-    const { model:{head, tracks} } = this;
-    let qp = Object.assign({}, head.queryParams, tracks.model.queryParams);
-    // a hack to remove the .artist fetch in Uploads
-    if( 'user' in qp ) {
-      qp.u = qp.user;
-      delete qp['user'];
-    }
-    delete qp['playlist'];
-    return qp;
+    const { model:{head, tracks:{model} } } = this;
+    
+    // normalize 'u' and 'user' 
+    [head,model].forEach(  q => {
+      if( 'user' in q.queryParams ) {
+        q.queryParams.u = q.queryParams.user;
+        delete q.queryParams['user'];
+      }
+    });
+
+    // shift playlist to general query 
+    delete model.queryParams['playlist'];
+
+    return Object.assign({}, 
+                          head.queryParams,   // <-- what the query used to be
+                          model.queryParams); // <-- the new query
   }
 
   get uploads() {

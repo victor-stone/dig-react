@@ -11,7 +11,7 @@ class Reviews extends DelayLoadModel(ModelTracker(React.Component))
 {
   constructor() {
     super(...arguments);
-    this.state = { numItems: this.props.numItems };
+    this.state.numItems = this.props.numItems;
   }
 
   componentWillReceiveProps(nextProps) {

@@ -7,7 +7,7 @@ function Curators(props) {
   return (        
     <div className="container-fluid curators-page">
       <InlineCSS css={curatorsCSS} id="curators-css" />
-      <PeopleList model={props.store.model} avatar suburl="playlists" />
+      <PeopleList model={props.store.model} avatar floating suburl="playlists" />
     </div>
   );
 }

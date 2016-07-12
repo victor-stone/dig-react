@@ -7,32 +7,19 @@ import SearchBox               from './SearchBox';
 
 import { bindAll } from '../unicorns';
 
-// import { debounce }            from '../unicorns';
-// const SEARCH_DEBOUNCE = 800;
-
 class ArtistList extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.state = { search: this.props.search, artists: [] };
-  }
-
-  componentWillMount() {
-    this.query = new Query();
-    this.getArtists();
+    this.state = this._stateFromProps(this.props);
   }
 
   componentWillReceiveProps(props) {
-    this.setState( { search: props.search }, () => this.getArtists() );
+    this.setState( this._stateFromProps(props) );
   }
 
-  getArtists() {
-    if( this.state.search ) {
-      this.query.lookUpUsers( this.state.search, { remixmin: 1 } )
-        .then( artists => this.setState( { artists } ) );
-    } else {
-      this.setState( { artists: [] } );
-    }
+  _stateFromProps(props) {
+    return { artists: props.model };
   }
 
   artistSelect(a) {
@@ -43,10 +30,17 @@ class ArtistList extends React.Component
     };
   }
 
+  _fancyName(a) {
+    const { id, name } = a;
+    return id === name ? id : `${name} (${id})`;
+  }
+
   render() {
+    const { artists } = this.state;
+
     return (
       <ul className="artist-list">
-        {this.state.artists.map( a => <li key={a.id} onClick={this.artistSelect(a)}>{a.name}</li>)}
+        {artists.map( a => <li key={a.id} onClick={this.artistSelect(a)}>{this._fancyName(a)}</li>)}
       </ul>
       );
   }  
@@ -59,9 +53,23 @@ class ArtistFilter extends QueryParamTracker(React.Component)
     bindAll( this, 'filter', 'artistSelect' ); 
   }
 
+  componentWillMount() {
+    this.query = new Query();
+    this.getArtists(this.state.u);
+  }
+
+  getArtists(search) {
+    if( search ) {
+      this.query.lookUpUsers( search, { remixmin: 1 } )
+        .then( artists => this.setState( { artists, u: search }, () => this.artistSelect(artists.length === 1 && artists[0]) ) );
+    } else {
+      this.setState( { artists: [], u: '' } );
+    }
+  }
+
   stateFromParams(queryParams) {
-    var val = queryParams.u || null;
-    return { u: val, propValue: val };
+    const { u = null } = queryParams;
+    return { u };
   }
 
   onAreParamsDirty(queryParams,defaults,isDirty) {
@@ -74,14 +82,10 @@ class ArtistFilter extends QueryParamTracker(React.Component)
     queryParams.u = null;
   }
 
-  // triggerSearch: debounce( function(u) {
-  //   this.setState( {u} );
-  // }, SEARCH_DEBOUNCE ),
-
   filter(u, isIcon, filterCB) {
     
     var kill = function() {
-      this.setState( { u: null }, () => this.refreshModel( { u: null } ) );
+      this.setState( { u: null, artists: [] }, () => this.refreshModel( { u: null } ) );
     }.bind(this);
 
     if( isIcon ) {
@@ -89,25 +93,27 @@ class ArtistFilter extends QueryParamTracker(React.Component)
       kill();
     } else if( u && u.length > 0 ) {
       //this.triggerSearch(this,u);
-      this.setState( {u} );
+      this.getArtists(u);
     } else {
       kill();
     }
   }
 
   artistSelect(a) {
-    this.refreshModel( { u: a.id } );
-    this.refs['edit'].setState( { value: a.id } );
+    if( a ) {
+      this.refreshModel( { u: a.id } );
+      this.refs.edit.setState({value:a.id});
+    } else {
+      this.refreshModel( {u:null} );
+    }
   }
 
   render() {
+    const { artists = [], u } = this.state;
     return (
       <div className="artist-filter" >
-          <SearchBox icon="times" ref="edit" defaultValue={this.state.u} placeholder="artist name" submitSearch={this.filter}  anyKey />
-          {this.state.u
-            ? <ArtistList store={this.props.store} artistSelect={this.artistSelect} search={this.state.u} />
-            : null
-          }
+          <SearchBox icon="times" ref="edit" defaultValue={u} placeholder="artist name" submitSearch={this.filter} anyKey />
+          {!!artists.length && <ArtistList artistSelect={this.artistSelect} model={artists} />}
       </div>
       );
   }

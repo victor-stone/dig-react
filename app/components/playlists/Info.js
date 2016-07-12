@@ -7,7 +7,8 @@ import LinkToPeople       from '../services/LinkToPeopleRoute';
 import LinkToPlaylist     from '../services/LinkToPlaylistRoute';
 
 import Toggle                  from '../bound/Toggle';
-import { EditableTagsDiv }     from '../bound/Tags';
+import { EditableTagsDiv,
+         BoundStaticTagList }  from '../bound/Tags';
 
 import DeletePlaylist          from './DeletePlaylist';
 import { CurrentUserTracker,
@@ -67,16 +68,14 @@ function Curator(props) {
 
 class Tags extends React.Component
 {
-  constructor() {
-    super(...arguments);
-  }
-
   render() {
-    const { tags: {length}, isDynamic, permissions: {canEdit=false} = {} } = this.props.store;
-    return (length || (!isDynamic && canEdit)?
-            <div className="playlist-tags playlist-bg-color">
-              <EditableTagsDiv store={this.props.store} delayCommit />
-            </div> : null);
+    const { store } = this.props;
+    const { tags: {length}, isDynamic, permissions: {canEdit=false} = {} } = store;
+    const cls = 'playlist-tags playlist-bg-color';
+    if( isDynamic ) {
+      return !!length && <div className={cls}><BoundStaticTagList store={store} /></div>;
+    }
+    return ((length || canEdit) && <div className={cls}><EditableTagsDiv store={this.props.store} delayCommit /></div>);
   }
 }
 
