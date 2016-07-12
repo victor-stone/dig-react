@@ -27,7 +27,7 @@ class Tree extends ModelTracker(React.Component)
 
     return( 
       <div className="container-fluid">
-        <InlineCSS css={css} id="tree"/>
+        <InlineCSS css={css} id="tree-css"/>
         <div className="row">  
           <div className="col-md-2">
             <PrevPeruse store={store}/>
@@ -50,7 +50,7 @@ class Tree extends ModelTracker(React.Component)
         </div>
         <div className="row">  
           <div className="col-md-6 col-md-offset-3">
-            <Accordion withExpandAll>
+            <Accordion withExpandAll id="accordion">
               <Overview store={store} />
               <FileSection store={store} />
               <Recommends store={store} numItems={numRecommends} />

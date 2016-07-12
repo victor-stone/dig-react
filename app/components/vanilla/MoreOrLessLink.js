@@ -1,6 +1,8 @@
 import React from 'react';
 import Glyph from './Glyph';
 
+import { selectors } from '../../unicorns';
+
 var MoreOrLessLink = React.createClass({
   getInitialState() {
     return { showLess: false };
@@ -24,14 +26,12 @@ var MoreOrLessLink = React.createClass({
   },
 
   render() {
-    var icon = this.state.showLess ? 'chevron-left' : 'chevron-right';
-    const { targetId } = this.props;
-    var id = '#' + targetId;
+    const icon = this.state.showLess ? 'chevron-left' : 'chevron-right';
+    const { targetId, hidden } = this.props;
+    const id = '#' + targetId;
+    const cls = selectors('more-or-less-link', hidden ? 'hidden' : '' );
     return (
-        <a className="more-or-less-link" 
-           data-toggle="collapse" 
-           href={id}
-        ><Glyph icon={icon} /><Glyph icon={icon} /><Glyph icon={icon} /></a>
+        <a className={cls} data-toggle="collapse" href={id}><Glyph icon={icon} /><Glyph icon={icon} /><Glyph icon={icon} /></a>
       );
   }
 

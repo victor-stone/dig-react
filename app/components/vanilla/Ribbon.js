@@ -1,10 +1,11 @@
 import React from 'react';
 import { selectors } from '../../unicorns';
-// TODO: ribbon text is horked
+/* eslint "react/no-danger":0 */
 function Ribbon(props) {
   const { color = 'orange', className, text } = props;
   const cls  = selectors('ribbon', color, className );
-  return <span className={cls}>{text}</span>;
+  const html = { __html: text.replace(/\\n/g,'<br />') };
+  return <span className={cls} dangerouslySetInnerHTML={html} />;
 }
 
 module.exports = Ribbon;

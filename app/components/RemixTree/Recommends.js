@@ -33,7 +33,7 @@ class Recommends extends DelayLoadModel(ModelTracker(React.Component))
     const { numItems, model, open } = this.state;
 
     var penProps = {
-      disabled:     !numItems,      
+      disabled:     !Number(numItems),
       title:        `Recommends (${numItems})`,
       id:           'recc',
       icon:         'thumbs-o-up',

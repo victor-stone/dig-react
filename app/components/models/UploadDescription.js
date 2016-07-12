@@ -16,7 +16,7 @@ class UploadDescription extends React.Component
 
     return(
         <div className="tree-head">
-          {model.edPick && <Ribbon className="edpick" text="\ned\npick\n" />}
+          {model.edPick && <Ribbon className="edpick" text="ed\npick" />}
           <PeopleAvatar model={model.artist} />
           <h3>{model.name}</h3>
           <h4 className="clearfix"><LinkToPeople model={model.artist} /></h4>

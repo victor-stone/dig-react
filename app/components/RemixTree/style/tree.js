@@ -123,10 +123,12 @@ span.ribbon.edpick {
   margin-left: 8px;
 }
 
+#accordion .panel-title > a.deadlink:focus,
 #accordion .panel-title > a.deadlink:hover {
   text-decoration: none;
   cursor: default;
 }
+
 .edpick-author {
   text-align: right;
   font-style: italic;
@@ -164,6 +166,10 @@ span.ribbon.edpick {
   display: block;
   font-style: italic;
   margin-left: 20px;
+}
+
+#recc .people-list > li {
+  display: inline-block;
 }
 
 a.recommends-list {

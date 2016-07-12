@@ -78,19 +78,16 @@ var CollapsingText = React.createClass({
 
   render() {
 
-    var s = this.state;
+    const { id } = this.props;
+    const { plain, html, hideMoreButton } = this.state;
 
-    var clsPlain = 'plain collapse'    + (s.plain ? ' in' : '');
-    var clsHTML  = 'htmltext collapse' + (s.plain ? '' : ' in');
+    var clsPlain = 'plain collapse'    + (plain ? ' in' : '');
+    var clsHTML  = 'htmltext collapse' + (plain ? '' : ' in');
     return (
       <div className="collapse-text" >
-        <div className={clsPlain} id={this.props.id + '-collapse-text-less'} >{s.plain}</div>
-        <div className={clsHTML}  id={this.props.id + '-collapse-text-more'} dangerouslySetInnerHTML={s.html} />
-        {s.hideMoreButton
-          ? null
-          : <MoreOrLessLink targetId={this.props.id + '-collapse-text-more'} />
-        }
-        
+        <div className={clsPlain} id={id + '-collapse-text-less'} >{plain}</div>
+        <div className={clsHTML}  id={id + '-collapse-text-more'} dangerouslySetInnerHTML={html} />
+        <MoreOrLessLink targetId={this.props.id + '-collapse-text-more'} hidden={hideMoreButton} />
       </div>
       );
   }
