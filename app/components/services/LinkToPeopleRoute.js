@@ -32,7 +32,7 @@ const LinkToPeopleRoute = React.createClass({
 
     icon = this.props.icon === true ? 'user' : this.props.icon;
 
-    const href  = host + LinkToPeopleRoute.url(model) + (suburl ? '/' + suburl : '');
+    const href  = (host || '') + LinkToPeopleRoute.url(model) + (suburl ? '/' + suburl : '');
     const cls   = selectors('people-link', className);
     const ts    = thumb ? thumbStyle(id) : null;
 

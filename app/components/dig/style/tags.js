@@ -14,6 +14,10 @@ var css = `
   .dig-tags .tag-selectable.tag-selectable-x.tag-selected
 */
 
+.tag-list-selected-container {
+  margin-top: 12px;
+}
+
 .dig-tags .tag-selectable.tag-selectable-x.tag-selected {
   position: relative;
   background-repeat: repeat-x;
