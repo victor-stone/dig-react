@@ -23,6 +23,11 @@ class Tree extends ModelTracker(React.Component)
 {
   render() {
     const store = this.state.store;
+
+    if( store.error ) {
+      return <h1 className="well">{"There does not seem to be anything here...?"}</h1>;
+    }
+
     const { upload:{numRecommends,numReviews} } = store.model;
 
     return( 

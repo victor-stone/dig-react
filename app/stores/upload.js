@@ -120,7 +120,7 @@ class Upload extends Permissions(TagsOwner(Query)) {
 
       .then( record => {
         
-        if( !record.upload || !Object.keys(record.upload) ) {
+        if( !record.upload || !Object.keys(record.upload) || record.upload.length === 0 ) {
           throw( new Error('No record found') );
         }
         model = _fixFeaturing(record);
