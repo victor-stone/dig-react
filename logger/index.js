@@ -1,17 +1,18 @@
 'use strict';
+/* eslint no-console:0 */
 var express     = require('express');
-var serveStatic = require('serve-static')
+var serveStatic = require('serve-static');
 var fs          = require('fs');
-var md5         = require('md5');
+// var md5         = require('md5');
 var argv        = require('minimist')(process.argv.slice(2));
 
 var getLogMap   = require('./log-map');
 
-var portMD5 = '3b9be7e15b46c42911f39a4a9e861022';
-if( md5(argv.port+'') !== portMD5 ) {
-  console.log('invalid port number');
-  exit(1);
-}
+// var portMD5 = '3b9be7e15b46c42911f39a4a9e861022';
+// if( md5(argv.port+'') !== portMD5 ) {
+//   console.log('invalid port number');
+//   exit(1);
+// }
 
 var LOG_DIR = __dirname + '/../logs/';
 
@@ -26,7 +27,7 @@ var port = argv.port;
 app.listen(port);
 console.log(`Listening on port ${port}...`);
 
-var filterCache = {};
+// var filterCache = {};
 
 function getlog(req,res) {
   var date   = req.params.date;
@@ -36,34 +37,34 @@ function getlog(req,res) {
   var limit  = 30;
 
   var wantCount = req.query.wantCount || false;
-  var filter    = null;
-  var filterSig = null;
+  // var filter    = null;
+  // var filterSig = null;
   
   var fname = `${LOG_DIR}${date}-${app}-${type}-log.json`;
 
-  if( req.query.filter ) {
-    filterSig = req.query.filter;
-    filter    = JSON.parse(req.query.filter);
-  }
+  // if( req.query.filter ) {
+  //   filterSig = req.query.filter;
+  //   filter    = JSON.parse(req.query.filter);
+  // }
 
   getLogMap(fname, handleError, function(logMap) {
     if( wantCount ) {
       res.end( JSON.stringify([ logMap.length ]));
     } else {
-      getLogItems(logMap)
+      getLogItems(logMap);
     }
   });    
 
-  function getFilterMap(logMap) {
-    if( fname in filterCache ) {
-      var filters = filterCache[fname];
-      if( filterSig in filters ) {
-        return filters[filterSig];
-      }
-    } else {
-      filterCache[fname] = {};
-    }
-  }
+  // function getFilterMap(logMap) {
+  //   if( fname in filterCache ) {
+  //     var filters = filterCache[fname];
+  //     if( filterSig in filters ) {
+  //       return filters[filterSig];
+  //     }
+  //   } else {
+  //     filterCache[fname] = {};
+  //   }
+  // }
 
   function getLogItems(logMap) {
     var figs = translateMapOffsets(logMap);
