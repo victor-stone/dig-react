@@ -1,28 +1,14 @@
-var ObjectAssign = function(target, firstSource) {
-    "use strict";
-    if (target === undefined || target === null) {
-      throw new TypeError("Cannot convert first argument to object");
-    }
-    var to = Object(target);
-    for (var i = 1; i < arguments.length; i++) {
-      var src = arguments[i];
-      if (src === undefined || src === null) {
-        continue;
-      }
-      var arr = Object.keys(Object(src));
-      for (var n = 0, len = arr.length; n < len; n++) {
-        var k = arr[n];
-        var desc = Object.getOwnPropertyDescriptor(src, k);
-        if (desc !== undefined && desc.enumerable) {
-          to[k] = src[k];
-        }
-      }
-    }
-    return to;
-  };  
+/* globals $, React, ReactDOM */
+
+const TEN = 10;
+const THIRTY = 30;
+const FIVE = 5;
+const TWENTY = 20;
+const ELEVEN = 11;
+const TWELVE = 12;
 
 function two(s) {
-  if( Number(s) < 10 ) {
+  if( Number(s) < TEN ) {
     return '0' + s;
   }
   return s + '';
@@ -63,7 +49,7 @@ class EventEmiiter {
     }
   }
 
-  removeListener(evname,cb) { 
+  removeListener() { 
     //console.log( 'removeListener no impl', evname);
   }
 }
@@ -87,7 +73,7 @@ class DateStore extends EventEmiiter {
 class AppStore extends EventEmiiter {
   constructor() {
     super(...arguments);
-    this._apps = [ 'dig','pells', 'stems', 'playlists' ]; 
+    this._apps = [ 'dig','ccmixter' ]; 
     this._selected = 0;
   }
 
@@ -150,7 +136,7 @@ class LogStore extends EventEmiiter {
   }
 
   get hasNext() {
-    return this.offset + 30 < this.total;
+    return this.offset + THIRTY < this.total;
   }
 
   get hasPrev() {
@@ -159,7 +145,7 @@ class LogStore extends EventEmiiter {
 
   pageTo(offset) {
     if( offset === 'tail' ) {
-      offset = this.total - 30;
+      offset = this.total - THIRTY;
       if( offset < 0 ) {
         offset = 0;
       }
@@ -221,15 +207,15 @@ class LogStore extends EventEmiiter {
     var opts = {
       url: this._addQueryParams(this._logName(fetch),{wantCount:1}),
       error: this.ajaxError
-    }
+    };
 
     opts.success = data => {
       // breakout for debugging;
       var result = JSON.parse(data);
       if( typeof result[0] === 'number' ) {
         this.total = result[0];
-        if( this.total > 30 ) {
-          this.offset = this.total - 30;
+        if( this.total > THIRTY ) {
+          this.offset = this.total - THIRTY;
         }
         this._fetchLog(fetch);
       } else {
@@ -246,18 +232,18 @@ class LogStore extends EventEmiiter {
     var opts = {
       url: this._addQueryParams(this._logName(fetch)),
       error: this.ajaxError
-    }
+    };
     opts.success = data => {
       this.model = JSON.parse(data);
-      this.emit('update',this.model)
+      this.emit('update',this.model);
     };
     $.ajax(opts);  
   }
 
   _addQueryParams(url,additional) {
-    var qp = {}
+    var qp = {};
     if( additional ) {
-      ObjectAssign(qp,additional);
+      Object.assign(qp,additional);
     }
     if( this.offset ) {
       qp.offset = this.offset;
@@ -274,6 +260,7 @@ class LogStore extends EventEmiiter {
 
   ajaxError( jqXHR, textStatus, errorThrown ) {
     var err = errorThrown instanceof Error ? errorThrown : new Error(errorThrown || textStatus);
+    /* eslint no-console:0 */
     console.log(err);
   }
 }
@@ -281,17 +268,17 @@ class LogStore extends EventEmiiter {
 var DateSelect = React.createClass({
   getInitialState: function() {
     var dates = [];
-    var mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    var mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
         ];
 
-    for( var i = 0; i < 5; i++ ) {
+    for( var i = 0; i < FIVE; i++ ) {
       var d = new Date();
       d.setDate( d.getDate() - i);
       var obj = {
         val: formatNowForName(d),
         text: mon[ d.getMonth() ] + ' ' + d.getDate()
-      }
+      };
       dates.push( obj );
     }
     return { dates };
@@ -320,7 +307,7 @@ var AppSelect = React.createClass({
     return { apps };
   },
 
-  onSelect: function(val) {
+  onSelect: function(/*val*/) {
     var val = this.refs['app-picker'].value;
     this.props.store.selectedApp = val;
   },
@@ -343,7 +330,7 @@ var LogTypeSelect = React.createClass({
     return { types };
   },
 
-  onSelect: function(val) {
+  onSelect: function(/*val*/) {
     var val = this.refs['type-picker'].value;
     this.props.store.selectedType = val;
   },
@@ -396,8 +383,8 @@ var LogViewerLine = React.createClass({
     ];
 
     var found = false;
-    for( var i = 0; i < map.length; i++ ) {
-      var m = map[i];
+    for( var x = 0; x < map.length; x++ ) {
+      var m = map[x];
       if( ua.match(m.r) !== null ) {
         value = m.v;
         found = true;
@@ -407,8 +394,8 @@ var LogViewerLine = React.createClass({
 
     if( !found ) {
       value = value.replace(/Mozilla\/[0-9\.]+ \(compatible;/,'');
-      if( value.length > 20 ) {
-        value = value.substr(0,30) + '... ';
+      if( value.length > TWENTY ) {
+        value = value.substr(0,THIRTY) + '... ';
       }
     }
     return (<span className={key} key={i} data-ua={ua}> {value} </span>);
@@ -435,10 +422,10 @@ var LogViewerLine = React.createClass({
     var d = new Date(value);
     var h = d.getHours();
     var m = d.getMinutes();
-    var ampm = h > 11 ? 'pm' : 'am';
-    h %= 12;
+    var ampm = h > ELEVEN ? 'pm' : 'am';
+    h %= TWELVE;
     if( !h ) {
-      h = 12;
+      h = TWELVE;
     }
     m = two(m);
     var text = `${h}:${m}${ampm}`;
@@ -447,7 +434,7 @@ var LogViewerLine = React.createClass({
 
   stackFormat: function(i,key,value) {
 
-    value = value.split("\n");
+    value = value.split('\n');
 
     return(<span className={key} key={i}>
         <div className="dropdown">
@@ -461,7 +448,6 @@ var LogViewerLine = React.createClass({
 
   genericFormat: function(i,key,value) {
     var text = value + '';
-    var _this = this;
     return (<span className={key} key={i}> {text} </span>);
   },
 
@@ -488,7 +474,7 @@ var LogViewerLine = React.createClass({
     var children = keys.map( (k,i) => this.formatKey(i+k,k,m[k]) );
     return (
         <li>{children}</li>
-      )
+      );
   }
 });
 
@@ -540,14 +526,10 @@ var LogFilter = React.createClass({
     } else {
       v = f[k] + '';
     }
-    if( v.length > 20 ) {
-      return v.substr(0,20) + '...';
+    if( v.length > TWENTY ) {
+      return v.substr(0,TWENTY) + '...';
     }
     return v;
-  },
-
-  doFilter: function() {
-    this.props.store.applyFilter();
   },
 
   render: function() {
@@ -560,7 +542,7 @@ var LogFilter = React.createClass({
           <ul>
             {keys.length
               ? null
-              : <li key='nn' className="no-filter">(none)</li>
+              : <li key="nn" className="no-filter">{'(none)'}</li>
             }
             {kids}
             <li key="fb"><button onClick={this.doFilter} className={'btn ' + fcls}>{"apply"}</button></li>
@@ -598,8 +580,8 @@ var LogViewer = React.createClass({
   render: function() {
     return (
           <ul className="log-viewer">
-          <li key="0">offset: {this.props.store.offset} of {this.props.store.total}</li>
-          { this.state.model.map( (m,i) => <LogViewerLine addFilter={this.addFilter} key={i} model={m} /> ) }
+          <li key="0">{'offset: '}{this.props.store.offset}{' of '}{this.props.store.total}</li>
+          {this.state.model.map( (m,i) => <LogViewerLine addFilter={this.addFilter} key={i} model={m} /> )}
           </ul>
       );
   }
@@ -638,11 +620,11 @@ var LogPager = {
   },
 
   onPrev: function() {
-    this.props.store.pageBy( -30 );
+    this.props.store.pageBy( -THIRTY );
   },
 
   onNext: function() {
-    this.props.store.pageBy( 30 );
+    this.props.store.pageBy( THIRTY );
   },
   
   onTail: function() {
@@ -657,9 +639,9 @@ var NextButton = React.createClass({
     var cls = 'btn' + (this.state.hasNext ? '' : ' disabled');
     return( 
         <li>
-          <button className={cls} onClick={this.onNext} >next</button>
+          <button className={cls} onClick={this.onNext} >{'next'}</button>
         </li>
-      )
+      );
   },
 
 });
@@ -671,9 +653,9 @@ var TailButton = React.createClass({
     var cls = 'btn' + (this.state.atEnd ? ' disabled' : '');
     return (
         <li>
-          <button className={cls} onClick={this.onTail} >tail</button>
+          <button className={cls} onClick={this.onTail} >{'tail'}</button>
         </li>
-      )
+      );
   },
 
 });
@@ -685,9 +667,9 @@ var HeadButton = React.createClass({
     var cls = 'btn' + (this.state.atHead ? ' disabled' : '');
     return (
         <li>
-          <button className={cls} onClick={this.onHead} >head</button>
+          <button className={cls} onClick={this.onHead} >{'head'}</button>
         </li>
-      )
+      );
   },
 
 });
@@ -699,12 +681,12 @@ var PrevButton = React.createClass({
     var cls = 'btn' + (this.state.hasPrev ? '' : ' disabled');
     return (
         <li>
-          <button className={cls} onClick={this.onPrev} >prev</button>
+          <button className={cls} onClick={this.onPrev} >{'prev'}</button>
         </li>
-      )
+      );
   },
 
-})
+});
 
 
 var Header = React.createClass({
@@ -713,7 +695,7 @@ var Header = React.createClass({
     var dateStore = new DateStore();
     var appStore  = new AppStore();
     var typeStore = new LogTypeStore();
-    return { dateStore, appStore, typeStore }
+    return { dateStore, appStore, typeStore };
   },
 
   componentWillMount: function() {
@@ -728,7 +710,7 @@ var Header = React.createClass({
     this.state.typeStore.removeListener('onchange',this.logChange);
   },
 
-  logChange: function(arg) {
+  logChange: function(/*arg*/) {
     var date = this.state.dateStore.selectedDate;
     var app  = this.state.appStore.selectedApp;
     var type = this.state.typeStore.selectedType;
