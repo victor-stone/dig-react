@@ -2,10 +2,15 @@
 import React from 'react';
 import Link from './services/LinkToRoute';
 
+function FakeLink(props) {
+  return <a {...props}>{props.children}</a>;
+}
 
 function Footer(props) {
     const { contactURL = 'http://ccmixter.org/media/people/contact/admin'} = props;
     
+    const LinkElement = /^http:/.test(contactURL) ? FakeLink : Link;
+
     return (
       <div className="container-fluid footer footer-pad">
         <div className="row">
@@ -38,7 +43,7 @@ function Footer(props) {
               <li><a href="https://github.com/victor-stone/dig-react"><i className="fa fa-github"></i>{" GitHub"}</a></li>
               <li><a href="http://ccmixter.org/query-api">{"Query API"}</a></li>
               <li><a href="https://ccmixter.org/forum">{"Forums"}</a></li>
-              <li><a href={contactURL}>{"Contact"}</a></li>
+              <li><LinkElement href={contactURL}>{"Contact"}</LinkElement></li>
             </ul>
           </div>
         </div>

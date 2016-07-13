@@ -12,7 +12,7 @@ import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">
       <li>
-        <a href="/keep-ccmixter-open-and-free"><i className="fa fa-heart"></i>{" donate"}</a>
+        <Link href="/keep-ccmixter-open-and-free"><i className="fa fa-heart"></i>{" donate"}</Link>
       </li>
       <li>
         <Link href="/#howitworks">{"how it works"}</Link>

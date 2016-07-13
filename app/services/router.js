@@ -44,7 +44,10 @@ class Router extends Eventer
   
   runRewrites(url) {
     if( url ) {
-      url = this.rewrites.find( rule => url.match(rule.regex) ) || url;
+      const rule = this.rewrites.find( rule => url.match(rule.regex) );
+      if( rule ) {
+        url = rule.now;
+      }
     }
     return url;
   }
