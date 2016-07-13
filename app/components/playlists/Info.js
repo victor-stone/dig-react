@@ -11,21 +11,16 @@ import { EditableTagsDiv,
          BoundStaticTagList }  from '../bound/Tags';
 
 import DeletePlaylist          from './DeletePlaylist';
-import { CurrentUserTracker,
-         ModelTracker }        from '../../mixins';
+import { ModelTracker }        from '../../mixins';
 
 import BoundInlineFormattedTextEditor  from '../bound/FormattedTextEditor';
 
 // FIXME: feature button is ugly
-class Feature extends CurrentUserTracker(React.Component)
+class Feature extends React.Component
 {
-  constructor() {
-    super(...arguments);
-  }
-
   render() {
-    const { user: {isAdmin=false} = {} } = this.state;
-    return isAdmin && <Toggle store={this.props.store} className="featured" propName="isFeatured" text="Featured" />;
+    const { store:{permissions:{canFeature}} } = this.props;
+    return canFeature && <Toggle store={this.props.store} className="featured" propName="isFeatured" text="Featured" />;
   }
 }
 

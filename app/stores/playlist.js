@@ -128,15 +128,8 @@ class Playlist extends Permissions(TagsOwner(Query)) {
   }
 
   getPermissions(head) {
-    // TODO: this should be on at the server 
-    return api.user.currentUserProfile()
-      .then( profile => {
-        this.permissions = { canEdit: profile.id === head.curator.id };
-        return head;
-      }, () => {
-        this.permissions = this.nullPermissions;
-        return head;
-      });
+    this.permissions = head.permissions;
+    return rsvp.resolve(head);
   }
 
   /*

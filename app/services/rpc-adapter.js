@@ -6,7 +6,7 @@ class RPCAdapter
 {
   constructor() {
     this.ajax   = ajax;
-    this._cache  = false; // true;
+    this._cache  = !env.debugMode;
   }
 
   post(cmd,args) {

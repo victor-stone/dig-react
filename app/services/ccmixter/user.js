@@ -41,7 +41,7 @@ class User extends API
     return this.call('user/logout')
               .then( result => { 
                   this._currentUser = NOT_LOGGED_IN;
-                  this._currentProfile = NOT_LOGGED_IN;
+                  this._currentProfile = undefined;
                   cookies.remove('username');
                   this.emit( events.USER_LOGIN, NOT_LOGGED_IN );
                   return result; 
@@ -85,7 +85,7 @@ class User extends API
   }
 
   currentUserProfile() {
-    if( '_currentProfile' in this ) {
+    if( typeof this._currentProfile !== 'undefined' ) {
       return this._currentUser ? rsvp.resolve(this._currentProfile) :  rsvp.reject( NOT_LOGGED_IN );
     }
 

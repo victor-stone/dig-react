@@ -27,7 +27,7 @@ class Playlist extends Model {
     };
     this.idBinding = 'cart_id';
     this.nameBinding = 'cart_name';
-    this.date = 'cart_date_format';
+    this.dateBinding = 'cart_date_format';
     this.getIsDynamic = function() {
       return !!this.cart_dynamic;
     };
@@ -51,6 +51,7 @@ class PlaylistHead extends Playlist {
   constructor() {
     super(...arguments);
     this.subTypeBinding = 'cart_subtype';
+    this.permissionsBinding = 'permissions';
     this.getDescription = function() {
       return cleanLinks(this.cart_description);
     };

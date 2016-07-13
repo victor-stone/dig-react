@@ -20,7 +20,9 @@ class RecommendsButton extends ModelTracker(React.Component)
     return { domId: 'recc_' + id, id, permissions };
   }
 
-  onRecommends() {
+  onRecommends(e) {
+    e.stopPropagation();
+    e.preventDefault();
     /* globals $ */
     // http://stackoverflow.com/questions/17327668/best-way-to-disable-button-in-twitters-bootstrap
     $('#' + this.state.domId).prop({disabled:true}).addClass('btn-disabled');

@@ -44,6 +44,7 @@ class QueryAjaxAdapter extends Eventer
       url:      url,
       dataType: 'json',
       method:   'GET',
+      xhrFields: { withCredentials: true },
       cache:    !env.debugMode
     };
 
