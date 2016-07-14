@@ -48,7 +48,7 @@ div.tags {
   margin-left: 12px;
   vertical-align: text-bottom;
 }
-.upload-page .list-group-item {
+.upload-page .remix-list li {
   border-color: transparent;
 }
 

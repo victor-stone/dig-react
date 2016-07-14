@@ -17,9 +17,11 @@ var Link = React.createClass({
   },
 
   render() {
+    const { text, children } = this.props;
+
     return (
       <a {...this.props} onClick={this.handleClick} >
-        {this.props.children}
+       {text}{children}
       </a>
     );
   }

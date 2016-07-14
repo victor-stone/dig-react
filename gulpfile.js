@@ -115,6 +115,7 @@ function task_make_indecies() {
   var dirs = [ 
       './app/components',
       './app/components/dig',
+      './app/components/dig/upload',
       './app/components/vanilla',
       './app/components/playlists/pages',
       './app/mixins'

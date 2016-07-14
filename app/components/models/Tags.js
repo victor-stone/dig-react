@@ -117,10 +117,7 @@ class SelectableTag extends React.Component
         <li className={cls} onClick={onSelected && this.onClick}>
           {icon && id && <Glyph icon={icon} />}
           {id} 
-          {count
-            ? <span className="light-color">{"("}{count}{")"}</span>
-            : null
-          }
+          {count && <span className="tag-count">{"("}{count}{")"}</span>}
         </li>
       );
   }
