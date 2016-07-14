@@ -10,11 +10,15 @@ import DownloadPopup   from '../DownloadPopup';
 import { PlayButton }  from '../AudioPlayer';
 
 import ExternalLink    from '../vanilla/ExternalLink';
+import { Row,
+         Container,
+         FluidContainer,
+         Column }      from '../vanilla/Grid';
 
 var Actions = React.createClass({
 
-  render: function() {
-    var model = this.props.model;
+  render() {
+    const { model } = this.props;
 
     return (
         <ul className="actions">
@@ -34,7 +38,7 @@ var Actions = React.createClass({
 
 var Tags = React.createClass({
 
-  render: function() {
+  render() {
 
     var tags = this.props.tags.map( t => 
       (<Link key={t} href={'/tags/' + t} className="btn-exp btn-tag light-on-hover">{t}</Link>) );
@@ -45,11 +49,13 @@ var Tags = React.createClass({
 
 var Featuring = React.createClass({
 
-  render: function() {
-    var featuring = this.props.featuring;
+  render() {
+    const {featuring} = this.props;
+
     if( !featuring ) {
       return null;
     }
+
     return(
         <p><span className="light-color">{"featuring"}</span>{" "}{featuring}</p>
       );    
@@ -58,7 +64,7 @@ var Featuring = React.createClass({
 
 var UploadHeader = React.createClass({
 
-  render: function() {
+  render() {
     const { artist, featuring } = this.props.model;
     return (
       <div>
@@ -72,7 +78,7 @@ var UploadHeader = React.createClass({
 
 var CcPlusLink = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return { model: this.props.model };
   },
 
@@ -80,14 +86,16 @@ var CcPlusLink = React.createClass({
     this.setState( { model: props.model } );
   },
 
-  render: function() {
-    var model = this.state.model;
-    if( !model.isCCPlus ) {
+  render() {
+
+    const { isCCPlus, purchaseLicenseURL, purchaseLogoURL } = this.state.model;
+
+    if( !isCCPlus ) {
       return null;
     }
     return(
       <span>
-        <a href={model.purchaseLicenseURL}><img src={model.purchaseLogoURL} /></a>
+        <a href={purchaseLicenseURL}><img src={purchaseLogoURL} /></a>
         <LicenseInfo.LicenseInfoPopup />
       </span>
       );
@@ -97,13 +105,13 @@ var CcPlusLink = React.createClass({
 
 var LicenseSection = React.createClass({
 
-  render: function() {
-    var model = this.props.model;
+  render() {
+    const { model, model:{license_url,licenseLogoURL} } = this.props;
 
     return (
       <ul className="actions">
         <li className="license-badge">
-          <a href={model.license_url}><img className="download-license" src={model.licenseLogoURL} /></a>  
+          <a href={license_url}><img className="download-license" src={licenseLogoURL} /></a>  
           <LicenseInfo.LicenseInfoPopup />
         </li>
         <li className="license-badge">
@@ -121,14 +129,14 @@ var LicenseSection = React.createClass({
 
 var TrackbacksSection = React.createClass({
 
-  render: function() {
-    var model = this.props.model;
+  render() {
+    const { model:{trackbacks} } = this.props;
     return (
       <div>
         <div className="center-text">
           <h3 className="inlined">{"Trackbacks"}</h3>
         </div>
-        <TrackbackList model={model.trackbacks} />
+        <TrackbackList model={trackbacks} />
       </div>
     );
   }
@@ -136,12 +144,14 @@ var TrackbacksSection = React.createClass({
 
 var RemixesSection = React.createClass({
 
-  render: function() {
-    var remixes = this.props.model.remixes || [];
-    
+  render() {
+    const { remixes = [] } = this.props.model;
+
     function formatRemix(rmx) {
-      return (<li key={rmx.id} className="list-group-item">
-        <ExternalLink href={rmx.url} text={rmx.name} /><span className="light-color">{rmx.artist.name}</span>
+      const { id, url, name, artist:{name:artistName} } = rmx;
+
+      return (<li key={id} className="list-group-item">
+        <ExternalLink href={url} text={name} /><span className="light-color">{artistName}</span>
       </li>);
     }
 
@@ -160,48 +170,50 @@ var RemixesSection = React.createClass({
 
 var Upload = React.createClass({
 
-  render: function() {
-    var store  = this.props.store;
-    var model  = store.model;
-    var upload = model.upload;
+  render() {
+    const store       = this.props.store;
+    const model       = store.model;
+    const upload      = model.upload;
+    const { name, 
+            userTags } = upload;
 
     return  (
       <div>
 
         <div className="page-header">
-          <h1 className="center-text">{upload.name}</h1>
+          <h1 className="center-text">{name}</h1>
         </div>
 
-        <div className="container upload-page">
-          <div className="row">
-            <div className="col-md-8 col-md-push-4">
-              <div className="row">
-                <div className="col-md-6 col-sm-6">
+        <Container className="upload-page">
+          <Row>
+            <Column cols="8" push="4">
+              <Row>
+                <Column md="6" sm="6">
                   <UploadHeader model={upload} />
-                </div>
-                <div className="col-md-6">
+                </Column>
+                <Column cols="6">
                   <LicenseSection model={upload} />
-                </div>
-              </div>  
-              <div className="row">
-                <div className="col-md-8 tags">
-                  <Tags tags={upload.userTags} />
-                </div>  
-              </div>
-            </div>
-            <div className="col-md-2 col-md-offset-2 col-md-pull-8">
+                </Column>
+              </Row>  
+              <Row>
+                <Column cols="8" className="tags">
+                  <Tags tags={userTags} />
+                </Column>  
+              </Row>
+            </Column>
+            <Column cols="2" offset="2" pull="8">
               <Actions model={upload} />
-            </div>
-          </div>
-          <div className="row used-in">
-            <div className="col-md-5 col-md-offset-1 col-sm-12 trackbacks">
+            </Column>
+          </Row>
+          <Row className="used-in">
+            <Column md={{cols:5,offset:1}} sm="12" className="trackbacks">
               <TrackbacksSection model={model} />
-            </div>
-            <div className="col-md-5  col-sm-12 remixes">
+            </Column>
+            <Column md="5" sm="12" className="remixes">
               <RemixesSection model={model} />            
-            </div>
-          </div>
-        </div>
+            </Column>
+          </Row>
+        </Container>
 
       </div>
     );

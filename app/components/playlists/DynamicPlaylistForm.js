@@ -6,6 +6,9 @@ import StaticTrackList   from '../bound/StaticTrackList';
 import SaveButton        from '../vanilla/SaveButton';
 import PageHeader        from '../vanilla/PageHeader';
 import InlineCSS         from '../vanilla/InlineCSS';
+import { Row,
+         FluidContainer,
+         Column }        from '../vanilla/Grid';
 
 import css               from './style/edit';
 
@@ -21,22 +24,22 @@ class DynamicForm extends DisableScrollToTop(React.Component)
         <div className={cls}>
           <InlineCSS css={css} id={id} />
           <PageHeader icon="edit" title={title} />
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-8 col-md-offset-2">
-                <div className="row">
-                  <div className="col-md-6">
+          <FluidContainer>
+            <Row>
+              <Column cols="8" offset="2">
+                <Row>
+                  <Column cols="6">
                     <QueryOptions store={tracks} />
-                  </div>
-                  <div className="col-md-6">
+                  </Column>
+                  <Column cols="6">
                     <h3>{"preview"}</h3>
                     <StaticTrackList store={tracks} />
                     <SaveButton onSave={this.props.onSave} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                  </Column>
+                </Row>
+              </Column>
+            </Row>
+          </FluidContainer>
         </div>
 
       );

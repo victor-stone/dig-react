@@ -4,8 +4,13 @@ import LinkToPeople       from '../services/LinkToPeopleRoute';
 import { PlayButton }     from '../AudioPlayer';
 import AudioPlayerService from '../../services/audio-player';
 import { ModelTracker }   from '../../mixins';
+
 import { ResetOptionsButton } from '../QueryOptions';
 import LinkToUpload           from '../services/LinkToUploadRoute';
+import { Row,
+         Container,
+         FluidContainer,
+         Column }     from '../vanilla/Grid';
 
 const MIN_LIMIT = 10;
 
@@ -42,9 +47,9 @@ class NotALotHere extends ModelTracker(React.Component)
     }
 
     return (
-      <div className="container-fluid no-hit-suggestion">
-          <div className="row">
-            <div className="col-md-6 col-md-offset-3">
+      <FluidContainer className="no-hit-suggestion">
+          <Row>
+            <Column cols="6" offset="3">
               <div className="jumbotron empty-query">
                 <h3>{"eh, not a lot here..."}</h3>
                   <ul>
@@ -54,9 +59,9 @@ class NotALotHere extends ModelTracker(React.Component)
                       </li>
                   </ul>
               </div>
-            </div>
-          </div>
-        </div>
+            </Column>
+          </Row>
+        </FluidContainer>
       );
   }
 }
@@ -102,14 +107,14 @@ var Remixes = React.createClass({
 
   render() {
     return( 
-      <div className="container">
-        <div className="row">
-          <div className="col-md-9 col-md-offset-2 col-md-sm-12">
+      <Container>
+        <Row>
+          <Column md={{cols:9,offset:2}} sm="12" >
             {this.props.children}
             <RemixContainer store={this.props.store} remixLine={RemixLine} />
-          </div>
-        </div>
-      </div>      
+          </Column>
+        </Row>
+      </Container>      
       );
   }
 });

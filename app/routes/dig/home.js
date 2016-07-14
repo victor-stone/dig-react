@@ -1,23 +1,27 @@
 import React from 'react';
 import { Glyph } from '../../components/vanilla';
 import Link from '../../components/services/LinkToRoute';
+import { Row,
+         Container,
+         FluidContainer,
+         Column }     from '../../components/vanilla/Grid';
 
 
 const homePage = (
   <div>
-<div className="dig-img container">
-  <div className="row">
-    <div className="col-md-8 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-12">
+<Container className="dig-img">
+  <Row>
+    <Column md={{cols:8,offset:1}} sm={{cols:11,offset:1}} xs="12">
       <h1>{"You Already "}<br className="hidden-xs" />{"Have Permission"}</h1>
       <h3>{"The music discovery site used in"}<br className="hidden-xs" />{" over 1 million videos and games"}</h3>
-    </div>
-  </div>
-</div>
+    </Column>
+  </Row>
+</Container>
  <a name="howitworks"></a>
 <h2 className="center-text">{"How it Works"}</h2>
-<div className="container-fluid">
-  <div className="row how panel-group">
-    <div className="col-md-4">
+<FluidContainer>
+  <Row className="how panel-group">
+    <Column cols="4">
       <div className="panel">
         <div className="panel-body">
           <div className="home-glyph musicians-glyph"></div>
@@ -27,8 +31,8 @@ const homePage = (
           <img src="images/ccmixter.png" />
         </div>
       </div>
-    </div>
-    <div className="col-md-4">
+    </Column>
+    <Column cols="4">
       <div className="panel">
         <div className="panel-body">
           <div className="home-glyph findMusic-glyph">
@@ -41,8 +45,8 @@ const homePage = (
           <img src="images/logo-black.png" />
         </div>
       </div>
-    </div>
-    <div className="col-md-4">
+    </Column>
+    <Column cols="4">
       <div className="panel">
         <div className="panel-body">
           <div className="home-glyph project-glyph"></div>
@@ -57,11 +61,11 @@ const homePage = (
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </Column>
+  </Row>
 
-  <div className="row gso-links panel-group">
-    <div className="col-md-4">
+  <Row className="gso-links panel-group">
+    <Column cols="4">
       <div className="panel">
         <div className="panel-heading">
           <h1 className="panel-title">{"Instrumental Music for Film & Video"}</h1>
@@ -73,8 +77,8 @@ const homePage = (
           <Link href="/film" className="btn btn-default">{"Dig!"}</Link>
         </div>
       </div>
-    </div>
-    <div className="col-md-4">
+    </Column>
+    <Column cols="4">
       <div className="panel">
         <div className="panel-heading">
           <h1 className="panel-title">{"Free Music for Commerical Projects"}</h1>
@@ -86,8 +90,8 @@ const homePage = (
           <Link href="/free" className="btn btn-default">{"Dig!"}</Link>
         </div>
       </div>
-    </div>
-    <div className="col-md-4">
+    </Column>
+    <Column cols="4">
       <div className="panel">
         <div className="panel-heading">
           <h1 className="panel-title">{"Music for Video Games"}</h1>
@@ -99,9 +103,9 @@ const homePage = (
           <Link href="/games" className="btn btn-default">{"Dig!"}</Link>
         </div>
       </div>
-    </div>
-  </div>
-</div>  
+    </Column>
+  </Row>
+</FluidContainer>  
 </div>
 );
 

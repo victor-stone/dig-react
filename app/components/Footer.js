@@ -3,6 +3,9 @@ import React     from 'react';
 import Link      from './services/LinkToRoute';
 import InlineCSS from './vanilla/InlineCSS';
 import css       from './style/footer';
+import { Row,
+         FluidContainer,
+         Column }     from './vanilla/Grid';
 
 function FakeLink(props) {
   return <a {...props}>{props.children}</a>;
@@ -14,10 +17,10 @@ function Footer(props) {
     const LinkElement = /^http:/.test(contactURL) ? FakeLink : Link;
 
     return (
-      <div className="container-fluid footer footer-pad">
+      <FluidContainer className="footer footer-pad">
         <InlineCSS css={css} id="footer-css" />
-        <div className="row">
-          <div className="col-md-3">
+        <Row>
+          <Column cols="3" >
             <h1>{"Here"}</h1>
             <ul>
               <li><Link href="/licenses">{"Licenses"}</Link></li>
@@ -26,11 +29,11 @@ function Footer(props) {
               <li><Link href="/keep-ccmixter-open-and-free"><i className="fa fa-heart"></i>{" Donate(!)"}</Link></li>
               <li><Link href="/credits#credits">{"Credits"}</Link></li>
             </ul>
-          </div>
-          <div className="col-md-3">
+          </Column>
+          <Column cols="3" >
             {props.children}
-          </div>
-          <div className="col-md-3">
+          </Column>
+          <Column cols="3" >
             <h1>{"Everywhere"}</h1>
             <ul>
               <li><a href="https://twitter.com/ccmixtermusic"><i className="fa fa-twitter"></i>{" Twitter"}</a></li>
@@ -39,8 +42,8 @@ function Footer(props) {
               <li><a href="https://www.facebook.com/CCMixter"><i className="fa fa-facebook"></i>{" Facebook"}</a></li>
               <li><a href="http://instagram.com/ccmixter"><i className="fa fa-instagram"></i>{" Instagram"}</a></li>
             </ul>
-          </div>
-          <div className="col-md-3">
+          </Column>
+          <Column cols="3" >
             <h1>{"Resources"}</h1>
             <ul>
               <li><a href="https://github.com/victor-stone/dig-react"><i className="fa fa-github"></i>{" GitHub"}</a></li>
@@ -48,9 +51,9 @@ function Footer(props) {
               <li><a href="https://ccmixter.org/forum">{"Forums"}</a></li>
               <li><LinkElement href={contactURL}>{"Contact"}</LinkElement></li>
             </ul>
-          </div>
-        </div>
-      </div>
+          </Column>
+        </Row>
+      </FluidContainer>
     );
 }
 

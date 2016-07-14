@@ -9,6 +9,9 @@ import { ModelTracker,
 import { bindAll }        from '../../unicorns';
 import InlineCSS          from '../vanilla/InlineCSS';
 import browserCSS         from './style/browser';
+import { Row,
+         Container,
+         Column }         from '../vanilla/Grid';
 
 class PellsListing extends ModelTracker(React.Component)
 {
@@ -103,20 +106,21 @@ class PellsBrowser extends NowPlayingTracker(React.Component)
   render() {
     var store = this.props.store;
     return (
-      <div className="container pells-page">
+
+      <Container className="pells-page">
         <InlineCSS css={browserCSS} id="pell-browser-css" />
-        <div className="row">
-          <div className="col-md-3">
+        <Row>
+          <Column cols="3">
             <PellDetail store={store} model={this.state.selected} />
-          </div>
-          <div className="col-md-7 pell-browser">
+          </Column>
+          <Column cols="7" className="pell-browser">
             <PellsListing store={store} onSelectedPell={this.onSelectedPell} />
-          </div>
-          <div className="col-md-2">
+          </Column>
+          <Column cols="2">
             <QueryOptions store={store} />
-          </div>
-        </div>
-      </div>
+          </Column>
+        </Row>
+      </Container>
     );      
   }
 

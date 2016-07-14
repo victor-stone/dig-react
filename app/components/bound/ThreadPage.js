@@ -1,6 +1,9 @@
 import React          from 'react';
 import PageHeader     from '../vanilla/PageHeader';
 import InlineCSS      from '../vanilla/InlineCSS';
+import { Row,
+         FluidContainer,
+         Column }     from '../vanilla/Grid';
 import ThreadPanel    from '../models/ThreadPanel';
 
 class ThreadPage extends React.Component
@@ -13,15 +16,15 @@ class ThreadPage extends React.Component
     const { model:{head:{forum,name},items} } = this.props.store;
 
     return(
-        <div className="container-fluid">
+        <FluidContainer>
           <InlineCSS css={ThreadPanel.css} id="thread-panel-css" />
           <PageHeader title={name} subTitle={forum.name} icon="comments" />
-          <div className="row">
-            <div className="col-md-10 col-md-offset-1">
+          <Row>
+            <Column cols="10" offset="1">
               <ThreadPanel model={items} />
-            </div>
-          </div>
-        </div>
+            </Column>
+          </Row>
+        </FluidContainer>
       );
   }
 }

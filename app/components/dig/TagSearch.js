@@ -9,6 +9,8 @@ import { BoundSelectedTagList } from '../bound/Tags';
 import TagCategoryBox from './tags/TagCategoryBox';
 import MatchAllButton from '../bound/TagsMatchAllButton';
 import TagNoHits      from '../bound/TagNoHits';
+import { Row,
+         Column }     from '../vanilla/Grid';
 
 import css from './style/tags';
 
@@ -20,10 +22,10 @@ class TagCategoryRow extends React.Component
     var store      = this.props.store;
 
     return (
-      <div className="row">
-        <div className="col-md-1 hmmmmmm"></div>
+      <Row>
+        <Column cols="1" className="hmmmm" />
         {catNames.map( n => <TagCategoryBox model={categories[n]} key={n} catID={n} store={store} /> )}
-      </div>
+      </Row>
       );
   }
 }
@@ -34,14 +36,13 @@ class SelectedTagRow extends React.Component
     const { store } = this.props;
 
     return (
-        <div className="row">
-          <div className="col-md-8 col-md-offset-2 dig-tags">
+        <Row>
+          <Column cols="8" offset="2" className="dig-tags">
             <BoundSelectedTagList css={css} x floating autoclear={false} store={store}  />
             <MatchAllButton store={store} />
-          </div>   
-          <div className="col-md-2 whaaaaaat">
-          </div>
-        </div>
+          </Column>
+          <Column cols="2" className="what"/>
+        </Row>
       );
   }
 

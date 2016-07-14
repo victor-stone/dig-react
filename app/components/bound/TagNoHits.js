@@ -4,6 +4,8 @@ import { TagString } from '../../unicorns';
 // TODO: Move resetoptions button
 import QueryOptions  from '../QueryOptions';
 import { ModelTracker } from '../../mixins';
+import { Row,
+         Column }     from '../vanilla/Grid';
 
 class NoTagHits extends ModelTracker(React.Component)
 {
@@ -27,8 +29,8 @@ class NoTagHits extends ModelTracker(React.Component)
     var store = this.props.store;
 
     return (
-      <div className="row">
-        <div className="col-md-6 col-md-offset-3 no-hit-suggestion">
+      <Row>
+        <Column cols="6" offset="3" className="no-hit-suggestion">
           <div className="jumbotron empty-query">
             <h3>{"wups, no matches for that combination of tags..."}</h3>
               <ul>
@@ -44,8 +46,8 @@ class NoTagHits extends ModelTracker(React.Component)
                 {optionsDirty && <li>{"Try resetting your filters "}<QueryOptions.ResetOptionsButton store={store} /></li>}
               </ul>
           </div>
-        </div>
-      </div>
+        </Column>
+      </Row>
       );
   }
 }

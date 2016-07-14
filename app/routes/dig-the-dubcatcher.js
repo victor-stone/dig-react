@@ -8,6 +8,10 @@ import SamplesListing from '../components/stems/Listing';
 import Samples        from '../stores/samples';
 import PageHeader     from '../components/PageHeader';
 
+import { Row,
+         FluidContainer,
+         Column }     from '../components/vanilla/Grid';
+
 var SamplesSection = React.createClass({
 
   getInitialState() {
@@ -150,19 +154,19 @@ var DigTheDubCatcher = React.createClass({
   render() {
 
     return (
-      <div className="container-fluid">
+      <FluidContainer>
         <StyleSection />
         <PageHeader subTitle="Dig the Soundtrack" title="Call for Remixes: DJ Vadim - DubCatcher 2" icon="star" />
-        <div className="row">
-          <div className="col-md-9 col-md-offset-2">
+        <Row>
+          <Column cols="9" offset="2">
             <div className="vadim-background">
               <ContentSection />
               <a name="download"></a>
               <DownloadSection />
             </div>
-          </div>
-        </div>
-      </div>
+          </Column>
+        </Row>
+      </FluidContainer>
     );
   }
 });

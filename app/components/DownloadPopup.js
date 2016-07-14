@@ -1,4 +1,9 @@
 import React   from 'react';
+
+import { Row,
+         Column }     from './vanilla/Grid';
+import DeadLink       from './vanilla/DeadLink';
+
 import Glyph   from './vanilla/Glyph';
 import Modal   from './services/Modal';
 import Upload  from '../stores/upload';
@@ -10,15 +15,15 @@ import { LicenseInfoLink,
 
 var DownloadPopup = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return {view: {showModal: false}, plainSelected: true };
   },
   
-  handleHideModal: function() {
+  handleHideModal() {
     this.setState({view: {showModal: false}});
   },
 
-  handleShowModal: function(){
+  handleShowModal(){
     if( this.props.fullUpload ) {
       this.setState( { fullUpload: this.props.fullUpload,
                        view:      { showModal: true } } );
@@ -32,56 +37,46 @@ var DownloadPopup = React.createClass({
     }
   },
 
-  selectPlain(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  selectPlain() {
     this.setState({ plainSelected: true });
   },
 
-  selectHTML(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  selectHTML() {
     this.setState({ plainSelected: false });
   },
 
-  copyToClip: function() {
+  copyToClip() {
     window.prompt('Control (or Cmd) + C to copy', this.refs.attributionText.value );
   },
 
-  showLicense(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  showLicense() {
     this.setState( { showLicense: true } );
   },
 
-  showDownload(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  showDownload() {
     this.setState( { showLicense: false, showYTVideo: false } );
   },
 
-  showYTVideo(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  showYTVideo() {
     this.setState( { showYTVideo: true } );
   },
 
-  onDownloadClick: function(/*e*/) {
+  onDownloadClick() {
     env.emit( events.DOWNLOAD, this.state.fullUpload );
   },
 
-  genYTVideo: function() {
+  genYTVideo() {
     var html = { __html: '<iframe width="560" height="315" src="https://www.youtube.com/embed/FZ9KcU9lUQQ" frameborder="0" allowfullscreen></iframe>' };
     /*eslint "react/no-danger":0 */
     return (
       <div ref="yt-video" className="yt-video">
-        <a href="#" className="pull-left" onClick={this.showDownload}><Glyph icon="chevron-left" />{" back"}</a>
+        <DeadLink className="pull-left" onClick={this.showDownload}><Glyph icon="chevron-left" />{" back"}</DeadLink>
         <div dangerouslySetInnerHTML={html} />
       </div>
       );
   },
 
-  genPopup: function() {
+  genPopup() {
     var upload = this.state.fullUpload;
 
     return (
@@ -101,7 +96,7 @@ var DownloadPopup = React.createClass({
       );
   },
 
-  genDLPopup: function() {
+  genDLPopup() {
 
     var upload         = this.state.fullUpload;
     var plainSelected  = this.state.plainSelected;
@@ -120,14 +115,14 @@ var DownloadPopup = React.createClass({
     var dlRec = this.props.file || upload;
 
     return (
-        <div className="row download-popup" ref="download-content">
-          <div className="col-md-5">
+        <Row className="download-popup" ref="download-content">
+          <Column cols="5">
             <div className="col-panel">
               <p className="text-primary">{"To use this music you are "}<mark>{"required"}</mark>{" to give credit to the musicians."}</p>
               <div>
                 <ul className="nav nav-tabs">
-                  <li className={plainSelected ? 'active' : ''}><a href="#" onClick={this.selectPlain}>{"Plain"}</a></li>
-                  <li className={plainSelected ? '' : 'active'}><a href="#" onClick={this.selectHTML}>{"HTML"}</a></li>
+                  <li className={plainSelected ? 'active' : ''}><DeadLink onClick={this.selectPlain} text="Plain" /></li>
+                  <li className={plainSelected ? '' : 'active'}><DeadLink onClick={this.selectHTML} text="HTML" /></li>
                 </ul>
                 <textarea ref="attributionText" readOnly cols="30" rows="2" value={licenseText}></textarea>
                 <div className="text-center">
@@ -136,10 +131,10 @@ var DownloadPopup = React.createClass({
               </div>
             </div>
             <div className="watch-a-yt-video">
-              <a className="btn-sm" href="#" onClick={this.showYTVideo}>{"use this music at "}<Glyph x2 icon="youtube" /></a>
+              <DeadLink className="btn-sm" onClick={this.showYTVideo}>{"use this music at "}<Glyph x2 icon="youtube" /></DeadLink>
             </div>
-          </div>          
-          <div className="col-md-6">
+          </Column>
+          <Column cols="6">
             <ul className="actions actions-centered">
               <li>
                 <a className="btn btn-info btn-lg" href={dlRec.mediaURL} onClick={this.onDownloadClick} download><Glyph icon="cloud-download" x2 left/>{" Download "}<small>{dlRec.downloadSize}</small></a>
@@ -147,34 +142,17 @@ var DownloadPopup = React.createClass({
               <li className="license-badge">
                 <a href={upload.licenseURL}><img src={upload.licenseLogoURL} /></a> <LicenseInfoLink onShow={this.showLicense} />
               </li>
-              <li> 
-                <p>{permission}</p>
-              </li>
-              {upload.isSpecialLic
-                ? <li>
-                    <p>{"(This is an older license that "}<br />{"has "}<a href={upload.licenseURL}>{"special restrictions"}</a>{".)"}</p>
-                  </li>
-                : null
-              }
-               {dlRec.isCCPlus ?
-                  <li>
-                    <a href={upload.purchaseLicenseURL} className="btn btn-info btn-lg"><img src={upload.purchaseLogoURL} className="pull-left" />{"  Buy a License "}</a>
-                  </li>
-                  : null 
-                }
-               {dlRec.isCCPlus ?
-                  <li>
-                    <p>{"to remove these restrictions"}</p>
-                  </li> 
-                  : null 
-                }
+              <li><p>{permission}</p></li>
+              {upload.isSpecialLic && <li><p>{"(This is an older license that "}<br />{"has "}<a href={upload.licenseURL}>{"special restrictions"}</a>{".)"}</p></li>}
+              {dlRec.isCCPlus && <li><a href={upload.purchaseLicenseURL} className="btn btn-info btn-lg"><img src={upload.purchaseLogoURL} className="pull-left" />{"  Buy a License "}</a></li>}
+              {dlRec.isCCPlus && <li><p>{"to remove these restrictions"}</p></li>}
             </ul>
-          </div>
-        </div>
+          </Column>
+        </Row>
       );
   },
 
-  render: function() {
+  render() {
     var cls    = 'btn btn-warning ' + (this.props.btnClass || '');
     var sz     = this.props.big ? 'x4' : '';
     var fixed  = this.props.fixed || false;

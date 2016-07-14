@@ -3,20 +3,23 @@ import PlaylistList            from '../bound/PlaylistList';
 import InlineCSS               from '../vanilla/InlineCSS';
 import { browse as browseCSS,
          tags   as tagsCSS }   from './style/browse';
+import { Row,
+         Container,
+         Column }     from '../vanilla/Grid';
 
 
 function BrowsePlaylists(props)
 {
     const { store, skipUser } = props;
     return (
-      <div className="container playlist-browser">
+      <Container className="playlist-browser">
         <InlineCSS css={browseCSS + tagsCSS} id="playlists-browse-css"/>
-        <div className="row">
-          <div className="col-md-8 col-md-offset-2">
+        <Row>
+          <Column cols="8" offset="2">
             <PlaylistList store={store} skipUser={skipUser} />
-          </div>
-        </div>
-      </div>
+          </Column>
+        </Row>
+      </Container>
     );      
 }
 

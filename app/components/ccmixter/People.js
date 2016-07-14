@@ -1,19 +1,23 @@
 /* eslint "react/no-danger":0 */
 import React   from 'react';
-import Gallery from '../RemixTree/Gallery';
-import css     from './style/people';
+import Gallery          from '../RemixTree/Gallery';
+import css              from './style/people';
 
-import  Followers   from './Follow';
-import FollowButton from '../bound/FollowButton';
+import Followers        from './Follow';
+import FollowButton     from '../bound/FollowButton';
 
-import { TagString } from '../../unicorns';
+import { TagString }    from '../../unicorns';
 
 import {  ModelTracker} from '../../mixins';
 
 import {  InlineCSS,
           CollapsingText,
           ExternalLink,
-          Form   }       from '../vanilla';
+          Form   }      from '../vanilla';
+
+import { Row,
+         FluidContainer,
+         Column }       from '../vanilla/Grid';
 
 var HorizontalForm = Form.HorizontalForm;
 var FormItem       = Form.FormItem;
@@ -69,29 +73,29 @@ const UPLOAD_FILTER = /(remix|editorial_pick|sample|acappella)/;
 class PeoplePage extends ModelTracker(React.Component)
 {
   render() {
-    var store  = this.state.store;
+    const { store, store:{error,model} } = this.state;
 
-    if( store.error ) {
+    if( error ) {
       return (<div className="well"><h1>{"wups, can't find that artist"}</h1></div>);
     }
     
-    var qp = store.model.queryParams;
+    var qp = model.queryParams;
     var showHeader = !(('offset' in qp) && parseInt(qp.offset) > 0) &&
                      !TagString.filter(qp.reqtags, UPLOAD_FILTER).getLength();
 
     return  (
-      <div className="people container-fluid">
-        <InlineCSS css={css} id="people"/>        
+      <FluidContainer className="people">
+        <InlineCSS css={css} id="people-css"/>        
         {showHeader
-          ? <div className="row"><div className="col-md-8 col-md-offset-2"><Header store={store} /></div></div>
-          : <h2 className="center-text">{this.state.store.model.artist.name}</h2>
+          ? <Row><Column cols="8" offset="2"><Header store={store} /></Column></Row>
+          : <h2 className="center-text">{model.artist.name}</h2>
         }
-        <div className="row">
-          <div className="col-md-10 col-md-offset-1">
+        <Row>
+          <Column cols="10" offset="1">
             <Gallery store={store} skipUser />
-          </div>
-        </div>
-      </div>
+          </Column>
+        </Row>
+      </FluidContainer>
     );
   }
 

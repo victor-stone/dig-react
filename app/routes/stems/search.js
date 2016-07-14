@@ -9,6 +9,10 @@ import {  PageHeader }       from '../../components/vanilla';
 import Listing               from '../../components/stems/ListingWidget';
 import { QueryParamTracker } from '../../mixins';
 
+import { Row,
+         FluidContainer,
+         Column }     from '../../components/vanilla/Grid';
+
 class SearchHead extends QueryParamTracker(React.Component)
 {
   stateFromParams(queryParams) {
@@ -32,15 +36,15 @@ function stemsSearch(props) {
   return (
     <div>
       <SearchHead store={store} />
-      <div className="container-fluid">
+      <FluidContainer>
         <div className="stems-browser">
-          <div className="row">
-            <div className="col-md-6 stems-listing-widget col-md-offset-3">
+          <Row>
+            <Column cols="6" offset="3" className="stems-listing-widget">
               <Listing store={store} noHitsComp={NoSearchHits} />   
-            </div>
-          </div>
+            </Column>
+          </Row>
         </div>
-      </div>
+      </FluidContainer>
     </div>
   );      
 }

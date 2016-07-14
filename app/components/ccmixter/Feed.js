@@ -1,15 +1,28 @@
 /*eslint "react/no-danger":0 */
-import React            from 'react';
-import moment           from 'moment';
+import React              from 'react';
+import moment             from 'moment';
+
 import {UserFeedVerbs,
         UserFeedReasons}  from '../../models/user-feed-types';
-import { ModelTracker } from '../../mixins';
-import InlineCSS        from '../vanilla/InlineCSS';
-import Glyph            from '../vanilla/Glyph';
-import css              from './style/feed';
-import LinkToRoute      from '../services/LinkToRoute';
-import api              from '../../services/ccmixter';
-import events           from '../../models/events';
+import events             from '../../models/events';
+
+import { ModelTracker }   from '../../mixins';
+
+import { selectors }      from '../../unicorns';
+
+import api                from '../../services/ccmixter';
+
+import LinkToRoute        from '../services/LinkToRoute';
+
+import { Row,
+         FluidContainer,
+         Column }         from '../vanilla/Grid';
+import InlineCSS          from '../vanilla/InlineCSS';
+import Glyph              from '../vanilla/Glyph';
+
+import css                from './style/feed';
+
+
 
 var FeedVerbs = [];
 
@@ -143,26 +156,31 @@ class Feed extends ModelTracker(React.Component)
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
-    var u = this.props.store.model.queryParams.user;
+    const { store, store:{model} } = this.props;
+
+    var u = model.queryParams.user;
     if( u ) {
-      api.feed.markAsSeen(u).then( () => this.props.store.emit(events.FEED_SEEN) );
+      api.feed.markAsSeen(u).then( () => store.emit(events.FEED_SEEN) );
     }
   }
 
   render() {
-    var cls = 'user-feed container-fluid ' + this.props.className;
-    var store = this.state.store;
+    const { items, queryParams } = this.state.store;
+    const { className } = this.props;
+
+    const cls = selectors('user-feed',className);
+
     return (
-      <div className={cls}>
-        <div className="row">
-          <div className="col-md-offset-2 col-md-8">
+      <FluidContainer className={cls}>
+        <Row>
+          <Column cols="8" offset="2">
             <InlineCSS css={css} id="feed-css" />
             <ul className="user-feed-items">
-            {store.model.items.map( (item,i) => <FeedItem key={i} owner={store.model.queryParams.user} model={item} /> )}
+            {items.map( (item,i) => <FeedItem key={i} owner={queryParams.user} model={item} /> )}
             </ul>
-          </div>
-        </div>
-      </div>
+          </Column>
+        </Row>
+      </FluidContainer>
     );
   }
 }

@@ -2,6 +2,10 @@ import React from 'react';
 import PageHeader   from '../components/vanilla/PageHeader';
 import ExternalLink from '../components/vanilla/ExternalLink';
 
+import { Row,
+         FluidContainer,
+         Column }     from '../components/vanilla/Grid';
+
 var ExLink = ExternalLink;
 
 // TODO: Get this the hell out of /routes
@@ -10,9 +14,9 @@ const creditsPage = (
   <div>
     <a name="credits"></a>
     <PageHeader icon="hand-peace-o" title="Credits" />
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-6 col-md-offset-3">
+    <FluidContainer>
+      <Row>
+        <Column cols="6" offset="3">
           <div className="well">
             <ul className="credits">
               <li><span className="label">{"coding"}</span><ExLink href="http://assoverteakettle.org" text="victor stone" /></li>
@@ -27,9 +31,9 @@ const creditsPage = (
                           </li>
             </ul>
           </div>
-        </div>
-      </div>
-    </div>  
+        </Column>
+      </Row>
+    </FluidContainer>  
   </div>
 );
 

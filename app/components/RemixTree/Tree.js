@@ -18,6 +18,10 @@ import css         from './style/tree';
 import { PrevPeruse,
         NextPeruse } from '../PeruseNavigation';
 
+import { Row,
+         FluidContainer,
+         Column }     from '../vanilla/Grid';
+
 
 class Tree extends ModelTracker(React.Component)
 {
@@ -31,39 +35,39 @@ class Tree extends ModelTracker(React.Component)
     const { upload:{numRecommends,numReviews} } = store.model;
 
     return( 
-      <div className="container-fluid">
+      <FluidContainer>
         <InlineCSS css={css} id="tree-css"/>
-        <div className="row">  
-          <div className="col-md-2">
+        <Row>
+          <Column cols="2">
             <PrevPeruse store={store}/>
-          </div>
-          <div className="col-md-6 col-md-offset-1">
+          </Column>
+          <Column cols="6" offset="1">
             <Description store={store} />
             <UploadMenu store={store} />
-          </div>
-          <div className="col-md-2 col-md-offset-1">
+          </Column>
+          <Column cols="2" offset="1">
             <NextPeruse store={store}/>
-          </div>
-        </div>
-        <div className="row">  
-          <div className="col-md-4 col-md-offset-2">
+          </Column>
+        </Row>
+        <Row>
+          <Column cols="4" offset="2">
             <SamplesFrom store={store} />
-          </div>
-          <div className="col-md-4">
+          </Column>
+          <Column cols="4">
             <SamplesUsedIn store={store} />
-          </div>
-        </div>
-        <div className="row">  
-          <div className="col-md-6 col-md-offset-3">
+          </Column>
+        </Row>
+        <Row>
+          <Column cols="6" offset="3">
             <Accordion withExpandAll id="accordion">
               <Overview store={store} />
               <FileSection store={store} />
               <Recommends store={store} numItems={numRecommends} />
               <Reviews store={store} numItems={numReviews} />
             </Accordion>
-          </div>
-        </div>
-      </div>
+          </Column>
+        </Row>
+      </FluidContainer>
     );
   }
 }

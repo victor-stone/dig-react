@@ -5,6 +5,9 @@ import { mergeParams }    from '../../unicorns';
 import Browse             from '../../components/pells/Browse';
 import { SearchHeader,
          DidYouMean }     from '../../components';
+import { Row,
+         Container,
+         Column }     from '../../components/vanilla/Grid';
 
 function NoHits() {
   return(<div ></div>);
@@ -15,18 +18,18 @@ function search(props) {
   return (<div>
             <SearchHeader store={store} />
             <DidYouMean store={store} artists><NoHits /></DidYouMean>
-            <div className="container pells-page">
-              <div className="row">
-                <div className="col-md-7 pell-browser">
+            <Container className="pells-page">
+              <Row>
+                <Column cols="7" className="pell-browser">
                   <div className="tab-content">
                     <Browse.PellsListing store={store} />
                   </div>
-                </div>
-                <div className="col-md-3">
+                </Column>
+                <Column cols="3">
                   <Browse.PellDetail store={store} />
-                </div>
-              </div>
-            </div>
+                </Column>
+              </Row>
+            </Container>
           </div>);
 }
 

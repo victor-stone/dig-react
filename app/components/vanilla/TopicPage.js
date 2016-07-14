@@ -1,5 +1,8 @@
 import React      from 'react';
 import PageHeader from './PageHeader';
+import { Row,
+         FluidContainer,
+         Column }     from './Grid';
 
 class TopicPage extends React.Component
 {
@@ -7,13 +10,13 @@ class TopicPage extends React.Component
     return (
         <div className="topic-page">
           <PageHeader title={this.props.title} icon={this.props.icon} />
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-8 col-md-offset-2">
+          <FluidContainer>
+            <Row>
+              <Column cols="8" offset="2">
                 {this.props.children}
-              </div>
-            </div>
-          </div>
+              </Column>
+            </Row>
+          </FluidContainer>
         </div>
       );
   }

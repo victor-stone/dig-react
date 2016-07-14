@@ -1,40 +1,42 @@
 import React        from 'react';
 import LicenseUtils from '../models/licenses';
 import Glyph        from './vanilla/Glyph';
+import DeadLink     from './vanilla/DeadLink';
 import Modal        from './services/Modal';
+import { Row,
+         Container,
+         Column }     from './vanilla/Grid';
 
 var LicenseInfoLink = React.createClass({
 
-  render: function() {
+  render() {
     return(
-        <a href="#" onClick={this.props.onShow}><Glyph icon="question-circle" /></a>
+        <DeadLink onClick={this.props.onShow}><Glyph icon="question-circle" /></DeadLink>
       );
   }
 });
 
 var LicenseInfoPopup = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return { view: false };
   },
   
-  handleHideModal: function() {
+  handleHideModal() {
     this.setState({ view: false });
   },
 
-  handleShowModal(e){
-    e.stopPropagation();
-    e.preventDefault();
+  handleShowModal(){
     this.setState( { view: true } );
   },
 
-  genPopup: function() {
+  genPopup() {
     return ( <Modal handleHideModal={this.handleHideModal} title={title}>
                 <LicenseInfo />
             </Modal> );
   },
 
-  render: function() {
+  render() {
 
     var popup = this.state.view ? this.genPopup() : null;
     return (
@@ -47,67 +49,58 @@ var LicenseInfoPopup = React.createClass({
 
 });
 
-var LicenseInfo = React.createClass({
+const urls = {
+  byLogoURL:     LicenseUtils.logoURLFromAbbr('by-3','big'),
+  byncLogoURL:   LicenseUtils.logoURLFromAbbr('by-nc-3','big'),
+  ccplusLogoURL: LicenseUtils.logoURLFromAbbr('ccplus'),
+  ccplusURL:     'http://tunetrack.net/license/ccmixter.org/files/djlang59/37792',
+  byURL:         'http://creativecommons.org/licenses/by/3.0/',
+  byncURL:       'http://creativecommons.org/licenses/by-nc/3.0/',
+};
 
-  getInitialState: function() {
-    return {
-      byLogoURL:     LicenseUtils.logoURLFromAbbr('by-3','big'),
-      byncLogoURL:   LicenseUtils.logoURLFromAbbr('by-nc-3','big'),
-      ccplusLogoURL: LicenseUtils.logoURLFromAbbr('ccplus'),
-      ccplusURL:     'http://tunetrack.net/license/ccmixter.org/files/djlang59/37792',
-      byURL:         'http://creativecommons.org/licenses/by/3.0/',
-      byncURL:       'http://creativecommons.org/licenses/by-nc/3.0/',
-    };
-  },
-
-  render: function() {
-
-    return(
-      <div className="content">
-        <div className="row">
-          <div className="col-md-4 center-text license-images">
-            <a href={this.state.byURL} ><img src={this.state.byLogoURL} className="licenseLogo" /></a>
-            <a href={this.state.byURL} >{"Full CC license"}</a>
-          </div>
-          <div className="col-md-7">
-            <div className="text license-description">
-              {"Free to use, even in commercial projects "}<strong>{"but"}</strong>{" you must give credit to the musicians."}
-            </div>
-          </div>
+const LicenseInfoElement = (
+  <Container className="content">
+    <Row>
+      <Column cols="4" className="center-text license-images">
+        <a href={urls.byURL} ><img src={urls.byLogoURL} className="licenseLogo" /></a>
+        <a href={urls.byURL} >{"Full CC license"}</a>
+      </Column>
+      <Column cols="7">
+        <div className="text license-description">
+          {"Free to use, even in commercial projects "}<strong>{"but"}</strong>{" you must give credit to the musicians."}
         </div>
-        <div className="row">
-          <div className="col-md-4 center-text license-images">
-            <a href={this.state.byncURL} ><img src={this.state.byncLogoURL} className="licenseLogo" /></a>
-            <a href={this.state.byncURL} >{"Full CC license"}</a>
-          </div>
-          <div className="col-md-7">
-            <div className="text license-description">
-              {"Free to use only in non-commercial projects. Again, you must give credit to the musicians."}
-            </div>
-          </div>
+      </Column>
+    </Row>
+    <Row>
+      <Column cols="4" className="center-text license-images">
+        <a href={urls.byncURL} ><img src={urls.byncLogoURL} className="licenseLogo" /></a>
+        <a href={urls.byncURL} >{"Full CC license"}</a>
+      </Column>
+      <Column cols="7">
+        <div className="text license-description">
+          {"Free to use only in non-commercial projects. Again, you must give credit to the musicians."}
         </div>
-        <div className="row">
-          <div className="col-md-4 center-text license-images">
-            <a href={this.state.ccplusURL} ><img src={this.state.ccplusLogoURL} className="licenseLogo" /></a>
-            <a href={this.state.ccplusURL} >{"Example"}</a>
-          </div>
-          <div className="col-md-7">
-            <div className="text license-description">
-              {"Available without any restrictions for a sliding scale, royalty free fee."}
-            </div>
-          </div>
+      </Column>
+    </Row>
+    <Row>
+      <Column cols="4" className="center-text license-images">
+        <a href={urls.ccplusURL} ><img src={urls.ccplusLogoURL} className="licenseLogo" /></a>
+        <a href={urls.ccplusURL} >{"Example"}</a>
+      </Column>
+      <Column cols="7">
+        <div className="text license-description">
+          {"Available without any restrictions for a sliding scale, royalty free fee."}
         </div>
-      </div>
-      );
-  },
+      </Column>
+    </Row>
+  </Container>
+);
 
-});
-
-var title = 'Our Licenses Overview';
+const title = 'Our Licenses Overview';
 
 module.exports = {
     LicenseInfoLink,
-    LicenseInfo,
+    LicenseInfo() { return LicenseInfoElement; },
     LicenseInfoPopup,
     title
 };
