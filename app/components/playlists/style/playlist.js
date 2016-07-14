@@ -55,6 +55,7 @@ var css = `
 
 .playlist-detail-page .action-btn-toolbar {
   text-align: center;
+  padding: 8px 16px;
 }
 
 .playlist-detail-page  .action-btn-toolbar > .btn,

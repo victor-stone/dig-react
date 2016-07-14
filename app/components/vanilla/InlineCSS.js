@@ -34,19 +34,16 @@ var InlineCSS = React.createClass({
 
   },
 
+  shouldComponentUpdate() {
+    return false;
+  },
+
   componentWillUnmount() {
-    if( global.IS_SERVER_REQUEST ) {
-      return;
-    }
     var sheetToBeRemoved = document.getElementById(this.props.id);
     if( sheetToBeRemoved ) {
       var sheetParent = sheetToBeRemoved.parentNode;
       sheetParent.removeChild(sheetToBeRemoved);      
     }
-  },
-
-  shouldCompnentUpdate() {
-    return false;
   },
 
   render() {

@@ -20,7 +20,7 @@ class Feature extends React.Component
 {
   render() {
     const { store:{permissions:{canFeature}} } = this.props;
-    return canFeature && <Toggle store={this.props.store} className="featured" propName="isFeatured" text="Featured" />;
+    return canFeature && <Toggle store={this.props.store} className="featured btn btn-success" propName="isFeatured" text="Featured" />;
   }
 }
 

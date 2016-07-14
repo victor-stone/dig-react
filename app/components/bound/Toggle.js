@@ -16,6 +16,10 @@ class BoundToggle extends ModelTracker(React.Component)
     this.onToggle = this.onToggle.bind(this);
   }
 
+  shouldComponentUpdate(nextProps,nextState) {
+    return this.state.toggle !== nextState.toggle;
+  }
+
   stateFromStore(store) {
     var props = store.getProperties([this.props.propName]);
     return { toggle: !!props[this.props.propName] };

@@ -12,7 +12,7 @@ class LoadingGlyph extends React.Component
     this.setState( { loading: nextProps.loading } );
   }
 
-  shouldCompnentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps) {
     return this.state.loading !== nextProps.loading;
   }
 
