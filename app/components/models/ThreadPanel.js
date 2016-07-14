@@ -1,12 +1,13 @@
 /*eslint "react/no-danger":0 */
 import React       from 'react';
+import moment      from 'moment';
 import Topic       from './Topic';
 import thumbStyle  from '../services/people-thumb-style';
 
 class ThreadPanel extends React.Component
 {
   _renderTopic(model,i) {
-    const { indent, author, author:{name}, author:{avatarURL}, html, date, id } = model;
+    const { indent, author, author:{name}, author:{avatarURL}, html, published, id } = model;
     return (
         <div key={i} className={'panel panel-info panel-offset-' + indent}>
           <div className="panel-heading">
@@ -19,7 +20,7 @@ class ThreadPanel extends React.Component
             </h3>
           </div>
           <Topic className="panel-body" model={{html}} />
-          <div className="panel-footer">{date}</div>
+          <div className="panel-footer">{moment(published).fromNow()}</div>
         </div>
       );
   }

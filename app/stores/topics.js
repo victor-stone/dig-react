@@ -38,7 +38,7 @@ class Topics extends Query {
 
   type(topicType) {
     const args = {
-      dataview: 'topics',
+      dataview: 'topics_dig',
       type: topicType,
       limit: 10
     };
@@ -53,6 +53,24 @@ class Topics extends Query {
     });
   }
 
+  page(topicType) {
+    const args = {
+      dataview: 'topics_dig',
+      type: topicType,
+      limit: 1
+    };
+    
+    return this.queryOne(args)
+                .then( serialize( ccmixter.Topic ) )
+                .then( model => {
+                  this.model = model;
+                  this.model.queryParams = oassign( {}, args );
+                }, error => {
+                  this.model = {};
+                  this.error = error;
+                });
+  }
+  
   count(queryParams) {
     const qp = oassign( {}, queryParams );
     qp.dataview = 'count_topics';
@@ -68,6 +86,12 @@ Topics.namedTopics = {
   aboutFLAC: 225798,
 };
 
+
+Topics.storeFromPage = function( name ) { 
+  const topics = new Topics();
+  return topics.page(name)
+          .then( () => { return topics; } );  
+};
 
 Topics.storeFromTopicName = function( name ) { 
   const topics = new Topics();

@@ -1,6 +1,8 @@
 
-import React from 'react';
-import Link from './services/LinkToRoute';
+import React     from 'react';
+import Link      from './services/LinkToRoute';
+import InlineCSS from './vanilla/InlineCSS';
+import css       from './style/footer';
 
 function FakeLink(props) {
   return <a {...props}>{props.children}</a>;
@@ -13,6 +15,7 @@ function Footer(props) {
 
     return (
       <div className="container-fluid footer footer-pad">
+        <InlineCSS css={css} id="footer-css" />
         <div className="row">
           <div className="col-md-3">
             <h1>{"Here"}</h1>
@@ -20,7 +23,7 @@ function Footer(props) {
               <li><Link href="/licenses">{"Licenses"}</Link></li>
               <li><a href="http://ccmixter.org/privacy">{"Privacy"}</a></li>
               <li><a href="http://ccmixter.org/terms">{"Terms"}</a></li>
-              <li><a href="/keep-ccmixter-open-and-free"><i className="fa fa-heart"></i>{" Donate(!)"}</a></li>
+              <li><Link href="/keep-ccmixter-open-and-free"><i className="fa fa-heart"></i>{" Donate(!)"}</Link></li>
               <li><Link href="/credits#credits">{"Credits"}</Link></li>
             </ul>
           </div>

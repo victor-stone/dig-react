@@ -8,6 +8,8 @@ import Footer from './components/ccmixter/Footer';
 
 
 var rewriteRules = [
+  { regex: /^\/keep-ccmixter-open-and-free/, now: '/news/206102' },
+  { regex: /^\/events\/?$/,                  now: '/news/215025' }
 ];
 
 env.set({

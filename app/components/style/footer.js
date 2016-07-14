@@ -1,4 +1,5 @@
-/* dig home css */
+
+const css = `
 .brand-glyph {
   background-image: url('../images/brands.png');
   background-repeat: no-repeat;
@@ -38,4 +39,7 @@
 .tunetrack:hover {
   background-position: -300px 0px;
 }
+`;
+
+module.exports = css;
 

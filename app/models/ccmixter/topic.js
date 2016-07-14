@@ -1,9 +1,13 @@
 import Model                from '../model';
 import { DetailUploadUser } from './user';
 
-const BB_FORMAT = 0;
-const HTML_FORMAT = 1;
-//const PLAIN_FORMAT = 2;
+const bbFormatMap = [ 'format', 'raw', 'text'];
+
+const pageFormatMap = {
+  format: 'topic_text_html',
+  text: 'topic_text_plain',
+  raw: 'topic_text'
+};
 
 class Topic extends Model {
   constructor() {
@@ -14,15 +18,28 @@ class Topic extends Model {
     this.rawBinding = 'topic_text';
     this.textBinding = 'topic_text_plain';
     this.getHtml = function() {
-      var fmt = Number(this.topic_format);
-      if( fmt === BB_FORMAT ) {
-        return this.topic_text_html.replace(/(<img.*src=")(\/mixter-files)/g,'$1http://ccmixter.org$2')
-                                   .replace(/http:\/\/ccmixter.org\/files\//g,'/files/');
-      } else if( fmt === HTML_FORMAT ) {
-        return this.topic_text; // sic (!)
-      } 
-      // PLAIN_FORMAT
-      return this.topic_text_plain;
+      const key = this.content_page_textformat || bbFormatMap[Number(this.topic_format)];
+      const html = this[pageFormatMap[key]];
+      return html.replace(/http:\/\/ccmixter.org\//g,'/')
+                 .replace(/http:\/\/playlists.ccmixter.org\/(playlist\/)?browse/g,'/playlist/browse')
+                 .replace(/\/mixup\//g,'http://ccmixter.org/mixup/')
+                 .replace(/(<img.*src=")(\/mixter-files)/g,'$1http://ccmixter.org$2')
+                                     ;
+    };
+  }
+}
+
+class ThreadTopic extends Topic {
+  constructor() {
+    super(...arguments);
+    this._modelSubtree = {
+      author: DetailUploadUser,
+    };
+    this.getIndent = function() {
+      return parseInt(this.margin) / INDENT_CONSTANT;
+      };
+    this.getIsReply = function() {
+      return this.is_reply !== '0';
     };
   }
 }
@@ -50,23 +67,6 @@ class ThreadHead extends Model {
   }
 }    
 
-class ThreadTopic extends Model {
-  constructor() {
-    super(...arguments);
-    this._modelSubtree = {
-      author: DetailUploadUser,
-    };
-    this.idBinding = 'topic_id';
-    this.htmlBinding = 'topic_text_html';
-    this.dateBinding = 'topic_date_format';
-    this.getIndent = function() {
-      return parseInt(this.margin) / INDENT_CONSTANT;
-      };
-    this.getIsReply = function() {
-      return this.is_reply !== '0';
-    };
-  }
-}
 
 module.exports = {
   ThreadHead,

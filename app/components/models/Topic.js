@@ -1,20 +1,49 @@
 /*eslint "react/no-danger":0 */
 import React         from 'react';
+import Link          from '../services/LinkToRoute';
 import { selectors } from '../../unicorns';
 
-const Topic = React.createClass({
+var topicBodyID = 0;
+const linkPrefix = /^https?:\/\//;
 
-  render: function() {
+class Topic extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    this.id = 'topic_body_' + (++topicBodyID);
+  }
+  componentDidMount() {
+    if( global.IS_SERVER_REQUEST ) {
+      return;
+    }
+    /* globals $ */
+    $('#' + this.id + ' a').click( function(event) {
+      const href = $(this).attr('href'); // this.href is full URL
+      if( !linkPrefix.test(href) ) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        Link.navigateTo(href);
+      } else {
+        $(this).attr('target','_blank');
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    $('#' + this.id + ' a').off('click');
+  }
+
+  render() {
     const { model:{html}, className } = this.props;
 
     const cls = selectors( 'topic-body', className );
 
     return (
-          <div className={cls} dangerouslySetInnerHTML={{ __html: html}} />
+          <div id={this.id} className={cls} dangerouslySetInnerHTML={{ __html: html}} />
       );
   }
 
-});
+}
 
 
 module.exports = Topic;

@@ -99,7 +99,7 @@ class Description extends React.Component
     const { description } = store.getProperties(['description']);
     const { permissions: {canEdit=false} = {} } = store;
     return (description.length || canEdit ?
-            <div className="playlist-tags playlist-bg-color">
+            <div className="playlist-description playlist-bg-color">
               {!description.length && canEdit ? <span>{" add a description "}</span> : ''}
               <BoundInlineFormattedTextEditor store={store} propName="description" htmlName="descriptionRaw" />
             </div> : null);

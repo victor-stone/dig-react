@@ -120,6 +120,9 @@ class Header extends React.Component
                 <li id="playlists_menu_tab">
                   <Link href="/playlists/browse">{"playlists"}</Link>
                 </li>
+                <li id="events_menu_tab">
+                  <Link href="/events">{"events"}</Link>
+                </li>
                 <li id="licenses_menu_tab">
                   <Link href="/licenses">{"licenses"}</Link>
                 </li>

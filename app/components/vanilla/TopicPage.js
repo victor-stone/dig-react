@@ -9,7 +9,7 @@ class TopicPage extends React.Component
           <PageHeader title={this.props.title} icon={this.props.icon} />
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-6 col-md-offset-3">
+              <div className="col-md-8 col-md-offset-2">
                 {this.props.children}
               </div>
             </div>

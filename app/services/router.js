@@ -19,11 +19,6 @@ class Router extends Eventer
     (typeof window !== 'undefined') && (window.onpopstate = this.updateURL.bind(this));
   }
   
-  get _currentPath() {
-    const { search = '', pathname } = document.location;
-    return pathname + search;
-  }
-
   addRoutes(routes, rewrites = {}) {
 
     this.routes   = routes;
@@ -42,6 +37,11 @@ class Router extends Eventer
     }
   }
   
+  get _currentPath() {
+    const { search = '', pathname } = document.location;
+    return pathname + search;
+  }
+
   runRewrites(url) {
     if( url ) {
       const rule = this.rewrites.find( rule => url.match(rule.regex) );
@@ -76,7 +76,6 @@ class Router extends Eventer
   /* in browser methods */
   navigateTo(url,stateObj) {
     try {
-      url = this.runRewrites(url);
       this.setBrowserAddressBar(url,stateObj);
       this.updateURL();
     } 
@@ -86,7 +85,6 @@ class Router extends Eventer
   }
 
   setBrowserAddressBar(url,stateObj) {
-    url = this.runRewrites(url);
     if( url ) {
       window.history.pushState(stateObj || null,null,url);
       if( window.ga ) {

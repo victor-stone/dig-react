@@ -2,6 +2,7 @@ import licenses from '../licenses';
 import credits from '../credits';
 import news    from '../news';
 import nowplaying from '../nowplaying';
+import topicpage from '../topicpage';
 
 import people    from  './people';
 import upload    from  './upload';
@@ -48,6 +49,7 @@ module.exports = {
     playlists_browse,
     playlists_edit,
     stems,
+    topicpage,
     tree,
     upload,
     userfeed
