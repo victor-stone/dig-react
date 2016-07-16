@@ -34,10 +34,9 @@ var css =
 }
 
 .stems-browser .stems-listing-widget {
-  border: 1px solid #7DCF1F;
   border-radius: 7px ;
   padding: 9px;
-  background-color: rgba(246, 249, 237, 0.22);
+  background-color: rgba(246, 249, 237, 0.99);
   margin-bottom: 30px;
 }
 
@@ -48,6 +47,31 @@ var css =
 
 .stems-listing-widget .no-hit-suggestion .empty-query > ul > li {
   margin-bottom: 20px;
+}
+
+.stems-browser .stems-listing > li {
+  padding: 10px;
+}
+
+.stems-browser-widget
+  .query-options-box.open 
+     ul.query-options > 
+       li.title.btn-primary 
+{
+    background: #a4bc44;
+}
+
+.stems-browser .stems-listing ul.tag-list-selectable {
+  margin: 12px;
+}
+
+.stems-browser 
+   .stems-listing 
+      ul.tag-list-selectable 
+         li.tag-selectable.tag-selectable-checks.tag-selected 
+{
+  background-color: rgb(139, 195, 74);
+  color: white;
 }
 
 .stems-browser .stems-listing > li > .close {

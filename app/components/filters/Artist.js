@@ -10,23 +10,32 @@ class ArtistList extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.state = this._stateFromProps(this.props);
+    bindAll( this, 'onValueChange' ); 
+    this.filter = this.props.store.addOrGetFilter(Filter);
+    this.filter.onChange( this.onValueChange );
+    this.state = { artists: [] };
   }
 
-  componentWillReceiveProps(props) {
-    this.setState( this._stateFromProps(props) );
+  componentWillMount() {
+    this.query = new Query();
+    this.getArtists(this.filter.value);
   }
 
-  _stateFromProps(props) {
-    return { artists: props.model };
+  getArtists(search) {
+    if( this.query && search ) {
+      this.query.lookUpUsers( search, { remixmin: 1 } )
+        .then( artists => this.setState( { artists } ) );
+    } else {
+      this.setState( { artists: [] } );
+    }
+  }
+
+  onValueChange(filter) {
+    this.getArtists(filter.value);
   }
 
   artistSelect(a) {
-    return e => {
-      e.preventDefault();
-      e.stopPropagation();
-      this.props.artistSelect(a);
-    };
+    return () => this.filter.value = a;
   }
 
   _fancyName(a) {
@@ -37,9 +46,13 @@ class ArtistList extends React.Component
   render() {
     const { artists } = this.state;
 
+    if( !artists.length ) {
+      return null;
+    }
+
     return (
       <ul className="artist-list">
-        {artists.map( a => <li key={a.id} onClick={this.artistSelect(a)}>{this._fancyName(a)}</li>)}
+        {artists.map( a => <li key={a.id} onClick={this.artistSelect(a.id)}>{this._fancyName(a)}</li>)}
       </ul>
       );
   }  
@@ -49,61 +62,38 @@ class ArtistFilter extends React.Component
 {
   constructor() {
     super(...arguments);
-    bindAll( this, 'filter', 'artistSelect', 'onValueChange' ); 
+    bindAll( this, 'onSubmitSearch', 'onValueChange' ); 
     this.filter = this.props.store.addOrGetFilter(Filter);
     this.filter.onChange( this.onValueChange );
-    this.state = { u: this.filter.value , artists: [] };
-  }
-
-  componentWillMount() {
-    this.query = new Query();
-    this.getArtists(this.state.u);
+    this.state = { u: this.filter.value  };
   }
 
   onValueChange(filter) {
     this.setState( { u: filter.value } );
   }
 
-  getArtists(search) {
-    if( search ) {
-      this.query.lookUpUsers( search, { remixmin: 1 } )
-        .then( artists => this.setState( { artists, u: search }, () => this.artistSelect(artists.length === 1 && artists[0]) ) );
-    } else {
-      this.setState( { artists: [], u: '' } );
-    }
+  _kill() {
+    this.filter.value = this.filter.defaultValue;
   }
 
-  filter(u, isIcon, filterCB) {
+  onSubmitSearch(u, isIcon, filterCB) {
     
-    var kill = function() {
-      this.setState( { u: null, artists: [] }, () => this.refreshModel( { u: null } ) );
-    }.bind(this);
-
-    if( isIcon ) {
+    if( isIcon ) { // user clicked on [x]
       filterCB('');
-      kill();
+      this._kill();
     } else if( u && u.length > 0 ) {
-      this.getArtists(u);
+      this.filter.value = u;
     } else {
-      kill();
-    }
-  }
-
-  artistSelect(a) {
-    if( a ) {
-      this.filter.value = a.id;
-      this.refs.edit.setState({value:a.id});
-    } else {
-      this.filter.value = undefined;
+      this._kill();
     }
   }
 
   render() {
-    const { artists = [], u } = this.state;
+    const { u } = this.state;
     return (
       <div className="artist-filter" >
-          <SearchBox icon="times" ref="edit" defaultValue={u} placeholder="artist name" submitSearch={this.filter} anyKey />
-          {!!artists.length && <ArtistList artistSelect={this.artistSelect} model={artists} />}
+          <SearchBox icon="times" ref="edit" defaultValue={u} placeholder="artist name" submitSearch={this.onSubmitSearch} anyKey />
+          <ArtistList store={this.props.store} />
       </div>
       );
   }

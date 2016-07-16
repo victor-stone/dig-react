@@ -7,6 +7,11 @@ class Artist extends QueryFilter
     this._propName    = 'user';
     this._displayName = 'Artist';
   }
+
+  get isDirty() {
+    // does not participate in 'reset'
+    return false; 
+  }
 }
 
 Object.assign(Artist,{
@@ -14,9 +19,9 @@ Object.assign(Artist,{
   
   fromQueryParams(qp) {
     const filter = new Artist();
+    filter._defaultValue = '';
     filter._propName = 'u' in qp ? 'u' : 'user';
     filter.aquireFromQueryParams(qp);
-    filter._defaultValue = filter._value;
     return filter;    
   }
 });
