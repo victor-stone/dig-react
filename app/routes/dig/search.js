@@ -1,59 +1,34 @@
-import React     from 'react';
 import qc        from '../../models/query-configs';
-import Rmx       from '../../stores/remixes';
+import Remixes   from '../../stores/remixes';
 
-import { QueryOptions, 
-         Remixes } from '../../components/dig';
-
-import { DidYouMean,
-         SearchHeader
-          }          from '../../components';
-import Glyph         from '../../components/vanilla/Glyph';
-import Link          from '../../components/services/LinkToRoute';
-import SubNav           from '../../components/dig/SubNav';
+import { Search,
+         SubNav } from '../../components/dig';
 
 import { mergeParams }  from '../../unicorns';
 
+Object.assign(Search,{
 
-function NoHits() {
-  return (<div className="did-you-mean well no-hit-suggestion">
-            {"Not what you're looking for? "}
-            <Link href="/dig" className="btn btn-success">
-              <Glyph icon="tags" />
-              {" tags search"}
-            </Link>
-          </div>);
-}
+  title: 'Search',
 
-function search(props) {
-  var store = props.store;
-  return  (
-    <div>
-      <SearchHeader store={store} />
-      <DidYouMean store={store} artists genres ><NoHits /></DidYouMean>
-      <Remixes store={store}>
-        <QueryOptions store={store} />
-      </Remixes>
-      <Remixes.NotALotHere store={store} />
-    </div>
-  );
-}
+  subnav: SubNav,
 
-search.title = 'Search';
+  store( params, queryParams ) {
+    if( ! ('searchp' in queryParams) ) {
+      queryParams.searchp = '';
+    }
 
-search.subnav = SubNav;
+    var opts    = mergeParams( { search_type: 'all' }, qc.remixes );
+    var qparams = mergeParams( {}, opts, queryParams );
 
-search.store = function( params, queryParams ) {
+    return Remixes.storeFromQuery(qparams,opts);
+  },
 
-  if( ! ('searchp' in queryParams) ) {
-    queryParams.searchp = '';
+  urlFromStore(store) {
+    return '/search' + store.queryString;
   }
 
-  var opts    = mergeParams( { search_type: 'all' }, qc.remixes );
-  var qparams = mergeParams( {}, opts, queryParams );
+});
 
-  return Rmx.storeFromQuery(qparams,opts);
-};
 
-module.exports = search;
+module.exports = Search;
 

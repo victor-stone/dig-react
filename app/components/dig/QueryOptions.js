@@ -16,7 +16,7 @@ class RemixQueryOptions extends React.Component
     const { store } = this.props;
 
     return ( 
-      <QueryOptions store={store}>
+      <QueryOptions store={store} floating>
         <OptionsWrap>
           <li><License ccPlusFilter="ccplus_nostems" store={store} /></li>
           <li><Sort store={store} /></li>

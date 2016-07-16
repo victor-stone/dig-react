@@ -5,6 +5,6 @@ class UnmixedOnlyFilter extends Toggle
 {
 }
 
-UnmixedOnlyFilter.defaultProps = { filter: Filter, className: 'btn btn-info' };
+UnmixedOnlyFilter.defaultProps = { filter: Filter, className: 'btn' };
 
 module.exports = UnmixedOnlyFilter;

@@ -24,7 +24,7 @@ class Topic extends Model {
                  .replace(/http:\/\/playlists.ccmixter.org\/(playlist\/)?browse/g,'/playlist/browse')
                  .replace(/\/mixup\//g,'http://ccmixter.org/mixup/')
                  .replace(/(<img.*src=")(\/mixter-files)/g,'$1http://ccmixter.org$2')
-                                     ;
+                 .replace(/(\/media\/people\/contact\/admin)/g, 'http://ccmixter.org$1');
     };
   }
 }

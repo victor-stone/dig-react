@@ -7,6 +7,10 @@ class Search extends QueryFilter
     this._propName    = 'searchp';
     this._displayName = 'Search';
   }
+
+  get isDirty() {
+    return false; // never need to 'reset'
+  }
 }
 
 Object.assign(Search,{

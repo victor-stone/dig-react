@@ -121,7 +121,7 @@ const App = React.createClass({
     return (
       <div>
         <Modal.Container />
-        <div id="wrap">
+        <div id="wrap" className={env.appName}>
           <TitleSetter title={comp && comp.title} />
           <Banner />
           {this.state.header}

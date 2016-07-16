@@ -6,7 +6,7 @@ class InstrumentalOnly extends TagToggle
   constructor() {
     super( 'reqtags', false, instrumental.reqtags );
     this._propName     = InstrumentalOnly.filterName;
-    this._displayName  = 'Instrumental Only';
+    this._displayName  = 'instrumental only';
   }
 }
 

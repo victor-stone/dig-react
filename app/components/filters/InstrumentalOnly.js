@@ -5,7 +5,7 @@ class InstrumentalOnlyFilter extends Toggle
 {
 }
 
-InstrumentalOnlyFilter.defaultProps = { filter: Filter, className: 'btn btn-info' };
+InstrumentalOnlyFilter.defaultProps = { filter: Filter, className: 'btn' };
 
 module.exports = InstrumentalOnlyFilter;
 

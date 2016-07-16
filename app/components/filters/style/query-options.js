@@ -2,13 +2,18 @@
 
 const css = `
 .query-options-box.open {
-  margin: 0px;
-  padding: 0px;
   border: 2px solid black;
   border-radius: 7px;
   text-align: center;
   background-color: white;
 }
+
+.query-options-box.floating {
+  position: absolute;
+  right: 0px;
+  top: -79;
+  z-index: 4;
+}    
 
 .query-options-box > button {
   margin: 0px auto;
@@ -76,7 +81,7 @@ const css = `
 }
 
 .noUi-pips.noUi-pips-horizontal {
-    height: initial;
+  height: initial;
 }
 
 .query-options-box.open ul.query-options ul.query-options-elements > li .bpm-title {
@@ -94,12 +99,6 @@ const css = `
   margin-right: 1px;
   text-align: center;
   vertical-align: middle;
-  /*
-  width: 35px;
-  float: left;
-  background-color: #CCC;
-  border-radius: 6px;
-  */  
 }
 
 

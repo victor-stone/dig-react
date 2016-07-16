@@ -1,10 +1,12 @@
 import React     from 'react';
 
 import { CloseButton,
-         InlineCss,
-         Glyph }       from '../vanilla';
+         InlineCSS,
+         Glyph }          from '../vanilla';
 
-import { ModelTracker } from '../../mixins';
+import { ModelTracker }   from '../../mixins';
+
+import { selectors }      from '../../unicorns';
 
 import css                from './style/query-options';
 
@@ -17,7 +19,7 @@ function OptionsWrap(props) {
 class QueryOptionsBox extends React.Component
 {
   render() {
-    var cls  = 'query-options ' + (this.props.show ? 'open' : 'hidden');
+    var cls  = selectors('query-options',(this.props.show ? 'open' : 'hidden'));
     return (
         <ul className={cls}>
           <li className="btn-primary title" onClick={this.props.handleShowOptions} >
@@ -66,19 +68,22 @@ class QueryOptions extends ModelTracker(React.Component)
 
   render() {
 
-    if( !this.props.store.supportsOptions ) {
+    const { floating, store } = this.props;
+
+    if( !store.supportsOptions ) {
       return null;
     }
     
-    var showP       = this.state.showOptions || false;
-    var buttonColor = this.state.dirty ? { color: 'yellow' } : {};
-    var cls         = 'hidden-xs hidden-sm query-options-box' + (showP ? ' open' : '' );
-    var cls3        = 'btn btn-primary' + (showP ? ' hidden' : '');
+    const { showOptions = false, dirty } = this.state;
+
+    const buttonColor = dirty ? { color: 'yellow' } : {};
+    const cls         = selectors('hidden-xs hidden-sm query-options-box',showOptions ? 'open' : '',floating ? 'floating' : '');
+    const cls3        = selectors('btn btn-primary', showOptions ? ' hidden' : '');
 
     return (
       <div className={cls}>
-        <InlineCss css={css} id="query-options-css" />
-        <QueryOptionsBox show={showP} store={this.props.store} handleShowOptions={this.onShowOptions}>
+        <InlineCSS css={css} id="query-options-css" />
+        <QueryOptionsBox show={showOptions} store={store} handleShowOptions={this.onShowOptions}>
           {this.props.children}
         </QueryOptionsBox>
         <button className={cls3} style={buttonColor} onClick={this.onShowOptions} ><Glyph icon="gear" />{" filters"}</button>

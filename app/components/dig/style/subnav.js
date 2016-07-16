@@ -20,6 +20,10 @@ const css = `
   background-image: linear-gradient(to bottom, rgba(150, 178, 191, 0.95) 0%, #708a96 100%);
 }
 
+.query-options-box > button:hover {
+  background: #2196F3;
+}
+
 .query-options-box > button {
   z-index: 4;
 }
