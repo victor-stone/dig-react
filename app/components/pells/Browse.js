@@ -4,11 +4,16 @@ import DownloadPopup      from '../DownloadPopup';
 import LinkToRemixTree    from '../services/LinkToRemixTree';
 import LinkToPeople       from '../services/LinkToPeopleRoute';
 import { PlayButton }     from '../AudioPlayer';
+
 import { ModelTracker,
          NowPlayingTracker } from '../../mixins';
+
 import { bindAll }        from '../../unicorns';
-import InlineCSS          from '../vanilla/InlineCSS';
-import browserCSS         from './style/browser';
+
+import InlineCSS           from '../vanilla/InlineCSS';
+import browserCSS          from './style/browser';
+import { QueryOptionsCSS } from '../filters/QueryOptions';
+
 import { Row,
          Container,
          Column }         from '../vanilla/Grid';
@@ -108,7 +113,7 @@ class PellsBrowser extends NowPlayingTracker(React.Component)
     return (
 
       <Container className="pells-page">
-        <InlineCSS css={browserCSS} id="pell-browser-css" />
+        <InlineCSS css={browserCSS + QueryOptionsCSS} id="pell-browser-css" />
         <Row>
           <Column cols="3">
             <PellDetail store={store} model={this.state.selected} />

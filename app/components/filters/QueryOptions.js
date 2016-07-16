@@ -98,4 +98,5 @@ module.exports = {
   QueryOptionsBox,
   QueryOptionsPanel,
   OptionsWrap,
+  QueryOptionsCSS: css
 };

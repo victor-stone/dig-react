@@ -61,7 +61,7 @@ class File extends Model {
 
     this.getZipContents = function() {
       var ffi = this.file_format_info;
-      if( (ffi) && ('zipdir' in ffi) ) {
+      if( (ffi) && ('zipdir' in ffi) && ffi.zipdir ) {
         return ffi.zipdir.files.map( f => f || '' );
       }
       return null;

@@ -7,6 +7,8 @@ import InlineCSS    from '../vanilla/InlineCSS';
 import css          from './style/browse';
 import Files        from '../models/Files';
 
+import { QueryOptionsCSS }     from '../filters/QueryOptions';
+
 import { Row,
          FluidContainer,
          Column }     from '../vanilla/Grid';
@@ -34,7 +36,7 @@ function Stems(props) {
 
     return (
       <FluidContainer className="stems-browser">
-        <InlineCSS css={css+Files.css} id="stems-css" />
+        <InlineCSS css={css+Files.css + QueryOptionsCSS} id="stems-css" />
         <Row className="stems-browser-widget">
           <Column cols="3">
             <Tags store={store} />

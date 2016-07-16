@@ -1,10 +1,8 @@
-'use strict';
-
 import React            from 'react';
 import { FeaturedPage } from '../../components/dig';
 import { mergeParams }  from '../../unicorns';
 import qc               from '../../models/query-configs';
-import Remixes         from '../../stores/remixes';
+import Remixes          from '../../stores/remixes';
 
 var tags = React.createClass({
 
@@ -24,13 +22,13 @@ Object.assign(tags,{
   subnav: FeaturedPage.subnav,
 
   store(params,queryParams) {
-    var opts    = mergeParams( {}, qc.remixes );
-    var qparams = mergeParams( {}, opts, { tags: params.tags }, queryParams );
+    var opts    = mergeParams( {}, qc.remixes, { tags: params.tags } );
+    var qparams = mergeParams( {}, opts, queryParams );
     return Remixes.storeFromQuery(qparams, opts);
   },
 
   urlFromStore(store) {
-    return '/tags/' + store.queryParams.tags;
+    return '/tags/' + store.queryParams.tags + store.queryString;
   }
 
 });
