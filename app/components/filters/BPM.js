@@ -1,5 +1,5 @@
 import React        from 'react';
-import Filter       from '../../models/filters/BPM';
+import Filter       from '../../models/filters/bpm';
 import Slider       from './controls/Slider';
 import DisplayOnly  from './controls/DisplayOnly';
 
