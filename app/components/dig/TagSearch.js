@@ -7,7 +7,7 @@ import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
 import { BoundSelectedTagList } from '../bound/Tags';
 
 import TagCategoryBox from './tags/TagCategoryBox';
-import MatchAllButton from '../bound/TagsMatchAllButton';
+import MatchAllButton from '../filters/MatchAll';
 import TagNoHits      from '../bound/TagNoHits';
 import { Row,
          Column }     from '../vanilla/Grid';

@@ -129,6 +129,11 @@ class AddToPlaylistPopup extends Modal.Popup {
 
 class AddToPlaylistLink extends CurrentUserTracker(React.Component) 
 {
+  constructor() {
+    super(...arguments);
+    this.showPlaylistPopup = this.showPlaylistPopup.bind(this);
+  }
+
   showPlaylistPopup() {
 
     var playlists = new Playlists();

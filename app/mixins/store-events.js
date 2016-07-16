@@ -48,11 +48,15 @@ var StoreEvents = target => class extends target {
   }
 
   _subscribeToStoreEvents(store) {
-    this.storeEvents.forEach( event => store.on( event, this._safeGenericCallback.bind(this,event) ) );
+    for( const event of this.storeEvents ) {
+      store.on( event, this._safeGenericCallback.bind(this,event) );
+    }
   }
 
   _unsubscribeFromStoreEvents(store) {
-    this.storeEvents.forEach( event => store.removeListener( event, this._safeGenericCallback.bind(this,event) ) );
+    for( const event of this.storeEvents ) {
+      store.removeListener( event, this._safeGenericCallback.bind(this,event) );
+    }
   }
 
   _safeGenericCallback(event,...args) {

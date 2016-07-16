@@ -24,7 +24,7 @@ class Toggle extends React.Component
     const icon = toggle ? 'toggle-on' : 'toggle-off';
     const cls = selectors('toggle', className);
 
-    return <button onClick={this.onChange} {...this.props} className={cls}>{this.props.text + ' '}<Glyph icon={icon}/></button>;
+    return <button {...this.props} onClick={this.onChange} className={cls}>{this.props.text + ' '}<Glyph icon={icon}/></button>;
   }
 }
 

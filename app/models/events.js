@@ -17,19 +17,10 @@ var Events = {
   PLAY:               'play',
   STOP:               'stop',
   
-  PARAMS_CHANGED:     'params_changed',
-  ARE_PARAMS_DIRTY:   'are_params_dirty',
-  GET_PARAMS_DEFAULT: 'get_params_default',
-  GET_PARAMS_URI:     'get_params_uri',
   MODEL_UPDATED:      'model_updated',
   TAGS_SELECTED:      'tags_selected',
-  
-  ACTION_START:       'action_start',
-  ACTION_END:         'action_end',
-  
-  INSPECT_ZIP:        'inspect_zip',
-  
-  SAMPLE_TAG_TAB:     'sample_tag_tab',
+
+  QUERY_FILTER_CHANGED:'query_filter_changed',
   
   DOWNLOAD:           'download',
   USER_SEARCH:        'user_search',

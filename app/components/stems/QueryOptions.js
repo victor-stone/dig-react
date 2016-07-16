@@ -1,45 +1,29 @@
-import React     from 'react';
+import React      from 'react';
 
-import { LicenseFilter,
-         QueryOptionsPanel,
-         SortFilter,
-         OptionsWrap } from '../QueryOptions';
-         
-import { BPMDisplay,
-         BPMSlider   } from '../BPM'; 
+import { License,
+         BPM,
+         Sort   } from '../filters';
 
-var Options = React.createClass({
+import { QueryOptionsPanel,
+         OptionsWrap }      from '../filters/QueryOptions';
 
-  render: function() {
-
-    var store = this.props.store;
-
-    return ( 
-      <OptionsWrap>
-        <li>
-          <LicenseFilter store={store} />
-        </li>
-        <li>
-          <SortFilter store={store} />
-        </li>
-        <li>
-          <BPMDisplay store={store} />
-        </li>
-        <li>
-          <BPMSlider store={store} />
-        </li>
-      </OptionsWrap>
-    );
-  },
-});
-  
-function StemsQueryOptions(props)
+class StemsQueryOptions extends React.Component
 {
+  render() {
+    
+    const { store } = this.props;
+
     return (
-      <QueryOptionsPanel store={props.store} >
-        <Options store={props.store} />
+      <QueryOptionsPanel store={store} >
+        <OptionsWrap>
+          <li><License store={store} /></li>
+          <li><Sort store={store} /></li>
+          <li><BPM.Display store={store} /></li>
+          <li><BPM.Slider store={store} /></li>
+        </OptionsWrap>
       </QueryOptionsPanel>
     );
+  }
 }
 
 module.exports = StemsQueryOptions;

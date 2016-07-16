@@ -1,51 +1,15 @@
 import React     from 'react';
 
-import InstrumentalOnlyFilter  from '../InstrumentalOnlyFilter';
-import ArtistFilter            from '../ArtistFilter';
 import { DualTagFieldWidget }   from '../bound/Tags';
-import { QueryParamTracker }   from '../../mixins';
-import { TagString }           from '../../unicorns';
-import { LicenseFilter,
-         SortFilter,
-         OptionsWrap }    from '../QueryOptions';
 
-import TagsExtra from '../TagsExtra';
+import { UploadType,
+         License,
+         Sort,
+         InstrumentalOnly,
+         Artist,
+         AdminTag }    from '../filters';
 
-
-class TypeFilter extends QueryParamTracker(React.Component)
-{
-  constructor() {
-    super(...arguments);
-    this.performQuery = this.performQuery.bind(this);
-  }
-
-  stateFromParams(queryParams) {
-    return { reqtags: new TagString( queryParams.reqtags ).filter(/^(remix|sample|acappella)$/) };
-  }
-
-  performQuery() {
-    const { store } = this.props;
-    const { model:{queryParams:{reqtags}} } = store;
-
-    var typetag = this.refs['typelist'].value;
-    var tags    = new TagString(reqtags)
-                        .remove('remix,sample,acappella')
-                        .add(typetag);
-    store.refresh( { reqtags: tags.toString() } );
-  }
-  
-  render() {
-    return (
-        <select ref="typelist" id="typelist" value={this.state.reqtags} onChange={this.performQuery} className="form-control" >
-          <option value="remix">{"remixes"}</option>
-          <option value="sample">{"samples"}</option>
-          <option value="acappella">{"a cappellas"}</option>
-        </select>
-      );
-  }
-
-}
-
+import { OptionsWrap } from '../filters/QueryOptions';
 
 function PlaylistQueryOptions(props) {
 
@@ -54,25 +18,25 @@ function PlaylistQueryOptions(props) {
     return ( 
       <OptionsWrap>
         <li>
-          <TypeFilter store={store} />
+          <UploadType store={store} />
         </li>
         <li>
-          <LicenseFilter store={store} />
+          <License store={store} />
         </li>
         <li>
-          <SortFilter store={store} />
+          <Sort store={store} />
         </li>
         <li>
-          <InstrumentalOnlyFilter store={store} />
+          <InstrumentalOnly store={store} />
         </li>
         <li>
-          <ArtistFilter store={store} />
+          <Artist store={store} />
         </li>
         <li>
           <DualTagFieldWidget store={store} withMatchAll />
         </li>
         <li>
-          <TagsExtra store={store} />
+          <AdminTag store={store} />
         </li>
       </OptionsWrap>
     );

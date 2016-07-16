@@ -17,7 +17,7 @@ import {
           SelectableTagList
       } from '../models/Tags';
 
-import MatchAllButton from './TagsMatchAllButton';
+import MatchAllButton from '../filters/MatchAll';
 
 /* See app/models/Tags.js for explanations of concepts */
 

@@ -21,7 +21,7 @@ const CurrentUserTracker = target => class extends target {
     api.removeListener(events.USER_LOGIN,this.onUserLogin);
   }
 
-  onUserLogin( /*result */ ) {
+  onUserLogin() {
     this.checkForUser();
   }
 

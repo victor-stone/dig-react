@@ -2,10 +2,8 @@ import querystring from 'querystring';
 import Query       from './query';
 import events      from '../models/events';
 import Tags        from './tags';
-import env         from '../services/env';
 
-import { oassign,
-         hashParams,
+import { hashParams,
          cleanSearchString,
          TagString }   from '../unicorns';
 
@@ -38,6 +36,50 @@ class Collection extends Query {
     this.tagFields     = ['tags', 'reqtags', 'oneof'];
     this.totalsCache   = null;
     this.autoFetchUser = true;
+
+    this.filters        = new Map();
+    this.onFilterChange = this.onFilterChange.bind(this);
+  }
+
+  addOrGetFilter(filterComponent) {
+    const { filterName } = filterComponent;
+    if( this.filters.has(filterName) ) {
+      return this.filters.get(filterName);
+    }
+    const filter = filterComponent.fromQueryParams(this.queryParams);
+    filter.onChange( this.onFilterChange );
+    this.filters.set(filterName, filter);
+    return filter;
+  }
+
+  onFilterChange(filter) {
+    if( this._ignoreFilterEvent ) {
+      return;
+    }
+    const qp = this.queryParams;
+    filter.applyToQueryParams(qp);
+    if( filter.requiresFullRefresh ) {
+      this.refreshModel(qp);
+    } else {
+      this.refresh(qp);
+    }
+  }
+
+  paramsDirty() {
+    return Array.from(this.filters.values()).find( f => f.isDirty ) !== undefined;
+  }
+
+  applyDefaults() {
+    const qp = this.queryParams;
+    this._ignoreFilterEvent = true;
+    for( const filter of this.filters.values() ) {
+      if( filter.isDirty ) {
+        filter.reset();
+      }
+      filter.applyToQueryParams(qp);
+    }
+    this._ignoreFilterEvent = false;
+    return this.refreshModel(qp);
   }
 
   get supportsOptions() {
@@ -48,10 +90,6 @@ class Collection extends Query {
     return this._defaultParams;
   }
 
-  set defaultParams(defaultParams) {
-    this._defaultParams = defaultParams;
-  }
-  
   get queryString() {
     const qs = this._queryString(false);
     return qs ? '?' + qs : '';
@@ -73,7 +111,7 @@ class Collection extends Query {
   }
 
   paginate(offset) {
-    return this._refresh(this._qp({offset},events.PARAMS_CHANGED));
+    return this._refresh(this._qp({offset}));
   }
 
   // use this instead of the property if you
@@ -86,30 +124,14 @@ class Collection extends Query {
     });
   }
 
-  applyURIQuery(qp) {
-    return this.refreshModel(qp);    
-  }
-
   refresh(queryParams) {
     queryParams.offset = 0;
-    return this._refresh(this._qp(queryParams,events.PARAMS_CHANGED));
+    return this._refresh(this._qp(queryParams));
   }
 
   refreshModel(queryParams) {
     queryParams.offset = 0;
-    return this.getModel(this._qp(queryParams,events.PARAMS_CHANGED));
-  }
-
-  applyDefaults() {
-    return this._applyDefaults([events.GET_PARAMS_DEFAULT]);
-  }
-
-  paramsDirty() {
-    var qp      = this._expandQP(this.model.queryParams);
-    var def     = this._expandQP(this.defaultParams);
-    var isDirty = { isDirty: false };
-    this.emit( events.ARE_PARAMS_DIRTY, qp, def, isDirty );
-    return isDirty.isDirty;
+    return this.getModel(this._qp(queryParams));
   }
 
   getModel( queryParams ) {
@@ -208,7 +230,7 @@ class Collection extends Query {
 
     return this.flushDefers(hash).then( model => {
       this.model = model;
-      model.queryParams = oassign( {}, queryParams );
+      model.queryParams = Object.assign( {}, queryParams );
       this.emit( events.MODEL_UPDATED, model );
       return model;
     }).catch( e => {
@@ -217,7 +239,7 @@ class Collection extends Query {
         this.model.total = 0;
         this.model.error = this.error = e.message;
         this.model.artist = {};
-        this.model.queryParams = oassign( {}, queryParams );
+        this.model.queryParams = Object.assign( {}, queryParams );
         return this.model;
       } else {
         var str = /*decodeURIComponent*/(querystring.stringify(queryParams));
@@ -236,9 +258,16 @@ class Collection extends Query {
   // TODO: investigate generalizing cachedFetch
   
   cachedFetch(queryParams, deferName) {
-    if( !env.debugMode && !this.gotCache ) {
-      var qp = oassign( {}, queryParams);
+    if( !this.gotCache ) {
+      // tell ccHost to use a cache if it's there
+      var qp = Object.assign( {}, queryParams);
       qp['cache'] = '_' + hashParams(queryParams).hashCode();
+      // we're only doing this once per instance of this class, here's why:
+      // we don't want the cache at ccHost to grow needlessly. Roughly 99.999%
+      // of users come to dig and ccMixter and see the same 5 pages. If all
+      // we do is cache the first page seen at a query (as opposed to later 
+      // offsets or tag searchers) the site will be plenty responsive and
+      // the biggest load will be off of the server db.
       this.gotCache = true;
       queryParams = qp;
     }
@@ -248,46 +277,33 @@ class Collection extends Query {
   /* private */
 
   _expandQP(queryParams) {
-    var qp   = oassign( {}, queryParams );
+    var qp   = Object.assign( {}, queryParams );
     this.tagFields.forEach( f => qp[f] = new TagString(qp[f]) );
     return qp;
   }
 
-  _contractQP(queryParams,result) {
+  _qp(queryParams) {
+
+    // paste over model's queryParams
+    const qp = this.model.queryParams;
+
     for( var k in queryParams ) {
-      if( this.tagFields.includes(k) ) {
-        if( queryParams[k].getLength() > 0 ) {
-          result[k] = queryParams[k].toString();
-        }
-      } else if( k === 'offset' ) {
-        if( queryParams.offset > 0 ) {
-          result.offset = queryParams.offset;
-        }
-      } else {
-        const { [k]:val = null } = queryParams;
 
-        if( val !== null ) {
-          result[k] = val;
-        }
+      let value = queryParams[k];
+
+      // TagStrings and Number will become strings here
+      value = ( typeof value === 'undefined' || value === null ) ? '' : value + '';
+
+      if( value.length ) {
+        qp[k] = value;
+      } else if( k in qp ) {
+        // the parameter k used to have a value, now it doesn't
+        delete qp[k];
       }
-    }
-    return result;
-  }
 
-  _qp(queryParams,event) {
-    var qp = this.model.queryParams;
-    oassign( qp, queryParams); // paste over model's queryParams
-    var qpt  = this._expandQP(qp);
-    this.emit( event, qpt, this );
+    } 
+
     return qp;
-  }
-
-  _applyDefaults(events) {
-    var qp  = oassign( {}, this.model.queryParams, this.defaultParams, { offset: 0 } );
-    var qpt = this._expandQP(qp);
-    events.forEach( e => this.emit( e, qpt, this ) );
-    var qpc = this.model.queryParams = this._contractQP( qpt, {} );
-    return this.refreshModel(qpc);
   }
 
   _refresh(queryParams,deferName) {
@@ -300,8 +316,8 @@ class Collection extends Query {
 
   _queryString(withDefault) {
     const qp   = this.model.queryParams;
-    const defs = this.defaultParams;
-    const copy = withDefault ? oassign( {}, defs) : {};
+    const defs = this._defaultParams;
+    const copy = withDefault ? Object.assign( {}, defs) : {};
     const skip = [ 'f', 'dataview', 'reqtags'];
 
     for( const paramName in qp ) {
@@ -320,7 +336,7 @@ class Collection extends Query {
               copy[paramName] = value;
             }
           } else {
-            if( value !== defs[paramName] ) {
+            if( value + '' !== defs[paramName] + '' ) {
               copy[paramName] = value;
             }
           }

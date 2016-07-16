@@ -4,7 +4,7 @@ import Link         from './LinkToRoute';
 import LinkToUpload from './LinkToUploadRoute';
 
 function LinkToRemixTree(props) {
-  const { model, host = null  } = props;
+  const { model, host = ''  } = props;
   const cls = 'btn btn-info';
   const url = host + LinkToUpload.url(model);
   return <Link host={host} href={url} className={cls}><Glyph icon="arrow-left" />{" Remix tree "}<Glyph icon="arrow-right" /></Link>;

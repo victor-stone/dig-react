@@ -24,7 +24,7 @@ const AjaxTracker = target => class extends target {
   _onLoading(loading) {
     this.setState( {ajax: { loading }}, () => {
       this.onAjaxLoading && this.onAjaxLoading(loading);
-    } ); 
+    }); 
   }
 
 };

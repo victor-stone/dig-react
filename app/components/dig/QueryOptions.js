@@ -1,38 +1,31 @@
 import React     from 'react';
 
-import   InstrumentalOnlyFilter from '../InstrumentalOnlyFilter';
+import { License,
+         Sort,
+         InstrumentalOnly } from '../filters';
 
-import { LicenseFilter,
-         SortFilter,
-         QueryOptions,
-         OptionsWrap }    from '../QueryOptions';
+import { QueryOptions,
+         OptionsWrap }    from '../filters/QueryOptions';
          
-const _RemixQueryOptions = React.createClass({
 
-  render: function() {
-    
-    var store = this.props.store;
+class RemixQueryOptions extends React.Component
+{
+
+  render() {  
+
+    const { store } = this.props;
 
     return ( 
+      <QueryOptions store={store}>
         <OptionsWrap>
-          <li>
-            <LicenseFilter ccPlusFilter="ccplus_nostems" store={store} />
-          </li>
-          <li>
-            <SortFilter store={store} />
-          </li>
-          <li>
-            <InstrumentalOnlyFilter store={store} />
-          </li>
-      </OptionsWrap>
+          <li><License ccPlusFilter="ccplus_nostems" store={store} /></li>
+          <li><Sort store={store} /></li>
+          <li><InstrumentalOnly store={store} /></li>
+        </OptionsWrap>
+      </QueryOptions> 
     );
-  },
-});
+  }
 
-function RemixQueryOptions(props) {
-  return ( <QueryOptions store={props.store}>
-              <_RemixQueryOptions store={props.store} />
-          </QueryOptions> );
 }
 
 module.exports = RemixQueryOptions;

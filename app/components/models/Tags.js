@@ -107,6 +107,10 @@ class SelectableTag extends React.Component
   render() {
     const { model: {id,count=0}, glyph, onSelected } = this.props;
 
+    if( !id ) {
+      return <li />;
+    }
+
     const { selected } = this.state;
     
     const { [glyph]:{[selected]:icon, selector} = {}, [selected]:selSelector } = glyphMap;
@@ -115,9 +119,9 @@ class SelectableTag extends React.Component
 
     return (
         <li className={cls} onClick={onSelected && this.onClick}>
-          {icon && id && <Glyph icon={icon} />}
+          {icon && <Glyph icon={icon} />}
           {id} 
-          {count && <span className="tag-count">{"("}{count}{")"}</span>}
+          {Number(count) > 0 && <span className="tag-count">{"("}{count}{")"}</span>}
         </li>
       );
   }
@@ -202,7 +206,7 @@ class SelectableTagList extends React.Component
                   className );
 
     let arr = autoclear 
-                    ? ( arr = tags.slice(), arr.push({id:''}), arr ) 
+                    ? ( arr = tags.slice(), arr.push({id:0}), arr ) 
                     : tags;
 
     return (

@@ -5,8 +5,8 @@ import AudioService           from '../../services/audio-player';
 import LinkToPlaylist         from '../services/LinkToPlaylistRoute';
 
 /*
-  An EditTrackList that is bound to a playlists 'model.tracks'
-  property with special knowlege of playlists stores 
+  EditTrackList wrapper that displays/edits the 'tracks'
+  property of the playlist store's model
 
   props
     store - from stores/playlist
@@ -19,9 +19,9 @@ class EditableTrackList extends React.Component
   }
 
   onPlay() {
-    const { items,items:{queryParams:{playlist}} } = this.props.store.model;
+    const { items,head:{id} } = this.props.store.model;
 
-    AudioService.playlistURL = LinkToPlaylist.url({id:playlist});
+    AudioService.playlistURL = LinkToPlaylist.url({id});
     AudioService.playlist = items;
   }
 

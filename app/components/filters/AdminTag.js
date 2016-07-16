@@ -1,8 +1,8 @@
 import React                  from 'react';
-import { InputFormItem }      from './vanilla/InputField';
-import currentUserProfile     from './services/CurrentUserProfile';
+import { InputFormItem }      from '../vanilla/InputField';
+import currentUserProfile     from '../services/CurrentUserProfile';
 
-class TagsExtra extends React.Component
+class AdminTag extends React.Component
 {
   constructor() {
     super(...arguments);
@@ -25,6 +25,6 @@ class TagsExtra extends React.Component
   }
 }
 
-module.exports = TagsExtra;
+module.exports = AdminTag;
 
 //

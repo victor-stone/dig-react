@@ -96,6 +96,10 @@ class Playlist extends Permissions(TagsOwner(Query)) {
     return api.playlist.addTrack(track,this.model.head.id);
   }
 
+  removeTrack(track) {
+    return api.playlist.removeTrack(track,this.model.head.id);
+  }
+
   deletePlaylist() {
     return api.playlist.deletePlaylist(this.model.head.id);
   }

@@ -9,8 +9,13 @@ import Share            from '../SharePopup';
 
 import {CurrentUserTracker} from '../../mixins';
 
+
 class UploadMenu extends CurrentUserTracker(React.Component)
 {
+  constructor() {
+    super(...arguments);
+  }
+
   render() {
     const { userLoading, user, user:{isAdmin=false}  = {} } = this.state;
 

@@ -1,11 +1,10 @@
 import React      from 'react';
-import Query      from '../stores/query';
+import Query      from '../../stores/query';
+import Filter     from '../../models/filters/artist';
 
-import { QueryParamTracker }   from '../mixins';
+import SearchBox   from '../SearchBox';
 
-import SearchBox               from './SearchBox';
-
-import { bindAll } from '../unicorns';
+import { bindAll } from '../../unicorns';
 
 class ArtistList extends React.Component
 {
@@ -46,16 +45,23 @@ class ArtistList extends React.Component
   }  
 }
 
-class ArtistFilter extends QueryParamTracker(React.Component)
+class ArtistFilter extends React.Component
 {
   constructor() {
     super(...arguments);
-    bindAll( this, 'filter', 'artistSelect' ); 
+    bindAll( this, 'filter', 'artistSelect', 'onValueChange' ); 
+    this.filter = this.props.store.addOrGetFilter(Filter);
+    this.filter.onChange( this.onValueChange );
+    this.state = { u: this.filter.value , artists: [] };
   }
 
   componentWillMount() {
     this.query = new Query();
     this.getArtists(this.state.u);
+  }
+
+  onValueChange(filter) {
+    this.setState( { u: filter.value } );
   }
 
   getArtists(search) {
@@ -65,21 +71,6 @@ class ArtistFilter extends QueryParamTracker(React.Component)
     } else {
       this.setState( { artists: [], u: '' } );
     }
-  }
-
-  stateFromParams(queryParams) {
-    const { u = null } = queryParams;
-    return { u };
-  }
-
-  onAreParamsDirty(queryParams,defaults,isDirty) {
-    if( !isDirty.isDirty) {
-      isDirty.isDirty = !!queryParams.u;
-    }
-  }
-
-  onGetParamsDefault(queryParams) {
-    queryParams.u = null;
   }
 
   filter(u, isIcon, filterCB) {
@@ -92,7 +83,6 @@ class ArtistFilter extends QueryParamTracker(React.Component)
       filterCB('');
       kill();
     } else if( u && u.length > 0 ) {
-      //this.triggerSearch(this,u);
       this.getArtists(u);
     } else {
       kill();
@@ -101,10 +91,10 @@ class ArtistFilter extends QueryParamTracker(React.Component)
 
   artistSelect(a) {
     if( a ) {
-      this.refreshModel( { u: a.id } );
+      this.filter.value = a.id;
       this.refs.edit.setState({value:a.id});
     } else {
-      this.refreshModel( {u:null} );
+      this.filter.value = undefined;
     }
   }
 

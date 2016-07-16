@@ -48,6 +48,12 @@ module.exports = {
     limit: 10,
   },
 
+  browsePlaylists: {
+    minitems: 4,  // at least 4 items
+    dynamic: 1,   // or dynamic
+    limit: 10
+  },
+
   instrumental: {
     reqtags: 'instrumental,-vocals,-male_vocals,-female_vocals',
   },   

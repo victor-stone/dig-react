@@ -1,11 +1,14 @@
-import React         from 'react';
-import Glyph         from '../vanilla/Glyph';
-import { TagString } from '../../unicorns';
-// TODO: Move resetoptions button
-import QueryOptions  from '../QueryOptions';
+import React            from 'react';
+
+import { TagString }    from '../../unicorns';
+
+import ResetButton      from '../filters/Reset';
+
 import { ModelTracker } from '../../mixins';
+
+import Glyph            from '../vanilla/Glyph';
 import { Row,
-         Column }     from '../vanilla/Grid';
+         Column }       from '../vanilla/Grid';
 
 class NoTagHits extends ModelTracker(React.Component)
 {
@@ -43,7 +46,7 @@ class NoTagHits extends ModelTracker(React.Component)
                     {"Try a search for "}<strong>{"any"}</strong>{" combination of tags by unchecking the 'all' button."}
                   </li>
                 }
-                {optionsDirty && <li>{"Try resetting your filters "}<QueryOptions.ResetOptionsButton store={store} /></li>}
+                {optionsDirty && <li>{"Try resetting your filters "}<ResetButton store={store} /></li>}
               </ul>
           </div>
         </Column>

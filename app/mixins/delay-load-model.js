@@ -13,12 +13,6 @@ const DelayLoadModel = target => class extends target {
     bindAll( this, 'onOpen', 'onClose' );
   }
 
-  /*
-  getDefaulProps() {
-    return { onOpen: this.onOpen, onClose: this.onClose };
-  }
-  */
-
   onOpen() {
     if( !this.state.model ) {
       this.refreshModel().then( model => this.setState( { model, open: true } ) ); 
@@ -28,7 +22,7 @@ const DelayLoadModel = target => class extends target {
   }
 
   onClose() {
-    this.setState({open:false});
+    this.setState( { open:false } );
   }
 
   componentWillReceiveProps(props) {
@@ -36,7 +30,7 @@ const DelayLoadModel = target => class extends target {
     if( this.state.open ) {
       this.refreshModel(props.store).then( model => this.setState( { model } ) ); 
     } else {
-      this.setState({ model: null });
+      this.setState( { model: null } );
     }
   }
 

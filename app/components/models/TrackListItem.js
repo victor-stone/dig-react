@@ -3,6 +3,7 @@ import LinkToUpload       from '../services/LinkToUploadRoute';
 import LinkToPeople       from '../services/LinkToPeopleRoute';
 import { PlayButton }     from '../AudioPlayer';
 import DeleteButton       from '../vanilla/DeleteButton';
+import { bindAll }        from '../../unicorns';
 
 
 /*
@@ -17,16 +18,35 @@ import DeleteButton       from '../vanilla/DeleteButton';
     onDelete(model)  - user clicked on 'delete' button
     onPlay(model)    - user clicked on 'play' button 
 */
-function TrackListItem(props) {
-  var model = props.model;
-  return (
-      <li className="tracklist-item">
-        {props.editing && <DeleteButton model={model} onDelete={props.onDelete} />}
-        <PlayButton className="play-button" onPlay={props.onPlay} model={model} />
-        <LinkToUpload className="track-name" model={model} />
-        {!props.skipUser && <LinkToPeople model={model.artist} className="track-artist" />}
-      </li>
-    );
+class TrackListItem extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    bindAll( this, 'onDelete', 'onPlay' );
+  }
+
+  onDelete() {
+    this.props.onDelete( this.props.model );
+  }
+
+  onPlay() {
+    this.props.onPlay( this.props.model );
+  }
+
+  render() {
+    
+    const { model, editing, skipUser } = this.props;
+
+    return (
+        <li className="tracklist-item">
+          {editing && <DeleteButton model={model} onDelete={this.onDelete} />}
+          <PlayButton className="play-button" model={model} onPlay={this.onPlay} />
+          <LinkToUpload className="track-name" model={model} />
+          <LinkToPeople className="track-artist" model={model.artist} skipUser={skipUser} />
+        </li>
+      );
+
+  }
 }
 
 module.exports = TrackListItem;

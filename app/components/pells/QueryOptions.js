@@ -1,13 +1,19 @@
 import React     from 'react';
 
-import { LicenseFilter,
-         QueryOptionsPanel,
-         OptionsWrap }        from '../QueryOptions';
+import { License,
+         BPM,
+         UnmixedOnly } from '../filters';
 
-import UnmixedOnlyFilter      from '../UnmixedOnlyFilter';
+import { QueryOptionsPanel,
+         OptionsWrap }        from '../filters/QueryOptions';
 
-import { BPMDisplay,
-         BPMSlider }          from '../BPM'; 
+// import env from '../../services/env';
+
+// env.assert(License          ,'License          ');
+// env.assert(BPM              ,'BPM              ');
+// env.assert(QueryOptionsPanel,'QueryOptionsPanel');
+// env.assert(UnmixedOnly      ,'UnmixedOnly      ');
+// env.assert(OptionsWrap      ,'OptionsWrap      ');
 
 function PellsQueryOptions(props) {
   var store = props.store;
@@ -15,16 +21,16 @@ function PellsQueryOptions(props) {
     <QueryOptionsPanel store={props.store} show>
       <OptionsWrap >
         <li>
-          <LicenseFilter store={store} />
+          <License store={store} />
         </li>
         <li>
-          <BPMDisplay store={store} />
+          <BPM.Display store={store} />
         </li>
         <li>
-          <BPMSlider store={store} />
+          <BPM.Slider store={store} />
         </li>
         <li>
-          <UnmixedOnlyFilter store={store} />
+          <UnmixedOnly store={store} />
         </li>
       </OptionsWrap>
     </QueryOptionsPanel>

@@ -305,17 +305,8 @@ class TagString
   }
 
   filter(rgx) {
-    var ts = new TagString();
-    for( var i = 0; i < this._tagsArray.length; i++ ) {
-      var t = this._tagsArray[i];
-      if( t.match(rgx) ) {
-        ts._tagsArray.push(t);
-      }
-    }
-    return ts;
+    return new TagString(this._tagsArray.filter(rgx.test.bind(rgx)));
   }
-
-
 }
 
 TagString.contains = function(source,tag,opts) {

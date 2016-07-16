@@ -116,8 +116,9 @@ function task_make_indecies() {
       './app/components',
       './app/components/dig',
       './app/components/dig/upload',
-      './app/components/vanilla',
+      './app/components/filters',
       './app/components/playlists/pages',
+      './app/components/vanilla',
       './app/mixins'
     ];
   return gulp.src(dirs, { base: './' })

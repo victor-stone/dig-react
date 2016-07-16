@@ -3,11 +3,7 @@
 class Model {
 
   constructor(jsonData, bindParent) {
-
-    for( var k in jsonData ) {
-      this[k] = jsonData[k];
-    }
-
+    Object.assign(this,jsonData);
     this._bindParent = bindParent;
   }
 

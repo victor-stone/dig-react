@@ -1,5 +1,6 @@
 /* shared query-options css */
 
+const css = `
 .query-options-box.open {
   margin: 0px;
   padding: 0px;
@@ -74,12 +75,9 @@
   padding-bottom: 50px;
 }
 
-/*
-.query-options-box .slider-container {
-  margin-left: 55px;
-  padding-top: 4px;
+.noUi-pips.noUi-pips-horizontal {
+    height: initial;
 }
-*/
 
 .query-options-box.open ul.query-options ul.query-options-elements > li .bpm-title {
   font-weight: bold;
@@ -107,4 +105,6 @@
 
 .query-options-box.open ul.query-options .btn.reset-options {
   margin-bottom: 10px;
-}
+}`;
+
+module.exports = css;

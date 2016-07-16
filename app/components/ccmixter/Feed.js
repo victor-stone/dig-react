@@ -156,19 +156,20 @@ class Feed extends ModelTracker(React.Component)
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
-    const { store, store:{model} } = this.props;
+    const { store, store:{model:{queryParams}} } = this.props;
 
-    var u = model.queryParams.user;
+    var u = queryParams.user || queryParams.u;
     if( u ) {
       api.feed.markAsSeen(u).then( () => store.emit(events.FEED_SEEN) );
     }
   }
 
   render() {
-    const { items, queryParams } = this.state.store;
+    const { model:{items}, queryParams } = this.state.store;
     const { className } = this.props;
 
     const cls = selectors('user-feed',className);
+    const user = queryParams.user || queryParams.u;
 
     return (
       <FluidContainer className={cls}>
@@ -176,7 +177,7 @@ class Feed extends ModelTracker(React.Component)
           <Column cols="8" offset="2">
             <InlineCSS css={css} id="feed-css" />
             <ul className="user-feed-items">
-            {items.map( (item,i) => <FeedItem key={i} owner={queryParams.user} model={item} /> )}
+            {items.map( (item,i) => <FeedItem key={i} owner={user} model={item} /> )}
             </ul>
           </Column>
         </Row>
