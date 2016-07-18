@@ -13,7 +13,7 @@ class TagSwap extends TagField
   }
 
   fromNative(tags) {
-    super.fromNative(this._aquireTagsValue( tags, ts => ts.filter(this._filter).toString() ));
+    super.fromNative( this._aquireTagsValue( tags, ts => ts.filter(this._filter).toString() ) );
   }
 }
 

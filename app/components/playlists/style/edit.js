@@ -1,7 +1,6 @@
 var css = 
 `/* new & edit playlist css */
 
-
 ul.query-options-elements {
   margin: 20px;
   background: rgba(91,192,222,0.1);

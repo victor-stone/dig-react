@@ -38,10 +38,18 @@ class PropertyTranslator extends Property
     return this._value;
   }  
   
+  // convert this property's value to a native form
+  // this typically means just returning this._value
+  // 
+  // the 'currentValue' is passed in in case you 
+  // need it to make a contextual determination 
+  //
   toNative(/*currentValue*/) {
     return this._value;
   }
 
+  // initial this property from a native form
+  //
   fromNative(val) {
     this._value = val;
   }

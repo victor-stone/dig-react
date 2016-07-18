@@ -9,6 +9,8 @@ import TagStore         from '../../stores/tags';
 
 import Filter           from '../../models/filters/tags';
 
+import DelayedCommitStore from '../../stores/tools/delayed-commit';
+
 import { 
           StaticTagsList,
           CheckableTagsList,
@@ -219,7 +221,7 @@ class BoundSelectedTagList extends TagFilter(React.Component)
   }
 
   onClear() {
-    this.filter.reset();
+    this.filter.value = '';
   }
 
   render() {
@@ -272,22 +274,17 @@ const TagEditMixin = target => class extends target {
     super(...arguments);
     bindAll(this, 'onEdit', 'onCancel', 'onDone', 'cancelCB' );
     this.state = { editing: false };
-    this._setupStore(this.props.store,this.props.delayCommit);
+    this._setupStore(this.props.store);
   }
 
-  _setupStore(store,delay) {
-    if( delay ) {
-      this.filter = new Filter();
-      // yea, this is hacky
-      this.filter.fromNative(store.nativeProperties['tags']);
-    } else {
-      this.filter = store.addProperty(Filter);
-    }
+  _setupStore(store) {
+    this._store = this.props.delayCommit ? new DelayedCommitStore(store) : store;    
+    this.filter = this._store.addProperty(Filter);
   }
 
   componentWillReceiveProps(nextProps) {
     if( this.props.store !== nextProps.store ) {
-      this._setupStore(nextProps.store,nextProps.delayCommit);
+      this._setupStore(nextProps.store);
     }
     this.setState({ editing:false });
   }
@@ -302,11 +299,10 @@ const TagEditMixin = target => class extends target {
   }
 
   onDone() {
-    const { delayCommit, store, onDone } = this.props;
+    const { delayCommit, onDone } = this.props;
 
     if( delayCommit ) {
-      store.injectProperty(Filter,this.filter).onChange();
-      store.removeFilter(Filter);
+      this._store.commit();
     }
 
     onDone && onDone();    
@@ -323,7 +319,7 @@ const TagEditMixin = target => class extends target {
   }
 
   get widget() {
-    const { store } = this.props;
+    const store = this._store;
     return this.state.editing
                   ? <DualTagFieldWidget store={store} cancelCallback={this.cancelCB} />
                   : <BoundStaticTagList store={store} />;
@@ -333,8 +329,9 @@ const TagEditMixin = target => class extends target {
     const { controlsCls = '', onDone, delayCommit } = this.props;
     const { editing } = this.state;
     const cls = selectors(controlsCls, editingClasses[editing] );
+    const store = this._store;
 
-    return this.props.store.permissions.canEdit
+    return store.permissions.canEdit
                   ? <span className={cls}>
                       {editing && (onDone || delayCommit) && <EditControls.Done onDone={this.onDone} />}
                       {editing

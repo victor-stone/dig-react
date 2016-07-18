@@ -17,9 +17,9 @@ const Tree = Object.assign(RemixTree,{
   },
 
   urlFromStore(store) {
-    const { model:{artist,id} } = store;
+    const { artist:{id:artist}, upload:{id} } = store.model;
 
-    return `/files/${artist.id}/${id}`;
+    return `/files/${artist}/${id}`;
   }
 
 });

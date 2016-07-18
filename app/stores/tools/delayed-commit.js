@@ -16,7 +16,7 @@ class DelayedCommitStore extends Properties(Eventer)
     super();
     this._realStore = realStore;
     this._changed = {};
-    this._nativeProps = Object.assign({},realStore.nativeProperties);
+    this._nativeProps = realStore.nativeProperties;
   }
 
   get nativeProperties() {    

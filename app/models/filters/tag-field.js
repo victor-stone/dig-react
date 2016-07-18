@@ -15,8 +15,7 @@ class TagField extends QueryFilter
   }
 
   _aquireTagsValue(qp,cb) {
-    this._value = cb(this._tsFromQP(qp)[0]);
-    return this;
+    return cb(this._tsFromQP(qp));
   }
 
   _tsFromQP(maybeTS) {

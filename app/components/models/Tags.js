@@ -388,12 +388,18 @@ CheckableTagsList.css = SelectableTagList.css + `
 `;
 
 /*
+
+  An unfortunate duplication of terms:
+
+    onClear and autoclear properties have nothing to do with each other
+    
   Props: 
     - model TagString
     - onRemoved [callback]
     - onClear [callback]
     - className [string] (optional - added to 'tag-list-selected')
     - css [string] (note: inline css - set CheckableTagsList.css to destroy defaults)
+    - autoclear - assigns a css style clear:both 
 */
 
 class SelectedTagList extends React.Component

@@ -353,12 +353,15 @@ TagString.toArray = function(source,{ ignore    = DEFAULT_IGNORE,
 
 TagString.fromArray = (arr, opts) => {
   return new TagString(arr,opts);
-}
+};
 
 TagString.fromString = (str, opts = {}) => {
+  if( !str ) {
+    return new TagString([],opts);
+  }
   const { ignore = DEFAULT_IGNORE, separator = ','} = opts;
   return new TagString(strToArr(str,ignore,separator),opts);
-}
+};
 
 String.prototype.tagize = function(pretty) {
   var tu = new TagString(this);

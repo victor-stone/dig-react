@@ -13,7 +13,7 @@ class TagToggle extends TagField
   }
 
   fromNative(tags) {
-    super.fromNative(this._aquireTagsValue( tags, ts => ts.contains(this._toggledOnValue) ));
+    super.fromNative( this._aquireTagsValue( tags, ts => ts.contains(this._toggledOnValue) ));
   }
 }
 

@@ -1,4 +1,5 @@
 import React                  from 'react';
+import Filter                 from '../../models/filters/tags';
 import { InputFormItem }      from '../vanilla/InputField';
 import currentUserProfile     from '../services/CurrentUserProfile';
 
@@ -12,7 +13,10 @@ class AdminTag extends React.Component
   }
 
   onSave(value) {
-    this.props.store.toggleTag(value, true);
+    const { store } = this.props;
+    const filter = store.addProperty(Filter);
+    filter.toggle(value,true);
+    this.refs.edit.value = '';
   }
 
   render() {
@@ -20,7 +24,7 @@ class AdminTag extends React.Component
       return null;
     }
     return (
-        <InputFormItem autoclear sz="sm" doneIcon="plus" cls="admin-tags" title="admin tag" onDone={this.onSave} />
+        <InputFormItem ref="edit" autoclear sz="sm" doneIcon="plus" cls="admin-tags" title="admin tag" onDone={this.onSave} />
       );
   }
 }

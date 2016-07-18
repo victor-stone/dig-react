@@ -12,8 +12,11 @@ import css                from './style/query-options';
 
 import ResetOptionsButton from './Reset';
 
-function OptionsWrap(props) {
-  return <ul className="query-options-elements">{props.children}</ul>;
+class OptionsWrap extends React.Component
+{
+  render() {
+    return <ul className="query-options-elements">{this.props.children}</ul>;
+  }
 }
 
 class QueryOptionsBox extends React.Component

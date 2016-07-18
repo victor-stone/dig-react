@@ -1,6 +1,8 @@
 import React from 'react';
 import Glyph from './Glyph';
 
+import InputButtonGroup from './InputButtonGroup';
+
 import { bindAll } from '../../unicorns';
 
 class ButtonBase extends React.Component
@@ -91,10 +93,10 @@ class InputGroup extends GroupBase
   render() {
     const { doneIcon } = this.props;
     return this.state.editing
-            ? <span className="input-group-btn">
+            ? <InputButtonGroup>
                   <Done onDone={this._doneEdit} icon={doneIcon} />
                   <Cancel onCancel={this._cancelEdit} />
-                </span>
+               </InputButtonGroup>
             : <span className="input-group-addon"><Edit onEdit={this._startEdit} /></span>;
     }
 }
@@ -117,10 +119,10 @@ class InputEditGroup extends GroupBase
 {
   render() {
     const { doneIcon } = this.props;
-    return (<span className="input-group-btn">
+    return (<InputButtonGroup>
               <Done onDone={this._doneEdit} icon={doneIcon} />
               <Cancel onCancel={this._cancelEdit} />
-            </span>);
+            </InputButtonGroup>);
     }
 }
 
