@@ -4,10 +4,10 @@ import Store      from '../../stores/remixes';
 
 import { mergeParams }    from '../../unicorns';
 
-import Gallery from '../../components/RemixTree/Gallery';
+import Tiles   from '../../components/RemixTree/Tiles';
 import SubNav  from '../../components/RemixTree/SubNav';
 
-const tree = Object.assign(Gallery, {
+const tree = Object.assign(Tiles, {
   title: 'Remix Tree',
 
   path: [ '/tree', '/tree/:reqtags' ],

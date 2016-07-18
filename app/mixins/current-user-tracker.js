@@ -5,7 +5,12 @@ const CurrentUserTracker = target => class extends target {
   constructor() {
     super(...arguments);
     this.onUserLogin = this.onUserLogin.bind(this);
-    this.state = { user: undefined, userLoading: !global.IS_SERVER_REQUEST };
+    const myState = { user: undefined, userLoading: !global.IS_SERVER_REQUEST };
+    if( this.state ) {
+      Object.assign( this.state, myState );
+    } else {
+      this.state = myState;
+    }
   }
 
   componentWillMount() {

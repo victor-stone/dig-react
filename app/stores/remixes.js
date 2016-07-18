@@ -1,9 +1,9 @@
-import TaggedCollection from './tagged-collection';
-import ccmixter         from '../models/ccmixter';
-import serialize        from '../models/serialize';
+import Collection from './collection';
+import ccmixter   from '../models/ccmixter';
+import serialize  from '../models/serialize';
 
 
-class Remixes extends TaggedCollection 
+class Remixes extends Collection 
 {
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName).then( serialize(ccmixter.Upload) );

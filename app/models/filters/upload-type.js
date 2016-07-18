@@ -4,17 +4,16 @@ class UploadType extends TagEnum
 {
   constructor(defaultValue) {
     super( 'reqtags', defaultValue, Object.keys(UploadType.options) );
-    this._propName     = UploadType.name,
     this._displayName  = 'type';
   }
 }
 
 Object.assign(UploadType,{
-  filterName: 'uploadType',
+  propertyName: 'uploadType',
 
-  fromQueryParams(qp) {
+  fromValue(qp) {
     const filter = new UploadType();
-    filter.aquireFromQueryParams(qp);
+    filter.fromNative(qp);
     filter._defaultValue = filter._value;
     return filter;    
   },

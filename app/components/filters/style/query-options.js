@@ -40,41 +40,43 @@ const css = `
   right: 0px;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements {
+ul.query-options-elements {
   padding: 0px;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li {
+ul.query-options-elements > li {
   margin-bottom: 7px;
   margin-left: 10px;
   margin-right: 10px;
+  text-align: center;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li label {
+ul.query-options-elements > li label {
   display: inline-block;
   width: 85%;
   margin-bottom: 12px;
   border: 0px;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li input[type="checkbox"] {
+ul.query-options-elements > li input[type="checkbox"] {
   margin-left: 8px;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li select {
+ul.query-options-elements > li select {
   display: inline-block;  
+  width: initial;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li #lic {
+ul.query-options-elements > li #lic {
   width: 75%;
   margin-right: 10px;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li #sort {
-  width: inherit;
-}
+// ul.query-options-elements > li #sort {
+//   width: inherit;
+// }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li .bpm-slider-container {
+ul.query-options-elements > li .bpm-slider-container {
   width: 92%;
   margin: 0px auto;
   padding-bottom: 50px;
@@ -84,16 +86,16 @@ const css = `
   height: initial;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li .bpm-title {
+ul.query-options-elements > li .bpm-title {
   font-weight: bold;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li .bpm-title::after {
+ul.query-options-elements > li .bpm-title::after {
   content: ':';
   margin-right: 12px;
 }
 
-.query-options-box.open ul.query-options ul.query-options-elements > li .bpm-display {
+ul.query-options-elements > li .bpm-display {
   display: inline-block;
   padding: 4px;
   margin-right: 1px;

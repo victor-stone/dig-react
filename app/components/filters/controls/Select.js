@@ -9,7 +9,7 @@ class SelectFilter extends React.Component
     bindAll( this, 'onSelect', 'onValueChange' ); 
     this.onSelect = this.onSelect.bind(this);
     const { filter:Filter, store } = this.props;
-    this.filter = store.addOrGetFilter(Filter);
+    this.filter = store.addProperty(Filter);
     this.filter.onChange( this.onValueChange );
     this.state = { value: this.filter.value };
   }

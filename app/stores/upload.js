@@ -1,10 +1,10 @@
 import Query            from './query';
+import UserSearch       from './user-search';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import events           from '../models/events';
 import api              from '../services/ccmixter';
-import { TagString }    from '../unicorns';
-import TagsOwner        from '../mixins/tags-owner';
+import Properties       from './tools/properties';
 import Permissions      from '../mixins/permissions';
 
 
@@ -15,13 +15,12 @@ function _fixFeaturing(model) {
   return model;
 }
 
-class Upload extends Permissions(TagsOwner(Query)) {
+class Upload extends Permissions(Properties(Query)) {
 
   constructor() {
     super(...arguments);
     this.model = {};
   }
-
 
   _onCurrentUserReject() {
     return this.nullPermissions;
@@ -58,19 +57,18 @@ class Upload extends Permissions(TagsOwner(Query)) {
     };
   }
 
+  get nativeProperties() {
+    const { upload, upload:{userTags:tags} } = this.model;
+    return Object.assign({},upload,{tags});
+  }
+
   get queryParams() {
-    return (this.model && this.model.queryParams) || {};
+    return this.model.queryParams || {};
   }
 
-  get tags() {
-    return new TagString(this.model.upload.userTags);
-  }
-
-  set tags(t) {
-    const tags = t.toString();
-    this.applyProperties({tags}).then( () => {
-      this.emit(events.TAGS_SELECTED);
-    });
+  get userSearch() {
+    !this._userSearch && (this._userSearch = new UserSearch());
+    return this._userSearch;
   }
 
   getProperties(propNames) {
@@ -98,10 +96,8 @@ class Upload extends Permissions(TagsOwner(Query)) {
             .then( () => this.refresh() );
   }
 
-  find(id,userid,_flags) {
+  find( id, userid, flags = Upload.ALL ) {
     
-    const flags = _flags === undefined ? Upload.ALL : _flags;
-
     let model = null;
 
     const queries = {
@@ -109,7 +105,7 @@ class Upload extends Permissions(TagsOwner(Query)) {
       remixes:    flags & Upload.REMIXES    ? this.remixes(id,'remixes')    : [],
       trackbacks: flags & Upload.TRACKBACKS ? this.trackbacks(id,'trackbacks') : [],
       sources:    flags & Upload.SOURCES    ? this.sources(id,'sources')    : [],
-      artist:     userid ? this.findUser(userid,'artist') : null,
+      artist:     userid ? this.userSearch.findUser(userid,'artist',this) : null,
     };
 
     this.error = null;
@@ -127,7 +123,7 @@ class Upload extends Permissions(TagsOwner(Query)) {
 
         // TODO: check if artist is really needed!
         
-        return model.artist ? model.artist : this.findUser(model.upload.artist.id);
+        return model.artist ? model.artist : this.userSearch.findUser(model.upload.artist.id);
 
       }).then( user => {
         

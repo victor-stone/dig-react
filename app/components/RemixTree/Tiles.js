@@ -1,10 +1,10 @@
 import React               from 'react';
 import PlayCapture         from '../services/PlayCapture';
-import TreeGallery         from '../models/TreeGallery';
+import TreeTiles           from '../models/TreeTiles';
 import { ModelTracker,
         PushPeruseModel }  from '../../mixins';
 
-class Gallery extends PushPeruseModel(ModelTracker(PlayCapture(React.Component)))
+class Tiles extends PushPeruseModel(ModelTracker(PlayCapture(React.Component)))
 {
 
   stateFromStore(store) {
@@ -12,10 +12,10 @@ class Gallery extends PushPeruseModel(ModelTracker(PlayCapture(React.Component))
   }
 
   render() {
-    return <TreeGallery model={this.state.model} skipUser={this.props.skipUser} />;
+    return <TreeTiles model={this.state.model} skipUser={this.props.skipUser} />;
   }
 }
 
-module.exports = Gallery;
+module.exports = Tiles;
 
 //

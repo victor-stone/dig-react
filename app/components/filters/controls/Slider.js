@@ -8,7 +8,7 @@ class SliderFilter extends React.Component
     super(...arguments);
     bindAll( this, 'onSlide', 'onValueChange' );
     const { store, filter:Filter } = this.props;
-    this.filter = store.addOrGetFilter(Filter);
+    this.filter = store.addProperty(Filter);
     this.state = { value: this.filter.value };
     this.filter.onChange( this.onValueChange );
   }

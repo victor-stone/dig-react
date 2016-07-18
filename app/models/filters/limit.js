@@ -4,20 +4,19 @@ class Limit extends QueryFilter
 {
   constructor() {
     super(...arguments);
+    
     this._propName    = 'limit';
     this._displayName = 'Limit';
+
+    this._setsDefaultFromNative = true;
+  }
+  
+  get isDirty() {
+    // does not participate in 'reset'
+    return false; 
   }
 }
 
-Object.assign(Limit,{
-  filterName: 'limit',
-  
-  fromQueryParams(qp) {
-    const filter = new Limit();
-    filter.aquireFromQueryParams(qp);
-    filter._defaultValue = filter._value;
-    return filter;    
-  }
-});
+Limit.propertyName = 'limit';
 
 module.exports = Limit;

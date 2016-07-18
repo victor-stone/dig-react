@@ -31,6 +31,7 @@ var LicenseInfoPopup = React.createClass({
   },
 
   genPopup() {
+    const LicenseInfo = () => LicenseInfoElement;
     return ( <Modal handleHideModal={this.handleHideModal} title={title}>
                 <LicenseInfo />
             </Modal> );

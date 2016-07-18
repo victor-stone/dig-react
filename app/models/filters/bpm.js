@@ -20,29 +20,18 @@ class BPM extends TagSwap
 {
   constructor() {
     super('reqtags',TAG_FILTER,DEFAULT_VALUE);
-    this._propName     = BPM.filterName;
     this._displayName  = 'BPM';
   }
 
-  get value() {
-    return valueFromTag(this._value);
+  toAbstract() {
+    return valueFromTag(this._value);    
   }
 
-  set value(val) {
-    super.value = tagFromValue(val);
+  fromAbstract(val) {
+    return tagFromValue(val);
   }
 }
 
-Object.assign(BPM,{
-
-  filterName: 'bpm',
-
-  fromQueryParams(qp) {
-    const filter = new BPM();
-    filter.aquireFromQueryParams(qp);
-    filter._defaultValue = filter._value;
-    return filter;
-  }
-});
+BPM.propertyName = 'bpm';
 
 module.exports = BPM;

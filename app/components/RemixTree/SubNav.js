@@ -5,28 +5,28 @@ import InlineCSS        from '../vanilla/InlineCSS';
 import css              from './style/subnav';
 import { TagString }    from '../../unicorns';
 
-function GallerySubNav(props) {
+function TilesSubNav(props) {
   return (
       <SubNavBar {...props}>
-        <InlineCSS css={css} id="gallery-subnav-css" />
-        <ReqTagsNavTabs tabs={GallerySubNav.tabs} all={props.all} store={props.store} tab="remix" />
+        <InlineCSS css={css} id="tile-subnav-css" />
+        <ReqTagsNavTabs tabs={TilesSubNav.tabs} all={props.all} store={props.store} tab="remix" />
       </SubNavBar>
   );
 }
 
-GallerySubNav.tabs = {
+TilesSubNav.tabs = {
   editorial_pick: 'ed picks',
   remix: 'remixes',
   sample: 'stems',
   acappella: 'pells'
 };
 
-const tagFilter = new RegExp('^' + Object.keys(GallerySubNav.tabs).join('|') + '$' );
+const tagFilter = new RegExp('^' + Object.keys(TilesSubNav.tabs).join('|') + '$' );
 
-GallerySubNav.isTab = function(tags) {
+TilesSubNav.isTab = function(tags) {
   return (new TagString(tags)).filter(tagFilter).toString();
 };
 
-module.exports = GallerySubNav;
+module.exports = TilesSubNav;
 
 //

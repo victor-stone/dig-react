@@ -94,7 +94,7 @@ class User extends API
     }
 
     var user = new UserStore();
-    this._currentProfilePromise = user.findUser(this._currentUser)
+    this._currentProfilePromise = user.profileFor(this._currentUser)
                                         .then( profile => {
                                           this._currentProfile = profile || NOT_LOGGED_IN;
                                           this._currentProfilePromise = null;

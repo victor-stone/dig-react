@@ -13,16 +13,6 @@ class Search extends QueryFilter
   }
 }
 
-Object.assign(Search,{
-  filterName: 'search',
-  
-  fromQueryParams(qp) {
-    const filter = new Search();
-    filter._defaultValue = '';
-    filter.aquireFromQueryParams(qp);
-    return filter;    
-  }
-
-});
+Search.propertyName = 'search';
 
 module.exports = Search;

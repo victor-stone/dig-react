@@ -1,7 +1,9 @@
-import querystring from 'querystring';
-import Query       from './query';
-import events      from '../models/events';
-import Tags        from './tags';
+import querystring  from 'querystring';
+import Query        from './query';
+import QueryFilters from './tools/query-filters';
+import events       from '../models/events';
+import Tags         from './tags';
+import UserSearch   from './user-search';
 
 import { hashParams,
          cleanSearchString,
@@ -20,12 +22,12 @@ import { hashParams,
       artist   - 'u' or 'user' a profile of an user
       artists  - 'searchp' search results in user database
       genres   - 'searchp' search results in genre tags
-      totals   - hash of totals for reqtags (see ./totals)
+      totals   - hash of totals for reqtags (see ./tools/totals-cache)
 
 */
 const MIN_GENRE_TAG_SIZE = 2;
 
-class Collection extends Query {
+class Collection extends QueryFilters(Query) {
 
   constructor(defaultParams) {
     super(...arguments);
@@ -36,50 +38,6 @@ class Collection extends Query {
     this.tagFields     = ['tags', 'reqtags', 'oneof'];
     this.totalsCache   = null;
     this.autoFetchUser = true;
-
-    this.filters        = new Map();
-    this.onFilterChange = this.onFilterChange.bind(this);
-  }
-
-  addOrGetFilter(filterComponent) {
-    const { filterName } = filterComponent;
-    if( this.filters.has(filterName) ) {
-      return this.filters.get(filterName);
-    }
-    const filter = filterComponent.fromQueryParams(this.queryParams);
-    filter.onChange( this.onFilterChange );
-    this.filters.set(filterName, filter);
-    return filter;
-  }
-
-  onFilterChange(filter) {
-    if( this._ignoreFilterEvent ) {
-      return;
-    }
-    const qp = this.queryParams;
-    filter.applyToQueryParams(qp);
-    if( filter.requiresFullRefresh ) {
-      this.refreshModel(qp);
-    } else {
-      this.refresh(qp);
-    }
-  }
-
-  paramsDirty() {
-    return Array.from(this.filters.values()).find( f => f.isDirty ) !== undefined;
-  }
-
-  applyDefaults() {
-    const qp = this.queryParams;
-    this._ignoreFilterEvent = true;
-    for( const filter of this.filters.values() ) {
-      if( filter.isDirty ) {
-        filter.reset();
-      }
-      filter.applyToQueryParams(qp);
-    }
-    this._ignoreFilterEvent = false;
-    return this.refreshModel(qp);
   }
 
   get supportsOptions() {
@@ -104,10 +62,13 @@ class Collection extends Query {
   }
   
   get tagStore() {
-    if( !this._tags ) {
-      this._tags = new Tags();
-    }
+    !this._tags && (this._tags = new Tags());
     return this._tags;
+  }
+
+  get userSearch() {
+    !this._userSearch && (this._userSearch = new UserSearch());
+    return this._userSearch;
   }
 
   paginate(offset) {
@@ -201,7 +162,7 @@ class Collection extends Query {
     var hash = {
       items:  this.cachedFetch(queryParams,'items'),
       total:  this.count(queryParams,'total'),
-      artist: (user && this.autoFetchUser) ? this.findUser(user,'artist') : null,
+      artist: (user && this.autoFetchUser) ? this.profileFor(user,'artist') : null,
     };
 
     if( hasSearch) {
@@ -211,12 +172,14 @@ class Collection extends Query {
       hash.genres  = [];
 
       if( text ) {
-        hash.artists = this.searchUsers({
-                    limit: 40,
-                    remixmin: 1,
-                    searchp: text
-                  },'artists');
-        hash.genres = this.tagStore.searchTags( text.split(/\s/).filter( t => t.length > MIN_GENRE_TAG_SIZE ), 'genres' );
+        const tagsFromText = text.split(/\s/).filter( t => t.length > MIN_GENRE_TAG_SIZE );
+
+        const userOpts = {  limit: 40,
+                            remixmin: 1,
+                            searchp: text };
+
+        hash.artists = this.userSearch.searchUsers(userOpts,'artists', this );
+        hash.genres = this.tagStore.searchTags( tagsFromText, 'genres', this );
       }
     }
 
@@ -255,6 +218,9 @@ class Collection extends Query {
     return hash;
   }
 
+  profileFor(user,deferName) {
+    return this.userSearch.findUser(user,deferName,this);
+  }
   // TODO: investigate generalizing cachedFetch
   
   cachedFetch(queryParams, deferName) {
@@ -349,6 +315,14 @@ class Collection extends Query {
     }
     return querystring.stringify(copy);    
   }
+
+  // TODO: this and all mention of 'reqtags' need to be factored out of here
+  
+  get currentReqtag() {
+    return this.totalsCache.filter(this.model.queryParams.reqtags).toString();
+  }
+
+
 }
 
 module.exports = Collection;

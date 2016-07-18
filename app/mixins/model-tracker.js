@@ -12,7 +12,12 @@ import StoreEvents from './store-events';
 const ModelTracker = target => class extends StoreEvents(target) {
   constructor() {
     super(...arguments);
-    this.state = this._stateFromStore(this.props.store);
+    const myState = this._stateFromStore(this.props.store);
+    if( this.state ) {
+      Object.assign(this.state,myState);
+    } else {
+      this.state = myState;  
+    }
   }
 
   get storeEvents() {

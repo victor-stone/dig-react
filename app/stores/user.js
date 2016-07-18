@@ -1,7 +1,7 @@
 import Remixes     from './remixes';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
-import TotalsCache from './totals';
+import TotalsCache from './tools/totals-cache';
 import events      from '../models/events';
 
 const USER_FILTERS      = [ 'editorial_pick', 'remix', 'acappella', 'sample' ];
@@ -13,7 +13,7 @@ class User extends Remixes {
     this.totalsCache = new TotalsCache(USER_FILTERS);
   }
 
-  findUser(id,deferName) {
+  profileFor(id,deferName) {
     var queryParams = {
       u: id,
       dataview: 'user_info',

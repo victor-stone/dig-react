@@ -6,26 +6,18 @@ class MatchAll extends QueryFilter
     super(...arguments);
     this._propName    = 'type';
     this._displayName = 'match all';
+    this._defaultValue = 'any';
   }
 
-  set value(val) {
-    super.value = val ? 'all' : 'any';
+  fromAbstract(val) {
+    return val ? 'all' : 'any';
   }
 
-  get value() {
+  toAbstract() {
     return this._value === 'all';
   }
 }
 
-Object.assign(MatchAll,{
-  filterName: 'matchAll',
-  
-  fromQueryParams(qp) {
-    const filter = new MatchAll();
-    filter._defaultValue = 'any';
-    filter.aquireFromQueryParams(qp);
-    return filter;    
-  }
-});
+MatchAll.propertyName = 'matchAll';
 
 module.exports = MatchAll;

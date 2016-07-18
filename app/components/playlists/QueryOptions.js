@@ -18,7 +18,7 @@ function PlaylistQueryOptions(props) {
     return ( 
       <OptionsWrap>
         <li>
-          <UploadType store={store} />
+          <UploadType store={store} id="typelist"/>
         </li>
         <li>
           <License store={store} />
@@ -27,7 +27,7 @@ function PlaylistQueryOptions(props) {
           <Sort store={store} />
         </li>
         <li>
-          <InstrumentalOnly store={store} />
+          <InstrumentalOnly store={store} className="btn btn-info" />
         </li>
         <li>
           <Artist store={store} />

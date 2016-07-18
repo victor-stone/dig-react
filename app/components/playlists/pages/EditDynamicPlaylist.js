@@ -1,8 +1,8 @@
 import React                from 'react';
-import DynamicPlaylistForm  from '../DynamicPlaylistForm';
+import EditDynamicPlaylist  from '../EditDynamicPlaylist';
 import LinkToPlaylist       from '../../services/LinkToPlaylistRoute';
 
-class EditDynamicPlaylist extends React.Component
+class EditDynamicPlaylistPage extends React.Component
 {
   constructor() {
     super(...arguments);
@@ -19,8 +19,8 @@ class EditDynamicPlaylist extends React.Component
   render() {
     const { store, store: {model:{head}} } = this.props;
 
-    return (<DynamicPlaylistForm store={store} onSave={this.onSave} title={head.name} prefix="edit" />);
+    return (<EditDynamicPlaylist store={store} onSave={this.onSave} title={head.name} prefix="edit" />);
   }
 }
 
-module.exports = EditDynamicPlaylist;
+module.exports = EditDynamicPlaylistPage;

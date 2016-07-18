@@ -6,16 +6,12 @@ class TagField extends QueryFilter
   constructor(tagField,defaultValue = null) {
     super();
     this._defaultValue = defaultValue;
-    this._tagField     = tagField;
-    this._propName     = '_unnamed_tag_field_';
+    this._propName     = tagField;
     this._displayName  = '_Un-Named-Tag-Field_';
   }
 
-  _applyTags(qp,cb) {
-    const [ ts, isTS ] = this._tsFromQP(qp);
-    cb(ts);
-    !isTS && (qp[this._tagField] = ts.toString());
-    return this;
+  _applyTags(tags,cb) {
+    return cb(this._tsFromQP(tags)).toString();
   }
 
   _aquireTagsValue(qp,cb) {
@@ -23,11 +19,8 @@ class TagField extends QueryFilter
     return this;
   }
 
-  _tsFromQP(qp) {
-    const maybeTS   = qp[this._tagField];
-    const isTS      = maybeTS instanceof TagString;
-    const ferSureTS = isTS ? maybeTS : new TagString(maybeTS);
-    return [ ferSureTS, isTS ];    
+  _tsFromQP(maybeTS) {
+    return maybeTS instanceof TagString ? maybeTS : new TagString(maybeTS);
   }
 }
 

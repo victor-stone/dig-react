@@ -10,7 +10,8 @@ import { Row,
          FluidContainer,
          Column }        from '../vanilla/Grid';
 
-import css               from './style/edit';
+import css               from '../filters/style/query-options';
+import editCSS           from './style/edit';
 
 import DisableScrollToTop from '../services/DisableScrollToTop';
 
@@ -22,7 +23,7 @@ class DynamicForm extends DisableScrollToTop(React.Component)
     var id    = prefix + '-playlist-css';
     return (
         <div className={cls}>
-          <InlineCSS css={css} id={id} />
+          <InlineCSS css={css + editCSS} id={id} />
           <PageHeader icon="edit" title={title} />
           <FluidContainer>
             <Row>

@@ -6,6 +6,8 @@ import Glyph from '../vanilla/Glyph';
 
 import api from '../../services/ccmixter';   
 
+// I hate this code so fucking much
+
 class FollowButton extends CurrentUserTracker(ModelTracker(React.Component))
 {
   constructor() {

@@ -8,11 +8,11 @@ class UnmixedOnly extends QueryFilter
     this._displayName = 'unmixed only';
   }
 
-  set value(val) {
-    super.value = val ? '0' : '' ;
+  fromAbstract(val) {
+    return val ? '0' : '' ;
   }
 
-  get value() {
+  toAbstract() {
     return this._value === '0';
   }
 
@@ -22,12 +22,12 @@ class UnmixedOnly extends QueryFilter
 }
 
 Object.assign(UnmixedOnly,{
-  filterName: 'UnmixedOnly',
+  propertyName: 'UnmixedOnly',
   
-  fromQueryParams(qp) {
+  fromValue(qp) {
     const filter = new UnmixedOnly();
     filter._defaultValue = '';
-    filter.aquireFromQueryParams(qp);
+    filter.fromNative(qp);
     return filter;    
   }
 });

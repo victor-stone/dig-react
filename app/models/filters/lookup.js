@@ -1,11 +1,11 @@
 import QueryFilter  from '../query-filter';
 
-class Artist extends QueryFilter
+class Lookup extends QueryFilter
 {
   constructor() {
     super(...arguments);
-    this._propName    = 'user';
-    this._displayName = 'Artist';
+    this._propName    = 'lookup';
+    this._displayName = 'Look up';
   }
 
   get isDirty() {
@@ -14,6 +14,6 @@ class Artist extends QueryFilter
   }
 }
 
-Artist.propertyName = 'artist';
+Lookup.propertyName = 'lookup';
 
-module.exports = Artist;
+module.exports = Lookup;

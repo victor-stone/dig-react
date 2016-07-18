@@ -10,8 +10,8 @@ var DeadLink = React.createClass({
   },
 
   render() {
-    let { icon, text, children } = this.props;
-    icon && (text = ' ' + text);
+    let { icon, text = '', children } = this.props;
+    icon && text && (text = ' ' + text);
     return (<a className="deadlink" {...this.props} href="#" onClick={this.onClick} >{icon && <Glyph icon={icon} />}{text}{children}</a>);
   }
 });

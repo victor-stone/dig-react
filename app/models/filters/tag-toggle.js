@@ -5,16 +5,15 @@ class TagToggle extends TagField
   constructor(tagField,defaultValue,toggledOnValue) {
     super(tagField,defaultValue);
     this._toggledOnValue = toggledOnValue;
-    this._propName       = '_unnamed_tag_toggle_';
     this._displayName    = '_Un-Named-Tag-Toggle_';
   }
 
-  applyToQueryParams(qp) {
-    return this._applyTags( qp, ts => ts.toggle( this._toggledOnValue, this._value) );
+  toNative(tags) {
+    return this._applyTags( tags, ts => ts.toggle( this._toggledOnValue, this._value) );
   }
 
-  aquireFromQueryParams(qp) {
-    return this._aquireTagsValue( qp, ts => ts.contains(this._toggledOnValue) );
+  fromNative(tags) {
+    super.fromNative(this._aquireTagsValue( tags, ts => ts.contains(this._toggledOnValue) ));
   }
 }
 

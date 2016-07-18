@@ -3,9 +3,8 @@ import { Glyph,
          InlineCSS } from '../../components/vanilla';
 import Link          from '../../components/services/LinkToRoute';
 import { Row,
-         FluidContainer,
          Container,
-         Column }     from '../../components/vanilla/Grid';
+         Column }    from '../../components/vanilla/Grid';
 
 function fb_custom_fb_login() {
 

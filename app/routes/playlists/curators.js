@@ -1,8 +1,8 @@
-import React    from 'react';
-import Query    from '../../stores/query';
-import Blobs    from '../../stores/blobs';
-import SubNav   from '../../components/playlists/SubNav';
-import pages    from '../../components/playlists/pages';
+import React      from 'react';
+import UserSearch from '../../stores/user-search';
+import Blobs      from '../../stores/blobs';
+import SubNav     from '../../components/playlists/SubNav';
+import pages      from '../../components/playlists/pages';
 
 const CURATORS_BLOB = 226312;
 
@@ -21,8 +21,8 @@ const curators = Object.assign(pages.Curators, {
     var blobs = new Blobs();
     return blobs.find( CURATORS_BLOB ).then( blob => {
       var ids = blob.text;
-      var query = new Query();
-      return query.findUsers( { ids } ).then( curators =>{
+      var query = new UserSearch();
+      return query.findUsers( ids ).then( curators =>{
         query.model = curators;
         return query;
       });

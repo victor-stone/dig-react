@@ -1,4 +1,7 @@
-'use strict';
+
+/*
+  See ./serialize
+*/
 
 class Model {
 

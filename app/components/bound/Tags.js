@@ -7,8 +7,7 @@ import { bindAll,
          selectors }    from '../../unicorns';
 import TagStore         from '../../stores/tags';
 
-import { SelectedTagsTracker } from '../../mixins';
-import DelayedCommitTagStore   from '../../stores/delayed-commit-tag-store';
+import Filter           from '../../models/filters/tags';
 
 import { 
           StaticTagsList,
@@ -103,37 +102,61 @@ CategoryTagBox.css = CheckableTagsList.css + `
 }
 `;
 
+const TagFilter = baseclass => class extends baseclass {
+  constructor() {
+    super(...arguments);
+    this.onTagsChanged = this.onTagsChanged.bind(this);
+    this._setupStore(this.props.store);
+    this.state = { tags: this.filter.value };
+  }
 
+  componentWillMount() {
+    this._mounted = true;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.props.store !== nextProps.store && this._setupStore(nextProps.store);
+    this.setState( { tags: this.filter.value } );
+  }
+
+  shouldComponentUpdate(nextProps,nextState) {
+    return !this.state.tags.isEqual(nextState.tags);
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _setupStore(store) {
+    this.filter = store.addProperty(Filter);
+    this.filter.onChange( this.onTagsChanged );
+    this.toggle = this.filter.toggle.bind(this.filter);
+  }
+
+  onTagsChanged(filter) {
+    if( this._mounted ) {
+      this.setState( {tags: filter.value} );
+    }
+  }
+
+};
 
 /*
   Props: 
     - store - required property: tags [TagString]
-        watches MODEL_UPDATE events
-
 */
 
-class BoundStaticTagList extends SelectedTagsTracker(React.Component)
+class BoundStaticTagList extends TagFilter(React.Component)
 {
-  shouldComponentUpdate(nextProps) {
-    return this.props.store.tags.hash !== nextProps.store.tags.hash;
-  }
-
   render() {
-    return ( <StaticTagsList className="tag-list-bound" model={this.state.tags} />);
+    return ( this.state.tags.length 
+                ? <StaticTagsList className="tag-list-bound" model={this.state.tags} />
+                : <span style={{color:'white'}}>{'.'}</span> );
   }
 }
 
-class BoundSelectableTagList extends SelectedTagsTracker(React.Component)
+class BoundSelectableTagList extends TagFilter(React.Component)
 {
-  constructor() {
-    super(...arguments);
-    this.onSelected = this.onSelected.bind(this);
-  }
-
-  onSelected(tag,toggle) {
-    this.props.store.toggleTag(tag,toggle);
-  }
-
   render() {
     const { tags:selected } = this.state;
     
@@ -142,7 +165,7 @@ class BoundSelectableTagList extends SelectedTagsTracker(React.Component)
     const className = selectors('tag-list-selectable-bound', cls );
     const props     = { selected, model, glyphs, floating, className };
 
-    return( <SelectableTagList {...props} onSelected={this.onSelected} /> );
+    return( <SelectableTagList {...props} onSelected={this.toggle} /> );
   }
 }
 
@@ -154,29 +177,20 @@ class BoundSelectableTagList extends SelectedTagsTracker(React.Component)
     - category [BoundCategoryTagBox.categories]
 
 */
-class BoundCategoryTagBox extends SelectedTagsTracker(React.Component)
+class BoundCategoryTagBox extends TagFilter(React.Component)
 {
-  constructor() {
-    super(...arguments);
-    this.onSelected = this.onSelected.bind(this);
-  }
-
-  onSelected(tag,toggle) {
-    this.props.store.toggleTag(tag,toggle);
-  }
-
   render() {
     const { tags } = this.state;
 
     const { className = '', category, minCount } = this.props;
 
-    var cls = selectors('tag-list-bound', className);
+    const cls = selectors('tag-list-bound', className);
 
     return (<CategoryTagBox 
                 category={category} 
                 minCount={minCount} 
                 selected={tags} 
-                onSelected={this.onSelected} 
+                onSelected={this.toggle} 
                 className={cls}
             />);
   }
@@ -186,14 +200,14 @@ BoundCategoryTagBox.categories = CategoryTagBox.categories;
 
 
 /*
-  Mirrors and tracks the .tags property in a store - if a tag is clicked
+  Mirrors and tracks the tags property in a store - if a tag is clicked
   on it will be removed from the store. (aka de-selected)
 
   Props: 
     - store 
 
 */
-class BoundSelectedTagList extends SelectedTagsTracker(React.Component)
+class BoundSelectedTagList extends TagFilter(React.Component)
 {
   constructor() {
     super(...arguments);
@@ -201,11 +215,11 @@ class BoundSelectedTagList extends SelectedTagsTracker(React.Component)
   }
 
   onRemove(tag) {
-    this.props.store.toggleTag(tag,false);
+    this.filter.toggle(tag,false);
   }
 
   onClear() {
-    this.props.store.clearTags();
+    this.filter.reset();
   }
 
   render() {
@@ -227,12 +241,8 @@ class BoundSelectedTagList extends SelectedTagsTracker(React.Component)
 
 const GENRE = BoundCategoryTagBox.categories.GENRE;
 
-class DualTagFieldWidget extends React.Component
+class DualTagFieldWidget extends TagFilter(React.Component)
 {
-  constructor() {
-    super(...arguments);
-  }
-
   componentDidMount() {
     /* globals $ */
     if( this.props.cancelCallback ) {
@@ -241,10 +251,6 @@ class DualTagFieldWidget extends React.Component
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return this.props.store.tags.hash !== nextProps.store.tags.hash;
-  }
-  
   // TODO: tag cats should be navtabs, not just stacked on top of each other
   render() {
     const { store, cancelCallback, withMatchAll = false, cats = [GENRE] } = this.props;
@@ -258,7 +264,7 @@ class DualTagFieldWidget extends React.Component
   }
 }
 
-const editingClasses = { [false]: '', [true]: ' editing '};
+const editingClasses = { [false]: '', [true]: 'editing'};
 
 const TagEditMixin = target => class extends target {
 
@@ -266,36 +272,50 @@ const TagEditMixin = target => class extends target {
     super(...arguments);
     bindAll(this, 'onEdit', 'onCancel', 'onDone', 'cancelCB' );
     this.state = { editing: false };
-    this._setupStore(this.props.store);
+    this._setupStore(this.props.store,this.props.delayCommit);
   }
 
-  _setupStore(store) {
-    this._store = this.props.delayCommit ? new DelayedCommitTagStore(store) : store;    
+  _setupStore(store,delay) {
+    if( delay ) {
+      this.filter = new Filter();
+      // yea, this is hacky
+      this.filter.fromNative(store.nativeProperties['tags']);
+    } else {
+      this.filter = store.addProperty(Filter);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    this._setupStore(nextProps.store);
-    this.setState({editing:false});
+    if( this.props.store !== nextProps.store ) {
+      this._setupStore(nextProps.store,nextProps.delayCommit);
+    }
+    this.setState({ editing:false });
   }
 
   onEdit() {
-    this.setState( {editing:true});
+    this.setState({ editing:true });
   }
 
   onCancel() {
-    this.props.delayCommit && this._store.resetTags();
+    this.filter.reset();
     this._closeMe();
   }
 
   onDone() {
-    this.props.delayCommit && this._store.commitTags();
-    this.props.onDone && this.props.onDone();    
+    const { delayCommit, store, onDone } = this.props;
+
+    if( delayCommit ) {
+      store.injectProperty(Filter,this.filter).onChange();
+      store.removeFilter(Filter);
+    }
+
+    onDone && onDone();    
     this._closeMe();
   }
 
   _closeMe() {
     var ss = () => this.setState({editing:false});
-    this.pcb && this.pcb(ss)  || ss();    
+    this.pcb && this.pcb(ss) || ss();    
   }
 
   cancelCB( pcb ) {
@@ -303,16 +323,18 @@ const TagEditMixin = target => class extends target {
   }
 
   get widget() {
+    const { store } = this.props;
     return this.state.editing
-                  ? <DualTagFieldWidget store={this._store} cancelCallback={this.cancelCB} />
-                  : <BoundStaticTagList store={this._store} />;
+                  ? <DualTagFieldWidget store={store} cancelCallback={this.cancelCB} />
+                  : <BoundStaticTagList store={store} />;
   }
 
   get editControls() {
     const { controlsCls = '', onDone, delayCommit } = this.props;
     const { editing } = this.state;
-    var cls = controlsCls + editingClasses[editing];
-    return this._store.permissions.canEdit
+    const cls = selectors(controlsCls, editingClasses[editing] );
+
+    return this.props.store.permissions.canEdit
                   ? <span className={cls}>
                       {editing && (onDone || delayCommit) && <EditControls.Done onDone={this.onDone} />}
                       {editing

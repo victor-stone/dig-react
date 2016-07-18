@@ -7,19 +7,13 @@ class Sort extends QueryFilter
     super(...arguments);
     this._propName    = 'digrank';
     this._displayName = 'Sort';
+    this._setsDefaultFromNative = true;
   }
 }
 
 Object.assign(Sort,{
-  filterName: 'Sort',
+  propertyName: 'Sort',
   
-  fromQueryParams(qp) {
-    const filter = new Sort();
-    filter.aquireFromQueryParams(qp);
-    filter._defaultValue = filter._value;
-    return filter;    
-  },
-
   options: {
       [qc.magicSort.digrank]: 'magic sort',
       [qc.recent.digrank   ]: 'recent    ',

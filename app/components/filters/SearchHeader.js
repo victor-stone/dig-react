@@ -7,7 +7,7 @@ class SearchHeader extends React.Component
   constructor() {
     super(...arguments);
     const { store } = this.props;
-    this.filter = store.addOrGetFilter(Filter);
+    this.filter = store.addProperty(Filter);
     this.onValueChange = this.onValueChange.bind(this);
     this.filter.onChange( this.onValueChange );
     this.state = { text: this.filter.value };

@@ -1,6 +1,7 @@
 import React         from 'react';
-import DynamicPlaylistForm  from '../DynamicPlaylistForm';
-import CreateDynamicPopup    from '../CreateDynamicPopup';
+
+import EditDynamicPlaylist  from '../EditDynamicPlaylist';
+import CreateDynamicPopup   from '../CreateDynamicPopup';
 
 class NewDynamicPlaylist extends React.Component
 {
@@ -15,7 +16,7 @@ class NewDynamicPlaylist extends React.Component
 
   render() {
     var store = this.props.store;
-    return (<DynamicPlaylistForm store={store} onSave={this.onSave} title="New Playlist" prefix="new" />);
+    return (<EditDynamicPlaylist store={store} onSave={this.onSave} title="New Playlist" prefix="new" />);
   }
 }
 

@@ -1,8 +1,8 @@
-import TaggedCollection from './tagged-collection';
-import ccmixter         from '../models/ccmixter';
-import serialize        from '../models/serialize';
+import Collection from './collection';
+import ccmixter   from '../models/ccmixter';
+import serialize  from '../models/serialize';
 
-class Samples extends TaggedCollection {   
+class Samples extends Collection {   
 
   constructor() {
     super(...arguments);

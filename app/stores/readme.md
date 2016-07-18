@@ -1,22 +1,20 @@
 ```javascript
 /*
     Query
-      | -  Collection
-      |     |-- TaggedCollection
-      |     |      | -- Acappella
-      |     |      | -- Remixes
-      |     |      |    |-- User
-      |     |      | -- Samples
-      |     |      |-- Playlists
-      |     |
+      | -  Collection -> tools/QueryFilters
+      |     | -- Acappella
+      |     | -- Remixes
+      |     |    |-- User
+      |     | -- Samples
+      |     |-- Playlists
       |     |-- PlaylistTracks
       |     |-- Ratings
       |     |-- Tags
       |     |-- UserFeed
       |
-      | - Playist
+      | - Playist -> tools/Properties
       | - Topics
-      | - Upload
+      | - Upload -> tools/Properties
 
 */
-```javascript
+```

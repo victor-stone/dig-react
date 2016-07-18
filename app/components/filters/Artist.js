@@ -1,6 +1,8 @@
-import React      from 'react';
-import Query      from '../../stores/query';
-import Filter     from '../../models/filters/artist';
+import React        from 'react';
+import UserSearch   from '../../stores/user-search';
+import Filter       from '../../models/filters/artist';
+import LookupFilter from '../../models/filters/lookup';
+import events       from '../../models/events';
 
 import SearchBox   from '../SearchBox';
 
@@ -11,19 +13,14 @@ class ArtistList extends React.Component
   constructor() {
     super(...arguments);
     bindAll( this, 'onValueChange' ); 
-    this.filter = this.props.store.addOrGetFilter(Filter);
-    this.filter.onChange( this.onValueChange );
+    this.lookupFilter = this.props.store.addProperty(LookupFilter);
+    this.lookupFilter.onChange( this.onValueChange );
     this.state = { artists: [] };
   }
 
-  componentWillMount() {
-    this.query = new Query();
-    this.getArtists(this.filter.value);
-  }
-
   getArtists(search) {
-    if( this.query && search ) {
-      this.query.lookUpUsers( search, { remixmin: 1 } )
+    if( search ) {
+      this.props.store.lookUpUsers( search )
         .then( artists => this.setState( { artists } ) );
     } else {
       this.setState( { artists: [] } );
@@ -35,7 +32,7 @@ class ArtistList extends React.Component
   }
 
   artistSelect(a) {
-    return () => this.filter.value = a;
+    return () => {this.props.onUserSelect(a); this.lookupFilter.value = a;};
   }
 
   _fancyName(a) {
@@ -62,38 +59,67 @@ class ArtistFilter extends React.Component
 {
   constructor() {
     super(...arguments);
-    bindAll( this, 'onSubmitSearch', 'onValueChange' ); 
-    this.filter = this.props.store.addOrGetFilter(Filter);
-    this.filter.onChange( this.onValueChange );
-    this.state = { u: this.filter.value  };
+    bindAll( this, 'onSubmitSearch', 'onModelUpdated', 'onUserSelect'); 
+
+    // This is the preview store
+
+    this.previewFilter = this.props.store.addProperty(Filter);
+
+    this.state = { u: this.previewFilter.value  };
+
+    // This is our search store
+
+    this.search = new UserSearch({ remixmin:1 });
+    this.lookupFilter = this.search.addProperty(LookupFilter);
+    this.search.on( events.MODEL_UPDATED, this.onModelUpdated );
   }
 
-  onValueChange(filter) {
-    this.setState( { u: filter.value } );
-  }
 
-  _kill() {
-    this.filter.value = this.filter.defaultValue;
-  }
+  // The user is typing in our edit, field
+  // send the text to the search list
 
-  onSubmitSearch(u, isIcon, filterCB) {
+  onSubmitSearch(partialArtistName, userCancelledSearch, filterCB) {
     
-    if( isIcon ) { // user clicked on [x]
+    if( userCancelledSearch ) { 
       filterCB('');
       this._kill();
-    } else if( u && u.length > 0 ) {
-      this.filter.value = u;
+    } else if( partialArtistName && partialArtistName.length > 0 ) {
+      this.lookupFilter.value = partialArtistName;
     } else {
       this._kill();
     }
+  }
+
+  // user selected an artist
+  //
+  onUserSelect(u) {
+    this.setState({ u });
+  }
+
+  // The search list updated  
+  // 
+  onModelUpdated(model) {
+    
+    const [ {id} = {id:0} ] = model.items;
+
+    if( id ) {
+      this.previewFilter.value !== id && (this.previewFilter.value = id);
+    } else {
+      this._kill();
+    }
+  }
+
+  _kill() {
+    this.previewFilter.value = this.previewFilter.defaultValue;
+    this.lookupFilter.value  = this.lookupFilter.defaultValue;
   }
 
   render() {
     const { u } = this.state;
     return (
       <div className="artist-filter" >
-          <SearchBox icon="times" ref="edit" defaultValue={u} placeholder="artist name" submitSearch={this.onSubmitSearch} anyKey />
-          <ArtistList store={this.props.store} />
+          <SearchBox icon="times" value={u} placeholder="artist name" submitSearch={this.onSubmitSearch} anyKey />
+          <ArtistList store={this.search} onUserSelect={this.onUserSelect} />
       </div>
       );
   }

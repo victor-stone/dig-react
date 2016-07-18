@@ -1,7 +1,6 @@
 import React     from 'react';
 
-import { Glyph, 
-        DeadLink }       from '../vanilla';
+import { DeadLink }     from '../vanilla';
 
 import { ModelTracker } from '../../mixins';
 

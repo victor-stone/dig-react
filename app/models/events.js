@@ -18,12 +18,11 @@ var Events = {
   STOP:               'stop',
   
   MODEL_UPDATED:      'model_updated',
-  TAGS_SELECTED:      'tags_selected',
 
-  QUERY_FILTER_CHANGED:'query_filter_changed',
+  PROPERTY_CHANGED:   'property_changed',
   
   DOWNLOAD:           'download',
-  USER_SEARCH:        'user_search',
+
   APP_ALERT:          'app_alert',
   USER_LOGIN:         'user_login',
   REQUEST_MODAL:      'request_modal',

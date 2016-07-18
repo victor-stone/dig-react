@@ -13,7 +13,7 @@ function BrowsePlaylists(props)
     const { store, skipUser } = props;
     return (
       <Container className="playlist-browser">
-        <InlineCSS css={browseCSS + tagsCSS } id="playlists-browse-css"/>
+        <InlineCSS css={browseCSS + tagsCSS} id="playlists-browse-css"/>
         <Row>
           <Column cols="8" offset="2">
             <PlaylistList store={store} skipUser={skipUser} />

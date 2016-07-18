@@ -1,16 +1,16 @@
 import rsvp             from 'rsvp';
 import Query            from './query';
-import TaggedCollection from './tagged-collection';
+import Collection       from './collection';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import env              from '../services/env';
 import { TagString }    from '../unicorns';
 import api              from '../services/ccmixter';
 import events           from '../models/events';
-import TagsOwner        from '../mixins/tags-owner';
+import Properties       from './tools/properties';
 import Permissions      from '../mixins/permissions';
 
-class PlaylistTracks extends TaggedCollection {
+class PlaylistTracks extends Collection {
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName)
               .then( serialize(ccmixter.PlaylistTrack) );
@@ -22,7 +22,7 @@ PlaylistTracks.storeFromQuery = function(params,defaults) {
   return pl.getModel(params).then( () => pl );  
 };
 
-class Playlist extends Permissions(TagsOwner(Query)) {
+class Playlist extends Permissions(Properties(Query)) {
 
   constructor() {
     super(...arguments);
@@ -40,8 +40,8 @@ class Playlist extends Permissions(TagsOwner(Query)) {
   }
 
   get tags() {
-    var h = this.model.head;
-    return new TagString(h.isDynamic ? h.queryParams.tags : h.tags);
+    const { head } = this.model;
+    return new TagString(head.isDynamic ? head.queryParams.tags : head.tags);
   }
 
   set tags(t) {
@@ -62,13 +62,32 @@ class Playlist extends Permissions(TagsOwner(Query)) {
       });
   }
 
+  get nativeProperties() {
+    const { head } = this.model;
+    const props = Object.assign( {}, head );
+    if( this.isDynamic ) {
+      props['tags'] = head.queryParams.tags;
+    }
+    return props;
+  }
+
   getProperties(propNames) {
     var props = {};
     propNames.forEach( n => props[n] = this.model.head[n] );
+
     return props;
   }
 
   applyProperties(props) {
+    const { tags } = props;
+    if( tags && this.isDynamic ) {
+      this.applyQuery({tags:tags.toString()});
+      return;
+    }
+
+    // FIXME: all remote property settings need to be done elsewhere
+    //        use the Properties/QueryFilter pattern
+
     var id = this.model.head.id;
     return api.playlist.update(id,props)
       .then( () => this._fetchHead(id) )

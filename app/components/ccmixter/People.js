@@ -1,6 +1,6 @@
 /* eslint "react/no-danger":0 */
 import React   from 'react';
-import Gallery          from '../RemixTree/Gallery';
+import Tiles            from '../RemixTree/Tiles';
 import css              from './style/people';
 
 import Followers        from './Follow';
@@ -92,7 +92,7 @@ class PeoplePage extends ModelTracker(React.Component)
         }
         <Row>
           <Column cols="10" offset="1">
-            <Gallery store={store} skipUser />
+            <Tiles store={store} skipUser />
           </Column>
         </Row>
       </FluidContainer>

@@ -17,7 +17,7 @@ class NoTagHits extends ModelTracker(React.Component)
 
     var optionsDirty = store.paramsDirty();
     var showNoHits   = !total;
-    var numTags      = (new TagString(tags)).getLength();
+    var numTags      = (new TagString(tags)).length;
     var showMatchAny = type === 'all' && numTags > 1;
     return { optionsDirty, showNoHits, showMatchAny };
   }

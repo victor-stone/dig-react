@@ -4,7 +4,7 @@ const DisplayOnlyMixin = target => class extends target {
   constructor() {
     super(...arguments);
     this.onValueChange = this.onValueChange.bind(this);
-    this.filter = this.props.store.addOrGetFilter(this.filterComponent);
+    this.filter = this.props.store.addProperty(this.filterComponent);
     this.state = { value: this.filter.value };
     this.filter.onChange( this.onValueChange );
   }

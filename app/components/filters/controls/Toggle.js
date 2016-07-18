@@ -8,7 +8,7 @@ class ToggleFilter extends React.Component
     super(...arguments);
     bindAll( this, 'onToggle', 'onValueChange');
     const { store, filter:Filter } = this.props;
-    this.filter = store.addOrGetFilter(Filter);
+    this.filter = store.addProperty(Filter);
     this.filter.onChange( this.onValueChange );
     this.state = { toggle: this.filter.value };
   }

@@ -2,7 +2,7 @@ var css =
 
 `
 .people-head,
-.people .gallery .play-list li.gallery-element,
+.people .tiles .play-list li.tile,
 div.subnav-option-bar.people-subnav {
   background-image: -webkit-linear-gradient(top, #276C28 0%, #3FB040 100%);
   background-image: -o-linear-gradient(top, #276C28 0%, #3FB040 100%);

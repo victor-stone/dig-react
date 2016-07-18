@@ -1,7 +1,11 @@
-import React  from 'react';
-import Glyph  from './vanilla/Glyph';
+import React    from 'react';
+import DeadLink from './vanilla/DeadLink';
 
-import { cleanSearchString } from '../unicorns';
+import { cleanSearchString,
+         selectors,
+         bindAll } from '../unicorns';
+
+const DEFAULT_INPUT_SIZE = 30;
 
 const RETURN_KEY = 13;
 
@@ -27,68 +31,79 @@ const RETURN_KEY = 13;
     anyKey - [boolean] call submitSearch on every keystroke (default: only on return key)
 
 */
-const SearchBox = React.createClass({
+class SearchBox extends React.Component
+{
+  constructor() {
+    super(...arguments);
+    bindAll( this, 'onChange', 'onKeyDown', 'onIcon' );
+    const { value = '', defaultValue = '' } = this.props;
+    this.state = { value: value || defaultValue };
+  }
 
- getInitialState() {
-    return {
-      value: this.props.defaultValue || ''
-    };
-  },
-
-  handleChange(event) {
+  componentWillReceiveProps(nextProps) {
+    if( 'value' in nextProps ) {
+      this.setState({ value: nextProps.value });
+    }
+  }
+  
+  onChange(event) {
     this.setState({value: event.target.value},function() {
       if( this.props.anyKey ) {
         this.submitSearch();
       }
     });
-  },
+  }
 
-  onKey(e) {
+  onKeyDown(e) {
     if( e.keyCode === RETURN_KEY ) {
       this.submitSearch();
     }
-  },
+  }
 
   submitSearch(isIcon) {
     var text = cleanSearchString(this.state.value);
-    this.props.submitSearch( text, isIcon || false, (newText) => {
-      this.setState({value: newText});
+    this.props.submitSearch( text, isIcon || false, (value) => {
+      this.setState({ value });
     });
-  },
+  }
 
-  onIcon(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  onIcon() {
     this.submitSearch(true);
-  },
+  }
 
   render() {
 
-    var pholder = this.props.placeholder || 'genre, instrument, etc.';
-    var icon    = this.props.icon || 'search';
-    var onIcon  = this.onIcon;
+    const { placeholder = 'genre, instrument, etc.', 
+            icon = 'search',
+            className = '',
+            size = DEFAULT_INPUT_SIZE,
+            id = 'searchText'
+          } = this.props;
+
+    const { value } = this.state;
+
+    const inputProps = {
+      id,
+      size,
+      value,
+      placeholder,
+      ref:       'input',
+      type:      'text',
+      className: selectors('form-control',className),
+      onChange:  this.onChange,
+      onKeyDown: this.onKeyDown,
+    };
 
     return (
       <div className="form-group input-group input-group-sm">
-          <input
-            type="text"
-            className="form-control"
-            value={this.state.value}
-            placeholder={pholder}
-            onChange={this.handleChange}
-            onKeyDown={this.onKey}
-            ref="input"
-            size="30"
-            id="searchText"
-          />
-        <span className="input-group-addon">              
-          <a href="#" onClick={onIcon} ><Glyph icon={icon} /></a>
+        <input {...inputProps} />
+        <span className="input-group-addon">  
+          <DeadLink onClick={this.onIcon} icon={icon} />
         </span>
       </div>      
     );
-},
-
-});
+  }
+}
 
 
 module.exports = SearchBox;

@@ -33,7 +33,7 @@ class StemsDetail extends React.Component
           } = this.props;
     
     // TODO: these tags used to be filtered by genre/instrument
-    //       maybe this should be store.tags
+
     const userTags = new TagString(model.userTags);
 
     return (

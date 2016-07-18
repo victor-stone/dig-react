@@ -1,5 +1,5 @@
 import rsvp             from 'rsvp';
-import { TagString }    from '../unicorns';
+import { TagString }    from '../../unicorns';
 
 const MAX_CACHE_KEYS = 50;
 

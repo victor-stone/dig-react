@@ -1,13 +1,13 @@
-import TaggedCollection from './tagged-collection';
+import Collection       from './collection';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
-import TotalsCache      from './totals';
+import TotalsCache      from './tools/totals-cache';
 
 const PELL_FILTERS = [ 'featured', 'spoken_word', 'melody', 'rap' ];
 
 var totals = new TotalsCache(PELL_FILTERS);
 
-class ACappellas extends TaggedCollection 
+class ACappellas extends Collection 
 {
   constructor() {
     super(...arguments);

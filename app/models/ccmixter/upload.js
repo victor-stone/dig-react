@@ -30,7 +30,7 @@ class File extends Model {
 
     this.getTags = function() {
       if( 'ccud' in this.file_extra ) {
-        return new TagString( this.file_extra.ccud );
+        return TagString.fromString( this.file_extra.ccud );
       }
       return '';
     };
@@ -87,7 +87,7 @@ class File extends Model {
 
     this.getIsCCPlus = function() {
       if( this._bindParent.upload_tags ) {
-        var uptags = new TagString(this._bindParent.upload_tags );
+        var uptags = TagString.fromString(this._bindParent.upload_tags);
         var mytags = this.getTags();
         return mytags && ( (uptags.contains('ccplus_stem') && mytags.contains('sample,acappella')) || uptags.contains('ccplus') );
       }
@@ -292,7 +292,7 @@ class Sample extends Upload {
       artist: UploadUserBasic,
     };
     this.getUserTags = function() {
-      return new TagString( this.upload_extra.usertags );
+      return TagString.fromString( this.upload_extra.usertags );
     };    
   }
 }
@@ -319,11 +319,11 @@ class Detail extends Upload {
     this.descriptionHTMLBinding = 'upload_description_html';
 
     this.getTags = function() {
-      return new TagString(this.upload_tags);
+      return TagString.fromString(this.upload_tags);
     };
     
     this.getUserTags = function() {
-      return new TagString( this.upload_extra.usertags );
+      return TagString.fromString( this.upload_extra.usertags );
     };
     
     this.getFeaturing = function() {

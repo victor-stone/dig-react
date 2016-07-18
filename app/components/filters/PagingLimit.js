@@ -11,7 +11,7 @@ class PagingLimitFilter extends React.Component
     super(...arguments);
     bindAll( this, 'onLimitChange', 'onValueChange' );
     const { store } = this.props;
-    this.filter = store.addOrGetFilter(Filter);
+    this.filter = store.addProperty(Filter);
     this.filter.onChange( this.onValueChange );
     this.state = { limit: this.filter.value };
   }

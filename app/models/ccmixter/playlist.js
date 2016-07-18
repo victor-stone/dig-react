@@ -38,7 +38,7 @@ class Playlist extends Model {
       return this.cart_dynamic ? 'dynamic' : this.cart_num_items || 0;
     };
     this.getTags = function() {
-      return new TagString(this.cart_tags);
+      return TagString.fromString(this.cart_tags);
     };
   }
 }

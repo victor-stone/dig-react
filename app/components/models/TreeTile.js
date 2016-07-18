@@ -4,7 +4,7 @@ import LinkToUpload     from '../services/LinkToUploadRoute';
 import LinkToPeople     from '../services/LinkToPeopleRoute';
 import UploadInfoButton from '../models/UploadInfoButton';
 
-class TreeGalleryElement extends React.Component
+class TreeTile extends React.Component
 {
   constructor() {
     super(...arguments);
@@ -25,8 +25,8 @@ class TreeGalleryElement extends React.Component
     const { model, skipUser = false, onPlay } = this.props; 
     const { artist, fileInfo: { isMP3 = false } = {} } = model;
     return(
-      <li className="gallery-element" >
-        <div className="content-wrapper" onClick={this.onClick} >
+      <li className="tile" >
+        <div className="tile-wrapper" onClick={this.onClick} >
           <LinkToUpload model={model} truncate /> 
           <div className="tools">
             <UploadInfoButton model={model} />
@@ -42,6 +42,6 @@ class TreeGalleryElement extends React.Component
   }
 }
 
-module.exports = TreeGalleryElement;
+module.exports = TreeTile;
 
 //

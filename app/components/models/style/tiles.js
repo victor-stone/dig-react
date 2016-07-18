@@ -1,9 +1,9 @@
 var css = `
-.gallery ul.play-list {
+.tiles ul.play-list {
   padding: 0px;
 }
 
-.gallery .play-list li.gallery-element {
+.tiles .play-list li.tile {
   margin: 10px;
   width: 150;
   padding: 4px;
@@ -13,20 +13,20 @@ var css = `
 }
 
 div.subnav-option-bar.tree-subnav,
-.gallery .play-list li.gallery-element {
+.tiles .play-list li.tile {
   background-color: #607D8B;
 }
 
-gallery .play-list li.gallery-element {
+tiles .play-list li.tile {
   border-radius: 8px;
   box-shadow: 2px 2px #3FB040;;
 }      
 
-.gallery .play-list li.gallery-element .content-wrapper {
+.tiles .play-list li.tile .tile-wrapper {
   min-height: 120px;
 }
 
-.gallery .play-list li .upload-link {
+.tiles .play-list li .upload-link {
   font-size: 18px;
   display: block;
   text-align: right;
@@ -36,25 +36,25 @@ gallery .play-list li.gallery-element {
   margin-left: 20%;
 }
 
- .gallery .play-list li.gallery-element:hover .upload-link {
+ .tiles .play-list li.tile:hover .upload-link {
   text-decoration: underline;
 }
 
-.gallery .play-list li.gallery-element:hover {
+.tiles .play-list li.tile:hover {
   cursor: pointer;
 }
 
-.gallery .play-list li .people-link {
+.tiles .play-list li .people-link {
   display: block;
   text-align: center;
   margin-top: 8px;
 }
 
-.gallery .play-list li .upload-link {
+.tiles .play-list li .upload-link {
   color: white;
 }
 
-.gallery .play-list li .people-link {
+.tiles .play-list li .people-link {
   font-weight: 100;
   color: yellow;
   max-width: 120px;
@@ -62,12 +62,12 @@ gallery .play-list li.gallery-element {
   overflow: hidden;
 }
 
-.gallery .play-list li.gallery-element .tools {
+.tiles .play-list li.tile .tools {
   width: 110px;
   margin: 0 auto;
 }
 
-.gallery .play-list li.gallery-element .play-button {
+.tiles .play-list li.tile .play-button {
   margin-left: 10px;
 }
 
@@ -75,13 +75,13 @@ gallery .play-list li.gallery-element {
   z-index: 5;
 }
 
-.gallery  .gallery-element-popover .form-control {
+.tiles  .tile-popover .form-control {
   height: initial;
 }
 
 @media screen and (max-width: 770px) {
 
-  .gallery .play-list li.gallery-element {
+  .tiles .play-list li.tile {
     margin: 7px 3px;
     width: 130px;
   }
@@ -103,7 +103,7 @@ gallery .play-list li.gallery-element {
   color: #555;
 }
 
-.gallery ul.play-list {
+.tiles ul.play-list {
   padding: 0px;
 }
 `;

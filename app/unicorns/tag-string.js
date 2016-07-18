@@ -109,7 +109,7 @@ class TagString
 
     Object.assign(this,{ignore,invalid,separator});
 
-    this._tagsArray = TagString.toArray(src,this.opts);
+    this._tagsArray = Array.isArray(src) ? src.slice() : TagString.toArray(src,this.opts);
   }
 
   
@@ -231,6 +231,10 @@ class TagString
   }
 
   isEqual(tags) {
+    if( !tags ) {
+      return !this._tagsArray.length;
+    }
+    
     var other = new TagString(tags,this.opts);
     if( !this._tagsArray.length || other._tagsArray.length !== this._tagsArray.length ) {
       return false;
@@ -273,7 +277,7 @@ class TagString
   }
 
   clone() {
-    return new TagString( this._tagsArray, this.opts );
+    return TagString.fromArray( this._tagsArray );
   }
 
   toString(withSeparator) {
@@ -321,6 +325,13 @@ TagString.filter = function(source,filter,opts) {
   return new TagString(source,opts).filter(filter);
 };
 
+function strToArr(source,ignore,separator) {
+  var r = new RegExp(separator,'g');
+  return source.replace(r,' ')
+                  .split(/\s+/)
+                  .filter( t => !!t && !ignore.test(t) );
+}
+
 TagString.toArray = function(source,{ ignore    = DEFAULT_IGNORE,
                                       separator = ','}) {
   if( !source ) {
@@ -329,11 +340,10 @@ TagString.toArray = function(source,{ ignore    = DEFAULT_IGNORE,
 
   var arr = null;
   if( typeof(source) === 'string' ) {
-    var r = new RegExp(separator,'g');
-    arr = source.match(ignore) ? [] : source.replace(r,' ').split(/\s+/).filter( t => t.length && t );
+    arr = strToArr(source,ignore,separator);
   } else if( Array.isArray(source) ) {
     arr = source.slice();        
-  } else if( source && (source instanceof TagString) )  {
+  } else if( source instanceof TagString )  {
     arr = source._tagsArray.slice();        
   } else {
     arr = [ ];
@@ -341,6 +351,14 @@ TagString.toArray = function(source,{ ignore    = DEFAULT_IGNORE,
   return arr;
 };
 
+TagString.fromArray = (arr, opts) => {
+  return new TagString(arr,opts);
+}
+
+TagString.fromString = (str, opts = {}) => {
+  const { ignore = DEFAULT_IGNORE, separator = ','} = opts;
+  return new TagString(strToArr(str,ignore,separator),opts);
+}
 
 String.prototype.tagize = function(pretty) {
   var tu = new TagString(this);

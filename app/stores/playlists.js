@@ -1,10 +1,11 @@
-import TaggedCollection from './tagged-collection';
-import Upload           from './upload';
-import ccmixter         from '../models/ccmixter';
-import serialize        from '../models/serialize';
-import events           from '../models/events';
-import env              from '../services/env';
-import rsvp             from 'rsvp';
+import Collection   from './collection';
+import Upload       from './upload';
+import UserSearch   from './user-search';
+import ccmixter     from '../models/ccmixter';
+import serialize    from '../models/serialize';
+import events       from '../models/events';
+import env          from '../services/env';
+import rsvp         from 'rsvp';
 
 import { oassign,
          cleanSearchString }   from '../unicorns';
@@ -15,7 +16,7 @@ const DEFAULT_SEARCH_MINITEMS = 1;
 const DEFAULT_USER_MINITEMS   = '-1';
 const DEFAULT_MINITEMS        = 5;
 
-class Playlists extends TaggedCollection {
+class Playlists extends Collection {
 
   constructor() {
     super(...arguments);
@@ -37,12 +38,14 @@ class Playlists extends TaggedCollection {
   }
 
   get uploadStore() {
-    if( !this._uploadStore ) {
-      this._uploadStore = new Upload();
-    }
+    !this._uploadStore && (this._uploadStore = new Upload());
     return this._uploadStore;
   }
 
+  get userSearch() {
+    !this._userSearch && (this._userSearch = new UserSearch());
+    return this._userSearch;
+  }
   getModel(queryParams) {
     Object.assign(this._prevQueryParams,queryParams);
 
@@ -78,8 +81,8 @@ class Playlists extends TaggedCollection {
       items:  this.fetch(q,'items'),
       total:  this.count(q,'total'),
       upload: q.upload ? this.uploadStore.info(q.upload) : null,
-      curator: q.user ? this.findUser(q.user,'curator') : null,
-      curators: hasSearch ? this.searchUsers( { limit: 40, searchp: q.search, minpl: 1 }, 'curators' ) : null
+      curator: q.user ? this.userSearch.findUser(q.user) : null,
+      curators: hasSearch ? this.userSearch.searchUsers( { limit: 40, searchp: q.search, minpl: 1 } ) : null
     };
 
     return this.flushDefers(model).then( model => {

@@ -143,7 +143,7 @@ SelectableTag.css = `
 
 function modelsToTagString(arr) {
   if( arr instanceof TagString ) {
-    return new TagString(arr);
+    return arr.clone();
   }
   return new TagString(arr && arr.map(t => t.id));
 }
@@ -228,6 +228,7 @@ SelectableTagList.css = SelectableTag.css + `
   ul.tag-list-selectable {
     padding: 0px;
     margin: 0px;
+    text-align: left;
   }
 
   ul.tag-list-selectable.floating > li {

@@ -1,21 +1,18 @@
 import React            from 'react';
+import { TagString }    from '../../unicorns';
 import { ModelTracker } from '../../mixins';
 import StemsListing     from '../models/StemsListing';
 
 class BoundStemsListing extends ModelTracker(React.Component)
 {
-  constructor() {
-    super(...arguments);
-  }
-
   stateFromStore(store) {
-    const { queryParams:{searchp=''} } = store.model;
+    const { queryParams:{searchp='',tags} } = store.model;
 
     // convert the query's search terms to tags and combine
     // them with query's tags parameter for highlighting
 
     return { model: store.model, 
-             tags: store.tags.add(searchp.replace(/\s/g,',')) };
+             tags: new TagString(tags).add(searchp.replace(/\s/g,',')) };
   }
 
   render() {
