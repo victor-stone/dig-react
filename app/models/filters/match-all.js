@@ -16,6 +16,11 @@ class MatchAll extends QueryFilter
   toAbstract() {
     return this._value === 'all';
   }
+  
+  get isDirty() {
+    // does not participate in 'reset'
+    return false; 
+  }
 }
 
 MatchAll.propertyName = 'matchAll';

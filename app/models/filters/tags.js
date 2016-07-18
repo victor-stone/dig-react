@@ -38,6 +38,12 @@ class Tags extends QueryFilter
   toggle( tag, toggle ) {
     this.value = this.value.toggle(tag,toggle);
   }
+
+  get isDirty() {
+    // does not participate in 'reset'
+    return false; 
+  }
+  
 }
 
 Tags.propertyName = 'Tags';
