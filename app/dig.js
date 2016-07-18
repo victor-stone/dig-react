@@ -1,10 +1,9 @@
 import React  from 'react';
 import env    from './services/env';
 import routes from './routes/dig';
-import App    from './app';
 
-import Header from './components/dig/Header';
-import Footer from './components/dig/Footer';
+import header from './components/dig/Header';
+import footer from './components/dig/Footer';
 
 var rewriteRules = [
   { regex: /^\/faq/,                         now: '/news/230791' },
@@ -21,10 +20,13 @@ var rewriteRules = [
 env.set({
   routes,
   rewriteRules,
+  header,
+  footer,
   supportPlaylist: true,
   supportWavImg: false,
   bannerTopic: 'digBanner',
 });
 
+const App = require('./app');
 
-module.exports = function(props) { return <App {...props} header={Header} footer={Footer} />; };
+module.exports = function(props) { return <App {...props} />; };
