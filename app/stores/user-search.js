@@ -32,10 +32,10 @@ class UserSearch extends QueryFilters(Query) {
   }
   
   // search the entire user record
-  searchUsers(params,deferName) {
+  searchUsers(params,deferName,deferThis) {
     this._queryParams = Object.assign({},params);
     params.dataview ='user_basic';
-    return this.query(params,deferName)
+    return (deferThis || this).query(params,deferName)
                   .then( serialize( ccmixter.UserBasic ) );
   }
 
