@@ -185,23 +185,37 @@ function _b_output() {
 }
 
 function _b_options(watch) {
+
+  // These are the vanilla options
+
   const opts = {
     entries: `${work_target}/app/index.js`,
     debug: config.debug,
     noParse: 'http',
     fullPaths: config.debug
   };
+
+  // These are needed for watchify
+  
   if( watch ) {
     Object.assign( opts, { 
       cache: {},
       packageCache: {},
       plugin: [watchify]});
   }
+
   const b = browserify(opts);
+  
   if( watch ) {
     b.on('update', () => b.bundle().pipe(fs.createWriteStream(_b_output()+`/${config.app}.js`)) );
     b.on('log', msg => gutil.log(msg) );
   }
+  
+  // We exclude react b/c we're loading that in a 
+  // separate <script> tag.
+  //
+  // Also exclude server-only node modules
+  //
   return b
     .exclude('http')
     .exclude('stream-http')
