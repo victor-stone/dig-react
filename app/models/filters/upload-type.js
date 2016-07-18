@@ -2,7 +2,7 @@ import TagEnum from './tag-enum';
 
 class UploadType extends TagEnum
 {
-  constructor(defaultValue) {
+  constructor(defaultValue = 'remix') {
     super( 'reqtags', defaultValue, Object.keys(UploadType.options) );
     this._displayName  = 'type';
   }

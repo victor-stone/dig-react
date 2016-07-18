@@ -48,7 +48,7 @@ class ArtistList extends React.Component
     }
 
     return (
-      <ul className="artist-list">
+      <ul className="artist-list form-control">
         {artists.map( a => <li key={a.id} onClick={this.artistSelect(a.id)}>{this._fancyName(a)}</li>)}
       </ul>
       );

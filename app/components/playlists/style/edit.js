@@ -19,6 +19,42 @@ ul.query-options-elements > li:last-child {
   padding-bottom: 20px;
 }
 
+.artist-filter .form-group {
+    margin-bottom: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+}
+
+.artist-filter ul.artist-list {
+    max-height: 150px;
+    overflow: scroll;
+    text-align: left;
+    margin: 0px;
+    padding: 0px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    font-size: 12px;
+    cursor: default;
+    height: initial;
+}
+
+.artist-list li {
+    margin: 2px 8px;;
+    padding: 2px 7px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid white;
+}
+
+.artist-list li:hover {
+    background: #FFF;
+    border: 1px solid #777;
+}
+
 `;
 
 module.exports = css;
