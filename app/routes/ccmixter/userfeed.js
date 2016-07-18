@@ -10,6 +10,8 @@ Object.assign( FeedPage, {
 
   path: [ '/feed', '/feed/:user', '/feed/:user/:following' ],
 
+  browserOnly: true,
+  
   subnav(props) {
     return (<FeedSubNav paging store={props.store} />);
   },

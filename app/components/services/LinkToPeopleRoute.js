@@ -4,6 +4,26 @@ import Glyph         from '../vanilla/Glyph';
 import thumbStyle    from './people-thumb-style';
 import { selectors } from '../../unicorns';
 
+/*
+
+  model is required, everything (I think) is optional
+
+  model       - user model = { id, name } 
+  fancy       - print name as "name (id)" (assuming they are different)
+  avatar      - show a full size avatar (requires avatarURL in model)
+  icon        - boolean true means show a 'person' glyph, string means show that icon
+  thumb       - show a thumbnail of the user's avatar (avatarURL not required)
+  skipUser    - don't show anything (!) like nothing
+  suburl      - post-fix this to url (e.g. /playlists or /stems)
+  host        - external host (e.g. 'http://somesite.org/' )
+  onNavigate  - callback will short circuit any action and call back with model
+  {children}  - prints children
+
+  all properties are passed to Link -> <a /> DOM element
+
+
+*/
+
 const LinkToPeopleRoute = React.createClass({
 
   getInitialState() {
@@ -15,7 +35,7 @@ const LinkToPeopleRoute = React.createClass({
   },
 
   render() {
-    const { model, model: { id, name, avatarURL } } = this.state;
+    let { model, model: { id, name, avatarURL } } = this.state;
 
     let   { suburl = null, 
             className = '', 
@@ -23,12 +43,15 @@ const LinkToPeopleRoute = React.createClass({
             skipUser = false,
             avatar = false,
             icon = null, 
+            fancy = false,
             thumb = false } = this.props;
 
     // for compat with dig legacy lol
     if( skipUser ) {
       return null;
     }
+
+    fancy && (name = id === name ? id : `${name} (${id})`);
 
     icon = this.props.icon === true ? 'user' : this.props.icon;
 

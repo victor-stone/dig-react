@@ -5,7 +5,8 @@ import router      from './services/router';
 import env         from './services/env';
 import events      from './models/events';
 
-import { browserScripts } from './unicorns';
+import { browserScripts,
+         bindAll }        from './unicorns';
 import Banner             from './components/Banner';
 import AudioPlayer        from './components/AudioPlayer';
 
@@ -14,54 +15,45 @@ import ErrorDisplay from './components/services/ErrorDisplay';
 import Modal        from './components/services/Modal';
 import Alert        from './components/services/Alert';
 
-const App = React.createClass({
-
-  getInitialState() {
-    return { component: null };
-  },
+class App extends React.Component 
+{
+  constructor() {
+    super(...arguments);
+    bindAll( this, 'onLoading', 'onNavigateTo', 'onNavigateToThis', 'onAppAlert' );
+    this.state = { component: { path: null } };
+  }
 
   componentWillMount() {
-    function createDressing() {
-      this.setState( {
-        header: React.createElement(this.props.header),
-        footer: React.createElement(this.props.footer),
-      });
-    }
-    if( global.IS_SERVER_REQUEST ) {
-      this.setState(this.props, () => createDressing );
-    } else {
+    
+    if( env.browser ) {
 
       ajaxAdapter.on( events.LOADING,          this.onLoading );
       router     .on( events.NAVIGATE_TO,      this.onNavigateTo );
       router     .on( events.NAVIGATE_TO_THIS, this.onNavigateToThis );
       env        .on( events.APP_ALERT,        this.onAppAlert );
+    } 
 
-      createDressing.bind(this)();
-
-      if( !this.state.component ) {
-        router.updateURL();
-      }
-    }
-  },
+    this.setState(this.props);
+  }
 
   componentDidMount() {
     this.postUpdate();
-  },
+  }
 
   componentDidUpdate() {
     this.postUpdate();
-  },
+  }
 
   componentWillUnmount() {
-    if( !global.IS_SERVER_REQUEST ) {
-      ajaxAdapter.removeListener( events.LOADING,     this.onLoading );
-      router     .removeListener( events.NAVIGATE_TO, this.onNavigateTo );
-    }
-  },
+    ajaxAdapter.removeListener( events.LOADING,          this.onLoading );
+    router     .removeListener( events.NAVIGATE_TO,      this.onNavigateTo );
+    router     .removeListener( events.NAVIGATE_TO_THIS, this.onNavigateToThis );
+    env        .removeListener( events.APP_ALERT,        this.onAppAlert );
+  }
 
   onNavigateTo(specs) {
     this.setState( specs, this.onNavigateToThis );
-  },
+  }
 
   onNavigateToThis() {
     if( !this.state.hash ) {
@@ -69,73 +61,89 @@ const App = React.createClass({
         browserScripts.scrollToTop();
       }
     }
-  },
+  }
 
   onLoading(loading) {
     $('.outlet-wrap').toggleClass('loading-screen fade',loading);
-  },
+  }
 
   onAppAlert(alertType,alert) {
     this.setState( { alertType, alert } );
-  },
+  }
 
   onAlertClosed() {
     this.setState( { alert: null } );
-  },
+  }
 
   postUpdate() {
-    if( !global.IS_SERVER_REQUEST ) {
+    if( env.browser ) {
       this.scrollToHash();
     }
-  },
+  }
 
   scrollToHash() {
-
     var hash = this.state.hash;
     if( hash ) {
       browserScripts.scrollToHash(hash);
     }
-
-  },
+  }
 
   render() {
 
-    var elem   = null;
-    var subnav = null;
-    var comp   = this.state.component;
-    if( comp  ) {
-      elem = React.createElement(comp,
-                {
-                    store: this.state.store,
-                    params: this.state.params,
-                    queryParams: this.state.queryParams
-                });
-      if( comp.selfContained ) {
-        return elem;
-      }
-      if( comp.subnav ) {
-        subnav = React.createElement( comp.subnav, { store: this.state.store } );
-      }
+    const { browser,
+            appName } = env;
+
+    const { header,
+            footer } = this.props;
+
+    const { component:comp = {}, 
+            alert, 
+            alertType, 
+            store, 
+            params, 
+            queryParams } = this.state;
+
+    let { selfContained,
+          path,
+          browserOnly,
+          subnav,
+          title } = comp;
+
+    if( !path || (browserOnly && !browser) ) {
+      return <p />;
     }
+
+    const elem = React.createElement(comp, { store, params, queryParams });
+
+    if( selfContained ) {
+      return elem;
+    }
+
+    subnav && (subnav = React.createElement( subnav, { store } ));
 
     return (
       <div>
         <Modal.Container />
-        <div id="wrap" className={env.appName}>
-          <TitleSetter title={comp && comp.title} />
+        <div id="wrap" className={appName}>
+          <TitleSetter title={title} />
           <Banner />
-          {this.state.header}
+          {header}
           {subnav}
           <ErrorDisplay />
-          {this.state.alert && <Alert type={this.state.alertType} text={this.state.alert} className="system-alert" onClose={this.onAlertClosed}/>}
+          {alert && <Alert type={alertType} text={alert} className="system-alert" onClose={this.onAlertClosed}/>}
           <div className="outlet-wrap">{elem}</div>
         </div>
-        {this.state.footer}
+        {footer}
         <AudioPlayer />
       </div>
     );
-  },
-});
+  }
+}
+
+App.defaultProps = {
+  header: React.createElement(env.header),
+  footer: React.createElement(env.footer)
+};
 
 
 module.exports = App;

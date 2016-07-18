@@ -1,17 +1,32 @@
 import React         from 'react';
 import serviceLookup from '../../services';
 
+/*
+  href        - destination 
+  host        - any truthy value that indicates to let the browser handle the link
+  onNavigate  - callback will short circuit any action and call back with this.props.model
+  text        - prints this text
+  {children}  - prints children
+
+  all properties are passed to <a /> DOM element
+*/
 var Link = React.createClass({
   
   handleClick(e) {
-    const { href, host } = this.props;
+      const { href, host, onNavigate } = this.props;
 
-    if( !host ) {
+    if( onNavigate ) {
       e.preventDefault();
       e.stopPropagation();
-      if( typeof href === 'string' && href !== '#') {
-        Link.navigateTo(href);
-      }
+      onNavigate(this.props.model);      
+    } else {
+      if( !host ) {
+        e.preventDefault();
+        e.stopPropagation();
+        if( typeof href === 'string' && href !== '#') {
+          Link.navigateTo(href);
+        }
+      }    
     }
     return true;
   },

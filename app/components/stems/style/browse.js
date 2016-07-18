@@ -1,6 +1,20 @@
 var css = 
 `/* stems list css */
 
+.query-options-box.open {
+    border: 1px solid #a4bc44;
+    border-radius: 7px;
+    text-align: center;
+    background-color: rgba(246, 249, 237, 0.45);
+    margin-left: -10;
+    margin-right: 8px;
+}
+
+.query-options-box.open ul.query-options > li.title .close {
+  display: none;
+}
+
+
 .subnav-option-bar {
   background-color: #9AB52F;  
 }

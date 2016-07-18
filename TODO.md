@@ -18,7 +18,7 @@
 | app/components/models/EditableTrackList.js | 8 | All these lists that are model.items[] should just be model[]
 | app/components/models/StaticTrackList.js | 5 | allow multiple of these on a page
 | app/components/models/Tags.js | 466 | reconcile this with floating checks above
-| app/components/services/LinkToPeopleRoute.js | 56 | this belongs somewhere else
+| app/components/services/LinkToPeopleRoute.js | 79 | this belongs somewhere else
 | app/components/services/PlayAllButton.js | 9 | this is too Playlist aware
 | app/components/services/PlayAllButton.js | 44 | check this code
 | app/components/stems/Detail.js | 35 | these tags used to be filtered by genre/instrument
@@ -37,6 +37,6 @@
 | app/stores/playlist.js | 88 | all remote property settings need to be done elsewhere
 | app/stores/userfeed.js | 68 | this is not the right user of defaultParams
 | app/components/bound/EditableTitle.js | 6 | Edit controls styles on EditableTitle are wacky
-| app/components/models/ZIPFile.js | 3 | incoming tags are not being highlighted
 | app/components/playlists/Info.js | 18 | feature button is ugly
+| app/components/models/ZIPFile.js | 3 | incoming tags are not being highlighted
 | app/components/services/PlayAllButton.js | 51 | this assuming this is cleared out somewhere

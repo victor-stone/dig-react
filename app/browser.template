@@ -6,7 +6,9 @@ global.IS_SERVER_REQUEST = false;
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var env = require('./services/env');
+var events = require('./models/events');
+var lookup = require('./services');
+var env = lookup('env');
 
 require('./services/analytics')();
 
@@ -23,7 +25,15 @@ env.set( {
   selfHost: satHost && '/'
 });
 
+// this must happen after the env is setup
+
 var app = require('./<%= app%>');
 
-ReactDOM.render( React.createElement(app),  document.getElementById('content') );
+var router = lookup('router');
+
+router.once( events.NAVIGATE_TO, function(props) {
+  ReactDOM.render( React.createElement(app,props),  document.getElementById('content') );
+});
+
+router.updateURL();
 

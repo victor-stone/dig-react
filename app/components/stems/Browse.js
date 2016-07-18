@@ -36,7 +36,7 @@ function Stems(props) {
 
     return (
       <FluidContainer className="stems-browser">
-        <InlineCSS css={css+Files.css + QueryOptionsCSS} id="stems-css" />
+        <InlineCSS css={Files.css + QueryOptionsCSS + css} id="stems-css" />
         <Row className="stems-browser-widget">
           <Column cols="3">
             <Tags store={store} />

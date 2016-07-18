@@ -4,6 +4,24 @@ var browser =
   width: 95%;
 }
 
+.query-options-box.open {
+    border: 1px solid #292962;
+    border-radius: 7px;
+    text-align: center;
+    margin-left: -10;
+    margin-right: 8px;
+    background-color: #fcfcfc;
+}
+
+.query-options-box.open ul.query-options > li.title .close {
+  display: none;
+}
+
+.query-options-box.open li {
+    margin-top: 12px;
+    padding-left: 4px;
+}
+
 .pell-detail-description,
 .pells-page .tab-content,
 .pells-page .nav-tabs > li.active a {

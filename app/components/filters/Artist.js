@@ -1,5 +1,6 @@
 import React        from 'react';
 import UserSearch   from '../../stores/user-search';
+import ArtistList   from './ArtistSearchList';
 import Filter       from '../../models/filters/artist';
 import LookupFilter from '../../models/filters/lookup';
 import events       from '../../models/events';
@@ -8,52 +9,6 @@ import SearchBox   from '../SearchBox';
 
 import { bindAll } from '../../unicorns';
 
-class ArtistList extends React.Component
-{
-  constructor() {
-    super(...arguments);
-    bindAll( this, 'onValueChange' ); 
-    this.lookupFilter = this.props.store.addProperty(LookupFilter);
-    this.lookupFilter.onChange( this.onValueChange );
-    this.state = { artists: [] };
-  }
-
-  getArtists(search) {
-    if( search ) {
-      this.props.store.lookUpUsers( search )
-        .then( artists => this.setState( { artists } ) );
-    } else {
-      this.setState( { artists: [] } );
-    }
-  }
-
-  onValueChange(filter) {
-    this.getArtists(filter.value);
-  }
-
-  artistSelect(a) {
-    return () => {this.props.onUserSelect(a); this.lookupFilter.value = a;};
-  }
-
-  _fancyName(a) {
-    const { id, name } = a;
-    return id === name ? id : `${name} (${id})`;
-  }
-
-  render() {
-    const { artists } = this.state;
-
-    if( !artists.length ) {
-      return null;
-    }
-
-    return (
-      <ul className="artist-list form-control">
-        {artists.map( a => <li key={a.id} onClick={this.artistSelect(a.id)}>{this._fancyName(a)}</li>)}
-      </ul>
-      );
-  }  
-}
 
 class ArtistFilter extends React.Component
 {

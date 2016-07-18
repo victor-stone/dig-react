@@ -113,7 +113,7 @@ class PellsBrowser extends NowPlayingTracker(React.Component)
     return (
 
       <Container className="pells-page">
-        <InlineCSS css={browserCSS + QueryOptionsCSS} id="pell-browser-css" />
+        <InlineCSS css={QueryOptionsCSS + browserCSS} id="pell-browser-css" />
         <Row>
           <Column cols="3">
             <PellDetail store={store} model={this.state.selected} />

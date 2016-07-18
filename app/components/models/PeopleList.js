@@ -1,9 +1,15 @@
 import React         from 'react';
 import LinkToPeople  from '../services/LinkToPeopleRoute';
+import { selectors } from '../../unicorns';
 
-function List(props)
+class PeopleList extends React.Component
 {
-  return <ul className="people-list">{props.model.map( (u,i) => <li key={i}><LinkToPeople {...props} model={u} /></li>)}</ul>;
+  render() {
+    const { model, listClass } = this.props;
+    const cls = selectors('people-list',listClass);
+    return <ul className={cls}>{model.map( (u,i) => <li key={i}><LinkToPeople {...this.props} model={u} /></li>)}</ul>;  
+  }
+  
 }
 
-module.exports = List;
+module.exports = PeopleList;

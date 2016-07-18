@@ -1,6 +1,7 @@
 var css = 
 `
-.subnav-option-bar {
+.subnav-option-bar,
+.query-options-box.open ul.query-options > li.title {
   background-image: -webkit-linear-gradient(top,#3c3c55 0,#226 100%);
   background-image: -o-linear-gradient(top,#3c3c55 0,#226 100%);
   background-image: -webkit-gradient(linear,left top,left bottom,from(#3c3c55),to(#226));
@@ -10,6 +11,10 @@ var css =
   background-repeat: repeat-x;
   border-radius: 4px;
   margin-bottom: 0  
+}
+
+.query-options-box.open ul.query-options {
+  border: 2px solid #ff3c3c55;  
 }
 
 .subnav-option-bar .nav-tabs > li > a {
