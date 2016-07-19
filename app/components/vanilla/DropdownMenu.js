@@ -1,6 +1,7 @@
 import React         from 'react';
 import Glyph         from './Glyph';
-import { selectors } from '../../unicorns';
+import { selectors,
+         dataProps } from '../../unicorns';
 
 function LinkWrapper(props) {
   return <a href="#" className="dropdown-toggle" style={props.style} data-toggle="dropdown" >{props.children}</a>;
@@ -26,10 +27,12 @@ class DropdownMenu extends React.Component
             </LinkWrapper>);
     }
 
-    var E = parentType;
+    const E = parentType;
+
+    const data = dataProps(this.props);
 
     return (
-        <E className={cls} id={id}>
+        <E className={cls} id={id} {...data} >
           {link}
           <ul className="dropdown-menu">
             {this.props.children}

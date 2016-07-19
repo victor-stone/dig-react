@@ -3,7 +3,8 @@ import Glyph         from '../vanilla/Glyph';
 import DeadLink      from '../vanilla/DeadLink';
 import DropdownMenu  from '../vanilla/DropdownMenu';
 import FeedBadge     from './FeedBadge';
-import { ellipse }   from '../../unicorns';
+import { ellipse,
+         dataProps } from '../../unicorns';
 import thumbStyle    from '../services/people-thumb-style';
 
 const MAX_NAME_LEN = 15;
@@ -38,12 +39,14 @@ const CurrentUserMenu = React.createClass({
 
     const { name } = user;
 
-    var children = React.Children.map( this.props.children, c => c.type.name === 'MenuDivider' ? c : <li>{c}</li> );
+    const children = React.Children.map( this.props.children, c => c.type.name === 'MenuDivider' ? c : <li>{c}</li> );
 
-    var head = <span>{ellipse(name,MAX_NAME_LEN)}{" "}{feedbadge && <FeedBadge />}</span>;
+    const head = <span>{ellipse(name,MAX_NAME_LEN)}{" "}{feedbadge && <FeedBadge />}</span>;
+
+    const data = dataProps(this.props);
 
     return (
-      <DropdownMenu id="user-menu" style={thumbStyle(user)} head={head}>
+      <DropdownMenu id="user-menu" style={thumbStyle(user)} head={head} {...data} >
         {children}
       </DropdownMenu>
     );

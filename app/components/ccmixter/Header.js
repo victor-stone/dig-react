@@ -1,57 +1,15 @@
-import React                  from 'react';
-import events                 from '../../models/events';
-import lookup                 from '../../services';
-import api                    from '../../services/ccmixter';
-import { CurrentUserTracker } from '../../mixins';
-import { bindAll }            from '../../unicorns';
+/* global $ */
+import React    from 'react';
+import events   from '../../models/events';
+import lookup   from '../../services';
 
 import AjaxLoadingGlyph    from '../services/AjaxLoadingGlyph';
 
 import Link            from '../services/LinkToRoute';
-import LinkToPeople    from '../services/LinkToPeopleRoute';
-import Glyph           from '../vanilla/Glyph';
-import FeedBadge       from '../services/FeedBadge';
 import NavbarHeader    from '../vanilla/NavbarHeader';
 import DeadLink        from '../vanilla/DeadLink';
-import CurrentUserMenu from '../services/CurrentUserMenu';
-import Alert           from '../services/Alert';
-import Login           from './Login';
 
-class UserMenu extends CurrentUserTracker(React.Component)
-{
-  constructor() {
-    super(...arguments);
-    bindAll(this,'onLogout','onLogin');
-  }
-
-  onLogout() {
-    api.user.logout().then( () => {
-      Alert.show('success', 'you are now logged out');
-    });
-  }
-
-  onLogin() {
-    Login.show( Login );
-  }
-
-  render() {
-
-    const { user, userLoading } = this.state;
-
-    return (
-        <CurrentUserMenu feedbadge model={user} loading={userLoading} onLogin={this.onLogin} >
-          {user && <Link href={LinkToPeople.feedUrl(user)}><Glyph fixed icon="feed" />{" your feed "}<FeedBadge /></Link>}
-          {user && <LinkToPeople model={user}><Glyph fixed icon="circle" />{" your profile"}</LinkToPeople>}
-          <a target="_blank" href="http://ccmixter.org/submit"><Glyph fixed icon="cloud-upload" />{" submit files"}</a>
-          <CurrentUserMenu.Divider />
-          {user && <Link href={LinkToPeople.playlistsUrl(user)}><Glyph fixed icon="music" />{" your playlists"}</Link>}
-          <Link href="/playlists/new"><Glyph fixed icon="bolt" />{" new dynamic playlist"}</Link>
-          <CurrentUserMenu.Divider />
-          <DeadLink onClick={this.onLogout}><Glyph fixed icon="circle-o" />{" log out"}</DeadLink>
-        </CurrentUserMenu>
-      );
-  }
-}
+import UserMenu from './UserMenu';
 
 class Header extends React.Component
 {
@@ -72,22 +30,16 @@ class Header extends React.Component
   }
   
   onNavigateTo(specs) {
-    var base = specs.path.match(/\/([a-z]+)(\/|$)/);
-    if( base && base.length > 1 ) {
-      /* global $ */
-      var $e = $('#' + base[1] + '_menu_tab');
-      if( $e && !$e.hasClass('active') ) {
-        $('.top-navbar li').removeClass('active');
-        $e.addClass('active');
-      }
-    }
+    const base = (Array.isArray(specs.path) ? specs.path[0] : specs.path).match(/\/[^\/]+/)[0];
+    $('.top-navbar li').removeClass('active');
+    base.length && $(`li[data-routeroot*='${base}']`).addClass('active');
   }
 
   render() {
     const homeLink = <Link href="/" className="navbar-brand"><img src="/images/logo.png" title={this.props.title} /></Link>;
     return  (        
         <nav className="navbar navbar-inverse top-navbar">
-    <div style={{
+    <div className="hidden-xs hidden-sm" style={{
       position: 'absolute',
       width: 100,
       top: 10,
@@ -108,22 +60,22 @@ class Header extends React.Component
                 <li>
                   <DeadLink><AjaxLoadingGlyph /></DeadLink>
                 </li>
-                <li  id="tree_menu_tab" >
+                <li  data-routeroot="/tree/files">
                   <Link href="/tree">{"remix tree"}</Link>
                 </li>
-                <li id="stems_menu_tab" className="hidden-xs hidden-sm">
+                <li data-routeroot="/stems" className="hidden-xs hidden-sm">
                   <Link href="/stems">{"stems"}</Link>
                 </li>
-                <li id ="pells_menu_tab" className="hidden-xs hidden-sm">
+                <li data-routeroot="/pells" className="hidden-xs hidden-sm">
                   <Link href="/pells">{"pells"}</Link>
                 </li>
-                <li id="playlists_menu_tab">
+                <li data-routeroot="/playlist">
                   <Link href="/playlists/browse">{"playlists"}</Link>
                 </li>
-                <li id="events_menu_tab">
+                <li data-routeroot="/news/event">
                   <Link href="/events">{"events"}</Link>
                 </li>
-                <li id="licenses_menu_tab">
+                <li data-routeroot="/license">
                   <Link href="/licenses">{"licenses"}</Link>
                 </li>
                 <UserMenu />
