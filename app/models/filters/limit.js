@@ -18,5 +18,6 @@ class Limit extends QueryFilter
 }
 
 Limit.propertyName = 'limit';
+Limit.MIN_LIMIT    = 10;
 
 module.exports = Limit;

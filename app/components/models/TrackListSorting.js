@@ -11,15 +11,15 @@ import Glyph             from '../vanilla/Glyph';
 
   props -
     model    - object 
-    sortable - boolean yes, means show dragging glyphs and allow for 
-               jQueryUI 'sortable' to kick in
+    sorting - boolean yes, means show dragging glyphs and allow for 
+               jQueryUI 'sorting' to kick in
 */
-class StaticTrackList extends React.Component 
+class SortingTrackList extends React.Component 
 {
   componentDidMount() {
-    if( this.props.sortable ) {
+    if( this.props.sorting ) {
       $('.track-dragger').show();
-      $('#fo').sortable();
+      $('#fo').sorting();
     } else {
       $('.track-dragger').hide();
     }
@@ -27,9 +27,9 @@ class StaticTrackList extends React.Component
 
   render() {
     return(
-        <ul className="sortable-track-list" id="fo">
+        <ul className="sorting-track-list" id="fo">
           {this.props.model.items.map( (t,i) =>  <li key={t.id} id={'fo_' + (i+1)}>
-                                    {this.props.sortable
+                                    {this.props.sorting
                                       ? <span className="track-dragger"><Glyph icon="bars" /></span>
                                       : null
                                     }
@@ -48,6 +48,10 @@ class StaticTrackList extends React.Component
   }
 }
 
-module.exports = StaticTrackList;
+SortingTrackList.defaultProps = {
+  sorting: React.PropTypes.bool.isRequired
+};
+
+module.exports = SortingTrackList;
 
 

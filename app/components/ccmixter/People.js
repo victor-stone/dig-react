@@ -54,6 +54,8 @@ class Header extends React.Component
 class Overview extends React.Component
 {
   render() {
+    return null;
+    /*
     const { store, store:{model:{artist}} } = this.props;
     const { homepage, joined, name } = artist;
     return (
@@ -65,6 +67,7 @@ class Overview extends React.Component
           <FollowButton store={store} />
       </HorizontalForm>
       );
+    */
   }
 }
 

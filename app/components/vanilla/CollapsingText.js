@@ -1,17 +1,16 @@
 /*eslint "react/no-danger":0 */
 /* globals $ */
 
-import React from 'react';
+import React          from 'react';
 import MoreOrLessLink from './MoreOrLessLink';
-
-var next_id = 0;
+import { nextID }     from '../../unicorns';
 
 const MAX_PREVIEW_LENGTH = 220;
 
 var CollapsingText = React.createClass({
 
   getDefaultProps() {
-    return { id: ++next_id };
+    return { id: nextID('_collapsing_text_') };
   },
 
   getInitialState() {
@@ -68,6 +67,7 @@ var CollapsingText = React.createClass({
   },
 
   _htmlToPlain(html) {
+    // TODO: doesn't this hurt SEO??
     if( global.IS_SERVER_REQUEST ) {
       return '';
     }

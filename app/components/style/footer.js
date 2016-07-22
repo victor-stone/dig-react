@@ -1,7 +1,7 @@
 
 const css = `
 .brand-glyph {
-  background-image: url('../images/brands.png');
+  background-image: url('/images/brands.png');
   background-repeat: no-repeat;
   display: inline-block;
   width: 100px;

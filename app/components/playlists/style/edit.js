@@ -19,7 +19,7 @@ ul.query-options-elements > li:last-child {
   padding-bottom: 20px;
 }
 
-.artist-filter .form-group {
+.people-filter .form-group {
     margin-bottom: 0px;
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
@@ -27,7 +27,7 @@ ul.query-options-elements > li:last-child {
     border-top-left-radius: 6px;
 }
 
-.artist-filter ul.artist-list {
+.people-filter ul.people-list {
     max-height: 150px;
     overflow: scroll;
     text-align: left;
@@ -42,7 +42,7 @@ ul.query-options-elements > li:last-child {
     height: initial;
 }
 
-.artist-list li {
+.people-list li {
     margin: 2px 8px;;
     padding: 2px 7px;
     font-weight: 500;
@@ -50,7 +50,7 @@ ul.query-options-elements > li:last-child {
     border: 1px solid white;
 }
 
-.artist-list li:hover {
+.people-list li:hover {
     background: #FFF;
     border: 1px solid #777;
 }

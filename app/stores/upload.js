@@ -78,8 +78,7 @@ class Upload extends Permissions(Properties(Query)) {
   }
 
   applyProperties(props) {
-    return api.upload.update(this.model.upload.id,props)
-                .then( this.refresh.bind(this) );
+    return api.upload.update(this.model.upload.id,props);
   }
 
   recommend() {

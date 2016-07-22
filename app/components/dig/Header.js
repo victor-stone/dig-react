@@ -1,7 +1,7 @@
 import React     from 'react';
 import Link      from '../services/LinkToRoute';
-import SearchBox from '../SearchBox';
 
+import SearchBox    from '../vanilla/SearchBox';
 import Glyph        from '../vanilla/Glyph';
 import DeadLink     from '../vanilla/DeadLink';
 import NavbarHeader from '../vanilla/NavbarHeader';
@@ -11,15 +11,9 @@ import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
 
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">
-      <li>
-        <Link href="/keep-ccmixter-open-and-free"><i className="fa fa-heart"></i>{" donate"}</Link>
-      </li>
-      <li>
-        <Link href="/#howitworks">{"how it works"}</Link>
-      </li>
-      <li>
-        <Link href="/licenses">{"licenses"}</Link>
-      </li>
+      <li><Link href="/keep-ccmixter-open-and-free"><i className="fa fa-heart"></i>{" donate"}</Link></li>
+      <li><Link href="/#howitworks">{"how it works"}</Link></li>
+      <li><Link href="/licenses">{"licenses"}</Link></li>
       <li className="hidden-xs hidden-sm">
         <Link href="/dig"><Glyph icon="tags" />{" tag search"}</Link>
       </li>
@@ -56,7 +50,7 @@ const Header = React.createClass({
                 <li><DeadLink><AjaxLoadingGlyph /></DeadLink></li>    
               </ul>
               <div role="search" className="navbar-form navbar-right">
-                <SearchBox submitSearch={this.submitSearch}/>
+                <SearchBox onDone={this.submitSearch} placeholder="genres, instruments, etc."/>
               </div>
               {NavbarRight}
             </div>

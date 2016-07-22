@@ -10,6 +10,12 @@ class YeOldWatchableJavascriptProperty extends Eventer
     this._displayName  = '_Un-Named_';
   }
 
+  static fromValue( hash, ClassName ) {
+    const instance = new ClassName();
+    instance.value = hash[instance.name];
+    return instance;
+  }
+
   get displayName() {
     return this._displayName;
   }
@@ -37,5 +43,6 @@ class YeOldWatchableJavascriptProperty extends Eventer
   }
 
 }
+
 
 module.exports = YeOldWatchableJavascriptProperty;

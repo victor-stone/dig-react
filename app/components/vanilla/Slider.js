@@ -1,6 +1,7 @@
 /* globals $ */
 import React        from 'react';
-import { debounce } from '../../unicorns';
+import { debounce,
+         nextID }   from '../../unicorns';
 
 const ONE_HUNDRED = 100;
 
@@ -13,15 +14,17 @@ function genPips(numPips) {
   return pips;
 }
 
-let nextID = 0;
-
 class Slider extends React.Component
 {
   constructor() {
     super(...arguments);
+    
     this.state = { value: this.props.value || this.props.min };
-    this.id = '_slider_' + ++nextID;
+    
+    this.id = nextID('_slider_');
+
     const { debounceDelay = 0 } = this.props;
+    
     if( debounceDelay ) {
       this.onSlide = debounce( this.props.onSlide, debounceDelay ); 
     } else {

@@ -6,7 +6,7 @@ import { UploadType,
          License,
          Sort,
          InstrumentalOnly,
-         Artist,
+         People,
          AdminTag }    from '../filters';
 
 import { OptionsWrap } from '../filters/QueryOptions';
@@ -30,7 +30,7 @@ function PlaylistQueryOptions(props) {
           <InstrumentalOnly store={store} className="btn btn-info" />
         </li>
         <li>
-          <Artist store={store} />
+          <People store={store} />
         </li>
         <li>
           <DualTagFieldWidget store={store} withMatchAll />

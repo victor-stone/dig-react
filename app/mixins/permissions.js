@@ -23,14 +23,26 @@ const Permissions = target => class extends target {
     super(...arguments);
     this._permissions = {};
     this.permissions = this.nullPermissions;
+    this._permissionsProxy = null;
   }
 
   get permissions() {
+    if( this._permissionsProxy ) {
+      return this._permissionsProxy.permissions;
+    }
     return Object.assign({},this._permissions);
   }
 
   set permissions(perms) {
-    Object.assign(this._permissions,perms);
+    if( this._permissionsProxy ) {
+      this._permissionsProxy.permissions = perms;
+    } else {
+      Object.assign(this._permissions,perms);  
+    }
+  }
+
+  set permissionsProxy(p) {
+    this._permissionsProxy = p;
   }
 
 };

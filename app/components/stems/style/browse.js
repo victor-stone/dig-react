@@ -81,10 +81,14 @@ var css =
 
 .stems-browser 
    .stems-listing 
+      a.btn.btn-info.remix-tree-link,
+.stems-browser 
+   .stems-listing 
       ul.tag-list-selectable 
          li.tag-selectable.tag-selectable-checks.tag-selected 
 {
-  background-color: rgb(139, 195, 74);
+  background: rgb(139, 195, 74);
+  border: 1px solid whitesmoke;
   color: white;
 }
 

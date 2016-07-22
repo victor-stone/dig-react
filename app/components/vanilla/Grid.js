@@ -1,5 +1,6 @@
-import React         from 'react';
-import { selectors } from '../../unicorns';
+import React            from 'react';
+import { selectors,
+         excludeProps } from '../../unicorns';
 
 const reservedProps = [ 'className', 'xs', 'sm', 'md', 'lg', 'model', 
                          'sz', 'cols', 'offset', 'pull', 'push', 'hidden' ];
@@ -8,9 +9,7 @@ class BootstrapBase extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.bsSelector = 'container';
-    this.bsSafeProps = {};
-    Object.keys(this.props).forEach( k => !reservedProps.contains(k) && (this.bsSafeProps[k] = this.props[k]) ); 
+    this.bsSafeProps = excludeProps(this.props,reservedProps);
   }
 
   get selectors() {
@@ -26,25 +25,22 @@ class BootstrapBase extends React.Component
 
 class Container extends BootstrapBase
 {
-  constructor() {
-    super(...arguments);
-    this.bsSelector = 'conainter';
-  }  
+  get bsSelector() {
+    return 'container';
+  }
 }
 
 class FluidContainer extends BootstrapBase
 {
-  constructor() {
-    super(...arguments);
-    this.bsSelector = 'conainter-fluid';
+  get bsSelector() {
+    return 'container-fluid';
   }
 }
 
 class Row extends BootstrapBase
 {
-  constructor() {
-    super(...arguments);
-    this.bsSelector = 'row';
+  get bsSelector() {
+    return 'row';
   }
 }
 

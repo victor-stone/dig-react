@@ -1,5 +1,6 @@
 import events      from '../models/events';
 import StoreEvents from './store-events';
+import { safeSetState } from '../unicorns';
 
 /*
   Implementors must implement 
@@ -12,12 +13,7 @@ import StoreEvents from './store-events';
 const ModelTracker = target => class extends StoreEvents(target) {
   constructor() {
     super(...arguments);
-    const myState = this._stateFromStore(this.props.store);
-    if( this.state ) {
-      Object.assign(this.state,myState);
-    } else {
-      this.state = myState;  
-    }
+    safeSetState(this, this._stateFromStore(this.props.store));
   }
 
   get storeEvents() {

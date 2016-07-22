@@ -5,18 +5,12 @@ class UploadType extends TagEnum
   constructor(defaultValue = 'remix') {
     super( 'reqtags', defaultValue, Object.keys(UploadType.options) );
     this._displayName  = 'type';
+    this._setsDefaultFromNative = true;
   }
 }
 
 Object.assign(UploadType,{
   propertyName: 'uploadType',
-
-  fromValue(qp) {
-    const filter = new UploadType();
-    filter.fromNative(qp);
-    filter._defaultValue = filter._value;
-    return filter;    
-  },
 
   options: {
     remix:      'remix',

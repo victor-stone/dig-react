@@ -1,11 +1,15 @@
 import React        from 'react';
-import _SubNavBar   from '../vanilla/SubNavBar';
+import SubNavBar    from '../vanilla/SubNavBar';
 import Paging       from './Paging';
+import SearchBox    from '../filters/Search';
+
 
 function PagingStub(store) {
-  return function() {
-    return <Paging store={store} />;  
-  };  
+  return () => <Paging store={store} />;  
+}
+
+function SearchStub(store) {
+  return () => <SearchBox store={store} />;
 }
 
 /*
@@ -14,22 +18,24 @@ function PagingStub(store) {
 
   props (all optional)
     store     - store bound to paging widget 
-    paging    - boolean true means display paging widget in the bar (assumes:
-                  store.queryParams { offset, limit }, 
-                  store.model.total
-                  store.model.items[] )
+    paging    - boolean true means display Paging widget in the bar
+    search    - boolean true means display SearchBox widget
     className - for the outer div
     css       - override the default css (this is actual css code, 
                 not a class selector or reference to a stylesheet
                 file)
 */
-function SubNavBar(props) {
-  var Extra = props.paging && PagingStub(props.store);
+
+function BoundSubNavBar(props) {
+  const { store, css = '', paging, className, search  } = props;
+  const extras = [];
+  paging && extras.push(PagingStub(store));
+  search && extras.push(SearchStub(store));
   return (
-    <_SubNavBar extra={Extra} css={props.css} className={props.className}>
+    <SubNavBar extra={extras} css={css + SearchBox.css} className={className}>
       {props.children}
-    </_SubNavBar>
+    </SubNavBar>
     );
 }
 
-module.exports = SubNavBar;
+module.exports = BoundSubNavBar;

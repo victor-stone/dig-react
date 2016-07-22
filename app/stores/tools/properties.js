@@ -21,24 +21,11 @@ const Properties = target => class extends target {
       return this._properties.get(PropertyClass);
     }
     
-    const property = PropertyClass.fromNative( this.nativeProperties, PropertyClass ).onChange( this.onPropertyChange );
+    const property = PropertyClass.fromValue( this.nativeProperties, PropertyClass )
+                                  .onChange( this.onPropertyChange );
     this._properties.set(PropertyClass, property);
     
     return property;
-  }
-
-  injectProperty(PropertyClass,property) {
-
-    if( !this._properties.has(PropertyClass) ) {
-      this._properties.set(PropertyClass,property);
-      property.onChange( this.onPropertyChange );
-    }
-    
-    return property;
-  }
-
-  removeProperty(PropertyClass) {
-    this._properties.delete(PropertyClass);
   }
 
   getProperty(PropertyClass) {
@@ -47,7 +34,9 @@ const Properties = target => class extends target {
 
   onPropertyChange(property) {
     const { name } = property;
-    this.applyProperties( { [name]: property.toNative(this.nativeProperties[name]) } );
+    const nativeValue = this.nativeProperties[name];
+    const value = property.toNative ? property.toNative(nativeValue) : nativeValue;
+    this.applyProperties( { [name]: value } );
   }
 
   get nativeProperties() {

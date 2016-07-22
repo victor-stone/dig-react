@@ -11,7 +11,7 @@ class License extends QueryFilter
 }
 
 Object.assign(License,{
-  filterName: 'license',
+  propertyName: 'license',
   
   options: {
       all: 'all licenses',

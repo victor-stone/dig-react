@@ -1,9 +1,10 @@
-import React                 from 'react';
-import Glyph                 from '../vanilla/Glyph';
-import Modal                 from '../services/Modal';
-import {FormattedTextEditor} from '../vanilla/FormattedTextEditor';
+import React        from 'react';
+import Glyph        from '../vanilla/Glyph';
+import Modal        from '../services/Modal';
+import TextEditor   from '../vanilla/TextEditor';
+
 import { bindAll,
-         selectors }         from '../../unicorns';
+         selectors } from '../../unicorns';
 
 class ReviewPopup extends Modal.Popup {
 
@@ -48,7 +49,7 @@ class ReviewPopup extends Modal.Popup {
       >
           <div className="form-group">
               <label>{"Your review:"}</label>
-              <FormattedTextEditor  onChange={this.onChange} />
+              <TextEditor  onChange={this.onChange} />
           </div>
       </Modal>
       );
@@ -60,12 +61,16 @@ class ReviewsButton extends React.Component
   constructor() {
     super(...arguments);
     this.onReview = this.onReview.bind(this);
-    const { model: {upload:{id}}, permissions } = this.props.store;
+
+    const { upload:{id}, permissions } = this.props.store.model;
+
     this.state = { id, permissions };
   }
 
   componentWillReceiveProps(props) {
-    const { model: {upload:{id}}, permissions } = props.store;
+    
+    const { upload:{id}, permissions } = props.store.model;
+
     this.setState({id,permissions});
   }
 
@@ -81,7 +86,10 @@ class ReviewsButton extends React.Component
   }
 
   render() {
-    const { store: { permissions:{okToReview=false} = {}}, className = '' } = this.props;
+    const { store, className  } = this.props;
+
+    const { permissions: { okToReview = false} } = store;
+
     const cls = selectors('review',className);
 
     return (

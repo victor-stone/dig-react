@@ -5,6 +5,8 @@ import browserScripts from './browser-scripts';
 // TODO: break TagString into separate npm module
 // TODO: move browser scripts somewhere else
 
+let _nextID = 0;
+
 const NOT_FOUND = -1;
 
 // for all the crazy talk like this:
@@ -148,6 +150,14 @@ if( isUndefined(Array.prototype.rejectBy) ) {
   };
 }
 
+function safeSetState(_this,state) {
+  if( _this.state ) {
+    Object.assign(_this.state,state);
+  } else {
+    _this.state = state;
+  }
+}
+
 function dataProps(props) {
   const results = {};
   const test = /^data\-/;
@@ -157,6 +167,19 @@ function dataProps(props) {
     }
   }
   return results;
+}
+
+function excludeProps(props,exclude) {
+  const results = {};
+  Object.keys(props)
+    .filter( k => !exclude.includes(k) )
+    .forEach( k => results[k] = props[k] );
+  return results;
+}
+
+function nextID(prefix = '_auto_id_')
+{
+  return prefix + (++_nextID);
 }
 
 const ELLIPSE = '...';
@@ -407,10 +430,13 @@ module.exports = {
   debounce,
   decamlize,
   ellipse,
+  excludeProps,
   isUndefined,
   mergeParams,
   hashParams,
+  nextID,
   oassign,
+  safeSetState,
   selectors,
   sliceStr,
   trim,

@@ -19,7 +19,7 @@ class App extends React.Component
 {
   constructor() {
     super(...arguments);
-    bindAll( this, 'onLoading', 'onNavigateTo', 'onNavigateToThis', 'onAppAlert' );
+    bindAll( this, 'onLoading', 'onNavigateTo', 'onNavigateToThis', 'onAppAlert', 'onAlertClosed' );
     this.state = { component: { path: null } };
   }
 

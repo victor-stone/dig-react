@@ -1,58 +1,64 @@
 import React       from 'react';
 
-import { HorizontalForm, FormItem } from '../vanilla/Form';
-import { BoundInputFormField }      from './InputField';
-import { EditableTagsField }        from './Tags';
+import { HorizontalForm, 
+         StaticField }      from '../vanilla/Form';
 
+import TagsPropertyEditor from '../properties/tags';
+import BPMPropertyEditor  from '../properties/bpm';
 
 function EdPick(props) {
-  const { cls, model: {edPick: { review, reviewer } } } = props;
+  const { model: {edPick: { review, reviewer } } } = props;
   return (
-    <FormItem title="editorial" cls={cls} wrap>
+    <StaticField title="editorial">
       <div className="edpick">
         {review}
         <div className="edpick-author">{reviewer}</div>
       </div>
-    </FormItem>);
+    </StaticField>);
 }
 
 function Featuring(props) {
-  const { cls, model: {featuring} } = props;
+  const { model: {featuring} } = props;
   return(
-      <FormItem title="featuring" cls={cls} wrap>{featuring}</FormItem>    
+      <StaticField title="featuring">{featuring}</StaticField>
     );
 }
 
+function NSFW(props) {
+  const { model: {nsfw} } = props;
+  return nsfw && <StaticField title="NSFW">{"This music may be NSFW"}</StaticField>;
+}
+
 function License(props) {
-  const { cls, model } = props;
+  const { model } = props;
   const { licenseURL, licenseLogoURL, isCCPlus, purchaseLicenseURL, purchaseLogoURL } = model;
   return(
-    <FormItem title="license"  cls={cls} wrap>
+    <StaticField title="license" >
       <a target="_blank" href={licenseURL}><img src={licenseLogoURL} /></a>
       {isCCPlus && <a target="_blank" href={purchaseLicenseURL}>{" "}<img src={purchaseLogoURL} /></a>}
-    </FormItem>
+    </StaticField>
   );
 }
 
 function UploadOverview(props)
 {
   const { store, 
-          lineCls:cls='', 
           store: { 
-              model: { upload: model }
+              model: { upload }
             } 
           } = props;
-  const { edPick, featuring, date, bpm, nsfw } = model;
+
+  const { edPick, featuring, date, bpm, nsfw } = upload;
+
   return (
     <HorizontalForm>
-        {edPick && <EdPick model={model} cls={cls} />}
-        {featuring && <Featuring model={model} cls={cls} />}
-        <FormItem title="uploaded" cls={cls} wrap>{date}</FormItem>
-        <License model={model} cls={cls} />
-        {bpm && <BoundInputFormField store={store} cls={cls} propName="bpm" title="BPM" />}
-        {nsfw && <FormItem title="NSFW" cls={cls} wrap>{"This music may be NSFW"}</FormItem>}
-        <EditableTagsField store={store} delayCommit />
-        {props.children}
+        {edPick && <EdPick model={upload} />}
+        {featuring && <Featuring model={upload} />}
+        <StaticField title="uploaded" >{date}</StaticField>
+        <License model={upload} />
+        {bpm && <BPMPropertyEditor store={store} />}
+        {nsfw && <NSFW model={upload} />}
+        <TagsPropertyEditor store={store} />
       </HorizontalForm>
     );
 }

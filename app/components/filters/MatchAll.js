@@ -1,7 +1,6 @@
-import React       from 'react';
 import Filter      from '../../models/filters/match-all';
 import TagsFilter  from '../../models/filters/tags';
-import Toggle      from './controls/Toggle';
+import Toggle      from '../properties/controls/Toggle';
 
 class MatchAllButton extends Toggle
 {
@@ -42,17 +41,12 @@ class MatchAllButton extends Toggle
       return null;
     }
     return super.render();
-    /*
-    return (  <label className="btn btn-primary btn-xs match-all">
-                <input onChange={this.onToggle} checked={this.state.toggle} type="checkbox"/>
-                {" match all"}
-              </label>
-            );
-    */
   }
 }
 
-MatchAllButton.defaultProps = { filter: Filter, className: 'btn btn-primary btn-xs match-all', text: 'match all' };
+MatchAllButton.defaultProps = { property:    Filter, 
+                                className: 'btn btn-primary btn-xs match-all', 
+                                text:      'match all' };
 
 module.exports = MatchAllButton;
 

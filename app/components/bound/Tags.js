@@ -1,15 +1,12 @@
 import React            from 'react';
-import { InlineCSS,
-         Form,
-         EditControls } from '../vanilla';
+import { InlineCSS }    from '../vanilla';
 import { TagString }    from '../../unicorns';
 import { bindAll,
+         safeSetState,
          selectors }    from '../../unicorns';
 import TagStore         from '../../stores/tags';
 
 import Filter           from '../../models/filters/tags';
-
-import DelayedCommitStore from '../../stores/tools/delayed-commit';
 
 import { 
           StaticTagsList,
@@ -20,32 +17,9 @@ import {
 
 import MatchAllButton from '../filters/MatchAll';
 
-/* See app/models/Tags.js for explanations of concepts */
+/* 
+  See app/models/Tags.js for explanations of concepts 
 
-/*
-
-  Complient stores:
-
-    Properties:
-      tags [TagString] - read/write
-      permissions.canEdit - read only
-
-    Methods: (these are supplied by tags-owner mixin)
-      toggleTag(tag,toggle)
-      clearTags()
-
-    Events source:
-      TAGS_SELECTED
-
-  See DelayedCommitTagStore for the minimum API
-  required for bound components.
-
-  Props: 
-    - category [CategoryTagBox.categories]
-    - pairWith [string] (e.g. one of: remix, sample, acappella)
-    - minCount [number] (only show tags that have been used this much)
-    - onSelected(model,toggle) [callback] (option)
-    - selected [TagString]
 */
 
 function tagOccurrances(cat,tags) {
@@ -54,6 +28,22 @@ function tagOccurrances(cat,tags) {
   return arr.match(regx).length;
 }
 const DEFAULT_MIN_TAG_COUNT = 100;
+
+
+/*
+
+  Complient stores:
+
+    Properties:
+      permissions.canEdit - read only
+
+  Props: 
+    - category [CategoryTagBox.categories]
+    - pairWith [string] (e.g. one of: remix, sample, acappella)
+    - minCount [number] (only show tags that have been used this much)
+    - onSelected(model,toggle) [callback] (option)
+    - selected [TagString]
+*/
 
 class CategoryTagBox extends React.Component
 {
@@ -109,7 +99,7 @@ const TagFilter = baseclass => class extends baseclass {
     super(...arguments);
     this.onTagsChanged = this.onTagsChanged.bind(this);
     this._setupStore(this.props.store);
-    this.state = { tags: this.filter.value };
+    safeSetState( this, { tags: this.property.value } );
   }
 
   componentWillMount() {
@@ -118,7 +108,7 @@ const TagFilter = baseclass => class extends baseclass {
 
   componentWillReceiveProps(nextProps) {
     this.props.store !== nextProps.store && this._setupStore(nextProps.store);
-    this.setState( { tags: this.filter.value } );
+    this.setState( { tags: this.property.value } );
   }
 
   shouldComponentUpdate(nextProps,nextState) {
@@ -130,9 +120,9 @@ const TagFilter = baseclass => class extends baseclass {
   }
 
   _setupStore(store) {
-    this.filter = store.addProperty(Filter);
-    this.filter.onChange( this.onTagsChanged );
-    this.toggle = this.filter.toggle.bind(this.filter);
+    this.property = store.addProperty(Filter);
+    this.property.onChange( this.onTagsChanged );
+    this.toggle = this.property.toggle.bind(this.property);
   }
 
   onTagsChanged(filter) {
@@ -217,11 +207,11 @@ class BoundSelectedTagList extends TagFilter(React.Component)
   }
 
   onRemove(tag) {
-    this.filter.toggle(tag,false);
+    this.property.toggle(tag,false);
   }
 
   onClear() {
-    this.filter.value = '';
+    this.property.value = '';
   }
 
   render() {
@@ -245,130 +235,16 @@ const GENRE = BoundCategoryTagBox.categories.GENRE;
 
 class DualTagFieldWidget extends TagFilter(React.Component)
 {
-  componentDidMount() {
-    /* globals $ */
-    if( this.props.cancelCallback ) {
-      $('#blerg').slideDown();
-      this.props.cancelCallback( cb => $('#blerg').slideUp('fast',cb) );
-    }
-  }
-
   // TODO: tag cats should be navtabs, not just stacked on top of each other
   render() {
-    const { store, cancelCallback, withMatchAll = false, cats = [GENRE] } = this.props;
-    return(
-      <div id="blerg" style={cancelCallback && {display:'none'}}>
-        <BoundSelectedTagList store={store} />
-        {withMatchAll && <MatchAllButton store={store} />}
-        {cats.map( (cat,i) => <BoundCategoryTagBox key={i} category={cat} store={store} />)}
-      </div>
-    );
+    const { store, withMatchAll = false, cats = [GENRE] } = this.props;
+    return  (<div>
+              <BoundSelectedTagList key="98" store={store} />
+              {withMatchAll && <MatchAllButton key="99" store={store} />}
+              {cats.map( cat => <BoundCategoryTagBox key={cat} category={cat} store={store} />)}
+            </div>);
   }
 }
-
-const editingClasses = { [false]: '', [true]: 'editing'};
-
-const TagEditMixin = target => class extends target {
-
-  constructor() {
-    super(...arguments);
-    bindAll(this, 'onEdit', 'onCancel', 'onDone', 'cancelCB' );
-    this.state = { editing: false };
-    this._setupStore(this.props.store);
-  }
-
-  _setupStore(store) {
-    this._store = this.props.delayCommit ? new DelayedCommitStore(store) : store;    
-    this.filter = this._store.addProperty(Filter);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if( this.props.store !== nextProps.store ) {
-      this._setupStore(nextProps.store);
-    }
-    this.setState({ editing:false });
-  }
-
-  onEdit() {
-    this.setState({ editing:true });
-  }
-
-  onCancel() {
-    this.filter.reset();
-    this._closeMe();
-  }
-
-  onDone() {
-    const { delayCommit, onDone } = this.props;
-
-    if( delayCommit ) {
-      this._store.commit();
-    }
-
-    onDone && onDone();    
-    this._closeMe();
-  }
-
-  _closeMe() {
-    var ss = () => this.setState({editing:false});
-    this.pcb && this.pcb(ss) || ss();    
-  }
-
-  cancelCB( pcb ) {
-    this.pcb = pcb;
-  }
-
-  get widget() {
-    const store = this._store;
-    return this.state.editing
-                  ? <DualTagFieldWidget store={store} cancelCallback={this.cancelCB} />
-                  : <BoundStaticTagList store={store} />;
-  }
-
-  get editControls() {
-    const { controlsCls = '', onDone, delayCommit } = this.props;
-    const { editing } = this.state;
-    const cls = selectors(controlsCls, editingClasses[editing] );
-    const store = this._store;
-
-    return store.permissions.canEdit
-                  ? <span className={cls}>
-                      {editing && (onDone || delayCommit) && <EditControls.Done onDone={this.onDone} />}
-                      {editing
-                        ? <EditControls.Cancel onCancel={this.onCancel} />
-                        : <EditControls.Edit onEdit={this.onEdit} />}
-                    </span>
-                  : null;
-  }
-};
-
-
-class EditableTagsField extends TagEditMixin(React.Component)
-{
-  render() {
-    return(
-        <Form.FormItem title="tags" addOn={this.editControls} wrap>
-          {this.widget}
-        </Form.FormItem>
-      );
-    }
-}
-
-EditableTagsField.defaultProps = { controlsCls: 'input-group-addon' };
-
-class EditableTagsDiv extends TagEditMixin(React.Component)
-{
-  render() {
-    return(
-        <div className="tags-edit-field-div">
-          {this.widget}
-          {this.editControls}
-        </div>
-      );
-  }
-}
-
-EditableTagsDiv.defaultProps = { controlsCls: 'tag-edit-controls' };
 
 module.exports = {
   BoundCategoryTagBox,
@@ -376,11 +252,7 @@ module.exports = {
   BoundSelectedTagList,
   BoundStaticTagList,
   CategoryTagBox,
-  DualTagFieldWidget,
-  EditableTagsDiv,
-  EditableTagsField,
-
-  tagOccurrances
+  DualTagFieldWidget
 };
 
 //

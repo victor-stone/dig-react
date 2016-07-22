@@ -1,3 +1,4 @@
+import rsvp             from 'rsvp';
 import Query            from './query';
 import QueryFilters     from './tools/query-filters';
 import { mergeParams }  from '../unicorns';
@@ -10,6 +11,7 @@ class UserSearch extends QueryFilters(Query) {
   constructor(defaultParams) {
     super(...arguments);
     this._queryParams = {};
+    this.model = {};
     this._defaultParams = defaultParams;
   }
 
@@ -33,6 +35,10 @@ class UserSearch extends QueryFilters(Query) {
   
   // search the entire user record
   searchUsers(params,deferName,deferThis) {
+    const { lookup } = params;
+    if( !lookup ) {
+      return  rsvp.resolve([]);
+    }
     this._queryParams = Object.assign({},params);
     params.dataview ='user_basic';
     return (deferThis || this).query(params,deferName)

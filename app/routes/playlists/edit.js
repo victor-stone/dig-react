@@ -9,6 +9,8 @@ const Edit = Object.assign(pages.EditDynamicPlaylist,{
    return Playlist.storeFromID(params.id).then( store => store.useUnderlyingQuery() );
   },
 
+  browserOnly: true,
+  
   urlFromStore(store) {
     const id = store.model.head.id;
     return `/playlist/browse/${id}/edit`;

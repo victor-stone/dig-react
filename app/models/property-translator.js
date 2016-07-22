@@ -22,6 +22,12 @@ import Property from './property';
 class PropertyTranslator extends Property
 {
 
+  static fromValue( hash, ClassName ) {
+    const instance = new ClassName();
+    instance.fromNative(hash[instance.name]);
+    return instance;
+  }
+
   set value(val) {
     super.value = this.fromAbstract(val);
   }
@@ -54,11 +60,5 @@ class PropertyTranslator extends Property
     this._value = val;
   }
 }
-
-PropertyTranslator.fromNative = ( hash, ClassName ) => {
-  const instance = new ClassName();
-  instance.fromNative(hash[instance.name]);
-  return instance;
-};
 
 module.exports = PropertyTranslator;

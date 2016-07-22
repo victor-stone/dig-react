@@ -80,8 +80,13 @@ class QueryOptions extends ModelTracker(React.Component)
     const { showOptions = false, dirty } = this.state;
 
     const buttonColor = dirty ? { color: 'yellow' } : {};
-    const cls         = selectors('hidden-xs hidden-sm query-options-box',showOptions ? 'open' : '',floating ? 'floating' : '');
-    const cls3        = selectors('btn btn-primary', showOptions ? ' hidden' : '');
+
+    const cls         = selectors('hidden-xs hidden-sm query-options-box',
+                                   showOptions ? 'open'     : '',
+                                   floating    ? 'floating' : '');
+
+    const cls3        = selectors('btn btn-primary', 
+                                   showOptions ? ' hidden' : '');
 
     return (
       <div className={cls}>

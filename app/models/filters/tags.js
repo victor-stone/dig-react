@@ -10,7 +10,6 @@ class Tags extends QueryFilter
     this._displayName = 'tags';
 
     this._setsDefaultFromNative = true; // really..?
-
   }
 
   // we going to keep a native string in

@@ -1,7 +1,7 @@
 import React             from 'react';
 import QueryOptions      from './QueryOptions';
 
-import StaticTrackList   from '../bound/StaticTrackList';
+import TrackListPreview  from '../bound/TrackListPreview';
 
 import SaveButton        from '../vanilla/SaveButton';
 import PageHeader        from '../vanilla/PageHeader';
@@ -34,7 +34,7 @@ class DynamicForm extends DisableScrollToTop(React.Component)
                   </Column>
                   <Column cols="6">
                     <h3>{"preview"}</h3>
-                    <StaticTrackList store={tracks} />
+                    <TrackListPreview store={tracks} />
                     <SaveButton onSave={this.props.onSave} />
                   </Column>
                 </Row>

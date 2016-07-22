@@ -1,11 +1,11 @@
 import Filter      from '../../models/filters/instrumental-only';
-import Toggle      from './controls/Toggle';
+import Toggle      from '../properties/controls/Toggle';
 
 class InstrumentalOnlyFilter extends Toggle
 {
 }
 
-InstrumentalOnlyFilter.defaultProps = { filter: Filter, className: 'btn' };
+InstrumentalOnlyFilter.defaultProps = { property: Filter, className: 'btn' };
 
 module.exports = InstrumentalOnlyFilter;
 

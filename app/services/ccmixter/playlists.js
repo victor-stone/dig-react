@@ -6,13 +6,14 @@ import serialize    from '../../models/serialize';
 
 class Playlists extends API
 {
-  createDynamic(name,queryParamsString) {
-    var q = queryParamsString + '&title=' + name;
-    return this.call('playlist/create/dynamic?' + q).then( serialize( ccmixter.Playlist ) );
-  }
-
-  createStatic(name,description,track) {
-    var q = `name=${name}&cart_description=${description}`;
+ 
+  create(name,description,track,queryParamsString) {
+    let q = '';
+    if( queryParamsString ) {
+      q = queryParamsString + '&title=' + name;
+      return this.call('playlist/create/dynamic?' + q).then( serialize( ccmixter.Playlist ) );      
+    }
+    q = `name=${name}&cart_description=${description}`;
     return this.call(`playlist/create/${track}?${q}`).then( serialize( ccmixter.Playlist ) );
   }
 

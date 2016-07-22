@@ -1,7 +1,8 @@
 import React          from 'react';
 import MoreOrLessLink from './MoreOrLessLink';
 import InlineCSS      from './InlineCSS';
-import { bindAll }    from '../../unicorns';
+import { bindAll,
+         nextID }    from '../../unicorns';
 
 const css = `
 .collapse-list-head {
@@ -14,13 +15,11 @@ const css = `
 
 const DEFAULT_MAX_SHOW = 3;
 
-var nextID = 0;
-
 class CollapsingList extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.id = 'collapsing-list-' + ++nextID;
+    this.id = nextID('collapsing-list-');
     bindAll(this, 'listElement' );
   }
 

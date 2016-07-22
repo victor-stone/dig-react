@@ -1,16 +1,13 @@
 import api      from '../services/ccmixter';
 import events   from '../models/events';
 
+import { safeSetState } from '../unicorns';
+
 const CurrentUserTracker = target => class extends target {
   constructor() {
     super(...arguments);
     this.onUserLogin = this.onUserLogin.bind(this);
-    const myState = { user: undefined, userLoading: !global.IS_SERVER_REQUEST };
-    if( this.state ) {
-      Object.assign( this.state, myState );
-    } else {
-      this.state = myState;
-    }
+    safeSetState( this, { user: undefined, userLoading: !global.IS_SERVER_REQUEST } );
   }
 
   componentWillMount() {

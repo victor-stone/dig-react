@@ -21,15 +21,6 @@ class UnmixedOnly extends QueryFilter
   }
 }
 
-Object.assign(UnmixedOnly,{
-  propertyName: 'UnmixedOnly',
-  
-  fromValue(qp) {
-    const filter = new UnmixedOnly();
-    filter._defaultValue = '';
-    filter.fromNative(qp);
-    return filter;    
-  }
-});
+UnmixedOnly.propertyName = 'UnmixedOnly';
 
 module.exports = UnmixedOnly;

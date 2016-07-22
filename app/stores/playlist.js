@@ -1,26 +1,36 @@
 import rsvp             from 'rsvp';
 import Query            from './query';
 import Collection       from './collection';
+
+import Properties       from './tools/properties';
+
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
-import env              from '../services/env';
-import { TagString }    from '../unicorns';
-import api              from '../services/ccmixter';
 import events           from '../models/events';
-import Properties       from './tools/properties';
+
+import env              from '../services/env';
+import api              from '../services/ccmixter';
+
+import { TagString }    from '../unicorns';
+
 import Permissions      from '../mixins/permissions';
 
-class PlaylistTracks extends Collection {
+class PlaylistTracks extends Permissions(Collection) {
+
+  static storeFromQuery(params,defaults) {
+    var pl = new PlaylistTracks(defaults);
+    return pl.getModel(params).then( () => pl );  
+  }
+
+  get nullPermissions() {
+    return { canEdit: false };
+  }
+
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName)
               .then( serialize(ccmixter.PlaylistTrack) );
   }
 }
-
-PlaylistTracks.storeFromQuery = function(params,defaults) {
-  var pl = new PlaylistTracks(defaults);
-  return pl.getModel(params).then( () => pl );  
-};
 
 class Playlist extends Permissions(Properties(Query)) {
 
@@ -31,6 +41,30 @@ class Playlist extends Permissions(Properties(Query)) {
     this._prevTracks = null;
   }
 
+  // TODO: this should return a Playlist store (no?)
+  static create(name,track,qstring) {
+    return api.playlists.createDynamic(name,'',track,qstring);
+  }
+
+  static storeFromID(id) {
+    var pl = new Playlist();
+    return pl.find(id).then( () => pl );
+  }
+
+  static storeFromModel(model) {
+    const pl = new Playlist();
+    pl.model = {head:model};
+    return pl;
+  }
+
+  static storeFromUploadsQuery(qparams, opts) {
+    var pl = new Playlist();
+    return pl._tracksStore(opts).getModel(qparams).then( () => {
+      pl.model = { head: {}, tracks: pl.uploads };
+      return pl;
+    });
+  }
+
   get nullPermissions() {
     return { canEdit: false };
   }
@@ -39,6 +73,8 @@ class Playlist extends Permissions(Properties(Query)) {
     return this.model.head.isDynamic;
   }
 
+  // TODO: investigate if tags setter/getter are called anymore
+  //       they really shouldn't be
   get tags() {
     const { head } = this.model;
     return new TagString(head.isDynamic ? head.queryParams.tags : head.tags);
@@ -74,19 +110,26 @@ class Playlist extends Permissions(Properties(Query)) {
   getProperties(propNames) {
     var props = {};
     propNames.forEach( n => props[n] = this.model.head[n] );
-
     return props;
   }
 
   applyProperties(props) {
-    const { tags } = props;
+    
+    const { tags, order } = props;
+
     if( tags && this.isDynamic ) {
-      this.applyQuery({tags:tags.toString()});
-      return;
+      return this.applyQuery({tags:tags.toString()});
     }
 
-    // FIXME: all remote property settings need to be done elsewhere
+    if( order ) {
+      return api.playlist.reorder(this.model.head.id,props.order).then( () => {
+          this._fetchTracks(this.model.head.id);
+        });
+    }
+
+    // TODO: (-ish) all remote property settings need to be done elsewhere
     //        use the Properties/QueryFilter pattern
+    //  update: well, maybe if the goal is to remove all ccHost knowledge(?)
 
     var id = this.model.head.id;
     return api.playlist.update(id,props)
@@ -94,13 +137,6 @@ class Playlist extends Permissions(Properties(Query)) {
       .then( head => {
           this.model.head = head;
           this.emit(events.MODEL_UPDATED);
-      });
-  }
-
-  // TODO: make this a property
-  reorder(sortkeys) {
-    return api.playlist.reorder(this.model.head.id,sortkeys).then( () => {
-        this._fetchTracks(this.model.head.id);
       });
   }
 
@@ -193,6 +229,7 @@ class Playlist extends Permissions(Properties(Query)) {
   _tracksStore(opts) {
     if( !this._uploads ) {
       this._uploads = new PlaylistTracks(opts);
+      this._uploads._permissionsProxy = this;
       this._uploads.gotCache = true;
     }
 
@@ -228,35 +265,7 @@ class Playlist extends Permissions(Properties(Query)) {
   }
 }
 
-// TODO: this should return a Playlist store (no?)
-Playlist.create = function(name,track,qstring) {
-  if( qstring ) {
-    return api.playlists.createDynamic(name,qstring);
-  } else {
-    return api.playlists.createStatic(name,'',track);
-  }
-};
-
 Playlist.PlaylistTracks = PlaylistTracks;
-
-Playlist.storeFromID = function(id) {
-  var pl = new Playlist();
-  return pl.find(id).then( () => pl );
-};
-
-Playlist.storeFromModel = function(model) {
-  const pl = new Playlist();
-  pl.model = {head:model};
-  return pl;
-};
-
-Playlist.storeFromUploadsQuery = function(qparams, opts) {
-  var pl = new Playlist();
-  return pl._tracksStore(opts).getModel(qparams).then( () => {
-    pl.model = { head: {}, tracks: pl.uploads };
-    return pl;
-  });
-};
 
 module.exports = Playlist;
 

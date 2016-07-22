@@ -1,5 +1,5 @@
 import React     from 'react';
-import Select    from './controls/Select';
+import Select    from '../properties/controls/Select';
 import Filter    from '../../models/filters/license';
 
 import Glyph     from '../vanilla/Glyph';
@@ -24,7 +24,7 @@ class LicenseFilter extends React.Component
   render() {
     const { store, id } = this.props;
 
-    return <div><Select store={store} id={id} filter={Filter} options={this.options} /><LicenseInfoPopup /></div>;
+    return <div><Select store={store} id={id} property={Filter} options={this.options} /><LicenseInfoPopup /></div>;
   }
 }
 
