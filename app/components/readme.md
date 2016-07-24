@@ -1,39 +1,32 @@
-A word about this direcory:
+A word about this folder:
 
 This is the only place where React components should live (as of this writing
-there are quite a few ill-placed comps in app/routes, that will be fixed at
-some point)
+there are still a couple ill-placed comps in app/routes, that is being 
+corrected in real time) and only React components should live here.
 
-	- lowercase directory names are logical groupings
-	- CamelCase direcotry names represent React Components
+	- **AudioPlayer** - the AudioPlay component (this should probably be under services)
+	
+	- **bound** - components that are store aware (most of these are actually only aware of specific properties and will be moved to **properties**
+	- **filter** - UI widgets that manipulate filters (AKA query parameters)
+	- **models** - these are model aware but store agnostic, IOW they know the shape of the object that comes out of a store (like a Thread from the Topics database)
+	- **properties** - UI widgets that manipulate specific properties
+	- **services** - components that interact with app wide services (like the router)
+	- **stems** - the stems (AKA samples) browser
+	- **style** - CSS related to components at this level
+	- **vanilla** - wrappers for generic HTML, React, Bootstrap, JQuery doo dads 
 
-Some of the logical groupings:
+These are app specific
 
-	- bound - components bound to stores
-	- models - compponents that represent specialized UI visualizations of models
-	- services -  components that interact with services
-	- style - css stylesheets (depricated and will go away)
-	- vanilla - generic React/JQuery/Bootstrap components
+  - **ccmixter** - components and pages specific to the ccmixter app
+	- **dig** - likewise but with dig
+	- **pells** - stuff specific to the pells browser
+	- **playlists** - components and pages specific to the playlists section of ccmixter
+	- **RemixTree** - pages related to the remix tree
+	
+All other files in this directory are artifacts and will be moved (soon-ish)
 
-The rest of the directories are 'feature' groupings, e.g.
+The architecture is migrating - initially every bound component was aware of either a store or a model. But it seems the vast majority of 'bound' components really only cared about one specific property. So most of the modules in the **bound** folder have and will mirgrate to **filters** and **properties**.
 
-	- ccmixter (main app pages)
-	- playlists
-	- stems
-	- dig (features specific to the dig app)
+To that end all the components that deal with listing things (there are a lot of them) actually really care about the 'items[]' element in the 'model' property of the store. Therefore 'items' should be a Property (see ../models) and the components that list them treated as read-only displays.
 
-In a perfect world the following patterns are the goal:
-
-	- 'vanilla' components NEVER reference any other directory in the entire framework
-	- 'models' components ONLY reference 'vanilla' components 
-	- 'bound' components ONLY reference 'models' and 'vanilla' (they should not reach into ../stores)
-	- 'services' components do what they need to do to abstract the actual services
-
-For an (somewhat extreme) example:
-
-	The Alert component is a React wrapper for bootstrap alert CSS selectors. There is
-	an 'Alert.js' in vanilla that is just that.
-
-	However, in order to show an Alert in this framework you have to interact with the 'env' 
-	service to trigger an event so the 'Alert' in services implements the static 'Alert.show()'
-	method.
+Same goes for Paging which would see 'offset' (R/W) and 'total' (RO) as properties. (Limit has already been migrated).
