@@ -1,4 +1,7 @@
-import PropertyStateful from './property-stateful';
+import Property           from './property';
+import PropertyStateful   from './property-stateful';
+import PropertyTranslator from './property-translator';
+
 
 /*
   A QueryFilter is the mapper between an abstract filtering on a Collection store
@@ -18,7 +21,7 @@ import PropertyStateful from './property-stateful';
     value. 
 */
 
-class QueryFilter extends PropertyStateful
+class QueryFilter extends PropertyStateful(PropertyTranslator(Property))
 {
   constructor() {
     super(...arguments);

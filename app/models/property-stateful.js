@@ -1,4 +1,3 @@
-import PropertyTranslator from './property-translator';
 
 /*
   A watchable, abstract-translatable property with state.
@@ -9,11 +8,10 @@ import PropertyTranslator from './property-translator';
   by default'
 */
 
-class PropertyStateful extends PropertyTranslator
+const PropertyStateful = baseclass => class extends baseclass
 {
   constructor() {
-    super(...arguments);
-    this._defaultValue = null;
+    super();
     this._setsDefaultFromNative = false;
   }
 
@@ -26,12 +24,12 @@ class PropertyStateful extends PropertyTranslator
     return this;
   }
 
-  fromNative(val) {
-    super.fromNative(val);
+  deserialize(val) {
+    super.deserialize(val);
     if( this._setsDefaultFromNative ) {
       this._defaultValue = this._value;
     }
   }
-}
+};
 
 module.exports = PropertyStateful;

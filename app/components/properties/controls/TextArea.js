@@ -9,15 +9,38 @@ import { TextEditor,
 class TextArea extends ToggleEditModeProperty 
 {
   get staticElement() {
+
     const { collapsible = false } = this.props;
+
     return collapsible 
-            ? <CollapsingText html={this.state.value} /> 
-            : <span dangerouslySetInnerHTML={{__html:this.state.value}} />;
+            ? {
+                Element: CollapsingText, 
+                props: { 
+                  html:this.state.value 
+                } 
+              }
+            : { 
+                Element: () => <span dangerouslySetInnerHTML={{__html:this.state.value}} />,
+                props: { }
+              }; 
+  }
+
+  onDone() {
+    this.updateValue(this.stateEditValue);
+  }
+  
+  onChange(event) {
+    this.stateEditValue = event.target.value;
   }
 
   get editableElement() {
-    return <TextEditor value={this.state.value} />;
+  
+    return { 
+      Element: () => <div onChange={this.onChange.bind(this)}><TextEditor initialValue={this.stateEditValue} /></div>,
+      props: {} 
+    };
   }  
+
 }
 
 function YouMisspelledCollapsible() {}

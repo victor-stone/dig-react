@@ -28,6 +28,11 @@ var css = `
   text-shadow: 1px 1px #888;
 }
 
+.form-control.track-sort-control,
+.playlist-info .form-control {
+    height: initial;
+}
+
 .playlist-detail-page .playlist-curator {
   text-align: center;
 }

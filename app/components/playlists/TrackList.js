@@ -35,11 +35,11 @@ class PlaylistTrackList extends React.Component
   }
 
   render() {
-    const { model: {tracks}, isDynamic } = this.props.store;
+    const { store, store:{isDynamic} } = this.props;
 
     return (<TrackListProperty 
               canEdit={!isDynamic}
-              store={tracks} 
+              store={store} 
               onDelete={this.onTrackDelete}
               onPlay={this.onPlay}
             />);

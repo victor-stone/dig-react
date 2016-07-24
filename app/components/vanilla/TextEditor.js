@@ -9,40 +9,28 @@ class TextEditor extends React.Component
     super(...arguments);
     bindAll(this, 'onChange' );
     ({ focusId:this.focusId = nextID('element_') } = this.props);
-    this.state = this._editorStateFromProps(this.props);
+    this.state = { value: this.props.initialValue };
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState( this._editorStateFromProps(nextProps) );
-  }
-
-  _editorStateFromProps(props) {
-    const { text } = props;
-    return { text, orgText: text };
-  }
-  
   onChange(e) {
-    this.setState({text:e.target.value});
-  }
-
-  htmlTextarea() {
-    return(
-      <div onChange={this.onChange} >
-        <textarea
-            id={this.focusId}
-            className="form-control"
-            value={this.state.text} 
-            placeholder="awesome!"
-            rows="6" 
-            {...this.props}
-        ></textarea>
-      </div>
-      );
+    this.setState({value:e.target.value});
   }
 
   render() {
-    return this.htmlTextarea();
+    const { placeholder = 'awesome!' } = this.props;
+    return(
+      <textarea
+          id={this.focusId}
+          className="form-control"
+          value={this.state.value} 
+          onChange={this.onChange}
+          placeholder={placeholder}
+          rows="6" 
+          {...this.props}
+      ></textarea>
+      );
   }
+
 
 }
 

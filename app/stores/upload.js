@@ -77,8 +77,12 @@ class Upload extends Permissions(Properties(Query)) {
     return props;
   }
 
-  applyProperties(props) {
-    return api.upload.update(this.model.upload.id,props);
+  applyProperties(props,callback = m => m ) {
+    const { id } = this.model.upload;
+    return api.upload.update(id,props)
+              .then( () => this.info(id) )
+              .then( info => this.model.upload = info )
+              .then( callback );
   }
 
   recommend() {
@@ -128,7 +132,7 @@ class Upload extends Permissions(Properties(Query)) {
         
         model.artist        = 
         model.upload.artist = user;
-        model.queryParams   = { ids: id, u: user.id };
+        model.queryParams   = { ids: id, user: user.id };
         
         return this.getPermissions(model);
 

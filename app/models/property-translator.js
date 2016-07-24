@@ -1,4 +1,3 @@
-import Property from './property';
 
 /*
   A PropertyTranslator translates from an abstraction to a 
@@ -19,46 +18,25 @@ import Property from './property';
     from the abstracted value. 
 */
 
-class PropertyTranslator extends Property
+const PropertyTranslator = baseclass => class extends baseclass
 {
-
-  static fromValue( hash, ClassName ) {
-    const instance = new ClassName();
-    instance.fromNative(hash[instance.name]);
-    return instance;
-  }
 
   set value(val) {
     super.value = this.fromAbstract(val);
-  }
-
-  fromAbstract(val) {
-    return val;
   }
 
   get value() {
     return this.toAbstract();
   }
 
+  fromAbstract(val) {
+    return val;
+  }
+
   toAbstract() {
     return this._value;
   }  
   
-  // convert this property's value to a native form
-  // this typically means just returning this._value
-  // 
-  // the 'currentValue' is passed in in case you 
-  // need it to make a contextual determination 
-  //
-  toNative(/*currentValue*/) {
-    return this._value;
-  }
-
-  // initial this property from a native form
-  //
-  fromNative(val) {
-    this._value = val;
-  }
-}
+};
 
 module.exports = PropertyTranslator;

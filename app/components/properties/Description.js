@@ -3,9 +3,14 @@ import DescriptionProperty from '../../models/properties/description';
 import TextArea            from './controls/TextArea';
 
 function DescriptionPropertyEditor(props) {
-  const { store, collapsible } = props;
+  const { store, collapsible, noTitle } = props;
 
-  return <TextArea collapsible={collapsible} store={store} property={DescriptionProperty} />;
+  return (<TextArea 
+            noTitle={noTitle}
+            collapsible={collapsible} 
+            store={store} 
+            property={DescriptionProperty} 
+          />);
 }
 
 module.exports = DescriptionPropertyEditor;

@@ -31,8 +31,12 @@ const QueryFilters = target => class extends Properties(target) {
     if( this._ignoreFilterEvent ) {
       return;
     }
+    
     const qp = this.queryParams;
-    qp[filter.name] = filter.toNative(qp[filter.name]);
+    const { name } = filter;
+    
+    qp[name] = filter.serialize(qp[name]);
+
     if( filter.requiresFullRefresh ) {
       this.refreshModel(qp);
     } else {
@@ -49,7 +53,7 @@ const QueryFilters = target => class extends Properties(target) {
     this._ignoreFilterEvent = true;
     for( const filter of this._properties.values() ) {
       filter.isDirty && filter.reset();
-      qp[filter.name] = filter.toNative(qp[filter.name]);
+      qp[filter.name] = filter.serialize(qp[filter.name]);
     }
     this._ignoreFilterEvent = false;
     return this.refreshModel(qp);

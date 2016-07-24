@@ -21,7 +21,7 @@ var SamplesSection = React.createClass({
   },
 
   componentWillMount() {
-    var opts = { tags: 'dubcatcher2,' + this.props.typeTag, type: 'all', u: 'djvadim' };
+    var opts = { tags: 'dubcatcher2,' + this.props.typeTag, type: 'all', user: 'djvadim' };
     Samples.storeFromQuery( opts ).then( store => {
       this.setState( {
         loading: false,

@@ -8,12 +8,12 @@ class TagSwap extends TagField
     this._displayName  = '_Un-Named-Tag-Swap_';
   }
 
-  toNative(tags) {
+  serialize(tags) {
     return this._applyTags( tags, ts => ts.remove( ts.filter(this._filter) ).add(this._value) );
   }
 
-  fromNative(tags) {
-    super.fromNative( this._aquireTagsValue( tags, ts => ts.filter(this._filter).toString() ) );
+  deserialize(tags) {
+    super.deserialize( this._aquireTagsValue( tags, ts => ts.filter(this._filter).toString() ) );
   }
 }
 

@@ -47,7 +47,7 @@ class UserSearch extends QueryFilters(Query) {
 
   findUser(id,deferName,deferThis) {
     var qparams = {
-      u: id,
+      user: id,
       dataview: 'user_basic',
     };
     return (deferThis || this).queryOne(qparams,deferName).then( serialize( ccmixter.User ) );

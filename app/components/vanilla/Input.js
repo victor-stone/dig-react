@@ -6,58 +6,32 @@ import { nextID,
 
 const RETURN_KEY = 13;
 
-const filterCallback = value => {
-  if( value !== this.state.value ) {
-    this.setState({ value });
-  }
-};
-
-/**
-  properties: 
-    onEdit - [function] called on change. example:
-                   
-                   onEdit( text, filterCallback ) 
-
-                        text           - [string] user's latest text
-                        filterCallback - [function] use this to filter text. 
-                                           prototype:
-                                            
-                                            filterCallback(newValue)
-
-    onDone - [function] use hit 'return' key. prototype: onDone(textValue)
-
-    placeholder - [string] replacement placeholder text (default: genre, instrument, etc. )
-
-    id - DOM id
-
-    size - HTML 'size'
-*/
-
 class Input extends React.Component
 {
   constructor() {
     super(...arguments);
+    
     bindAll( this, 'onChange', 'onKeyDown', 'doDone' );
-    const { value = '', defaultValue = '' } = this.props;
-    this.state = { value: value || defaultValue };
-    this.id = nextID('_input');
+
+    const { value = '', id = nextID('_input') } = this.props;
+
+    this.state = { value };
+    
+    this.id = id;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if( 'value' in nextProps ) {
-      this.setState({ value: nextProps.value });
-    }
+  shouldComponentUpdate(nextProps,nextState) {
+    const { value } = this.state;
+    return value !== nextProps.value || value !== nextState.value;
   }
-  
+
   onChange(event) {
-    this.setState({value: event.target.value},() => {
-      const onEdit = this.onEdit || this.props.onEdit;
-      onEdit && onEdit( this.state.value, filterCallback.bind(this) );
-    });
+    this.setState({value: event.target.value});
+    this.props.onChange && this.props.onChange(event);
   }
 
   doDone() {
-    this.props.onDone( this.state.value, filterCallback.bind(this) );    
+    this.props.onDone( this.state.value );
   }
 
   onKeyDown(e) {
@@ -99,14 +73,13 @@ class Input extends React.Component
   }
 
   render() {
-    return this.input();
+    return <input {...this.inputProps} />;
   }
 }
 
 Input.DEFAULT_INPUT_SIZE = 30;
 
 Input.propTypes = {
-  onEdit: React.PropTypes.func,
   onDone: React.PropTypes.func.isRequired
 };
 

@@ -2,15 +2,13 @@ import TagField   from './tag-field';
 
 /*
   Add a tag
-
-  // hello,world
-  let tags = store.nativeProperties.tags;
+  
+  let tags = store.nativeProperties.tags; // hello,world
 
   filter = store.addProperty(TagInject);
   filter.value = 'my_tag';
 
-  // hello,world,my_tag
-  tags = store.nativeProperties.tags;
+  tags = store.nativeProperties.tags;  // hello,world,my_tag
 
 */
 class TagInject extends TagField
@@ -20,12 +18,13 @@ class TagInject extends TagField
     this._displayName = '_Un-Named-Tag-inject';
   }
 
-  toNative(tags) {
+  serialize(tags) {
     return this._applyTags( tags, ts => ts.toggle( this._value, true ) );
   }
 
-  fromNative() {
-    super.fromNative( '' );
+  // this prop is write only
+  
+  deserialize() {    
   }
 }
 

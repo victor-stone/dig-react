@@ -2,7 +2,7 @@ import React       from 'react';
 
 import { FormControl }        from '../vanilla/Form';
 
-import { safeSetState }       from '../../unicorns';
+import { ButtonGroup }        from '../vanilla/ButtonGroups';
 
 import { DualTagFieldWidget,
          BoundStaticTagList } from './../bound/Tags';
@@ -12,15 +12,16 @@ import DelayedCommitStore     from '../../stores/tools/delayed-commit';
 
 import ToggleEditModeProperty from './controls/ToggleEditMode';
 
-
-class TagsPropertyEditor extends ToggleEditModeProperty
+const TagsPropertyEditorMixin  = baseclass => class extends baseclass
 {
   constructor() {
     super(...arguments);
 
     const { delayCommit, property, store } = this.props;
     
-    this._store = delayCommit ? new DelayedCommitStore(store) : store;    
+    this._store = delayCommit 
+                    ? new DelayedCommitStore(store) 
+                    : store;    
     
     this._delayProperty = delayCommit && this._store.addProperty(property);
   }
@@ -43,20 +44,57 @@ class TagsPropertyEditor extends ToggleEditModeProperty
     }
   }
 
-  get editableElement() {
-    return <DualTagFieldWidget store={this._store} />;
-  }
+};
 
-  get staticFieldElement() {
-    return this.props.static ? null : <FormControl><BoundStaticTagList store={this._store} /></FormControl>;
+class TagsPropertyEditor extends TagsPropertyEditorMixin(ToggleEditModeProperty) 
+{
+  get editableElement() {
+    return { 
+      Element: DualTagFieldWidget, 
+      props: {
+        store: this._store
+      } 
+    };
   }
 
   get staticElement() {
-    return this.props.static ? <BoundStaticTagList store={this._store} /> : null;
+    return {
+      Element: BoundStaticTagList, 
+      props: { 
+        store: this._store
+      } 
+    }; 
   }
 }
 
-TagsPropertyEditor.defaultProps = { property: TagsProperty };
+class TagsPropertyEditorField extends TagsPropertyEditorMixin(ToggleEditModeProperty.Field) 
+{
+  get staticElement() {
+    return {
+      Element: () => <FormControl><BoundStaticTagList store={this.props.store} /></FormControl>, 
+      props: {}
+    };
+  }
+
+  // override vanilla/ToggleEditMode
+  get editModeElement() {
+
+    return {
+        Element: props => <FormControl className="static-edit">
+                            <DualTagFieldWidget store={this.props.store} />
+                            <div className="center-text toolbar"><ButtonGroup addons={props.addons} /></div>
+                          </FormControl>,
+        props: {}      
+    };
+  }
+}
+
+TagsPropertyEditorField.defaultProps =
+TagsPropertyEditor.defaultProps = { 
+  property: TagsProperty 
+};
+
+TagsPropertyEditor.Field = TagsPropertyEditorField;
 
 module.exports = TagsPropertyEditor;
 

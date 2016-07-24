@@ -15,7 +15,7 @@ class User extends Remixes {
 
   profileFor(id,deferName) {
     var queryParams = {
-      u: id,
+      user: id,
       dataview: 'user_info',
     };
     return this.queryOne(queryParams,deferName)
@@ -24,7 +24,7 @@ class User extends Remixes {
 
   followers(id) {
     var queryParams = {
-      u: id,
+      user: id,
       dataview: 'followers'
     };
     return this.queryOne(queryParams)

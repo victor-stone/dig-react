@@ -77,10 +77,10 @@ class Info extends ModelTracker(React.Component)
 
     return (
         <div className="playlist-info hidden-xs hidden-sm">
-          <InfoPanel><Description store={store} /></InfoPanel>
+          <InfoPanel><Description noTitle store={store} /></InfoPanel>
           <ActionButtonBar store={store} />
           <InfoPanel className="playlist-curator "><Curator store={store} /></InfoPanel>
-          <InfoPanel><Tags store={store} static noTitle canEdit={!isDynamic} /></InfoPanel>
+          <InfoPanel><Tags store={store} delayCommit={!isDynamic} static noTitle canEdit={!isDynamic} /></InfoPanel>
         </div>
       );
 

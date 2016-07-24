@@ -43,7 +43,7 @@ class Playlist extends Permissions(Properties(Query)) {
 
   // TODO: this should return a Playlist store (no?)
   static create(name,track,qstring) {
-    return api.playlists.createDynamic(name,'',track,qstring);
+    return api.playlists.create(name,'',track,qstring);
   }
 
   static storeFromID(id) {
@@ -113,31 +113,41 @@ class Playlist extends Permissions(Properties(Query)) {
     return props;
   }
 
-  applyProperties(props) {
+  applyProperties(initialProps, callback = m => m) {
     
+    const props = Object.assign({},initialProps);
+
     const { tags, order } = props;
 
+    const promises = [];
+
     if( tags && this.isDynamic ) {
-      return this.applyQuery({tags:tags.toString()});
+      promises.push(this.applyQuery({tags:tags.toString()}));
+      delete props.tags;
     }
 
     if( order ) {
-      return api.playlist.reorder(this.model.head.id,props.order).then( () => {
-          this._fetchTracks(this.model.head.id);
-        });
+      promises.push(api.playlist.reorder(this.model.head.id,props.order).then( () => {
+                        this._fetchTracks(this.model.head.id);
+                      }));
+      delete props.order;
     }
 
     // TODO: (-ish) all remote property settings need to be done elsewhere
     //        use the Properties/QueryFilter pattern
     //  update: well, maybe if the goal is to remove all ccHost knowledge(?)
 
-    var id = this.model.head.id;
-    return api.playlist.update(id,props)
-      .then( () => this._fetchHead(id) )
-      .then( head => {
-          this.model.head = head;
-          this.emit(events.MODEL_UPDATED);
-      });
+    if( Object.keys(props) ) {
+      var id = this.model.head.id;
+      promises.push(api.playlist.update(id,props)
+                          .then( () => this._fetchHead(id) )
+                          .then( head => {
+                              this.model.head = head;
+                              this.emit(events.MODEL_UPDATED);
+                          }));
+    }
+
+    return rsvp.all( promises ).then( callback );
   }
 
   // create a dynamic playlist based on the query in
@@ -208,9 +218,9 @@ class Playlist extends Permissions(Properties(Query)) {
     
     // normalize 'u' and 'user' 
     [head,model].forEach(  q => {
-      if( 'user' in q.queryParams ) {
-        q.queryParams.u = q.queryParams.user;
-        delete q.queryParams['user'];
+      if( 'u' in q.queryParams ) {
+        q.queryParams.user = q.queryParams.u;
+        delete q.queryParams.u;
       }
     });
 

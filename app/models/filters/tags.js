@@ -30,8 +30,12 @@ class Tags extends QueryFilter
     return val.toString();
   }
 
-  fromNative(val) {
-    super.fromNative(val.toString());
+  deserialize(val) {
+    super.deserialize((val || '').toString());
+  }
+
+  serialize() {
+    return this._value;
   }
 
   toggle( tag, toggle ) {

@@ -2,11 +2,10 @@ import React        from 'react';
 import InputToggle  from './InputToggle';
 import { Glyph }    from '../../vanilla';
 
-class HeaderProperty extends InputToggle
+class StaticHeader extends React.Component
 {
-  get staticElement() {
-    const { icon } = this.props;
-    const { value } = this.state;
+  render() {
+    const { icon, value } = this.props;
 
     return (
       <div className="page-header"> 
@@ -15,6 +14,22 @@ class HeaderProperty extends InputToggle
         </h1>
       </div>
       );
+  }
+}
+
+class HeaderProperty extends InputToggle
+{
+  get staticElement() {
+    const { icon } = this.props;
+    const { value } = this.state;
+    return {
+      Element: StaticHeader, 
+      props: { icon, value }
+    };
+  }
+
+  get title() {
+    return null;
   }
 }
 

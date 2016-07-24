@@ -12,13 +12,17 @@ class SearchBox extends React.Component
     this.onEdit = this._notify.bind(this,'onEdit');
   }
 
-  _notify(meth,value,filterCallback) {
+  _notify(meth,value) {
     const text = cleanSearchString(value);
-    text && this.props[meth] && this.props[meth](text,filterCallback);        
+    text && this.props[meth] && this.props[meth](text);        
+  }
+
+  onChange(event) {
+    this.onEdit(event.target.value);
   }
 
   render() {
-    return <InputWithIcon icon="search" {...this.props} onEdit={this.onEdit} onDone={this.onDone} />;
+    return <InputWithIcon icon="search" {...this.props} onChange={this.onChange.bind(this)} onDone={this.onDone} />;
   }
 }
 

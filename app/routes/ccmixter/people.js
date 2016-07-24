@@ -17,7 +17,7 @@ const people = Object.assign(People,{
 
   store( params, queryParams ) {
     const { userid, reqtags = null } = params;
-    var defopts = mergeParams( {}, qc.people, { u: userid }, reqtags ? {reqtags} : {} );
+    var defopts = mergeParams( {}, qc.people, { user: userid }, reqtags ? {reqtags} : {} );
     var qparams = mergeParams( {}, defopts, queryParams );
     return User.storeFromQuery(qparams, defopts )
             .then( store => {

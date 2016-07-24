@@ -19,7 +19,7 @@ import { hashParams,
     }
   Depending on the query string used for getModel() 
   it may also include:
-      artist   - 'u' or 'user' a profile of an user
+      artist   -  'user' a profile of an user
       artists  - 'searchp' search results in user database
       genres   - 'searchp' search results in genre tags
       totals   - hash of totals for reqtags (see ./tools/totals-cache)
@@ -69,6 +69,10 @@ class Collection extends QueryFilters(Query) {
   get userSearch() {
     !this._userSearch && (this._userSearch = new UserSearch());
     return this._userSearch;
+  }
+
+  onModelUpdated(handler) {
+    this.on( events.MODEL_UPDATED, handler );
   }
 
   paginate(offset) {
@@ -157,7 +161,12 @@ class Collection extends QueryFilters(Query) {
       queryParams.searchp = cleanSearchString( queryParams.searchp );
     }
 
-    var user = queryParams.u || queryParams.user;
+    if( queryParams.u ) {
+      queryParams.user = queryParams.u;
+      delete queryParams.u;
+    }
+
+    var user = queryParams.user;
 
     var hash = {
       items:  this.cachedFetch(queryParams,'items'),

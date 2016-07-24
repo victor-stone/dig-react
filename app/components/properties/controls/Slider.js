@@ -9,7 +9,7 @@ class SliderFilter extends PropertyState(React.Component)
   }
   
   render() {
-    return <Slider {...this.props} value={this.state.value} onSlide={this.onChangeValue} />;
+    return <Slider {...this.props} value={this.state.value} onSlide={this.updateValue} />;
   }
 
 }

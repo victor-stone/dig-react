@@ -14,7 +14,7 @@ const people = Object.assign(People,{
 
   store(params,queryParams) {
     const opts    = mergeParams( {}, qc.remixes );
-    const qparams = mergeParams( {}, opts, { u: params.userid }, queryParams );
+    const qparams = mergeParams( {}, opts, { user: params.userid }, queryParams );
     return Rmx.storeFromQuery(qparams,opts)
             .then( store => {
               people.title = !this.error && store.model.artist.name;

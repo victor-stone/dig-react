@@ -10,9 +10,9 @@ class YeOldWatchableJavascriptProperty extends Eventer
     this._displayName  = '_Un-Named_';
   }
 
-  static fromValue( hash, ClassName ) {
-    const instance = new ClassName();
-    instance.value = hash[instance.name];
+  static deserialize( hash, Class ) {
+    const instance = new Class();
+    instance.deserialize(hash[instance.name]);
     return instance;
   }
 
@@ -29,13 +29,43 @@ class YeOldWatchableJavascriptProperty extends Eventer
   }
 
   set value(val) {
-    this._value = val;
-    this.onChange();
+    if( val !== this._value ) {
+      this._value = val;
+      this.onChange();
+    }
+  }
+
+  /*
+      add these to derived classes
+      when the format to be edited
+      is different than that 
+      displayed
+  */
+  /*
+  set editable(val) {
+    super.value = val;
+  }
+
+  get editable() {
+    return super.value;
+  }
+  */
+  
+  deserialize(val) {
+    this.value = val;
+  }
+
+  serialize() {
+    return this.value;
   }
 
   onChange(listener) {
     if( typeof listener === 'undefined') {
-      this.emit( events.PROPERTY_CHANGED, this );
+      if( !this._inPropertyChangeEvent ) {
+        this._inPropertyChangeEvent = true;
+        this.emit( events.PROPERTY_CHANGED, this );
+        this._inPropertyChangeEvent = false;
+      }
     } else {
       this.on( events.PROPERTY_CHANGED, listener );
     }

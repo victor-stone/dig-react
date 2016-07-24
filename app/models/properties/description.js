@@ -1,10 +1,9 @@
 
-import Property from '../property';
+import Text from './text';
 
-class DescriptionProperty extends Property {
+class DescriptionProperty extends Text {
  constructor() {
-    super(...arguments);
-    this._propName    = 'description';
+    super('description');
     this._displayName = 'about';
   }
 }

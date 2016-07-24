@@ -1,7 +1,8 @@
 import ToggleEditMode    from '../../vanilla/ToggleEditMode';
 import PropertyState     from '../mixins/PropertyState';
 
-class ToggleEditModeProperty extends PropertyState(ToggleEditMode)
+
+const ToggleEditModePropertyMixin = tem => class extends PropertyState(tem)
 {
   constructor() {
     super(...arguments);
@@ -12,7 +13,11 @@ class ToggleEditModeProperty extends PropertyState(ToggleEditMode)
     const { noTitle = false } = this.props;
     return noTitle ? null : this.property.displayName;
   }
-}
+};
+
+class ToggleEditModeProperty extends ToggleEditModePropertyMixin(ToggleEditMode.Static) { }
+
+ToggleEditModeProperty.Field = class extends ToggleEditModePropertyMixin(ToggleEditMode.Field) {};
 
 module.exports = ToggleEditModeProperty;
 

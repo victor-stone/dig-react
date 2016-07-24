@@ -3,6 +3,8 @@ import querystring    from 'querystring';
 import { TagString }  from '../../unicorns';
 import { Upload }     from './upload';
 
+import { makeTextProperty } from './tools';
+
 class PlaylistCurator extends Model {
   constructor() {
     super(...arguments);
@@ -43,20 +45,14 @@ class Playlist extends Model {
   }
 }
 
-function cleanLinks(str) {
-  return str.replace(/http:\/\/ccmixter.org\/playlist\/browse/g,'/playlist/browse' );
-}
-
 class PlaylistHead extends Playlist {
   constructor() {
     super(...arguments);
     this.subTypeBinding = 'cart_subtype';
     this.permissionsBinding = 'permissions';
     this.getDescription = function() {
-      return cleanLinks(this.cart_description);
-    };
-    this.getDescriptionRaw =function() {
-      return cleanLinks(this.cart_desc_html);
+      this.cart_description_html = this.cart_desc_html;
+      return makeTextProperty({self:this,key:'cart_description'});
     };
     this.getIsFeatured = function() {
       return this.cart_subtype === 'featured';

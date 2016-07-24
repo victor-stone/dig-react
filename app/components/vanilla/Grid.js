@@ -7,11 +7,6 @@ const reservedProps = [ 'className', 'xs', 'sm', 'md', 'lg', 'model',
 
 class BootstrapBase extends React.Component
 {
-  constructor() {
-    super(...arguments);
-    this.bsSafeProps = excludeProps(this.props,reservedProps);
-  }
-
   get selectors() {
     const { className } = this.props;
     return selectors(this.bsSelector,className);
@@ -19,7 +14,10 @@ class BootstrapBase extends React.Component
 
   render() {
     const { children } = this.props;
-    return <div {...this.bsSafeProps} className={this.selectors} >{children}</div>;
+    
+    const bsSafeProps = excludeProps(this.props,reservedProps);
+
+    return <div {...bsSafeProps} className={this.selectors} >{children}</div>;
   }
 }
 

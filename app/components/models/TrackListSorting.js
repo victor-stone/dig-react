@@ -2,6 +2,8 @@
 import React             from 'react';
 import Glyph             from '../vanilla/Glyph';
 
+//import { nextID }        from '../../unicorns';
+
 // TODO: allow multiple of these on a page
 
 /*
@@ -14,12 +16,19 @@ import Glyph             from '../vanilla/Glyph';
     sorting - boolean yes, means show dragging glyphs and allow for 
                jQueryUI 'sorting' to kick in
 */
-class SortingTrackList extends React.Component 
+class TrackListSorting extends React.Component 
 {
+  constructor() {
+    super(...arguments);
+    this.id = 'fo'; // nextID('fo');
+  }
   componentDidMount() {
+    const hashID = '#' + this.id;
     if( this.props.sorting ) {
       $('.track-dragger').show();
-      $('#fo').sorting();
+      $(hashID).sortable().on( 'sortupdate', () => {
+        this.props.onUpdate && this.props.onUpdate($(hashID).sortable( 'serialize' ));
+      });
     } else {
       $('.track-dragger').hide();
     }
@@ -27,31 +36,22 @@ class SortingTrackList extends React.Component
 
   render() {
     return(
-        <ul className="sorting-track-list" id="fo">
-          {this.props.model.items.map( (t,i) =>  <li key={t.id} id={'fo_' + (i+1)}>
-                                    {this.props.sorting
-                                      ? <span className="track-dragger"><Glyph icon="bars" /></span>
-                                      : null
-                                    }
-                                    <span className="name">
-                                      {t.name}
-                                    </span>
-                                    <span className="by">
-                                      {" by "}
-                                    </span>
-                                    <span className="artist">
-                                      {t.artist.name}
-                                    </span>
-                                  </li> )}
+        <ul className="sorting-track-list" id={this.id}>
+          {this.props.model.items.map( (t,i) =>  <li key={t.id} id={this.id + '_' + (i+1)}>
+            {this.props.sorting && <span className="track-dragger"><Glyph icon="bars" /></span>}
+            <span className="name">{t.name}</span>
+            <span className="by">{" by "}</span>
+            <span className="artist">{t.artist.name}</span>
+          </li> )}
         </ul>
       );
   }
 }
 
-SortingTrackList.defaultProps = {
+TrackListSorting.defaultProps = {
   sorting: React.PropTypes.bool.isRequired
 };
 
-module.exports = SortingTrackList;
+module.exports = TrackListSorting;
 
 

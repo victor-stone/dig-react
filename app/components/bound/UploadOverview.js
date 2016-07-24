@@ -58,7 +58,7 @@ function UploadOverview(props)
         <License model={upload} />
         {bpm && <BPMPropertyEditor store={store} />}
         {nsfw && <NSFW model={upload} />}
-        <TagsPropertyEditor store={store} />
+        <TagsPropertyEditor.Field store={store} />
       </HorizontalForm>
     );
 }

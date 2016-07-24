@@ -58,7 +58,7 @@ class PeopleFilter extends PropertyState(React.Component)
     return (
       <div className="people-filter" >
           <LookupInput store={this.search} placeholder="artist name" />
-          <LookupResults store={this.search} ListElement={PeopleFilterList} onSelect={this.onChangeValue} />
+          <LookupResults store={this.search} ListElement={PeopleFilterList} onSelect={this.updateValue} />
       </div>
       );
   }

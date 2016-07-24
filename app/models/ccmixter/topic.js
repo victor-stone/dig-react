@@ -1,5 +1,6 @@
 import Model                from '../model';
 import { DetailUploadUser } from './user';
+import { cleanLinks }       from './tools';
 
 const bbFormatMap = [ 'format', 'raw', 'text'];
 
@@ -15,16 +16,13 @@ class Topic extends Model {
     this.publishedBinding = 'topic_date';
     this.idBinding = 'topic_id';
     this.nameBinding = 'topic_name';
+    
     this.rawBinding = 'topic_text';
     this.textBinding = 'topic_text_plain';
     this.getHtml = function() {
       const key = this.content_page_textformat || bbFormatMap[Number(this.topic_format)];
       const html = this[pageFormatMap[key]];
-      return html.replace(/http:\/\/ccmixter.org\//g,'/')
-                 .replace(/http:\/\/playlists.ccmixter.org\/(playlist\/)?browse/g,'/playlist/browse')
-                 .replace(/\/mixup\//g,'http://ccmixter.org/mixup/')
-                 .replace(/(<img.*src=")(\/mixter-files)/g,'$1http://ccmixter.org$2')
-                 .replace(/(\/media\/people\/contact\/admin)/g, 'http://ccmixter.org$1');
+      return cleanLinks(html);
     };
   }
 }

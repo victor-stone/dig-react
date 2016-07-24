@@ -21,7 +21,7 @@ const Properties = target => class extends target {
       return this._properties.get(PropertyClass);
     }
     
-    const property = PropertyClass.fromValue( this.nativeProperties, PropertyClass )
+    const property = PropertyClass.deserialize( this.nativeProperties, PropertyClass )
                                   .onChange( this.onPropertyChange );
     this._properties.set(PropertyClass, property);
     
@@ -33,10 +33,21 @@ const Properties = target => class extends target {
   }
 
   onPropertyChange(property) {
+    if( property._pleaseToIgnore ) {
+      return;
+    }
+    
     const { name } = property;
-    const nativeValue = this.nativeProperties[name];
-    const value = property.toNative ? property.toNative(nativeValue) : nativeValue;
-    this.applyProperties( { [name]: value } );
+    const value    = property.serialize(this.nativeProperties[name]);
+
+    this.applyProperties( { [name]: value }, () => {
+      const newishValue = this.nativeProperties[name];
+      if( newishValue !== value ) {
+        property._pleaseToIgnore = true;
+        property.deserialize(newishValue);
+        delete property._pleaseToIgnore;
+      }
+    });
   }
 
   get nativeProperties() {
