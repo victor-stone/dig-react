@@ -23,3 +23,7 @@ build.log
 # dev
 js.js
 lab.js
+
+big-rename.sh
+lib/build/make-param-case.js
+new-names/

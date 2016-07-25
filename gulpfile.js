@@ -353,14 +353,8 @@ gulp.task('todo', function() {
 
 gulp.task( 'make-param-case', ['copy-to-work'], function() {
   gulp.src('work/**/*.js')
-      /*
-        .pipe(rename(function (path) {
-          path.basename = changeCase.paramCase(path.basename).toLowerCase();
-          return path;
-        }))
-      */
        .pipe( makeParamCase() )
-       .pipe( gulp.dest('./work'));
+       .pipe( gulp.dest('./new-names'));
 });
 
 gulp.task('publish', function(){
