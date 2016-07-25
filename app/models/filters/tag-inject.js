@@ -1,4 +1,4 @@
-import TagField   from './tag-field';
+import TagField   from './util/tag-field';
 
 /*
   Add a tag

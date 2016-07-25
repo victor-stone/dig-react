@@ -21,8 +21,10 @@ const Properties = target => class extends target {
       return this._properties.get(PropertyClass);
     }
     
-    const property = PropertyClass.deserialize( this.nativeProperties, PropertyClass )
-                                  .onChange( this.onPropertyChange );
+    const property = PropertyClass.deserialize( this.nativeProperties, PropertyClass );
+    
+    property.onChange( this.onPropertyChange );
+
     this._properties.set(PropertyClass, property);
     
     return property;
@@ -38,16 +40,25 @@ const Properties = target => class extends target {
     }
     
     const { name } = property;
-    const value    = property.serialize(this.nativeProperties[name]);
 
-    this.applyProperties( { [name]: value }, () => {
-      const newishValue = this.nativeProperties[name];
-      if( newishValue !== value ) {
+    const currentNativeValue     = this.nativeProperties[name].toString();
+    
+    const proposedNewNativeValue = property.serialize(currentNativeValue);
+
+    if( currentNativeValue !== proposedNewNativeValue ) {
+    
+      this.applyProperties( { [name]: proposedNewNativeValue }, () => {
+
+        // some complex properties (like description texts) need
+        // be re-deserialized to update themselves for display
+        // but this also allows for the server to restate the 
+        // value in some way
+
         property._pleaseToIgnore = true;
-        property.deserialize(newishValue);
+        property.deserialize(this.nativeProperties[name]);
         delete property._pleaseToIgnore;
-      }
-    });
+      });
+    }
   }
 
   get nativeProperties() {

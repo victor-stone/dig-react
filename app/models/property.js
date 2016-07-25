@@ -24,6 +24,9 @@ class YeOldWatchableJavascriptProperty extends Eventer
     return this._propName;
   }
   
+  /*
+      The static display value
+  */
   get value() {
     return this._value;
   }
@@ -36,40 +39,77 @@ class YeOldWatchableJavascriptProperty extends Eventer
   }
 
   /*
-      add these to derived classes
-      when the format to be edited
-      is different than that 
-      displayed
-  */
-  /*
-  set editable(val) {
-    super.value = val;
-  }
+    The editable version
 
-  get editable() {
-    return super.value;
-  }
+    The default implementation presents 'live' updates - i.e. every
+    time the value changes, notifications go out.
+
+    UI widgets are expected to update only the 'editable' property
+    (should probably make 'value' RO  to enforce this ??).
+
+    Derived classes can separate out what gets edited when the
+    display value is calcuated (e.g. display HTML, edit bbCode)
+
+    NOTE that change notification will be done when the editable
+    value has changed so sinks should check to see if serialized
+    version of the property has actually changed before commiting
+    to stores.
+
   */
-  
-  deserialize(val) {
+  set editable(val) {
     this.value = val;
   }
 
-  serialize() {
+  get editable() {
+    return this._value;
+  }
+  
+  /*
+    The persistant version. 
+
+    Instantiate ths value from store
+  */
+  deserialize(nativeValue) {
+    this.value = nativeValue;
+  }
+
+  /*
+    Returns a value that makes it possible to
+    deserialize() later.
+
+    context is derivation specific - it may be
+    some kind of container that caller expects
+    the value to be put in (like a TagString)
+    
+  */
+  serialize( /* context */ ) {
     return this.value;
   }
 
+  /*
+    N.B. Events may be triggered when EITHER the
+         'value' or the 'editable' has changed.
+
+    N.B. Nested emits are muzzled so setting either
+         value or editable during an onChange handler
+         will not send out another notification.
+
+  */
   onChange(listener) {
     if( typeof listener === 'undefined') {
-      if( !this._inPropertyChangeEvent ) {
-        this._inPropertyChangeEvent = true;
+      if( !this._suppressEvents ) {
+        this._suppressEvents = true;
         this.emit( events.PROPERTY_CHANGED, this );
-        this._inPropertyChangeEvent = false;
+        this._suppressEvents = false;
       }
     } else {
       this.on( events.PROPERTY_CHANGED, listener );
     }
     return this;
+  }
+
+  removeChangeListener(listener) {
+    this.removeListener( events.PROPERTY_CHANGED, listener );
   }
 
 }

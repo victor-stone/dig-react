@@ -4,7 +4,7 @@ import PropertyTranslator from './property-translator';
 
 
 /*
-  A QueryFilter is the mapper between an abstract filtering on a Collection store
+  A QueryFilter is a Property that maps between an abstract filtering on a Collection store
   and the actual query parameters required to perform the filtering.
 
   Derivations present abstract values (e.g. true|false for InstrumentalOnly, 

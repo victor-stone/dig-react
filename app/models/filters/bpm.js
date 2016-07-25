@@ -1,4 +1,4 @@
-import TagSwap from './tag-swap';
+import TagSwap from './util/tag-swap';
 
 const TAG_FILTER     = /^bpm_([0-9]{3})_([0-9]{3})$/;
 const ONE_HUNDRED    = 100;

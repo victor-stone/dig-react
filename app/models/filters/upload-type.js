@@ -1,4 +1,4 @@
-import TagEnum from './tag-enum';
+import TagEnum from './util/tag-enum';
 
 class UploadType extends TagEnum
 {

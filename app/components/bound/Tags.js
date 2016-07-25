@@ -2,11 +2,13 @@ import React            from 'react';
 import { InlineCSS }    from '../vanilla';
 import { TagString }    from '../../unicorns';
 import { bindAll,
-         safeSetState,
          selectors }    from '../../unicorns';
+
 import TagStore         from '../../stores/tags';
 
 import Filter           from '../../models/filters/tags';
+
+import PropertyState    from '../properties/mixins/PropertyState';
 
 import { 
           StaticTagsList,
@@ -49,21 +51,37 @@ class CategoryTagBox extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.state = { selected: new TagString(this.props.selected), model: [] };
+
+    this.state = { 
+      selected: new TagString(this.props.selected), 
+      model: [] 
+    };
+
     this.onReceivedTags = this.onReceivedTags.bind(this);
   }
 
   componentDidMount() {
-    const { minCount = DEFAULT_MIN_TAG_COUNT, category, pairWith } = this.props;
+    
+    const { 
+      minCount = DEFAULT_MIN_TAG_COUNT, 
+      category, 
+      pairWith 
+    } = this.props;
+
     var store = new TagStore();
+
     store.category( category, pairWith, minCount )
       .then( this.onReceivedTags );
   }
 
   componentWillReceiveProps(nextProps) {
+
     var ts = new TagString(nextProps.selected);
+    
     const { maxAllowed } = this.props;
+    
     var maxReached = maxAllowed && tagOccurrances(this.state.model,ts) >= maxAllowed;
+    
     this.setState({ selected: ts,  maxReached });
   }
 
@@ -73,6 +91,7 @@ class CategoryTagBox extends React.Component
 
   render() {
     const { className = '' } = this.props;
+    
     var cls = selectors('tag-list-category',className);
 
     return (
@@ -94,70 +113,56 @@ CategoryTagBox.css = CheckableTagsList.css + `
 }
 `;
 
-const TagFilter = baseclass => class extends baseclass {
-  constructor() {
-    super(...arguments);
-    this.onTagsChanged = this.onTagsChanged.bind(this);
-    this._setupStore(this.props.store);
-    safeSetState( this, { tags: this.property.value } );
-  }
-
-  componentWillMount() {
-    this._mounted = true;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.props.store !== nextProps.store && this._setupStore(nextProps.store);
-    this.setState( { tags: this.property.value } );
-  }
-
-  shouldComponentUpdate(nextProps,nextState) {
-    return !this.state.tags.isEqual(nextState.tags);
-  }
-
-  componentWillUnmount() {
-    this._mounted = false;
-  }
-
-  _setupStore(store) {
-    this.property = store.addProperty(Filter);
-    this.property.onChange( this.onTagsChanged );
-    this.toggle = this.property.toggle.bind(this.property);
-  }
-
-  onTagsChanged(filter) {
-    if( this._mounted ) {
-      this.setState( {tags: filter.value} );
-    }
-  }
-
-};
-
 /*
   Props: 
     - store - required property: tags [TagString]
 */
 
-class BoundStaticTagList extends TagFilter(React.Component)
+class BoundStaticTagList extends PropertyState(React.Component)
 {
+  get PropertyClass() {
+    return this.props.property || Filter;
+  }
+  
   render() {
-    return ( this.state.tags.length 
-                ? <StaticTagsList className="tag-list-bound" model={this.state.tags} />
+    
+    var tags = this.state.value;
+
+    return ( tags.length 
+                ? <StaticTagsList className="tag-list-bound" model={tags} />
                 : <span style={{color:'white'}}>{'.'}</span> );
   }
 }
 
-class BoundSelectableTagList extends TagFilter(React.Component)
+class BoundSelectableTagList extends PropertyState(React.Component)
 {
+  get PropertyClass() {
+    return this.props.property || Filter;
+  }
+
   render() {
-    const { tags:selected } = this.state;
+    const { editable:selected } = this.state;
     
-    const { model, className:cls, glyphs, floating } = this.props;
+    const { 
+      model, 
+      className:cls, 
+      glyphs, 
+      floating 
+    } = this.props;
 
     const className = selectors('tag-list-selectable-bound', cls );
-    const props     = { selected, model, glyphs, floating, className };
+    
+    const props = { 
+      selected,
+      model, 
+      glyphs, 
+      floating, 
+      className 
+    };
 
-    return( <SelectableTagList {...props} onSelected={this.toggle} /> );
+    const toggle = this.property.toggle.bind(this.property);
+
+    return( <SelectableTagList {...props} onSelected={toggle} /> );
   }
 }
 
@@ -169,20 +174,30 @@ class BoundSelectableTagList extends TagFilter(React.Component)
     - category [BoundCategoryTagBox.categories]
 
 */
-class BoundCategoryTagBox extends TagFilter(React.Component)
+class BoundCategoryTagBox extends PropertyState(React.Component)
 {
-  render() {
-    const { tags } = this.state;
+  get PropertyClass() {
+    return this.props.property || Filter;
+  }
 
-    const { className = '', category, minCount } = this.props;
+  render() {
+    const { editable:tags } = this.state;
+
+    const { 
+      className = '', 
+      category, 
+      minCount 
+    } = this.props;
 
     const cls = selectors('tag-list-bound', className);
+
+    const toggle = this.property.toggle.bind(this.property);
 
     return (<CategoryTagBox 
                 category={category} 
                 minCount={minCount} 
                 selected={tags} 
-                onSelected={this.toggle} 
+                onSelected={toggle} 
                 className={cls}
             />);
   }
@@ -199,11 +214,15 @@ BoundCategoryTagBox.categories = CategoryTagBox.categories;
     - store 
 
 */
-class BoundSelectedTagList extends TagFilter(React.Component)
+class BoundSelectedTagList extends PropertyState(React.Component)
 {
   constructor() {
     super(...arguments);
     bindAll(this,'onRemove', 'onClear');
+  }
+
+  get PropertyClass() {
+    return this.props.property || Filter;
   }
 
   onRemove(tag) {
@@ -211,16 +230,22 @@ class BoundSelectedTagList extends TagFilter(React.Component)
   }
 
   onClear() {
-    this.property.value = '';
+    this.updateValue('');
   }
 
   render() {
-    const { className = '', css, autoclear = true } = this.props;
+
+    const { 
+      className = '', 
+      css, 
+      autoclear = true 
+    } = this.props;
+    
     var cls = selectors('tag-list-bound', className);
 
     return (
         <SelectedTagList 
-            model={this.state.tags} 
+            model={this.state.editable} 
             onRemove={this.onRemove} 
             onClear={this.onClear} 
             className={cls}
@@ -233,15 +258,31 @@ class BoundSelectedTagList extends TagFilter(React.Component)
 
 const GENRE = BoundCategoryTagBox.categories.GENRE;
 
-class DualTagFieldWidget extends TagFilter(React.Component)
+class DualTagFieldWidget extends PropertyState(React.Component)
 {
+  get PropertyClass() {
+    return this.props.property || Filter;
+  }
+
   // TODO: tag cats should be navtabs, not just stacked on top of each other
+  
   render() {
-    const { store, withMatchAll = false, cats = [GENRE] } = this.props;
+  
+    const { 
+      store, 
+      withMatchAll = false, 
+      cats = [GENRE] 
+    } = this.props;
+    
+    const thru = { 
+      store, 
+      property: this.props.property 
+    };
+
     return  (<div>
-              <BoundSelectedTagList key="98" store={store} />
-              {withMatchAll && <MatchAllButton key="99" store={store} />}
-              {cats.map( cat => <BoundCategoryTagBox key={cat} category={cat} store={store} />)}
+              <BoundSelectedTagList key="98" {...thru} />
+              {withMatchAll && <MatchAllButton key="99" {...thru} />}
+              {cats.map( cat => <BoundCategoryTagBox key={cat} category={cat} {...thru} />)}
             </div>);
   }
 }

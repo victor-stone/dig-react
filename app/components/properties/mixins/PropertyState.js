@@ -7,19 +7,15 @@ const PropertyState = target => class extends target {
     this.onValueChanged = this.onValueChanged.bind(this);
     this.updateValue  = this.updateValue.bind(this);
 
-    const { property, store } = this.props;
+    const { store } = this.props;
     
-    this.property = store.addProperty(property);
-    
-    this._propHasEditValue = 'editable' in this.property;
+    safeSetState( this, this._setupStore(store) );
 
-    if( this.props.writeOnly ) {
-      safeSetState( this, { value: '', editable: '' } );
-    } else {
-      this.property.onChange( this.onValueChanged );
-      safeSetState( this, this._stateFromProperty(this.property) );
-    }
-
+    /*
+      Checking 'super' seem to be insanely costly in 
+      Babel. We curry the results here so we can
+      just do a straight call.
+    */
     this.superShouldComponentUpdatePS = (() => {
             let mySuperCall = super.shouldComponentUpdate;
             return mySuperCall 
@@ -28,48 +24,79 @@ const PropertyState = target => class extends target {
           })();
   }
 
-  get stateEditValue() {
-    return this._propHasEditValue ? this.state.editable : this.state.value;
-  }
+  // Allow derived classes to define PropertyClass on
+  // the fly and override this.props.property
 
-  set stateEditValue(val) {
-    this.setState( { [this._propHasEditValue ? 'editable' : 'value']: val } );
+  get PropertyClass() {
+    return null;
   }
 
   _stateFromProperty(property) {
-    const state = { value: property.value };
-    if( this._propHasEditValue ) {
-      state.editable = property.editable;
-    }
-    return state;    
+    return { 
+      value: property.value, 
+      editable: property.editable
+    };
   }
 
-  _propertyOutOfSync(oneThing, another) {
-    const editValDirty = this._propHasEditValue && oneThing.editable !== another.editable;
-    return editValDirty || oneThing.value !== another.value;
+  _hookProperty() {
+    !this.props.writeOnly && this.property.onChange( this.onValueChanged );      
+  }
+
+  _cmp(oneThing, orAnother) {
+    return oneThing.value === orAnother.value && oneThing.editable === orAnother.editable;
   }
 
   shouldComponentUpdate(nextProps,nextState) {
-    // it's a little weird to check for 'editing' here but
-    // at least if the base class doesn't implement it
-    // that will always yeild 'true' in the logic below
     return this.superShouldComponentUpdatePS(nextProps,nextState) || 
-              (!this.state.editing && this._propertyOutOfSync(this.state,nextState));
+              !this._cmp(this.state,nextState);
   }
-  
-  onValueChanged(property, postStateCallback) {
-    if( this._propertyOutOfSync(property,this.state) ) {
-      this.setState( this._stateFromProperty(property), postStateCallback );      
+
+  componentWillMount() {
+    this._mounted = true;
+    this._hookProperty();
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+    if( this.props.store !== nextProps.store ) {
+
+      this.property && this.property.removeChangeListener(this.onValueChanged);
+
+      this.setState( this._setupStore(nextProps.store), () => this._hookProperty() );
     }
   }
 
-  updateValue(value) {
-    if( this._propHasEditValue ) {
-      this.property.editable = value;
-    } else {
-      this.property.value = value;
-    }
+  _setupStore(store) {
+    
+    const { 
+      writeOnly, 
+      property = this.PropertyClass 
+    } = this.props;
+    
+    this.property = store.addProperty(property);
+    
+    return writeOnly 
+              ? { value: '', editable: '' }
+              : this._stateFromProperty(this.property);
   }
+
+  componentWillUnmount() {
+    this._mounted = false;
+
+    !this.props.writeOnly && this.property.removeChangeListener(this.onValueChanged);
+  }
+
+  onValueChanged(property) {
+    !this._cmp(property,this.state) && this.setState( this._stateFromProperty(property) );      
+  }
+
+  updateValue(value) {
+    // just as a safeguard, technically should 
+    // not need the _mounted flag
+
+    this._mounted && (this.property.editable = value);
+  }
+
 };
 
 module.exports = PropertyState;

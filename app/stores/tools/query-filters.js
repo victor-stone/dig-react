@@ -35,12 +35,19 @@ const QueryFilters = target => class extends Properties(target) {
     const qp = this.queryParams;
     const { name } = filter;
     
-    qp[name] = filter.serialize(qp[name]);
+    const currentNativeValue = (qp[name] || '').toString();
+    const proposedNativeValue = filter.serialize(currentNativeValue);
 
-    if( filter.requiresFullRefresh ) {
-      this.refreshModel(qp);
-    } else {
-      this.refresh(qp);
+    if( currentNativeValue !== proposedNativeValue ) {
+
+      qp[name] = proposedNativeValue;
+      
+      if( filter.requiresFullRefresh ) {
+        this.refreshModel(qp);
+      } else {
+        this.refresh(qp);
+      }
+      
     }
   }
 

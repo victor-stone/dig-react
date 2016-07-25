@@ -5,22 +5,13 @@
 
   The 'value' property gets and set the abstract value.
 
-  The 'nativeValue' property get and sets the native value 
-  the host can readily understand
-  
-  For example: specific UI controls instantiate specific 
-  PropertyTranslator's and push them into a Store which 
-  is aware of the base class abstractions.
-
-  Internals: 
-    The value of '_value' is the native value . Derivations
-    use the 'value' setter/getter to do translation to and 
-    from the abstracted value. 
+  Derivations should keep the value of '_value' as the 
+  native value and implement to/fromAbstract to translate 
+  between native and abstracted values. 
 */
 
 const PropertyTranslator = baseclass => class extends baseclass
 {
-
   set value(val) {
     super.value = this.fromAbstract(val);
   }
@@ -35,7 +26,11 @@ const PropertyTranslator = baseclass => class extends baseclass
 
   toAbstract() {
     return this._value;
-  }  
+  } 
+
+  serialize() {
+    return this._value;
+  }
   
 };
 

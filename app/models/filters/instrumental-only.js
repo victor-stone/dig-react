@@ -1,4 +1,4 @@
-import TagToggle        from './tag-toggle';
+import TagToggle        from './util/tag-toggle';
 import { instrumental } from '../query-configs';
 
 class InstrumentalOnly extends TagToggle

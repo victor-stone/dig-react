@@ -23,6 +23,17 @@ const pageFormatMap = {
   raw: 'topic_text'
 };
 
+class TextProperty 
+{
+  constructor({html,plain,native}) {
+    Object.assign(this,{html,plain,native});
+  }
+
+  toString() {
+    return this.native;
+  }
+}
+
 function makeTextProperty({
           self,
           content_page_textformat,
@@ -48,11 +59,11 @@ function makeTextProperty({
     plain = div.textContent || div.innerText;
 
   }
-  return {
+  return new TextProperty({
     native: self[key],
     plain,
     html
-  };
+  });
 }
 
 module.exports = {

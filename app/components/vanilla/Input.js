@@ -20,14 +20,8 @@ class Input extends React.Component
     this.id = id;
   }
 
-  shouldComponentUpdate(nextProps,nextState) {
-    const { value } = this.state;
-    return value !== nextProps.value || value !== nextState.value;
-  }
-
   onChange(event) {
     this.setState({value: event.target.value});
-    this.props.onChange && this.props.onChange(event);
   }
 
   doDone() {

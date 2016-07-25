@@ -1,9 +1,9 @@
 import React        from 'react';
 import Property     from '../../models/properties/bpm';
-import InputToggle  from './controls/InputToggle';
+import Input        from './controls/Input';
 
 function BPMProperty(props) {
-  return <InputToggle store={props.store} property={Property} />;
+  return <Input.Toggle store={props.store} property={Property} />;
 }
 
 module.exports = BPMProperty;

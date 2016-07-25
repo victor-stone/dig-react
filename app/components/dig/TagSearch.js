@@ -12,6 +12,8 @@ import TagNoHits      from '../bound/TagNoHits';
 import { Row,
          Column }     from '../vanilla/Grid';
 
+import Filter from '../../models/filters/tags';
+
 import css from './style/tags';
 
 class TagCategoryRow extends React.Component
@@ -35,11 +37,13 @@ class SelectedTagRow extends React.Component
   render() {
     const { store } = this.props;
 
+    const thru = { store, property: Filter };
+
     return (
         <Row>
           <Column cols="8" offset="2" className="dig-tags">
-            <BoundSelectedTagList css={css} x floating autoclear={false} store={store}  />
-            <MatchAllButton store={store} />
+            <BoundSelectedTagList css={css} x floating autoclear={false} {...thru}  />
+            <MatchAllButton {...thru} />
           </Column>
           <Column cols="2" className="what"/>
         </Row>

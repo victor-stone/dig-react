@@ -21,7 +21,15 @@ class ToggleEditMode extends React.Component
     };
   }
 
+  /*
+    Derived classes should call here first because the user
+    has flipped modes so any other state is probably stale.
+  */
   shouldComponentUpdate(nextProps,nextState) {
+    return this.isSwitchEditMode(nextState);
+  }
+
+  isSwitchEditMode(nextState) {
     return this.state.editing ^ nextState.editing;
   }
 
@@ -52,7 +60,7 @@ class ToggleEditMode extends React.Component
     this._canEdit = val;
   }
   
-  //----------- override these -----------------------//
+  //----------- wrappers override these -----------------------//
 
   get editModeElement() { return undefined; }  
   

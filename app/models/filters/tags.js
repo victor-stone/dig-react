@@ -1,7 +1,11 @@
-import QueryFilter     from '../query-filter';
-import { TagString }   from '../../unicorns';
+import QueryFilter        from '../query-filter';
+import PropertyCollection from '../property-collection';
+import { TagString }      from '../../unicorns';
 
-class Tags extends QueryFilter
+/*
+  Represents an entire set of tags
+*/
+class Tags extends PropertyCollection(QueryFilter)
 {
   constructor() {
     super(...arguments);
@@ -27,15 +31,19 @@ class Tags extends QueryFilter
   // event
 
   fromAbstract(val) {
-    return val.toString();
+    return (val || '').toString();
+  }
+
+  get editable() {
+    return this.toAbstract();
+  }
+
+  set editable(val) {
+    this.value = val;
   }
 
   deserialize(val) {
     super.deserialize((val || '').toString());
-  }
-
-  serialize() {
-    return this._value;
   }
 
   toggle( tag, toggle ) {
@@ -49,6 +57,24 @@ class Tags extends QueryFilter
   
 }
 
+class TagsDelayCommit extends Tags 
+{
+  toggle( tag, toggle ) {
+    this._editable = this.editable.toggle(tag, toggle).toString();
+    this.onChange();
+  }
+
+  get editable() {
+    if( typeof this._editable === 'undefined' ) {
+      this._editable = this._value;
+    }
+    return TagString.fromString(this._editable);
+  }
+
+}
+
 Tags.propertyName = 'Tags';
+
+Tags.Delay = TagsDelayCommit;
 
 module.exports = Tags;

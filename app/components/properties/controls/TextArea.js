@@ -8,6 +8,28 @@ import { TextEditor,
 
 class TextArea extends ToggleEditModeProperty 
 {
+
+    constructor() {
+      super(...arguments);
+
+      /*
+        Checking 'super' seem to be insanely costly in 
+        Babel. We curry the results here so we can
+        just do a straight call.
+      */
+      this.superShouldComponentUpdateTA = (() => {
+              let mySuperCall = super.shouldComponentUpdate;
+              return mySuperCall 
+                        ? (p,s) => mySuperCall.apply(this,[p,s])
+                        : () => false;
+            })();
+  }
+  
+  shouldComponentUpdate(nextProps,nextState) {
+    return this.isSwitchEditMode(nextState) || this.superShouldComponentUpdateTA(nextProps,nextState);
+  }
+
+
   get staticElement() {
 
     const { collapsible = false } = this.props;
@@ -26,17 +48,17 @@ class TextArea extends ToggleEditModeProperty
   }
 
   onDone() {
-    this.updateValue(this.stateEditValue);
+    this.updateValue(this.scratch);
   }
   
   onChange(event) {
-    this.stateEditValue = event.target.value;
+    this.scratch = event.target.value;
   }
 
   get editableElement() {
   
     return { 
-      Element: () => <div onChange={this.onChange.bind(this)}><TextEditor initialValue={this.stateEditValue} /></div>,
+      Element: () => <div onChange={this.onChange.bind(this)}><TextEditor initialValue={this.property.editable} /></div>,
       props: {} 
     };
   }  

@@ -7,23 +7,14 @@ import { ButtonGroup }        from '../vanilla/ButtonGroups';
 import { DualTagFieldWidget,
          BoundStaticTagList } from './../bound/Tags';
 
-import TagsProperty           from '../../models/filters/tags';
-import DelayedCommitStore     from '../../stores/tools/delayed-commit';
+import Filter                 from '../../models/filters/tags';
 
 import ToggleEditModeProperty from './controls/ToggleEditMode';
 
 const TagsPropertyEditorMixin  = baseclass => class extends baseclass
 {
-  constructor() {
-    super(...arguments);
-
-    const { delayCommit, property, store } = this.props;
-    
-    this._store = delayCommit 
-                    ? new DelayedCommitStore(store) 
-                    : store;    
-    
-    this._delayProperty = delayCommit && this._store.addProperty(property);
+  get PropertyClass() {
+    return this.props.delayCommit ? Filter.Delay : Filter;
   }
 
   get canEdit() {
@@ -39,11 +30,8 @@ const TagsPropertyEditorMixin  = baseclass => class extends baseclass
   }
   
   onDone() {
-    if( this.props.delayCommit ) {
-      this.property.value = this._delayProperty.value;
-    }
-  }
-
+    this.updateValue(this.property.editable);
+  }  
 };
 
 class TagsPropertyEditor extends TagsPropertyEditorMixin(ToggleEditModeProperty) 
@@ -52,7 +40,8 @@ class TagsPropertyEditor extends TagsPropertyEditorMixin(ToggleEditModeProperty)
     return { 
       Element: DualTagFieldWidget, 
       props: {
-        store: this._store
+        store: this.props.store,
+        property: this.PropertyClass
       } 
     };
   }
@@ -61,7 +50,8 @@ class TagsPropertyEditor extends TagsPropertyEditorMixin(ToggleEditModeProperty)
     return {
       Element: BoundStaticTagList, 
       props: { 
-        store: this._store
+        store: this.props.store,
+        property: this.PropertyClass
       } 
     }; 
   }
@@ -71,8 +61,11 @@ class TagsPropertyEditorField extends TagsPropertyEditorMixin(ToggleEditModeProp
 {
   get staticElement() {
     return {
-      Element: () => <FormControl><BoundStaticTagList store={this.props.store} /></FormControl>, 
-      props: {}
+      Element: props => <FormControl><BoundStaticTagList property={props.property} store={props.store} /></FormControl>, 
+      props: {
+        store: this.props.store,
+        property: this.PropertyClass
+      }
     };
   }
 
@@ -81,18 +74,16 @@ class TagsPropertyEditorField extends TagsPropertyEditorMixin(ToggleEditModeProp
 
     return {
         Element: props => <FormControl className="static-edit">
-                            <DualTagFieldWidget store={this.props.store} />
+                            <DualTagFieldWidget store={props.store} property={props.property} />
                             <div className="center-text toolbar"><ButtonGroup addons={props.addons} /></div>
                           </FormControl>,
-        props: {}      
+      props: {
+        store: this.props.store,
+        property: this.PropertyClass
+      }
     };
   }
 }
-
-TagsPropertyEditorField.defaultProps =
-TagsPropertyEditor.defaultProps = { 
-  property: TagsProperty 
-};
 
 TagsPropertyEditor.Field = TagsPropertyEditorField;
 

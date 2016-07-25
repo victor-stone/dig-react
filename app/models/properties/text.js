@@ -1,5 +1,22 @@
 import Property from '../property';
 
+/*
+  Represents a property with the shape:
+
+    { 
+      html: '',   // formatted for display
+      plain: '',  // stripped of html
+      native: '', // bbCode (user editable)
+    }
+
+  This class does NOT allow setting .value 
+  directly because it makes no semantic sense.
+
+  You can call deserialize() with the right
+  hash and you can set .editable with native
+  text.
+  
+*/
 class Text extends Property
 {
   constructor(propName) {

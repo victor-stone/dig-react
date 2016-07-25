@@ -33,7 +33,10 @@ var gutil      = require('gulp-util');
 var todo       = require('gulp-todo');
 var argv       = require('minimist')(process.argv.slice(2));
 var indexJS    = require('./lib/build/index-js');
- 
+
+var makeParamCase  = require('./lib/build/make-param-case');
+var changeCase     = require('change-case');
+
 const DEFAULT_WEB_SHARE = 755;
 
 /************************* 
@@ -346,6 +349,18 @@ gulp.task('todo', function() {
     gulp.src('app/**/*.js', { base: './' })
         .pipe(todo())
         .pipe(gulp.dest('./'));
+});
+
+gulp.task( 'make-param-case', ['copy-to-work'], function() {
+  gulp.src('work/**/*.js')
+      /*
+        .pipe(rename(function (path) {
+          path.basename = changeCase.paramCase(path.basename).toLowerCase();
+          return path;
+        }))
+      */
+       .pipe( makeParamCase() )
+       .pipe( gulp.dest('./work'));
 });
 
 gulp.task('publish', function(){

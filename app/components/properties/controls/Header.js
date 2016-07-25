@@ -1,5 +1,5 @@
 import React        from 'react';
-import InputToggle  from './InputToggle';
+import Input        from './Input';
 import { Glyph }    from '../../vanilla';
 
 class StaticHeader extends React.Component
@@ -17,7 +17,7 @@ class StaticHeader extends React.Component
   }
 }
 
-class HeaderProperty extends InputToggle
+class HeaderPropertyEditor extends Input.Toggle
 {
   get staticElement() {
     const { icon } = this.props;
@@ -33,6 +33,6 @@ class HeaderProperty extends InputToggle
   }
 }
 
-module.exports = HeaderProperty;
+module.exports = HeaderPropertyEditor;
 
 //

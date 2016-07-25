@@ -6,13 +6,12 @@ import Link               from '../services/LinkToRoute';
 import LinkToPeople       from '../services/LinkToPeopleRoute';
 import LinkToPlaylist     from '../services/LinkToPlaylistRoute';
 
-import Toggle                  from '../bound/Toggle';
-
 import DeletePlaylist          from './DeletePlaylist';
 import { ModelTracker }        from '../../mixins';
 
 import Description from '../properties/Description';
 import Tags        from '../properties/Tags';
+import IsFeatured  from '../properties/IsFeatured';
 
 function InfoPanel(props) {
   const cls = 'playlist-bg-color ' + (props.className || '');
@@ -23,7 +22,7 @@ class Feature extends React.Component
 {
   render() {
     const { store:{permissions:{canFeature}} } = this.props;
-    return canFeature && <Toggle store={this.props.store} className="featured btn btn-success" propName="isFeatured" text="Featured" />;
+    return canFeature && <IsFeatured store={this.props.store} className="btn btn-success" />;
   }
 }
 

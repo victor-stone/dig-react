@@ -235,13 +235,16 @@ class TagString
       return !this._tagsArray.length;
     }
     
-    var other = new TagString(tags,this.opts);
+    var other = tags instanceof TagString ? tags : new TagString(tags,this.opts);
+
     if( !this._tagsArray.length || other._tagsArray.length !== this._tagsArray.length ) {
       return false;
     }
+
     if( this._tagsArray.length === 1 ) {
       return other._tagsArray[0] === this._tagsArray[0];
     }
+
     return this.hash === other.hash;
   }
 
