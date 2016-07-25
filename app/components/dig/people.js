@@ -1,7 +1,7 @@
 import React         from 'react';
-import QueryOptions  from './QueryOptions';
-import PeopleHeader  from '../models/PeopleHeader';
-import Remixes       from './Remixes';
+import QueryOptions  from './query-options';
+import PeopleHeader  from '../models/people-header';
+import Remixes       from './remixes';
 
 const People = React.createClass({
 

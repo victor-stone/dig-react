@@ -1,6 +1,6 @@
 import Playlists from '../../stores/playlists';
 import pages     from '../../components/playlists/pages';
-import SubNav    from '../../components/playlists/SubNav';
+import SubNav    from '../../components/playlists/sub-nav';
 
 /*
   Display playlists that include a particular track

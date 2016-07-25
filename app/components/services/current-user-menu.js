@@ -1,8 +1,8 @@
 import React         from 'react';
-import Glyph         from '../vanilla/Glyph';
-import DeadLink      from '../vanilla/DeadLink';
-import DropdownMenu  from '../vanilla/DropdownMenu';
-import FeedBadge     from './FeedBadge';
+import Glyph         from '../vanilla/glyph';
+import DeadLink      from '../vanilla/dead-link';
+import DropdownMenu  from '../vanilla/dropdown-menu';
+import FeedBadge     from './feed-badge';
 import { ellipse,
          dataProps } from '../../unicorns';
 import thumbStyle    from '../services/people-thumb-style';

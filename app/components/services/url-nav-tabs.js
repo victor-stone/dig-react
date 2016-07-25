@@ -1,5 +1,5 @@
-import SubNavTabs    from '../vanilla/SubNavTabs';
-import LinkToRoute   from './LinkToRoute';
+import SubNavTabs    from '../vanilla/sub-nav-tabs';
+import LinkToRoute   from './link-to-route';
 
 /*
   Enabled a display of tabs backed by URLs.

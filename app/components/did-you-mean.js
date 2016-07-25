@@ -1,6 +1,6 @@
 import React  from 'react';
-import Link   from './services/LinkToRoute';
-import Glyph  from './vanilla/Glyph';
+import Link   from './services/link-to-route';
+import Glyph  from './vanilla/glyph';
 
 import { ModelTracker } from '../mixins';
 

@@ -1,6 +1,6 @@
 import React    from 'react';
 
-import InputWithIcon     from './InputWithIcon';
+import InputWithIcon     from './input-with-icon';
 
 import { cleanSearchString } from '../../unicorns';
 

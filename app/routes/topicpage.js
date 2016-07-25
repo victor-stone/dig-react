@@ -1,6 +1,6 @@
 import React          from 'react';
 import Topics         from '../stores/topics';
-import BoundTopicPage from '../components/bound/TopicPage';
+import BoundTopicPage from '../components/bound/topic-page';
 
 function topicpage(props) {
   if( props.store.error ) {

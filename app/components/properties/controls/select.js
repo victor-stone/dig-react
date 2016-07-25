@@ -1,6 +1,6 @@
 import React       from 'react';
-import Select      from '../../vanilla/Select';
-import PropertyState from '../mixins/PropertyState';
+import Select      from '../../vanilla/select';
+import PropertyState from '../mixins/property-state';
 
 class SelectFilter extends PropertyState(React.Component)
 {

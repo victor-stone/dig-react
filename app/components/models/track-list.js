@@ -1,5 +1,5 @@
 import React              from 'react';
-import TrackListItem      from './TrackListItem';
+import TrackListItem      from './track-list-item';
 
 /*
   Display a list of Upload record, optionally with delete buttons

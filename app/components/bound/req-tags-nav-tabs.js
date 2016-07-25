@@ -1,5 +1,5 @@
 import { ModelTracker } from '../../mixins';
-import SubNavTabs       from '../vanilla/SubNavTabs';
+import SubNavTabs       from '../vanilla/sub-nav-tabs';
 
 import { TagString,
          oassign }      from '../../unicorns';

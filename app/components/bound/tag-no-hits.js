@@ -2,13 +2,13 @@ import React            from 'react';
 
 import { TagString }    from '../../unicorns';
 
-import ResetButton      from '../filters/Reset';
+import ResetButton      from '../filters/reset';
 
 import { ModelTracker } from '../../mixins';
 
-import Glyph            from '../vanilla/Glyph';
+import Glyph            from '../vanilla/glyph';
 import { Row,
-         Column }       from '../vanilla/Grid';
+         Column }       from '../vanilla/grid';
 
 class NoTagHits extends ModelTracker(React.Component)
 {

@@ -1,10 +1,10 @@
 import React        from 'react';
-import Glyph        from './vanilla/Glyph';
-import Modal        from './services/Modal';
+import Glyph        from './vanilla/glyph';
+import Modal        from './services/modal';
 import env          from '../services/env';
 import { bindAll }  from '../unicorns';
 
-import LinkToUpload from './services/LinkToUploadRoute';
+import LinkToUpload from './services/link-to-upload-route';
 
 class SharePopup extends Modal.Popup {
 

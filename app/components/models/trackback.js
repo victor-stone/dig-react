@@ -1,7 +1,7 @@
 import React from 'react';
 
-import TrackbackPopup   from './TrackbackPopup';
-import ExternalLink     from '../vanilla/ExternalLink';
+import TrackbackPopup   from './trackback-popup';
+import ExternalLink     from '../vanilla/external-link';
 
 
 function Trackback(props) {

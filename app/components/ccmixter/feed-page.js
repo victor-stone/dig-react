@@ -1,7 +1,7 @@
 import React            from 'react';
-import InlineCSS        from '../vanilla/InlineCSS';
+import InlineCss        from '../vanilla/inline-css';
 import css              from './style/feed';
-import Feed             from './Feed';
+import Feed             from './feed';
 import StickyStore       from '../../stores/userfeed';
 
 var StickyFeed = React.createClass({
@@ -28,7 +28,7 @@ var StickyFeed = React.createClass({
 
 function FeedPage(props) {
     return (<div>
-              <InlineCSS css={css} id="feed-css" />
+              <InlineCss css={css} id="feed-css" />
               <StickyFeed />
               <Feed {...props} />
             </div>);

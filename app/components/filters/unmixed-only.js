@@ -1,5 +1,5 @@
 import Filter    from '../../models/filters/unmixed-only';
-import Toggle    from '../properties/controls/Toggle';
+import Toggle    from '../properties/controls/toggle';
 
 class UnmixedOnlyToggle extends Toggle
 {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LicenseInfo     from '../../LicenseInfo'; 
+import LicenseInfo     from '../../license-info'; 
 
 class CCPlus extends React.Component
 {

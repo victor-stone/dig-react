@@ -1,17 +1,17 @@
 import React         from 'react';
-import ListingWidget from './ListingWidget';
-import QueryOptions from './QueryOptions';
-import Tags         from './Tags';
+import ListingWidget from './listing-widget';
+import QueryOptions from './query-options';
+import Tags         from './tags';
 
-import InlineCSS    from '../vanilla/InlineCSS';
+import InlineCss    from '../vanilla/inline-css';
 import css          from './style/browse';
-import Files        from '../models/Files';
+import Files        from '../models/files';
 
-import { QueryOptionsCSS }     from '../filters/QueryOptions';
+import { QueryOptionsCSS }     from '../filters/query-options';
 
 import { Row,
          FluidContainer,
-         Column }     from '../vanilla/Grid';
+         Column }     from '../vanilla/grid';
 
 /*
   BrowseStems (this file)
@@ -36,7 +36,7 @@ function Stems(props) {
 
     return (
       <FluidContainer className="stems-browser">
-        <InlineCSS css={Files.css + QueryOptionsCSS + css} id="stems-css" />
+        <InlineCss css={Files.css + QueryOptionsCSS + css} id="stems-css" />
         <Row className="stems-browser-widget">
           <Column cols="3">
             <Tags store={store} />

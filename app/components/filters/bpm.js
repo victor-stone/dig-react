@@ -1,7 +1,7 @@
 import React        from 'react';
 import Filter       from '../../models/filters/bpm';
-import Slider       from '../properties/controls/Slider';
-import PropertyState  from '../properties/mixins/PropertyState';
+import Slider       from '../properties/controls/slider';
+import PropertyState  from '../properties/mixins/property-state';
 
 class BPMSlider extends React.Component
 {

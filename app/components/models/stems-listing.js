@@ -1,7 +1,7 @@
 import React            from 'react';
-import Files            from '../models/Files';
-import LinkToPeople     from '../services/LinkToPeopleRoute';
-import Collapse         from '../vanilla/CollapseGroup';
+import Files            from '../models/files';
+import LinkToPeople     from '../services/link-to-people-route';
+import Collapse         from '../vanilla/collapse-group';
 
 /*
   Display stems browser

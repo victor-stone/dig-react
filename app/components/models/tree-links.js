@@ -1,7 +1,7 @@
 import React          from 'react';
-import Trackback      from './Trackback';
-import CollapsingList from '../vanilla/CollapsingList';
-import LinkToUpload   from '../services/LinkToUploadRoute';
+import Trackback      from './trackback';
+import CollapsingList from '../vanilla/collapsing-list';
+import LinkToUpload   from '../services/link-to-upload-route';
 
 function Link(props) {
   const { model, model: {id, artist:{id:artistId}} } = props;

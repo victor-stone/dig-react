@@ -1,9 +1,9 @@
 import React               from 'react';
-import Glyph               from '../vanilla/Glyph';
+import Glyph               from '../vanilla/glyph';
 import AudioService        from '../../services/audio-player';
 import Playlists           from '../../stores/playlists';
 import events              from '../../models/events';
-import LinkToPlaylist      from './LinkToPlaylistRoute';
+import LinkToPlaylist      from './link-to-playlist-route';
 import {bindAll}           from '../../unicorns';
 
 // TODO: this is too Playlist aware

@@ -1,5 +1,5 @@
 import React        from 'react';
-import Link         from './LinkToRoute';
+import Link         from './link-to-route';
 import { sliceStr,
          selectors } from '../../unicorns';
 

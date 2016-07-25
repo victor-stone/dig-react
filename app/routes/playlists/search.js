@@ -2,12 +2,12 @@
 /*
 import React              from 'react';
 import Playlists          from '../../stores/playlists';
-import { PlaylistWidget } from '../../components/playlists/Browse';
+import { PlaylistWidget } from '../../components/playlists/browse';
 import { mergeParams }    from '../../unicorns';
 
-import PageHeader             from '../../components/PageHeader';
-import Glyph                  from '../../components/Glyph';
-import Link                   from '../../components/Link';
+import PageHeader             from '../../components/page-header';
+import Glyph                  from '../../components/glyph';
+import Link                   from '../../components/link';
 import { QueryParamTracker,
          ModelTracker }       from '../../mixins';
 

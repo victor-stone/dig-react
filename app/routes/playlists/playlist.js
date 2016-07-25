@@ -1,6 +1,6 @@
 import React        from 'react';
 import Playlist     from '../../stores/playlist';
-import SubNav       from '../../components/playlists/SubNav';
+import SubNav       from '../../components/playlists/sub-nav';
 import pages        from '../../components/playlists/pages';
 
 const playlist = Object.assign(pages.Playlist, {

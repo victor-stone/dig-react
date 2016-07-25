@@ -1,6 +1,6 @@
 import React     from 'react';
 
-import { DualTagFieldWidget }   from '../bound/Tags';
+import { DualTagFieldWidget }   from '../bound/tags';
 
 import { UploadType,
          License,
@@ -9,7 +9,7 @@ import { UploadType,
          People,
          AdminTag }    from '../filters';
 
-import { OptionsWrap } from '../filters/QueryOptions';
+import { OptionsWrap } from '../filters/query-options';
 
 function PlaylistQueryOptions(props) {
 

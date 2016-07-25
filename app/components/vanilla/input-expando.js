@@ -1,9 +1,9 @@
 import React       from 'react';
-import { Field }   from './Form';
+import { Field }   from './form';
 import { bindAll,
          nextID }  from '../../unicorns';
-import Input       from './Input';
-import InlineCSS   from './InlineCSS';
+import Input       from './input';
+import InlineCss   from './inline-css';
 
 const makeCSS = id => `
 input#${id} {
@@ -58,7 +58,7 @@ class InputExpando extends React.Component
                       : [ { icon: 'search', onClick:this.onOpen } ];
     return (
         <Field postfix={postfix} {...this.props} >
-          <InlineCSS css={makeCSS(this.id)} id={this.id + '-css'} />
+          <InlineCss css={makeCSS(this.id)} id={this.id + '-css'} />
           <Input {...this.props} onChange={this.onChange} />
         </Field>
       );

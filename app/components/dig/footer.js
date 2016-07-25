@@ -1,9 +1,9 @@
 
 import React  from 'react';
-import Footer from '../Footer';
+import Footer from '../footer';
 
 import { Row,
-         Column } from '../vanilla/Grid';
+         Column } from '../vanilla/grid';
 
 function DigFooter() {
   return (

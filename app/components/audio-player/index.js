@@ -3,14 +3,14 @@ import events from '../../models/events';
 
 import { oassign } from '../../unicorns';
 
-import PlayControls     from './PlayControls';
-import PlaylistButton   from './PlaylistButton';
-import PlaybackScrubber from './PlaybackScrubber';
-import PlayButton       from './PlayButton';
+import PlayControls     from './play-controls';
+import PlaylistButton   from './playlist-button';
+import PlaybackScrubber from './playback-scrubber';
+import PlayButton       from './play-button';
 import AudioService     from '../../services/audio-player';
 
-import LinkToUpload       from '../services/LinkToUploadRoute';
-import LinkToPeople       from '../services/LinkToPeopleRoute';
+import LinkToUpload       from '../services/link-to-upload-route';
+import LinkToPeople       from '../services/link-to-people-route';
 
 
 var nullPosition = { 

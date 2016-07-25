@@ -1,5 +1,5 @@
 import React                    from 'react';
-import { DualTagFieldWidget }   from '../bound/Tags';
+import { DualTagFieldWidget }   from '../bound/tags';
 
 class StemsTagEditor extends React.Component
 {

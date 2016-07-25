@@ -1,6 +1,6 @@
 import React               from 'react';
-import PlayCapture         from '../services/PlayCapture';
-import TreeTiles           from '../models/TreeTiles';
+import PlayCapture         from '../services/play-capture';
+import TreeTiles           from '../models/tree-tiles';
 import { ModelTracker,
         PushPeruseModel }  from '../../mixins';
 

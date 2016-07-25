@@ -1,9 +1,9 @@
 import React    from 'react';
 import ReactDOM from 'react-dom';
-import Glyph        from './Glyph';
-import Alert    from './Alert';
+import Glyph        from './glyph';
+import Alert    from './alert';
 
-import CloseButton from './CloseButton';
+import CloseButton from './close-button';
 
 const Modal = React.createClass({
 

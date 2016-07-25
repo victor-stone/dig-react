@@ -1,23 +1,23 @@
 /* eslint "react/no-danger":0 */
 import React   from 'react';
-import Tiles            from '../RemixTree/Tiles';
+import Tiles            from '../remix-tree/tiles';
 import css              from './style/people';
 
-import Followers        from './Follow';
-import FollowButton     from '../bound/FollowButton';
+import Followers        from './follow';
+import FollowButton     from '../bound/follow-button';
 
 import { TagString }    from '../../unicorns';
 
 import {  ModelTracker} from '../../mixins';
 
-import {  InlineCSS,
+import {  InlineCss,
           CollapsingText,
           ExternalLink,
           Form   }      from '../vanilla';
 
 import { Row,
          FluidContainer,
-         Column }       from '../vanilla/Grid';
+         Column }       from '../vanilla/grid';
 
 var HorizontalForm = Form.HorizontalForm;
 var FormItem       = Form.FormItem;
@@ -88,7 +88,7 @@ class PeoplePage extends ModelTracker(React.Component)
 
     return  (
       <FluidContainer className="people">
-        <InlineCSS css={css} id="people-css"/>        
+        <InlineCss css={css} id="people-css"/>        
         {showHeader
           ? <Row><Column cols="8" offset="2"><Header store={store} /></Column></Row>
           : <h2 className="center-text">{model.artist.name}</h2>

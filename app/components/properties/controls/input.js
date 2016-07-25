@@ -1,13 +1,13 @@
 import React             from 'react';
 
-import PropertyState     from '../mixins/PropertyState';
+import PropertyState     from '../mixins/property-state';
 
-import Field             from '../../vanilla/FormField';
+import Field             from '../../vanilla/form-field';
 
-import Input             from '../../vanilla/Input';
-import { FormControl }   from '../../vanilla/Form';
+import Input             from '../../vanilla/input';
+import { FormControl }   from '../../vanilla/form';
 
-import ToggleEditModeProperty from './ToggleEditMode';
+import ToggleEditModeProperty from './toggle-edit-mode';
 
 
 

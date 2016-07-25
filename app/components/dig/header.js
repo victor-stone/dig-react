@@ -1,13 +1,13 @@
 import React     from 'react';
-import Link      from '../services/LinkToRoute';
+import Link      from '../services/link-to-route';
 
-import SearchBox    from '../vanilla/SearchBox';
-import Glyph        from '../vanilla/Glyph';
-import DeadLink     from '../vanilla/DeadLink';
-import NavbarHeader from '../vanilla/NavbarHeader';
-import DropdownMenu from '../vanilla/DropdownMenu';
+import SearchBox    from '../vanilla/search-box';
+import Glyph        from '../vanilla/glyph';
+import DeadLink     from '../vanilla/dead-link';
+import NavbarHeader from '../vanilla/navbar-header';
+import DropdownMenu from '../vanilla/dropdown-menu';
 
-import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
+import AjaxLoadingGlyph from '../services/ajax-loading-glyph';
 
 const NavbarRight = (
     <ul className="nav navbar-nav navbar-right">

@@ -1,7 +1,7 @@
 import React     from 'react';
 import css       from './style/tiles';
-import TreeTile  from './TreeTile';
-import InlineCSS from '../vanilla/InlineCSS';
+import TreeTile  from './tree-tile';
+import InlineCss from '../vanilla/inline-css';
 
 class TreeTiles extends React.Component
 {
@@ -10,7 +10,7 @@ class TreeTiles extends React.Component
     const { model } = this.props;
     return (
       <div className="tiles">
-        <InlineCSS css={css} id="tiles-css"/>
+        <InlineCss css={css} id="tiles-css"/>
         <ul className="play-list">
           {model.map( m => <TreeTile key={m.id} {...this.props} model={m} />)}
         </ul>

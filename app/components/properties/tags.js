@@ -1,15 +1,15 @@
 import React       from 'react';
 
-import { FormControl }        from '../vanilla/Form';
+import { FormControl }        from '../vanilla/form';
 
-import { ButtonGroup }        from '../vanilla/ButtonGroups';
+import { ButtonGroup }        from '../vanilla/button-groups';
 
 import { DualTagFieldWidget,
-         BoundStaticTagList } from './../bound/Tags';
+         BoundStaticTagList } from './../bound/tags';
 
 import Filter                 from '../../models/filters/tags';
 
-import ToggleEditModeProperty from './controls/ToggleEditMode';
+import ToggleEditModeProperty from './controls/toggle-edit-mode';
 
 const TagsPropertyEditorMixin  = baseclass => class extends baseclass
 {

@@ -3,14 +3,14 @@ import api                    from '../../services/ccmixter';
 import { CurrentUserTracker } from '../../mixins';
 import { bindAll }            from '../../unicorns';
 
-import Link            from '../services/LinkToRoute';
-import LinkToPeople    from '../services/LinkToPeopleRoute';
-import Glyph           from '../vanilla/Glyph';
-import FeedBadge       from '../services/FeedBadge';
-import DeadLink        from '../vanilla/DeadLink';
-import CurrentUserMenu from '../services/CurrentUserMenu';
-import Alert           from '../services/Alert';
-import Login           from './Login';
+import Link            from '../services/link-to-route';
+import LinkToPeople    from '../services/link-to-people-route';
+import Glyph           from '../vanilla/glyph';
+import FeedBadge       from '../services/feed-badge';
+import DeadLink        from '../vanilla/dead-link';
+import CurrentUserMenu from '../services/current-user-menu';
+import Alert           from '../services/alert';
+import Login           from './login';
 
 class UserMenu extends CurrentUserTracker(React.Component)
 {

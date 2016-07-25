@@ -1,5 +1,5 @@
 import React                   from 'react';
-import SubNavBar               from '../bound/SubNavBar';
+import SubNavBar               from '../bound/sub-nav-bar';
 
 function StemsSubNav(props) {
   return (

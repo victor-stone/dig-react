@@ -1,5 +1,5 @@
 import React        from 'react';
-import Input        from './Input';
+import Input        from './input';
 import { Glyph }    from '../../vanilla';
 
 class StaticHeader extends React.Component

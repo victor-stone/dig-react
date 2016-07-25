@@ -1,6 +1,6 @@
 import React       from 'react';
-import Toggle      from '../../vanilla/Toggle';
-import PropertyState from '../mixins/PropertyState';
+import Toggle      from '../../vanilla/toggle';
+import PropertyState from '../mixins/property-state';
 
 class ToggleFilter extends PropertyState(React.Component)
 {

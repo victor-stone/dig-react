@@ -1,6 +1,6 @@
 import React                  from 'react';
-import currentUserProfile     from '../services/CurrentUserProfile';
-import AddTags                from '../properties/AddTags';
+import currentUserProfile     from '../services/current-user-profile';
+import AddTags                from '../properties/add-tags';
 
 class AdminTag extends React.Component
 {

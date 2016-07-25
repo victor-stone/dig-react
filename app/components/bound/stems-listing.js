@@ -1,7 +1,7 @@
 import React            from 'react';
 import { TagString }    from '../../unicorns';
 import { ModelTracker } from '../../mixins';
-import StemsListing     from '../models/StemsListing';
+import StemsListing     from '../models/stems-listing';
 
 class BoundStemsListing extends ModelTracker(React.Component)
 {

@@ -1,6 +1,6 @@
 import React         from 'react';
-import ExternalLink  from '../vanilla/ExternalLink';
-import LinkToPeople  from '../services/LinkToPeopleRoute';
+import ExternalLink  from '../vanilla/external-link';
+import LinkToPeople  from '../services/link-to-people-route';
 
 function Header(props)
 {

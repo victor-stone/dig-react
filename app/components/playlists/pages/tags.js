@@ -1,6 +1,6 @@
 import React         from 'react';
-import Browse        from '../Browse';
-import PageHeader    from '../../vanilla/PageHeader';
+import Browse        from '../browse';
+import PageHeader    from '../../vanilla/page-header';
 
 /*
   display a list playlists that have these tags

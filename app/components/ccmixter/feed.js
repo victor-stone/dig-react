@@ -12,13 +12,13 @@ import { selectors }      from '../../unicorns';
 
 import api                from '../../services/ccmixter';
 
-import LinkToRoute        from '../services/LinkToRoute';
+import LinkToRoute        from '../services/link-to-route';
 
 import { Row,
          FluidContainer,
-         Column }         from '../vanilla/Grid';
-import InlineCSS          from '../vanilla/InlineCSS';
-import Glyph              from '../vanilla/Glyph';
+         Column }         from '../vanilla/grid';
+import InlineCss          from '../vanilla/inline-css';
+import Glyph              from '../vanilla/glyph';
 
 import css                from './style/feed';
 
@@ -175,7 +175,7 @@ class Feed extends ModelTracker(React.Component)
       <FluidContainer className={cls}>
         <Row>
           <Column cols="8" offset="2">
-            <InlineCSS css={css} id="feed-css" />
+            <InlineCss css={css} id="feed-css" />
             <ul className="user-feed-items">
             {items.map( (item,i) => <FeedItem key={i} owner={user} model={item} /> )}
             </ul>

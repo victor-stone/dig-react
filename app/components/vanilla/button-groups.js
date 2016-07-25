@@ -1,8 +1,8 @@
 import React         from 'react';
 import { selectors,
          nextID }    from '../../unicorns';
-import DeadLink      from './DeadLink';
-import Glyph         from './Glyph';
+import DeadLink      from './dead-link';
+import Glyph         from './glyph';
 
 
 function fixGlyphAlignment() {

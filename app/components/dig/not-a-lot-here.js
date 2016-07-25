@@ -1,10 +1,10 @@
 import React              from 'react';
 import { ModelTracker }   from '../../mixins';
 
-import ResetOptionsButton  from '../filters/Reset';
+import ResetOptionsButton  from '../filters/reset';
 import { Row,
          FluidContainer,
-         Column }     from '../vanilla/Grid';
+         Column }     from '../vanilla/grid';
 
 const MIN_LIMIT = 10;
 

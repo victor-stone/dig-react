@@ -1,7 +1,7 @@
 /* globals document */
 import React from 'react';
 
-var InlineCSS = React.createClass({
+var InlineCss = React.createClass({
 
   componentDidMount() {
     if( global.IS_SERVER_REQUEST ) {
@@ -52,6 +52,6 @@ var InlineCSS = React.createClass({
 
 });
 
-module.exports = InlineCSS;
+module.exports = InlineCss;
 
 //

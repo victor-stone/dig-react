@@ -1,8 +1,8 @@
 import React            from 'react';
-import SubNavBar        from '../bound/SubNavBar';
-import InlineCSS        from '../vanilla/InlineCSS';
+import SubNavBar        from '../bound/sub-nav-bar';
+import InlineCss        from '../vanilla/inline-css';
 import css              from './style/subnav';
-import ReqTagsNavTabs   from '../bound/ReqTagsNavTabs';
+import ReqTagsNavTabs   from '../bound/req-tags-nav-tabs';
 
 const PELL_TYPES = {
   featured:    'featured',
@@ -16,7 +16,7 @@ const PELLS_FILTER = new RegExp( '^' + Object.keys(PELL_TYPES).join('|') + '$');
 function PellsSubNav(props) {
   return (
       <SubNavBar paging store={props.store} >
-        <InlineCSS css={css} id="stinkin badges css" />
+        <InlineCss css={css} id="stinkin badges css" />
         <ReqTagsNavTabs tab="featured" store={props.store} tabs={PELL_TYPES} filter={PELLS_FILTER} all />
       </SubNavBar>
   );

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import LinkToRemixTree from '../../services/LinkToRemixTree';
-import LicenseInfo     from '../../LicenseInfo'; 
-import CCPlus          from './CCPlus';
+import LinkToRemixTree from '../../services/link-to-remix-tree';
+import LicenseInfo     from '../../license-info'; 
+import CCPlus          from './cc-plus';
 
 class LicenseSection extends React.Component
 {

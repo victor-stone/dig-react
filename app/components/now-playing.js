@@ -1,6 +1,6 @@
 import React      from 'react';
-import PageHeader from './vanilla/PageHeader';
-import Remixes    from './dig/Remixes';
+import PageHeader from './vanilla/page-header';
+import Remixes    from './dig/remixes';
 
 class NowPlaying extends React.Component
 {

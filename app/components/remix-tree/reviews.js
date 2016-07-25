@@ -1,8 +1,8 @@
 import React                 from 'react';
-import { AccordionPanel }    from '../vanilla/Accordion';
-import ReviewsPopup          from '../bound/ReviewsPopup';
-import ReviewsPanel          from '../models/ReviewsPanel';
-import InlineCSS             from '../vanilla/InlineCSS';
+import { AccordionPanel }    from '../vanilla/accordion';
+import ReviewsPopup          from '../bound/reviews-popup';
+import ReviewsPanel          from '../models/reviews-panel';
+import InlineCss             from '../vanilla/inline-css';
 import Topics                from '../../stores/topics';
 import { ModelTracker,
         DelayLoadModel }    from '../../mixins';
@@ -50,7 +50,7 @@ class Reviews extends DelayLoadModel(ModelTracker(React.Component))
 
     return (
         <AccordionPanel {...accProps}>
-          <InlineCSS css={ReviewsPanel.css} id="review-panel-css" />
+          <InlineCss css={ReviewsPanel.css} id="review-panel-css" />
           <ReviewsPanel model={model} />
         </AccordionPanel>
       );

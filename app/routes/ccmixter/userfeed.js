@@ -2,8 +2,8 @@ import React             from 'react';
 import userFeed          from '../../services/userfeed';
 import qc                from '../../models/query-configs';
 import { mergeParams }   from '../../unicorns';
-import FeedPage          from '../../components/ccmixter/FeedPage';
-import FeedSubNav        from '../../components/ccmixter/FeedSubNav';
+import FeedPage          from '../../components/ccmixter/feed-page';
+import FeedSubNav        from '../../components/ccmixter/feed-sub-nav';
 
 Object.assign( FeedPage, {
   title: 'Feed',

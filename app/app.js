@@ -7,13 +7,13 @@ import events      from './models/events';
 
 import { browserScripts,
          bindAll }        from './unicorns';
-import Banner             from './components/Banner';
-import AudioPlayer        from './components/AudioPlayer';
+import Banner             from './components/banner';
+import AudioPlayer        from './components/audio-player';
 
-import TitleSetter  from './components/vanilla/TitleSetter';
-import ErrorDisplay from './components/services/ErrorDisplay';
-import Modal        from './components/services/Modal';
-import Alert        from './components/services/Alert';
+import TitleSetter  from './components/vanilla/title-setter';
+import ErrorDisplay from './components/services/error-display';
+import Modal        from './components/services/modal';
+import Alert        from './components/services/alert';
 
 class App extends React.Component 
 {

@@ -1,26 +1,26 @@
 import React       from 'react';
-import InlineCSS   from '../vanilla/InlineCSS';
+import InlineCss   from '../vanilla/inline-css';
 import { Accordion
-               }   from '../vanilla/Accordion';
+               }   from '../vanilla/accordion';
 
 import { ModelTracker }    from '../../mixins';
 import { SamplesFrom, 
-         SamplesUsedIn }   from '../bound/TreeLinks';
+         SamplesUsedIn }   from '../bound/tree-links';
 
-import FileSection from './Files';
-import Recommends  from './Recommends';
-import Reviews     from './Reviews';
-import Overview    from './Overview';
-import Description from '../bound/UploadDescription';
-import UploadMenu  from './UploadMenu';
+import FileSection from './files';
+import Recommends  from './recommends';
+import Reviews     from './reviews';
+import Overview    from './overview';
+import Description from '../bound/upload-description';
+import UploadMenu  from './upload-menu';
 import css         from './style/tree';
 
 import { PrevPeruse,
-        NextPeruse } from '../PeruseNavigation';
+        NextPeruse } from '../peruse-navigation';
 
 import { Row,
          FluidContainer,
-         Column }     from '../vanilla/Grid';
+         Column }     from '../vanilla/grid';
 
 
 class Tree extends ModelTracker(React.Component)
@@ -36,7 +36,7 @@ class Tree extends ModelTracker(React.Component)
 
     return( 
       <FluidContainer>
-        <InlineCSS css={css} id="tree-css"/>
+        <InlineCss css={css} id="tree-css"/>
         <Row>
           <Column cols="2">
             <PrevPeruse store={store}/>

@@ -3,7 +3,7 @@ import Playlists        from '../../stores/playlists';
 import qc               from '../../models/query-configs';
 import { mergeParams }  from '../../unicorns';
 import pages            from '../../components/playlists/pages';
-import SubNav           from '../../components/playlists/SubNav';
+import SubNav           from '../../components/playlists/sub-nav';
 
 const browse = Object.assign(pages.Browse,{
   title: 'Browse Playlists',

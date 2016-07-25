@@ -4,8 +4,8 @@ import Store      from '../../stores/remixes';
 
 import { mergeParams }    from '../../unicorns';
 
-import Tiles   from '../../components/RemixTree/Tiles';
-import SubNav  from '../../components/RemixTree/SubNav';
+import Tiles   from '../../components/remix-tree/tiles';
+import SubNav  from '../../components/remix-tree/sub-nav';
 
 const tree = Object.assign(Tiles, {
   title: 'Remix Tree',

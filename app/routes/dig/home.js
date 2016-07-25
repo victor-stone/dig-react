@@ -1,10 +1,10 @@
 import React from 'react';
 import { Glyph } from '../../components/vanilla';
-import Link from '../../components/services/LinkToRoute';
+import Link from '../../components/services/link-to-route';
 import { Row,
          Container,
          FluidContainer,
-         Column }     from '../../components/vanilla/Grid';
+         Column }     from '../../components/vanilla/grid';
 
 
 const homePage = (

@@ -1,12 +1,12 @@
 import React         from 'react';
 
-import QueryOptions  from './QueryOptions';
-import Remixes       from './Remixes';
-import NotALotHere   from './NotALotHere';
-import DidYouMean    from '../DidYouMean';
-import Glyph         from '../vanilla/Glyph';
-import Link          from '../services/LinkToRoute';
-import SearchHeader  from '../filters/SearchHeader';
+import QueryOptions  from './query-options';
+import Remixes       from './remixes';
+import NotALotHere   from './not-a-lot-here';
+import DidYouMean    from '../did-you-mean';
+import Glyph         from '../vanilla/glyph';
+import Link          from '../services/link-to-route';
+import SearchHeader  from '../filters/search-header';
 
 function NoHits() {
   return (<div className="did-you-mean well no-hit-suggestion">

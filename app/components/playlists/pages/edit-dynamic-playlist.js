@@ -1,6 +1,6 @@
 import React                from 'react';
-import EditDynamicPlaylist  from '../EditDynamicPlaylist';
-import LinkToPlaylist       from '../../services/LinkToPlaylistRoute';
+import EditDynamicPlaylist  from '../edit-dynamic-playlist';
+import LinkToPlaylist       from '../../services/link-to-playlist-route';
 
 class EditDynamicPlaylistPage extends React.Component
 {

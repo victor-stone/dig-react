@@ -1,5 +1,5 @@
 import Filter    from '../../models/properties/is-featured';
-import Toggle    from './controls/Toggle';
+import Toggle    from './controls/toggle';
 
 class IsFeaturedToggle extends Toggle
 {

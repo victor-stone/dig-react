@@ -1,7 +1,7 @@
 import React       from 'react';
 
 import { HorizontalForm, 
-         StaticField }      from '../vanilla/Form';
+         StaticField }      from '../vanilla/form';
 
 import TagsPropertyEditor from '../properties/tags';
 import BPMPropertyEditor  from '../properties/bpm';

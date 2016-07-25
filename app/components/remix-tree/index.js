@@ -1,5 +1,5 @@
 import React             from 'react';
-import Tree              from './Tree';
+import Tree              from './tree';
 import { ModelTracker,
          PopPeruseModel }  from '../../mixins';
 

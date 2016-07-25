@@ -1,6 +1,6 @@
 import React         from 'react';
-import Link          from './LinkToRoute';
-import Glyph         from '../vanilla/Glyph';
+import Link          from './link-to-route';
+import Glyph         from '../vanilla/glyph';
 import thumbStyle    from './people-thumb-style';
 import { selectors } from '../../unicorns';
 

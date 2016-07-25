@@ -3,7 +3,7 @@ import qc               from '../../models/query-configs';
 import Rmx              from '../../stores/remixes';
 
 import {  People }     from '../../components/dig'; 
-import SubNav           from '../../components/dig/SubNav';
+import SubNav           from '../../components/dig/sub-nav';
 
 const people = Object.assign(People,{
   path: '/people/:userid',

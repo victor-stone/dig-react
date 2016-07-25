@@ -1,5 +1,5 @@
 import React         from 'react';
-import Glyph         from './Glyph';
+import Glyph         from './glyph';
 import { selectors,
          dataProps } from '../../unicorns';
 

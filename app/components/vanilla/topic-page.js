@@ -1,8 +1,8 @@
 import React      from 'react';
-import PageHeader from './PageHeader';
+import PageHeader from './page-header';
 import { Row,
          FluidContainer,
-         Column }     from './Grid';
+         Column }     from './grid';
 
 class TopicPage extends React.Component
 {

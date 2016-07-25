@@ -1,9 +1,9 @@
 import React         from 'react';
-import PeopleHeader             from '../../models/PeopleHeader';
-import LinkToUploadNumPlaylists from '../LinkToUploadNumPlaylists';
+import PeopleHeader             from '../../models/people-header';
+import LinkToUploadNumPlaylists from '../link-to-upload-num-playlists';
 import { Row,
          FluidContainer,
-         Column }     from '../../vanilla/Grid';
+         Column }     from '../../vanilla/grid';
 
 /*
   Display a list of tracks by this artist that are

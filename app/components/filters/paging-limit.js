@@ -1,7 +1,7 @@
 import React         from 'react';
-import PagingLimit   from '../vanilla/PagingLimit';
+import PagingLimit   from '../vanilla/paging-limit';
 import Filter        from '../../models/filters/limit';
-import PropertyState   from '../properties/mixins/PropertyState';
+import PropertyState   from '../properties/mixins/property-state';
 
 class PagingLimitFilter extends PropertyState(React.Component)
 {

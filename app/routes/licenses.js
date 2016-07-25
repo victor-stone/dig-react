@@ -1,10 +1,10 @@
 
 import React        from 'react';
-import LicenseInfo  from '../components/LicenseInfo';
-import PageHeader   from '../components/vanilla/PageHeader';
+import LicenseInfo  from '../components/license-info';
+import PageHeader   from '../components/vanilla/page-header';
 
 import { Row,
-         Column }     from '../components/vanilla/Grid';
+         Column }     from '../components/vanilla/grid';
 
 var Licenses = React.createClass({
 

@@ -1,8 +1,8 @@
 import React            from 'react';
-import { PlayButton }   from '../AudioPlayer';
-import LinkToUpload     from '../services/LinkToUploadRoute';
-import LinkToPeople     from '../services/LinkToPeopleRoute';
-import UploadInfoButton from '../models/UploadInfoButton';
+import { PlayButton }   from '../audio-player';
+import LinkToUpload     from '../services/link-to-upload-route';
+import LinkToPeople     from '../services/link-to-people-route';
+import UploadInfoButton from '../models/upload-info-button';
 
 class TreeTile extends React.Component
 {

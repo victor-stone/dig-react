@@ -1,7 +1,7 @@
 import React     from 'react';
 
 import { CloseButton,
-         InlineCSS,
+         InlineCss,
          Glyph }          from '../vanilla';
 
 import { ModelTracker }   from '../../mixins';
@@ -10,7 +10,7 @@ import { selectors }      from '../../unicorns';
 
 import css                from './style/query-options';
 
-import ResetOptionsButton from './Reset';
+import ResetOptionsButton from './reset';
 
 class OptionsWrap extends React.Component
 {
@@ -90,7 +90,7 @@ class QueryOptions extends ModelTracker(React.Component)
 
     return (
       <div className={cls}>
-        <InlineCSS css={css} id="query-options-css" />
+        <InlineCss css={css} id="query-options-css" />
         <QueryOptionsBox show={showOptions} store={store} handleShowOptions={this.onShowOptions}>
           {this.props.children}
         </QueryOptionsBox>

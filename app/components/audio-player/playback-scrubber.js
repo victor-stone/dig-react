@@ -1,6 +1,6 @@
 /* globals $ */
 import React    from 'react';
-import WavImage from './WavImage';
+import WavImage from './wav-image';
 
 const ONE_HUNDRED = 100;
 

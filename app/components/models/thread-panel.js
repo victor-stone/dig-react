@@ -1,7 +1,7 @@
 /*eslint "react/no-danger":0 */
 import React       from 'react';
 import moment      from 'moment';
-import Topic       from './Topic';
+import Topic       from './topic';
 import thumbStyle  from '../services/people-thumb-style';
 
 class ThreadPanel extends React.Component

@@ -1,6 +1,6 @@
 import React          from 'react';
 import {ModelTracker} from '../../mixins';
-import _PlaylistList      from '../models/PlaylistList';
+import _PlaylistList      from '../models/playlist-list';
 
 /*
   Display a list of Playlist reacords

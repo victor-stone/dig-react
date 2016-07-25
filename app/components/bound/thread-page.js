@@ -1,10 +1,10 @@
 import React          from 'react';
-import PageHeader     from '../vanilla/PageHeader';
-import InlineCSS      from '../vanilla/InlineCSS';
+import PageHeader     from '../vanilla/page-header';
+import InlineCss      from '../vanilla/inline-css';
 import { Row,
          FluidContainer,
-         Column }     from '../vanilla/Grid';
-import ThreadPanel    from '../models/ThreadPanel';
+         Column }     from '../vanilla/grid';
+import ThreadPanel    from '../models/thread-panel';
 
 class ThreadPage extends React.Component
 {
@@ -17,7 +17,7 @@ class ThreadPage extends React.Component
 
     return(
         <FluidContainer>
-          <InlineCSS css={ThreadPanel.css} id="thread-panel-css" />
+          <InlineCss css={ThreadPanel.css} id="thread-panel-css" />
           <PageHeader title={name} subTitle={forum.name} icon="comments" />
           <Row>
             <Column cols="10" offset="1">

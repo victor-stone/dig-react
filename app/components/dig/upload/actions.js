@@ -1,8 +1,8 @@
 import React from 'react';
 
-import SharePopup      from '../../SharePopup';
-import DownloadPopup   from '../../DownloadPopup';
-import { PlayButton }  from '../../AudioPlayer';
+import SharePopup      from '../../share-popup';
+import DownloadPopup   from '../../download-popup';
+import { PlayButton }  from '../../audio-player';
 
 class Actions extends React.Component
 {

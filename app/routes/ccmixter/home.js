@@ -1,10 +1,10 @@
 import React from 'react';
 import { Glyph, 
-         InlineCSS } from '../../components/vanilla';
-import Link          from '../../components/services/LinkToRoute';
+         InlineCss } from '../../components/vanilla';
+import Link          from '../../components/services/link-to-route';
 import { Row,
          Container,
-         Column }    from '../../components/vanilla/Grid';
+         Column }    from '../../components/vanilla/grid';
 
 function fb_custom_fb_login() {
 
@@ -684,8 +684,8 @@ var fbLoginButton1 = ' OR ' + fbLoginButton;
 
 const homePage = (
   <div>
-<InlineCSS css={css1} id="adornment-css" />
-<InlineCSS css={css2} id="content-css" />
+<InlineCss css={css1} id="adornment-css" />
+<InlineCss css={css2} id="content-css" />
 
 <div className="myNav" id="myNav_div">
   <Container>

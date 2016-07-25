@@ -1,6 +1,6 @@
 import React          from 'react';
-import MoreOrLessLink from './MoreOrLessLink';
-import InlineCSS      from './InlineCSS';
+import MoreOrLessLink from './more-or-less-link';
+import InlineCss      from './inline-css';
 import { bindAll,
          nextID }    from '../../unicorns';
 
@@ -37,7 +37,7 @@ class CollapsingList extends React.Component
 
     return (
           <div className={this.props.className} data-parent={'#'+id}>
-            <InlineCSS css={css} id="collapse-list-css" />
+            <InlineCss css={css} id="collapse-list-css" />
             <ul className="collapse-list-head">
               {head.map( this.listElement )}
             </ul>

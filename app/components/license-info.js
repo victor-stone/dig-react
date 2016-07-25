@@ -1,11 +1,11 @@
 import React        from 'react';
 import LicenseUtils from '../models/licenses';
-import Glyph        from './vanilla/Glyph';
-import DeadLink     from './vanilla/DeadLink';
-import Modal        from './services/Modal';
+import Glyph        from './vanilla/glyph';
+import DeadLink     from './vanilla/dead-link';
+import Modal        from './services/modal';
 import { Row,
          Container,
-         Column }     from './vanilla/Grid';
+         Column }     from './vanilla/grid';
 
 var LicenseInfoLink = React.createClass({
 

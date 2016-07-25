@@ -1,6 +1,6 @@
 import React    from 'react';
-import Glyph    from './Glyph';
-import DeadLink from './DeadLink';
+import Glyph    from './glyph';
+import DeadLink from './dead-link';
 import { selectors } from '../../unicorns';
 
 function InfoButton(props)

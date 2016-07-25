@@ -1,10 +1,10 @@
 import React from 'react';
-import PageHeader   from '../components/vanilla/PageHeader';
-import ExternalLink from '../components/vanilla/ExternalLink';
+import PageHeader   from '../components/vanilla/page-header';
+import ExternalLink from '../components/vanilla/external-link';
 
 import { Row,
          FluidContainer,
-         Column }     from '../components/vanilla/Grid';
+         Column }     from '../components/vanilla/grid';
 
 var ExLink = ExternalLink;
 

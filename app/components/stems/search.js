@@ -1,12 +1,12 @@
 import React            from 'react';
 
-import SearchHeader     from '../filters/SearchHeader';
+import SearchHeader     from '../filters/search-header';
 
-import Listing          from './ListingWidget';
+import Listing          from './listing-widget';
 
 import { Row,
          FluidContainer,
-         Column }     from '../vanilla/Grid';
+         Column }     from '../vanilla/grid';
 
 
 function NoSearchHits() {

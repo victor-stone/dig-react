@@ -1,5 +1,5 @@
-import ToggleEditMode    from '../../vanilla/ToggleEditMode';
-import PropertyState     from '../mixins/PropertyState';
+import ToggleEditMode    from '../../vanilla/toggle-edit-mode';
+import PropertyState     from '../mixins/property-state';
 
 
 const ToggleEditModePropertyMixin = tem => class extends PropertyState(tem)

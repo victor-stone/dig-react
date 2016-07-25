@@ -2,7 +2,7 @@ import React         from 'react';
 import { selectors } from '../../unicorns';
 
 import { InputGroupAddon,
-         FieldAdornment } from './ButtonGroups';
+         FieldAdornment } from './button-groups';
 
 class InputGroup extends React.Component
 {

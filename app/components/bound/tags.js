@@ -1,5 +1,5 @@
 import React            from 'react';
-import { InlineCSS }    from '../vanilla';
+import { InlineCss }    from '../vanilla';
 import { TagString }    from '../../unicorns';
 import { bindAll,
          selectors }    from '../../unicorns';
@@ -8,16 +8,16 @@ import TagStore         from '../../stores/tags';
 
 import Filter           from '../../models/filters/tags';
 
-import PropertyState    from '../properties/mixins/PropertyState';
+import PropertyState    from '../properties/mixins/property-state';
 
 import { 
           StaticTagsList,
           CheckableTagsList,
           SelectedTagList,
           SelectableTagList
-      } from '../models/Tags';
+      } from '../models/tags';
 
-import MatchAllButton from '../filters/MatchAll';
+import MatchAllButton from '../filters/match-all';
 
 /* 
   See app/models/Tags.js for explanations of concepts 
@@ -96,7 +96,7 @@ class CategoryTagBox extends React.Component
 
     return (
         <div>
-          <InlineCSS css={CategoryTagBox.css} id="category-tag-box-css" />
+          <InlineCss css={CategoryTagBox.css} id="category-tag-box-css" />
           <CheckableTagsList className={cls} model={this.state.model} selected={this.state.selected} onSelected={this.props.onSelected} />
         </div>
       );

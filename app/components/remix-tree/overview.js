@@ -1,6 +1,6 @@
 import React               from 'react';
-import { AccordionPanel }  from '../vanilla/Accordion';
-import UploadOverview      from '../bound/UploadOverview';
+import { AccordionPanel }  from '../vanilla/accordion';
+import UploadOverview      from '../bound/upload-overview';
 
 function Overview(props) {
   return(

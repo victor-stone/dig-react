@@ -1,8 +1,8 @@
 import React            from 'react';
-import Glyph            from '../vanilla/Glyph';
-import ClearButton      from '../vanilla/ClearButton';
-import InlineCSS        from '../vanilla/InlineCSS';
-import { FormItem }     from '../vanilla/Form';
+import Glyph            from '../vanilla/glyph';
+import ClearButton      from '../vanilla/clear-button';
+import InlineCss        from '../vanilla/inline-css';
+import { FormItem }     from '../vanilla/form';
 import { TagString,
          selectors }    from '../../unicorns';
 
@@ -300,7 +300,7 @@ class StaticTagsList extends React.Component
 
     return (
         <div className="tag-list-static-container">
-          <InlineCSS css={css} id="tag-list-static-css" />
+          <InlineCss css={css} id="tag-list-static-css" />
           <SelectableTagList 
             model={this.state.model} 
             className={cls}
@@ -355,7 +355,7 @@ function CheckableTagsList(props)
 
   return (
       <div className="tag-list-checkable-container">
-        <InlineCSS css={css} id="tag-list-checkable-css" />
+        <InlineCss css={css} id="tag-list-checkable-css" />
         <SelectableTagList 
           model={model} 
           selected={selected}
@@ -434,7 +434,7 @@ class SelectedTagList extends React.Component
 
     return (
         <div className={outerCls}>
-          <InlineCSS css={css} id="tag-list-selected-css" />
+          <InlineCss css={css} id="tag-list-selected-css" />
           <SelectableTagList 
             model={tagStringToModels(model)} 
             selected={model}

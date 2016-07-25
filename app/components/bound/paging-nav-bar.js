@@ -1,5 +1,5 @@
 import React     from 'react';
-import SubNavBar from './SubNavBar';
+import SubNavBar from './sub-nav-bar';
 
 function PagingNavBar(props)
 {

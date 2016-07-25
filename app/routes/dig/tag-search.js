@@ -2,7 +2,7 @@ import React         from 'react';
 import { TagSearch } from '../../components/dig';
 import qc            from '../../models/query-configs';
 import Remixes      from '../../stores/remixes';
-import SubNav           from '../../components/dig/SubNav';
+import SubNav           from '../../components/dig/sub-nav';
 
 import { mergeParams } from '../../unicorns';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LinkToUpload from '../../services/LinkToUploadRoute';
+import LinkToUpload from '../../services/link-to-upload-route';
 
 const HOST = 'http://beta.ccmixter.org';
 

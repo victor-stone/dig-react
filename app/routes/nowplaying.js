@@ -1,6 +1,6 @@
 import rsvp           from 'rsvp';
 import NowPlaying     from '../stores/nowplaying';
-import NowPlayingPage from '../components/NowPlaying';
+import NowPlayingPage from '../components/now-playing';
 
 const nowplaying = Object.assign(NowPlayingPage,{
   title: 'Now Playing',

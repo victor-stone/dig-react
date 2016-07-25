@@ -1,6 +1,6 @@
 import Filter      from '../../models/filters/match-all';
 import TagsFilter  from '../../models/filters/tags';
-import Toggle      from '../properties/controls/Toggle';
+import Toggle      from '../properties/controls/toggle';
 
 class MatchAllButton extends Toggle
 {

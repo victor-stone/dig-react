@@ -1,8 +1,8 @@
 import React              from 'react';
-import DownloadPopup      from '../DownloadPopup';
-import LinkToPeople       from '../services/LinkToPeopleRoute';
-import { PlayButton }     from '../AudioPlayer';
-import LinkToUpload       from '../services/LinkToUploadRoute';
+import DownloadPopup      from '../download-popup';
+import LinkToPeople       from '../services/link-to-people-route';
+import { PlayButton }     from '../audio-player';
+import LinkToUpload       from '../services/link-to-upload-route';
 
 class RemixLine extends React.Component
 {

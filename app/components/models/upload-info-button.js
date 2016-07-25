@@ -1,8 +1,8 @@
 import React              from 'react';
 
-import InfoButton     from '../vanilla/InfoButton';
-import Popover        from '../vanilla/Popover';
-import UploadOverview from '../bound/UploadOverview';
+import InfoButton     from '../vanilla/info-button';
+import Popover        from '../vanilla/popover';
+import UploadOverview from '../bound/upload-overview';
 
 import Upload         from '../../stores/upload';
 

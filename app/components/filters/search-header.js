@@ -1,7 +1,7 @@
 import React       from 'react';
-import PageHeader  from '../vanilla/PageHeader';
+import PageHeader  from '../vanilla/page-header';
 import Filter      from '../../models/filters/search';
-import PropertyState from '../properties/mixins/PropertyState';
+import PropertyState from '../properties/mixins/property-state';
 
 class SearchHeader extends PropertyState(React.Component)
 {

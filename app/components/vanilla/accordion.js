@@ -1,11 +1,11 @@
 /* globals $*/
 import React        from 'react';
-import Glyph        from './Glyph';
-import DeadLink     from './DeadLink';
+import Glyph        from './glyph';
+import DeadLink     from './dead-link';
 import { bindAll,
         selectors }  from '../../unicorns';
 
-import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
+import AjaxLoadingGlyph from '../services/ajax-loading-glyph';
 
 class AccordionButton extends React.Component
 {

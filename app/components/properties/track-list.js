@@ -1,10 +1,10 @@
 import React            from 'react';
 import { safeSetState } from '../../unicorns';
-import Tracklist        from '../models/TrackList';
-import TrackListSorting from '../models/TrackListSorting';
-import { FormControl }  from '../vanilla/Form';
+import Tracklist        from '../models/track-list';
+import TrackListSorting from '../models/track-list-sorting';
+import { FormControl }  from '../vanilla/form';
 
-import ToggleEditModeProperty from './controls/ToggleEditMode';
+import ToggleEditModeProperty from './controls/toggle-edit-mode';
 
 import OrderProperty  from '../../models/properties/order';
 

@@ -1,8 +1,8 @@
 import React            from 'react';
-import TagNoHits        from '../bound/TagNoHits';
-import StemsDetail      from './Detail';
+import TagNoHits        from '../bound/tag-no-hits';
+import StemsDetail      from './detail';
 
-import BoundStemsListing     from '../bound/StemsListing';
+import BoundStemsListing     from '../bound/stems-listing';
 
 function DetailStub(store) {
   return function(props) {

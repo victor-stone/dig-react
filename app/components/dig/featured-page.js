@@ -1,8 +1,8 @@
 import React        from 'react';
-import Remixes      from './Remixes';
-import PageHeader   from '../vanilla/PageHeader';
-import QueryOptions from './QueryOptions';
-import SubNav       from './SubNav';
+import Remixes      from './remixes';
+import PageHeader   from '../vanilla/page-header';
+import QueryOptions from './query-options';
+import SubNav       from './sub-nav';
 
 const FeaturedPage = React.createClass({
 

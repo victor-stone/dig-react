@@ -3,7 +3,7 @@ import Samples          from '../../stores/samples';
 
 import { mergeParams }    from '../../unicorns';
 
-import Search               from '../../components/stems/Search';
+import Search               from '../../components/stems/search';
 
 Object.assign(Search,{
 

@@ -1,14 +1,14 @@
 import React            from 'react';
-import SubNavBar        from '../bound/SubNavBar';
-import ReqTagsNavTabs   from '../bound/ReqTagsNavTabs';
-import InlineCSS        from '../vanilla/InlineCSS';
+import SubNavBar        from '../bound/sub-nav-bar';
+import ReqTagsNavTabs   from '../bound/req-tags-nav-tabs';
+import InlineCss        from '../vanilla/inline-css';
 import css              from './style/subnav';
 import { TagString }    from '../../unicorns';
 
 function TilesSubNav(props) {
   return (
       <SubNavBar {...props}>
-        <InlineCSS css={css} id="tile-subnav-css" />
+        <InlineCss css={css} id="tile-subnav-css" />
         <ReqTagsNavTabs tabs={TilesSubNav.tabs} all={props.all} store={props.store} tab="remix" />
       </SubNavBar>
   );

@@ -1,9 +1,9 @@
 import React             from 'react';
-import { PlayButton }    from '../AudioPlayer';
-import CollapsingText    from '../vanilla/CollapsingText';
-import Ribbon            from '../vanilla/Ribbon';
-import LinkToPeople      from '../services/LinkToPeopleRoute';
-import PeopleAvatar      from './PeopleAvatar';
+import { PlayButton }    from '../audio-player';
+import CollapsingText    from '../vanilla/collapsing-text';
+import Ribbon            from '../vanilla/ribbon';
+import LinkToPeople      from '../services/link-to-people-route';
+import PeopleAvatar      from './people-avatar';
 
 class UploadDescription extends React.Component
 {

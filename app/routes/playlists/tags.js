@@ -1,7 +1,7 @@
 import React     from 'react';
 import Playlists from '../../stores/playlists';
 import pages     from '../../components/playlists/pages';
-import SubNav    from '../../components/playlists/SubNav';
+import SubNav    from '../../components/playlists/sub-nav';
 
 var tags = Object.assign(pages.Tags,{
 

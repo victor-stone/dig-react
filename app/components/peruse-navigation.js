@@ -1,9 +1,9 @@
 import React       from 'react';
-import Glyph       from './vanilla/Glyph';
-import Link        from './services/LinkToRoute';
+import Glyph       from './vanilla/glyph';
+import Link        from './services/link-to-route';
 import lookup      from '../services';
 
-import LinkToUpload       from './services/LinkToUploadRoute';
+import LinkToUpload       from './services/link-to-upload-route';
 
 const NOT_FOUND = -1;
 

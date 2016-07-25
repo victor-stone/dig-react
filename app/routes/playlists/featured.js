@@ -2,7 +2,7 @@ import React            from 'react';
 import { mergeParams }  from '../../unicorns';
 import Playlists        from '../../stores/playlists';
 import pages            from '../../components/playlists/pages';
-import SubNav           from '../../components/playlists/SubNav';
+import SubNav           from '../../components/playlists/sub-nav';
 
 var featured = Object.assign(pages.Featured,{
   title: 'Featured',

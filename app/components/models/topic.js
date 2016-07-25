@@ -1,6 +1,6 @@
 /*eslint "react/no-danger":0 */
 import React         from 'react';
-import Link          from '../services/LinkToRoute';
+import Link          from '../services/link-to-route';
 import { selectors } from '../../unicorns';
 
 var topicBodyID = 0;

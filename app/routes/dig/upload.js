@@ -1,5 +1,5 @@
 import React   from 'react';
-import Upload  from '../../components/dig/Upload';
+import Upload  from '../../components/dig/upload';
 import Uploads from '../../stores/upload';
 
 function uploadNotFound() {

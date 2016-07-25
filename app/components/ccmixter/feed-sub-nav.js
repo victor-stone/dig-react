@@ -1,9 +1,9 @@
 import React            from 'react';
-import SubNavTabs       from '../vanilla/SubNavTabs';
-import SubNavBar        from '../bound/SubNavBar';
-import InlineCSS        from '../vanilla/InlineCSS';
+import SubNavTabs       from '../vanilla/sub-nav-tabs';
+import SubNavBar        from '../bound/sub-nav-bar';
+import InlineCss        from '../vanilla/inline-css';
 import css              from './style/subnav';
-import LinkToRoute      from '../services/LinkToRoute';
+import LinkToRoute      from '../services/link-to-route';
 
 import {  CurrentUserTracker } from '../../mixins';
 
@@ -44,7 +44,7 @@ function FeedSubNav(props)
 {
   return (
       <SubNavBar {...props} >
-        <InlineCSS css={css} id="feed-subnav-css" />
+        <InlineCss css={css} id="feed-subnav-css" />
         <FeedTabs   />
       </SubNavBar>
   );

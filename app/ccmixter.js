@@ -2,8 +2,8 @@ import React  from 'react';
 import env    from './services/env';
 import routes from './routes/ccmixter';
 
-import header from './components/ccmixter/Header';
-import footer from './components/ccmixter/Footer';
+import header from './components/ccmixter/header';
+import footer from './components/ccmixter/footer';
 
 
 var rewriteRules = [

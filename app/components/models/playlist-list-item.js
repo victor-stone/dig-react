@@ -1,8 +1,8 @@
 import React                 from 'react';
-import LinkToPlaylist        from '../services/LinkToPlaylistRoute';
-import LinkToPeople          from '../services/LinkToPeopleRoute';
-import { StaticTagsList }    from './Tags';
-import PlayAllButton         from '../services/PlayAllButton';
+import LinkToPlaylist        from '../services/link-to-playlist-route';
+import LinkToPeople          from '../services/link-to-people-route';
+import { StaticTagsList }    from './tags';
+import PlayAllButton         from '../services/play-all-button';
 
 function CuratorLink(props) {
   const { model: {curator}} = props;

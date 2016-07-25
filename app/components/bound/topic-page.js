@@ -1,6 +1,6 @@
 import React          from 'react';
-import TopicPage      from '../vanilla/TopicPage';
-import Topic          from '../models/Topic';
+import TopicPage      from '../vanilla/topic-page';
+import Topic          from '../models/topic';
 
 
 function BoundTopicPage(props) {

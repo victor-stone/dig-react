@@ -1,6 +1,6 @@
 import React       from 'react';
 import Filter      from '../../models/filters/search';
-import Input       from '../properties/controls/Input';
+import Input       from '../properties/controls/input';
 
 function SearchFilter(props)
 {

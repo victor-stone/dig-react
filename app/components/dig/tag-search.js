@@ -1,16 +1,16 @@
 import React         from 'react';
-import Remixes       from './Remixes';
-import QueryOptions  from './QueryOptions';
+import Remixes       from './remixes';
+import QueryOptions  from './query-options';
 
-import AjaxLoadingGlyph from '../services/AjaxLoadingGlyph';
+import AjaxLoadingGlyph from '../services/ajax-loading-glyph';
 
-import { BoundSelectedTagList } from '../bound/Tags';
+import { BoundSelectedTagList } from '../bound/tags';
 
-import TagCategoryBox from './tags/TagCategoryBox';
-import MatchAllButton from '../filters/MatchAll';
-import TagNoHits      from '../bound/TagNoHits';
+import TagCategoryBox from './tags/tag-category-box';
+import MatchAllButton from '../filters/match-all';
+import TagNoHits      from '../bound/tag-no-hits';
 import { Row,
-         Column }     from '../vanilla/Grid';
+         Column }     from '../vanilla/grid';
 
 import Filter from '../../models/filters/tags';
 

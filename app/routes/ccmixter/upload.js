@@ -1,5 +1,5 @@
 import Upload    from '../../stores/upload';
-import RemixTree from '../../components/RemixTree';
+import RemixTree from '../../components/remix-tree';
 
 const Tree = Object.assign(RemixTree,{
 

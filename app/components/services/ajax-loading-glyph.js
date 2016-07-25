@@ -1,6 +1,6 @@
 import React       from 'react';
 import { AjaxTracker } from '../../mixins';
-import LoadingGlyph    from '../vanilla/LoadingGlyph';
+import LoadingGlyph    from '../vanilla/loading-glyph';
 
 class AjaxLoadingGlyph extends AjaxTracker(React.Component) {
 

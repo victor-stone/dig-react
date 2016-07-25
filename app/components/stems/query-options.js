@@ -1,11 +1,11 @@
 import React      from 'react';
 
 import { License,
-         BPM,
+         Bpm as BPM,
          Sort   } from '../filters';
 
 import { QueryOptionsPanel,
-         OptionsWrap }      from '../filters/QueryOptions';
+         OptionsWrap }      from '../filters/query-options';
 
 class StemsQueryOptions extends React.Component
 {

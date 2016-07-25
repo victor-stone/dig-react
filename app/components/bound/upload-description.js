@@ -1,5 +1,5 @@
 import React              from 'react';
-import UploadDescription from '../models/UploadDescription';
+import UploadDescription from '../models/upload-description';
 import { ModelTracker }   from '../../mixins';
 
 class BoundUploadDescription extends ModelTracker(React.Component)

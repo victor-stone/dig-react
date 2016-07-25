@@ -3,13 +3,13 @@ import React    from 'react';
 import events   from '../../models/events';
 import lookup   from '../../services';
 
-import AjaxLoadingGlyph    from '../services/AjaxLoadingGlyph';
+import AjaxLoadingGlyph    from '../services/ajax-loading-glyph';
 
-import Link            from '../services/LinkToRoute';
-import NavbarHeader    from '../vanilla/NavbarHeader';
-import DeadLink        from '../vanilla/DeadLink';
+import Link            from '../services/link-to-route';
+import NavbarHeader    from '../vanilla/navbar-header';
+import DeadLink        from '../vanilla/dead-link';
 
-import UserMenu from './UserMenu';
+import UserMenu from './user-menu';
 
 class Header extends React.Component
 {

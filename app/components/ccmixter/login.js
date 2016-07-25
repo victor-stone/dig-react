@@ -1,7 +1,7 @@
 import React            from 'react';
 import api              from '../../services/ccmixter';
-import Modal            from '../services/Modal';
-import Alert            from '../services/Alert';
+import Modal            from '../services/modal';
+import Alert            from '../services/alert';
 import { bindAll }      from '../../unicorns';
 
 class Login extends Modal.Popup

@@ -1,7 +1,7 @@
 import React           from 'react';
-import Glyph           from '../vanilla/Glyph';
-import LinkToPeople    from '../services/LinkToPeopleRoute';
-import LinkToRemixTree from '../services/LinkToRemixTree';
+import Glyph           from '../vanilla/glyph';
+import LinkToPeople    from '../services/link-to-people-route';
+import LinkToRemixTree from '../services/link-to-remix-tree';
 
 /*
   A page header for the route that displays the playlists

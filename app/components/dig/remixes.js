@@ -4,12 +4,12 @@ import AudioPlayerService from '../../services/audio-player';
 
 import { ModelTracker }   from '../../mixins';
 
-import NotALotHere        from './NotALotHere';
-import RemixLine          from './RemixLine';
+import NotALotHere        from './not-a-lot-here';
+import RemixLine          from './remix-line';
 
 import { Row,
          Container,
-         Column }      from '../vanilla/Grid';
+         Column }      from '../vanilla/grid';
 
 class RemixContainer extends ModelTracker(React.Component)
 {

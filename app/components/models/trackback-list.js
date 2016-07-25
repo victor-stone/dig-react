@@ -1,5 +1,5 @@
 import React       from 'react';
-import Trackback   from './Trackback';
+import Trackback   from './trackback';
 import UploadStore from '../../stores/upload'; // for MAX_TRACKBACK_FETCH should be in app/models
 
 var TracbackList = React.createClass({

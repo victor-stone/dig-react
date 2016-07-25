@@ -1,5 +1,5 @@
 import React             from 'react';
-import _TreeLinks        from '../models/TreeLinks';
+import _TreeLinks        from '../models/tree-links';
 import { ModelTracker }  from '../../mixins';
 
 class TreeLinks extends ModelTracker(React.Component)

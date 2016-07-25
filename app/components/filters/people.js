@@ -5,12 +5,12 @@ import UserSearch   from '../../stores/user-search';
 import Filter       from '../../models/filters/artist';
 import LookupFilter from '../../models/filters/lookup';
 
-import PropertyState from '../properties/mixins/PropertyState';
+import PropertyState from '../properties/mixins/property-state';
 
-import LookupInput    from './LookupInput';
-import LookupResults  from './LookupResults';
+import LookupInput    from './lookup-input';
+import LookupResults  from './lookup-results';
 
-import PeopleList     from '../models/PeopleList';
+import PeopleList     from '../models/people-list';
 
 class PeopleFilterList extends React.Component
 {

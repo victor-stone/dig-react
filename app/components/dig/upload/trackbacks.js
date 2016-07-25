@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TrackbackList   from '../../models/TrackbackList';
+import TrackbackList   from '../../models/trackback-list';
 
 class Trackbacks extends React.Component
 {

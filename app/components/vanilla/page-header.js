@@ -1,5 +1,5 @@
 import React from 'react';
-import Glyph from './Glyph';
+import Glyph from './glyph';
 
 const PageHeader = React.createClass({
 

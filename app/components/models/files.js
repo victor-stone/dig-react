@@ -1,10 +1,10 @@
 import React            from 'react';
-import DownloadPopup    from '../DownloadPopup';
-import AudioPlayer      from '../AudioPlayer';
-import Glyph            from '../vanilla/Glyph';
-import DeadLink         from '../vanilla/DeadLink';
+import DownloadPopup    from '../download-popup';
+import AudioPlayer      from '../audio-player';
+import Glyph            from '../vanilla/glyph';
+import DeadLink         from '../vanilla/dead-link';
 import css              from './style/files';
-import ZIPContentPopup  from './ZIPContentPopup';
+import ZIPContentPopup  from './zip-content-popup';
 
 class Files extends React.Component
 {

@@ -1,11 +1,11 @@
 
 import React     from 'react';
-import Link      from './services/LinkToRoute';
-import InlineCSS from './vanilla/InlineCSS';
+import Link      from './services/link-to-route';
+import InlineCss from './vanilla/inline-css';
 import css       from './style/footer';
 import { Row,
          FluidContainer,
-         Column }     from './vanilla/Grid';
+         Column }     from './vanilla/grid';
 
 function FakeLink(props) {
   return <a {...props}>{props.children}</a>;
@@ -18,7 +18,7 @@ function Footer(props) {
 
     return (
       <FluidContainer className="footer footer-pad">
-        <InlineCSS css={css} id="footer-css" />
+        <InlineCss css={css} id="footer-css" />
         <Row>
           <Column cols="3" >
             <h1>{"Here"}</h1>

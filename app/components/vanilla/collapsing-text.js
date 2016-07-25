@@ -2,7 +2,7 @@
 /* globals $ */
 
 import React          from 'react';
-import MoreOrLessLink from './MoreOrLessLink';
+import MoreOrLessLink from './more-or-less-link';
 import { nextID }     from '../../unicorns';
 
 const MAX_PREVIEW_LENGTH = 220;

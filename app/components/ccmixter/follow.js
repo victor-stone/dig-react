@@ -1,8 +1,8 @@
 import React                from 'react';
 import events               from '../../models/events';
 import {  ModelTracker  }   from '../../mixins';
-import Form                 from '../vanilla/Form';
-import CollapsingPeopleList from '../models/CollapsingPeopleList';
+import Form                 from '../vanilla/form';
+import CollapsingPeopleList from '../models/collapsing-people-list';
 
 var FormItem = Form.FormItem;
 

@@ -1,10 +1,10 @@
 import React               from 'react';
-import LinkToRemixTree     from '../services/LinkToRemixTree';
+import LinkToRemixTree     from '../services/link-to-remix-tree';
 import { TagString }       from '../../unicorns';
 import css                 from './style/detail';
 
-import { BoundSelectableTagList } from '../bound/Tags';
-import { StaticTagsList }         from '../models/Tags';
+import { BoundSelectableTagList } from '../bound/tags';
+import { StaticTagsList }         from '../models/tags';
 
 /*
   So this is a little weird because of how it is 

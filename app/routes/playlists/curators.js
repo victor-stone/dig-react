@@ -1,7 +1,7 @@
 import React      from 'react';
 import UserSearch from '../../stores/user-search';
 import Blobs      from '../../stores/blobs';
-import SubNav     from '../../components/playlists/SubNav';
+import SubNav     from '../../components/playlists/sub-nav';
 import pages      from '../../components/playlists/pages';
 
 const CURATORS_BLOB = 226312;

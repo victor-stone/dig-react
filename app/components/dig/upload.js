@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Row,
          Container,
-         Column }      from '../vanilla/Grid';
+         Column }      from '../vanilla/grid';
 
 import {  Actions,
           Header,

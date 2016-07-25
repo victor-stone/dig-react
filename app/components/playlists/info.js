@@ -1,17 +1,17 @@
 import React      from 'react';
-import SharePopup from '../SharePopup';
-import Glyph      from '../vanilla/Glyph';
+import SharePopup from '../share-popup';
+import Glyph      from '../vanilla/glyph';
 
-import Link               from '../services/LinkToRoute';
-import LinkToPeople       from '../services/LinkToPeopleRoute';
-import LinkToPlaylist     from '../services/LinkToPlaylistRoute';
+import Link               from '../services/link-to-route';
+import LinkToPeople       from '../services/link-to-people-route';
+import LinkToPlaylist     from '../services/link-to-playlist-route';
 
-import DeletePlaylist          from './DeletePlaylist';
+import DeletePlaylist          from './delete-playlist';
 import { ModelTracker }        from '../../mixins';
 
-import Description from '../properties/Description';
-import Tags        from '../properties/Tags';
-import IsFeatured  from '../properties/IsFeatured';
+import Description from '../properties/description';
+import Tags        from '../properties/tags';
+import IsFeatured  from '../properties/is-featured';
 
 function InfoPanel(props) {
   const cls = 'playlist-bg-color ' + (props.className || '');

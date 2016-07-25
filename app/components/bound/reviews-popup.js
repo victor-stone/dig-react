@@ -1,7 +1,7 @@
 import React        from 'react';
-import Glyph        from '../vanilla/Glyph';
-import Modal        from '../services/Modal';
-import TextEditor   from '../vanilla/TextEditor';
+import Glyph        from '../vanilla/glyph';
+import Modal        from '../services/modal';
+import TextEditor   from '../vanilla/text-editor';
 
 import { bindAll,
          selectors } from '../../unicorns';
@@ -62,21 +62,23 @@ class ReviewsButton extends React.Component
     super(...arguments);
     this.onReview = this.onReview.bind(this);
 
-    const { upload:{id}, permissions } = this.props.store.model;
-
-    this.state = { id, permissions };
+    this.state = this._stateFromProps(this.props);
   }
 
   componentWillReceiveProps(props) {
     
-    const { upload:{id}, permissions } = props.store.model;
-
-    this.setState({id,permissions});
+    this.setState(this._stateFromProps(props));
   }
 
   shouldComponentUpdate(nextProps) {
     return this.state.id !== nextProps.store.model.upload.id || 
             this.state.permissions.okToReview !== nextProps.store.permissions.okToReview;
+  }
+
+  _stateFromProps(props) {
+    const { model:{upload:{id}}, permissions } = props.store;
+
+    return { id, permissions };
   }
 
   onReview(event) {

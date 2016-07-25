@@ -1,7 +1,7 @@
 import React        from 'react';
-import SubNavBar    from '../vanilla/SubNavBar';
-import Paging       from './Paging';
-import SearchBox    from '../filters/Search';
+import SubNavBar    from '../vanilla/sub-nav-bar';
+import Paging       from './paging';
+import SearchBox    from '../filters/search';
 
 
 function PagingStub(store) {

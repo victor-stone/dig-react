@@ -1,6 +1,6 @@
 import React         from 'react';
 import LookupFilter  from '../../models/filters/lookup';
-import PropertyState from '../properties/mixins/PropertyState';
+import PropertyState from '../properties/mixins/property-state';
 
 import { ModelTracker }   from '../../mixins';
 

@@ -5,7 +5,7 @@ import { License,
          InstrumentalOnly } from '../filters';
 
 import { QueryOptions,
-         OptionsWrap }    from '../filters/QueryOptions';
+         OptionsWrap }    from '../filters/query-options';
          
 
 class RemixQueryOptions extends React.Component

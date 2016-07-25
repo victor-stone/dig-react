@@ -4,13 +4,13 @@ import { Glyph,
          Link,
          LoadingGlyph } from '../components';
 
-import SamplesListing from '../components/stems/Listing';
+import SamplesListing from '../components/stems/listing';
 import Samples        from '../stores/samples';
-import PageHeader     from '../components/PageHeader';
+import PageHeader     from '../components/page-header';
 
 import { Row,
          FluidContainer,
-         Column }     from '../components/vanilla/Grid';
+         Column }     from '../components/vanilla/grid';
 
 var SamplesSection = React.createClass({
 

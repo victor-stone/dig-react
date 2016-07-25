@@ -1,11 +1,11 @@
 /* globals $ */
 import React    from 'react';
-import Glyph    from '../vanilla/Glyph';
-import DeadLink from '../vanilla/DeadLink';
-import CrossfadeContent from '../vanilla/CrossfadeContent';
+import Glyph    from '../vanilla/glyph';
+import DeadLink from '../vanilla/dead-link';
+import CrossfadeContent from '../vanilla/crossfade-content';
 
-import Modal    from '../services/Modal';
-import Alert    from '../services/Alert';
+import Modal    from '../services/modal';
+import Alert    from '../services/alert';
 
 import Playlists from '../../stores/playlists';
 import Playlist  from '../../stores/playlist';

@@ -1,5 +1,5 @@
 import React              from 'react';
-import PlaylistListItem   from './PlaylistListItem';
+import PlaylistListItem   from './playlist-list-item';
 
 function PlaylistList(props)
 {

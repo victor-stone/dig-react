@@ -1,17 +1,17 @@
 import React   from 'react';
 
 import { Row,
-         Column }     from './vanilla/Grid';
-import DeadLink       from './vanilla/DeadLink';
+         Column }     from './vanilla/grid';
+import DeadLink       from './vanilla/dead-link';
 
-import Glyph   from './vanilla/Glyph';
-import Modal   from './services/Modal';
+import Glyph   from './vanilla/glyph';
+import Modal   from './services/modal';
 import Upload  from '../stores/upload';
 import env     from '../services/env';
 import events  from '../models/events';
 
 import { LicenseInfoLink, 
-         LicenseInfo } from './LicenseInfo';
+         LicenseInfo } from './license-info';
 
 var DownloadPopup = React.createClass({
 

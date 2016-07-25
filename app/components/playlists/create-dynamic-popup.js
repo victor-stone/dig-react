@@ -1,6 +1,6 @@
 import React   from 'react';
-import Modal   from '../services/Modal';
-import LinkToPlaylist    from '../services/LinkToPlaylistRoute';
+import Modal   from '../services/modal';
+import LinkToPlaylist    from '../services/link-to-playlist-route';
 
 // <span className="save-playlist-form">
 

@@ -1,7 +1,7 @@
 /*eslint "react/no-danger":0 */
 import React from 'react';
 
-import ToggleEditModeProperty from './ToggleEditMode';
+import ToggleEditModeProperty from './toggle-edit-mode';
 
 import { TextEditor,
          CollapsingText } from '../../vanilla';

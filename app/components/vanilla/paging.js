@@ -1,6 +1,6 @@
 import React       from 'react';
-import Glyph       from './Glyph';
-import pagingStats from './PagingStats';
+import Glyph       from './glyph';
+import pagingStats from './paging-stats';
 
 // TODO: don't assume that ?offset= is the proper URL formation
 

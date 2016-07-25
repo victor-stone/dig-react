@@ -1,5 +1,5 @@
 import React              from 'react';
-import TrackListSorting   from '../models/TrackListSorting';
+import TrackListSorting   from '../models/track-list-sorting';
 import { ModelTracker }   from '../../mixins';
 
 /*

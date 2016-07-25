@@ -1,8 +1,8 @@
 import React    from 'react';
 
-import { Field } from './Form';
+import { Field } from './form';
 
-import Input     from './Input';
+import Input     from './input';
 
 class InputWithIcon extends Input
 {

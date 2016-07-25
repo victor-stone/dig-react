@@ -1,8 +1,8 @@
 import React         from 'react';
 
-import { BoundCategoryTagBox } from '../../bound/Tags';
+import { BoundCategoryTagBox } from '../../bound/tags';
 
-import { Column }     from '../../vanilla/Grid';
+import { Column }     from '../../vanilla/grid';
 
 const DEFAULT_COL_SIZE = 3;
 

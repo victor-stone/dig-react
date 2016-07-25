@@ -1,7 +1,7 @@
 import React          from 'react';
-import Field          from './FormField';
-import {ButtonGroup } from './ButtonGroups';
-import EditButton     from './EditButton';
+import Field          from './form-field';
+import {ButtonGroup } from './button-groups';
+import EditButton     from './edit-button';
 
 class ToggleEditMode extends React.Component
 {

@@ -1,5 +1,5 @@
 import Topics         from '../stores/topics';
-import BoundTopicPage from '../components/bound/TopicPage';
+import BoundTopicPage from '../components/bound/topic-page';
 
 
 const news = Object.assign(BoundTopicPage,{

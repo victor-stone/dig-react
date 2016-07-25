@@ -1,10 +1,10 @@
 import React               from 'react';
-import { AccordionPanel }  from '../vanilla/Accordion';
-import PeopleList          from '../models/PeopleList';
+import { AccordionPanel }  from '../vanilla/accordion';
+import PeopleList          from '../models/people-list';
 import Ratings             from '../../stores/ratings';
 import { DelayLoadModel,
          ModelTracker }    from '../../mixins';
-import RecommendsButton    from '../bound/RecommendsButton';
+import RecommendsButton    from '../bound/recommends-button';
 
 class Recommends extends DelayLoadModel(ModelTracker(React.Component))
 {

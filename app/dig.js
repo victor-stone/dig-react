@@ -2,8 +2,8 @@ import React  from 'react';
 import env    from './services/env';
 import routes from './routes/dig';
 
-import header from './components/dig/Header';
-import footer from './components/dig/Footer';
+import header from './components/dig/header';
+import footer from './components/dig/footer';
 
 var rewriteRules = [
   { regex: /^\/faq/,                         now: '/news/230791' },

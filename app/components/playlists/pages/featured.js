@@ -1,5 +1,5 @@
 import React         from 'react';
-import Browse        from '../Browse';
+import Browse        from '../browse';
 
 function Featured(props) {
   var store = props.store;

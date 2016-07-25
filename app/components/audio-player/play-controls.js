@@ -1,6 +1,6 @@
 import React        from 'react';
-import Glyph        from '../vanilla/Glyph';
-import DeadLink     from '../vanilla/DeadLink';
+import Glyph        from '../vanilla/glyph';
+import DeadLink     from '../vanilla/dead-link';
 import { oassign }  from '../../unicorns';
 import AudioService from '../../services/audio-player';
 import env          from '../../services/env';

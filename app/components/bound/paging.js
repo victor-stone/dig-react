@@ -1,7 +1,7 @@
 import React            from 'react';
 import { ModelTracker } from '../../mixins';
-import _Paging          from '../vanilla/Paging';
-import PagingLimit      from '../filters/PagingLimit';
+import _Paging          from '../vanilla/paging';
+import PagingLimit      from '../filters/paging-limit';
 
 var emptyStats = {
                 offset: 0,

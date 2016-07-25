@@ -1,6 +1,6 @@
 import React        from 'react';
-import Slider       from '../../vanilla/Slider';
-import PropertyState from '../mixins/PropertyState';
+import Slider       from '../../vanilla/slider';
+import PropertyState from '../mixins/property-state';
 
 class SliderFilter extends PropertyState(React.Component)
 {

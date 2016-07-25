@@ -1,6 +1,6 @@
 import React         from 'react';
-import DeleteButton  from '../vanilla/DeleteButton';
-import Modal         from '../services/Modal';
+import DeleteButton  from '../vanilla/delete-button';
+import Modal         from '../services/modal';
 
 class DeletePlaylistPopup extends Modal.Popup
 {

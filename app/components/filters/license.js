@@ -1,9 +1,9 @@
 import React     from 'react';
-import Select    from '../properties/controls/Select';
+import Select    from '../properties/controls/select';
 import Filter    from '../../models/filters/license';
 
-import Glyph     from '../vanilla/Glyph';
-import Link      from '../services/LinkToRoute';
+import Glyph     from '../vanilla/glyph';
+import Link      from '../services/link-to-route';
 
 function LicenseInfoPopup() {
   return <Link href="/licenses" className="lic-help"><Glyph icon="question-circle" /></Link>;

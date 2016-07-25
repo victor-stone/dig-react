@@ -1,4 +1,4 @@
-import ThreadPanel from './ThreadPanel';
+import ThreadPanel from './thread-panel';
 
 module.exports = ThreadPanel;
 

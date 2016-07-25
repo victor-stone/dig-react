@@ -1,6 +1,6 @@
 import React               from 'react';
 import DescriptionProperty from '../../models/properties/description';
-import TextArea            from './controls/TextArea';
+import TextArea            from './controls/text-area';
 
 function DescriptionPropertyEditor(props) {
   const { store, collapsible, noTitle } = props;

@@ -1,7 +1,7 @@
 import React        from 'react';
-import Glyph        from '../vanilla/Glyph';
-import Link         from './LinkToRoute';
-import LinkToUpload from './LinkToUploadRoute';
+import Glyph        from '../vanilla/glyph';
+import Link         from './link-to-route';
+import LinkToUpload from './link-to-upload-route';
 
 function LinkToRemixTree(props) {
   const { model, host = ''  } = props;

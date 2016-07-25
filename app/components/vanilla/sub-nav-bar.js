@@ -1,6 +1,6 @@
 import React         from 'react';
 import subNavCSS     from './style/subnav';
-import InlineCSS     from './InlineCSS';
+import InlineCss     from './inline-css';
 import { selectors } from '../../unicorns';
 
 /*
@@ -22,7 +22,7 @@ function SubNavBar(props)
 
   return(
     <div className={cls}>
-      <InlineCSS css={subNavCSS + css} id="subnav-option-bar-css" />
+      <InlineCss css={subNavCSS + css} id="subnav-option-bar-css" />
       {extra && extra.map( (E,i) => <E key={i} /> )}
       <div className="subnav-wrapper hidden-xs hidden-sm">
         {props.children}

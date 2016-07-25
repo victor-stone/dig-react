@@ -1,22 +1,22 @@
 import React              from 'react';
-import QueryOptions       from './QueryOptions';
-import DownloadPopup      from '../DownloadPopup';
-import LinkToRemixTree    from '../services/LinkToRemixTree';
-import LinkToPeople       from '../services/LinkToPeopleRoute';
-import { PlayButton }     from '../AudioPlayer';
+import QueryOptions       from './query-options';
+import DownloadPopup      from '../download-popup';
+import LinkToRemixTree    from '../services/link-to-remix-tree';
+import LinkToPeople       from '../services/link-to-people-route';
+import { PlayButton }     from '../audio-player';
 
 import { ModelTracker,
          NowPlayingTracker } from '../../mixins';
 
 import { bindAll }        from '../../unicorns';
 
-import InlineCSS           from '../vanilla/InlineCSS';
+import InlineCss           from '../vanilla/inline-css';
 import browserCSS          from './style/browser';
-import { QueryOptionsCSS } from '../filters/QueryOptions';
+import { QueryOptionsCSS } from '../filters/query-options';
 
 import { Row,
          Container,
-         Column }         from '../vanilla/Grid';
+         Column }         from '../vanilla/grid';
 
 class PellsListing extends ModelTracker(React.Component)
 {
@@ -113,7 +113,7 @@ class PellsBrowser extends NowPlayingTracker(React.Component)
     return (
 
       <Container className="pells-page">
-        <InlineCSS css={QueryOptionsCSS + browserCSS} id="pell-browser-css" />
+        <InlineCss css={QueryOptionsCSS + browserCSS} id="pell-browser-css" />
         <Row>
           <Column cols="3">
             <PellDetail store={store} model={this.state.selected} />

@@ -1,6 +1,6 @@
 /* globals $*/
 import React             from 'react';
-import Glyph             from '../vanilla/Glyph';
+import Glyph             from '../vanilla/glyph';
 
 //import { nextID }        from '../../unicorns';
 

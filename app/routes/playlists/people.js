@@ -1,7 +1,7 @@
 import { PlaylistTracks } from '../../stores/playlist';
 import { mergeParams }    from '../../unicorns';
 import qc                 from '../../models/query-configs';
-import PagingNavBar       from '../../components/bound/PagingNavBar';
+import PagingNavBar       from '../../components/bound/paging-nav-bar';
 import pages              from '../../components/playlists/pages';
 
 const people = Object.assign( pages.PeopleFeaturedIn, {

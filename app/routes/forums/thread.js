@@ -1,5 +1,5 @@
 import Forums     from '../../stores/forums';
-import ThreadPage from '../../components/bound/ThreadPage';
+import ThreadPage from '../../components/bound/thread-page';
 
 
 const thread = Object.assign(ThreadPage,{

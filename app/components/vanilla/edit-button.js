@@ -1,5 +1,5 @@
 import React         from 'react';
-import DeadLink      from './DeadLink';
+import DeadLink      from './dead-link';
 import { selectors } from '../../unicorns';
 
 class EditButton extends React.Component

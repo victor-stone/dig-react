@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Link  from '../../services/LinkToRoute';
+import Link  from '../../services/link-to-route';
 
 const cls = 'btn-exp btn-tag light-on-hover';
 

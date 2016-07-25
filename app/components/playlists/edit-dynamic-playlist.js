@@ -1,19 +1,19 @@
 import React             from 'react';
-import QueryOptions      from './QueryOptions';
+import QueryOptions      from './query-options';
 
-import TrackListPreview  from '../bound/TrackListPreview';
+import TrackListPreview  from '../bound/track-list-preview';
 
-import SaveButton        from '../vanilla/SaveButton';
-import PageHeader        from '../vanilla/PageHeader';
-import InlineCSS         from '../vanilla/InlineCSS';
+import SaveButton        from '../vanilla/save-button';
+import PageHeader        from '../vanilla/page-header';
+import InlineCss         from '../vanilla/inline-css';
 import { Row,
          FluidContainer,
-         Column }        from '../vanilla/Grid';
+         Column }        from '../vanilla/grid';
 
 import css               from '../filters/style/query-options';
 import editCSS           from './style/edit';
 
-import DisableScrollToTop from '../services/DisableScrollToTop';
+import DisableScrollToTop from '../services/disable-scroll-to-top';
 
 class DynamicForm extends DisableScrollToTop(React.Component)
 {
@@ -23,7 +23,7 @@ class DynamicForm extends DisableScrollToTop(React.Component)
     var id    = prefix + '-playlist-css';
     return (
         <div className={cls}>
-          <InlineCSS css={css + editCSS} id={id} />
+          <InlineCss css={css + editCSS} id={id} />
           <PageHeader icon="edit" title={title} />
           <FluidContainer>
             <Row>

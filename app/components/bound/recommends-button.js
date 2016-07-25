@@ -1,6 +1,6 @@
 import React             from 'react';
 import { ModelTracker }  from '../../mixins';
-import Glyph             from '../vanilla/Glyph';
+import Glyph             from '../vanilla/glyph';
 import { selectors }     from '../../unicorns';
 
 class RecommendsButton extends ModelTracker(React.Component)

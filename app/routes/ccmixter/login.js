@@ -1,6 +1,6 @@
 // DEPRECATED
 import React            from 'react';
-import LoginPopup       from '../../components/ccmixter/Login';
+import LoginPopup       from '../../components/ccmixter/login';
 
 var login = React.createClass({
 

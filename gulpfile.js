@@ -357,6 +357,11 @@ gulp.task( 'make-param-case', ['copy-to-work'], function() {
        .pipe( gulp.dest('./new-names'));
 });
 
+gulp.task( 'big-rename', function() {
+  gulp.src('new-names/**/*.js')
+       .pipe( gulp.dest('./'));
+});
+
 gulp.task('publish', function(){
   gulp.src([`${temp_target}/**/*.*`])
   .pipe(gulp.dest('dist'));

@@ -1,5 +1,5 @@
 import Filter    from '../../models/filters/upload-type';
-import Select    from '../properties/controls/Select';
+import Select    from '../properties/controls/select';
 
 class UploadTypeFilter extends Select
 {

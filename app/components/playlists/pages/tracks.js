@@ -1,6 +1,6 @@
 import React       from 'react';
-import Browse      from '../Browse';
-import TrackHeader from '../TrackHeader';
+import Browse      from '../browse';
+import TrackHeader from '../track-header';
 
 /*
   Display playlists that include a particular track

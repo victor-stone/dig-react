@@ -1,7 +1,7 @@
 import React      from 'react';
-import Modal      from '../services/Modal';
-import InfoButton from '../vanilla/InfoButton';
-import ZIPFile    from './ZIPFile';
+import Modal      from '../services/modal';
+import InfoButton from '../vanilla/info-button';
+import ZIPFile    from './zip-file';
 
 class ZIPFilesPopup extends Modal.Popup
 {

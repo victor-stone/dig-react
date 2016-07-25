@@ -1,7 +1,7 @@
 import React         from 'react';
 
-import EditDynamicPlaylist  from '../EditDynamicPlaylist';
-import CreateDynamicPopup   from '../CreateDynamicPopup';
+import EditDynamicPlaylist  from '../edit-dynamic-playlist';
+import CreateDynamicPopup   from '../create-dynamic-popup';
 
 class NewDynamicPlaylist extends React.Component
 {

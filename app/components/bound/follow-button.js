@@ -2,7 +2,7 @@ import React   from 'react';
 import {  ModelTracker,
           CurrentUserTracker } from '../../mixins';
 
-import Glyph from '../vanilla/Glyph';
+import Glyph from '../vanilla/glyph';
 
 import api from '../../services/ccmixter';   
 

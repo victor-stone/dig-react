@@ -1,5 +1,5 @@
 import Filter    from '../../models/filters/sort';
-import Select    from '../properties/controls/Select';
+import Select    from '../properties/controls/select';
 
 class SortFilter extends Select
 {
