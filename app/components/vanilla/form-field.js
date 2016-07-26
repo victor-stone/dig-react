@@ -27,12 +27,20 @@ class Field extends React.Component
   }
 
   render() {
-    let { sz, prefix, postfix, className, children, title } = this.props;
+    let { 
+      id,
+      sz, 
+      prefix, 
+      postfix, 
+      className, 
+      children, 
+      title 
+    } = this.props;
 
     title && (prefix = [ {text:title} ]);
 
     return (
-      <InputGroup sz={sz} className={className} >
+      <InputGroup id={id} sz={sz} className={className} >
         {prefix && <InputGroupAddon addons={prefix} />}
         {this.control}{children}
         {postfix && <InputGroupAddon addons={postfix} />}

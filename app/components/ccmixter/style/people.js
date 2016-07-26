@@ -14,11 +14,11 @@ div.subnav-option-bar.people-subnav {
 }
 
 @media screen and (max-width: 700px) {
-  .people-head form .form-group .input-group .form-control {
+  .people-head .input-group .form-control {
     overflow: hidden;
     max-width: 90%;
   }
-  .people-head form .form-group .input-group .form-control a {
+  .people-head .input-group .form-control a {
     white-space: nowrap;
   }
 }
@@ -35,7 +35,7 @@ div.subnav-option-bar.people-subnav {
   margin: 10px;
 }
 
-.people-head a {
+.people-head > div a {
   color: yellow;
   font-weight: bold;
 }
@@ -62,37 +62,37 @@ div.subnav-option-bar.people-subnav {
   }
 }
 
-.people-head form .form-group {
+.people-head .form-horizontal {
   width: 95%;
   margin: 8px auto;
 }
 
-.people-head form .form-group .input-group {
+.people-head .input-group {
   border: 1px solid green;
   border-radius: 3px;
 }
 
-.people-head form .form-group .input-group .form-control {
+.people-head .input-group .form-control {
   height: inherit;
 }
 
-.people-head form .form-group .input-group .form-control a {
+.people-head .input-group .form-control a {
   color: #314E31;  
 }
 
-.people-head form .form-group .input-group .form-control a {
+.people-head .input-group .form-control a {
   padding: 2px 0.3em;
   display: inline-block;
   margin: 0px;
 }
 
-.people-head form .form-group .input-group .form-control a:hover {
+.people-head .input-group .form-control a:hover {
   text-decoration: none;
   border-radius: 3px;
   background-color: rgba(186, 226, 183, 0.68);
 }
 
-.people-head form .form-group .input-group .form-control button.follows {
+.people-head .input-group .form-control button.follows {
   float: right;
 }
 

@@ -2,6 +2,7 @@
 function cleanLinks(str) {
 
   const map = [
+    [ /<img\s+class=.cc_thumbs_up[^>]+>/g,                     '<i class="fa fa-thumbs-o-up" ></i>'],
     [ /http:\/\/ccmixter.org\/playlist\/browse/g,              '/playlist/browse'  ],
     [ /http:\/\/ccmixter.org\//g,                              '/' ],
     [ /http:\/\/playlists.ccmixter.org\/(playlist\/)?browse/g, '/playlist/browse' ],

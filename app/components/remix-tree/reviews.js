@@ -19,8 +19,8 @@ class Reviews extends DelayLoadModel(ModelTracker(React.Component))
     this.setState({ numItems: nextProps.numItems });
   }
 
-  speakNow(nextProps,nextState) {
-    return this.state.numItems !== nextState.numItems;
+  shouldComponentUpdate(nextProps,nextState) {
+    return this.state.numItems !== nextState.numItems || super.shouldComponentUpdate(nextProps,nextState);
   }
 
   stateFromStore(store) {

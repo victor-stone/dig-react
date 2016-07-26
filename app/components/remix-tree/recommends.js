@@ -13,19 +13,22 @@ class Recommends extends DelayLoadModel(ModelTracker(React.Component))
     this.setState({ numItems: nextProps.numItems });
   }
 
-  speakNow(nextProps,nextState) {
-    return this.state.numItems !== nextState.numItems;
+  shouldComponentUpdate(nextProps,nextState) {
+    return this.state.numItems !== nextState.numItems || super.shouldComponentUpdate(nextProps,nextState);
   }
 
   stateFromStore(store) {
-    return { id: store.model.upload.id, numItems: store.model.upload.numRecommends };
+    return { 
+      id: store.model.upload.id, 
+      numItems: store.model.upload.numRecommends 
+    };
   }
 
   refreshModel(store) {
-    if( !this.ratings ) {
-      this.ratings = new Ratings();
-    }
+    !this.ratings && (this.ratings = new Ratings());
+
     var id = store ? store.model.upload.id : this.state.id;
+
     return this.ratings.recommendedBy(id);
   }
 

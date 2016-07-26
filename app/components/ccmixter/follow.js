@@ -1,10 +1,9 @@
 import React                from 'react';
 import events               from '../../models/events';
 import {  ModelTracker  }   from '../../mixins';
-import Form                 from '../vanilla/form';
+import FormItem             from '../vanilla/form-field';
 import CollapsingPeopleList from '../models/collapsing-people-list';
-
-var FormItem = Form.FormItem;
+import { FormControl }      from '../vanilla/form';
 
 class Followers extends ModelTracker(React.Component)
 {
@@ -24,8 +23,10 @@ class Followers extends ModelTracker(React.Component)
   render() {
     return (
       this.state.model.length
-        ? <FormItem title={this.props.title} wrap cls="followers">
-            <CollapsingPeopleList max={10} className="follow"  model={this.state.model} />
+        ? <FormItem title={this.props.title} className="followers">
+            <FormControl>
+              <CollapsingPeopleList max={10} className="follow"  model={this.state.model} />
+            </FormControl>
           </FormItem>
         : null 
       );

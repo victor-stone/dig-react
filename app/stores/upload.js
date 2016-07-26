@@ -58,7 +58,11 @@ class Upload extends Permissions(Properties(Query)) {
   }
 
   get nativeProperties() {
-    const { upload, upload:{userTags:tags} } = this.model;
+    const { 
+      upload, 
+      upload:{userTags:tags} 
+    } = this.model;
+    
     return Object.assign({},upload,{tags});
   }
 

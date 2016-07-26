@@ -33,14 +33,19 @@ class UserSearch extends QueryFilters(Query) {
     return this.searchUsers( q, deferName );
   }
   
-  // search the entire user record
+  // search the entire users record
   searchUsers(params,deferName,deferThis) {
-    const { lookup } = params;
-    if( !lookup ) {
+
+    const { lookup, searchp } = params;
+
+    if( !lookup && !searchp ) {
       return  rsvp.resolve([]);
     }
+
     this._queryParams = Object.assign({},params);
+    
     params.dataview ='user_basic';
+    
     return (deferThis || this).query(params,deferName)
                   .then( serialize( ccmixter.UserBasic ) );
   }

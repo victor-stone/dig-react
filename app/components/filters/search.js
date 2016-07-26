@@ -4,7 +4,7 @@ import Input       from '../properties/controls/input';
 
 function SearchFilter(props)
 {
-  return <Input icon="search" withDone {...props} filter={Filter} />;
+  return <Input.Expando icon="search" withDone {...props} property={Filter} />;
 }
 
 module.exports = SearchFilter;

@@ -46,7 +46,36 @@ function isElementOnScreen(e)
     return eTop > docViewTop && eTop < docViewBottom;
 }
 
+function fixOnPage(sel) {
+  var $el  = $(sel);
+  var rect = $el[0].getBoundingClientRect();
+  var $w   = $(window);
+
+  var left   = rect.left   + $w['scrollLeft']();
+  var right  = rect.right  + $w['scrollLeft']();
+  var top    = rect.top    + $w['scrollTop']();
+  var bottom = rect.bottom + $w['scrollTop']();
+  $el.css({
+      position: 'fixed',
+      top, left, right, bottom
+  });  
+
+}
+function makeAbs(sel) {
+  var el = $(sel);
+  var pos = el.position();
+  el.css({
+      position: 'absolute',
+      marginLeft: 0,
+      marginTop: 0,
+      top: pos.top,
+      left: pos.left
+  });  
+}
+
 module.exports = {
+  fixOnPage,
+  makeAbs,
   scrollToHash,
   scrollToTop,
   scrollToElement,

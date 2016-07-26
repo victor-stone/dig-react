@@ -13,14 +13,15 @@ import {  ModelTracker} from '../../mixins';
 import {  InlineCss,
           CollapsingText,
           ExternalLink,
+          FormField as FormItem,
           Form   }      from '../vanilla';
+
+import {  HorizontalForm,
+          FormControl }  from '../vanilla/form';
 
 import { Row,
          FluidContainer,
          Column }       from '../vanilla/grid';
-
-var HorizontalForm = Form.HorizontalForm;
-var FormItem       = Form.FormItem;
 
 class Description extends ModelTracker(React.Component)
 {
@@ -54,20 +55,27 @@ class Header extends React.Component
 class Overview extends React.Component
 {
   render() {
-    return null;
-    /*
-    const { store, store:{model:{artist}} } = this.props;
+
+    const { 
+      store, 
+      store:{model:{artist}} 
+    } = this.props;
+    
     const { homepage, joined, name } = artist;
+
     return (
       <HorizontalForm>
-          <FormItem title="member since" wrap>{joined}</FormItem>
-          {homepage && <FormItem title="homepage" wrap><ExternalLink href={homepage} text={name} /></FormItem>}
+          <FormItem title="member since">
+            <FormControl>{joined}</FormControl>
+          </FormItem>
+          {homepage && <FormItem title="homepage">
+                          <FormControl><ExternalLink href={homepage} text={name} /></FormControl>
+                          </FormItem>}
           <Followers store={store} followType="following" title="follows" />
           <Followers store={store} followType="followers" title="followers" />
           <FollowButton store={store} />
       </HorizontalForm>
       );
-    */
   }
 }
 

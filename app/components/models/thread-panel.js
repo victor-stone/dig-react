@@ -7,7 +7,16 @@ import thumbStyle  from '../services/people-thumb-style';
 class ThreadPanel extends React.Component
 {
   _renderTopic(model,i) {
-    const { indent, author, author:{name}, author:{avatarURL}, html, published, id } = model;
+    const { 
+      indent, 
+      author, 
+      author:{name}, 
+      author:{avatarURL}, 
+      html, 
+      published, 
+      id 
+    } = model;
+    
     return (
         <div key={i} className={'panel panel-info panel-offset-' + indent}>
           <div className="panel-heading">

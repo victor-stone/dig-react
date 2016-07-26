@@ -9,7 +9,7 @@ function PagingStub(store) {
 }
 
 function SearchStub(store) {
-  return () => <SearchBox store={store} />;
+  return () => <SearchBox store={store} parentFadeSelector=".subnav-tabs li" />;
 }
 
 /*
@@ -29,8 +29,8 @@ function SearchStub(store) {
 function BoundSubNavBar(props) {
   const { store, css = '', paging, className, search  } = props;
   const extras = [];
-  paging && extras.push(PagingStub(store));
   search && extras.push(SearchStub(store));
+  paging && extras.push(PagingStub(store));
   return (
     <SubNavBar extra={extras} css={css + SearchBox.css} className={className}>
       {props.children}

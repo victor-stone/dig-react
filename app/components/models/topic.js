@@ -1,17 +1,19 @@
 /*eslint "react/no-danger":0 */
 import React         from 'react';
 import Link          from '../services/link-to-route';
-import { selectors } from '../../unicorns';
+import { selectors,
+         nextID } from '../../unicorns';
 
-var topicBodyID = 0;
+
 const linkPrefix = /^https?:\/\//;
 
 class Topic extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.id = 'topic_body_' + (++topicBodyID);
+    this.id = nextID('_topic_body_');
   }
+  
   componentDidMount() {
     if( global.IS_SERVER_REQUEST ) {
       return;

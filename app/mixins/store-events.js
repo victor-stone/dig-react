@@ -33,7 +33,7 @@ var StoreEvents = target => class extends target {
 
   componentWillUnmount() {
     this._modelTrackMounted = false;
-    super.componentWillUnmount && super.componentWillUnmount;
+    super.componentWillUnmount && super.componentWillUnmount();
     this._unsubscribeFromStoreEvents(this.props.store);
   }
 

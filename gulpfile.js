@@ -34,9 +34,6 @@ var todo       = require('gulp-todo');
 var argv       = require('minimist')(process.argv.slice(2));
 var indexJS    = require('./lib/build/index-js');
 
-var makeParamCase  = require('./lib/build/make-param-case');
-var changeCase     = require('change-case');
-
 const DEFAULT_WEB_SHARE = 755;
 
 /************************* 
@@ -349,17 +346,6 @@ gulp.task('todo', function() {
     gulp.src('app/**/*.js', { base: './' })
         .pipe(todo())
         .pipe(gulp.dest('./'));
-});
-
-gulp.task( 'make-param-case', ['copy-to-work'], function() {
-  gulp.src('work/**/*.js')
-       .pipe( makeParamCase() )
-       .pipe( gulp.dest('./new-names'));
-});
-
-gulp.task( 'big-rename', function() {
-  gulp.src('new-names/**/*.js')
-       .pipe( gulp.dest('./'));
 });
 
 gulp.task('publish', function(){

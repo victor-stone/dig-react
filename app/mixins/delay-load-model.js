@@ -1,15 +1,28 @@
-import { bindAll } from '../unicorns';
+import { bindAll,
+         safeSetState } from '../unicorns';
 
 const DelayLoadModel = target => class extends target {
 
   constructor() {
     super(...arguments);
-    if( 'state' in this ) {
-      this.state.model = null;
-    } else {
-      this.state = { model: null };
-    }
-    this.hasComponentWillReceiveProps = !!super.componentWillReceiveProps;
+    safeSetState( this, { model: null } );
+
+    /*
+      Checking 'super' seem to be insanely costly in 
+      Babel. We curry the results here so we can
+      just do a straight call.
+    */
+
+    const superCurry = meth => {
+      let mySuperCall = super[meth];
+      return mySuperCall 
+                ? function() { mySuperCall.apply(this,arguments); }
+                : () => false;
+    };
+
+    this.DLM_componentWillReceiveProps = superCurry('componentWillReceiveProps');
+    this.DLM_shouldComponentUpdate = superCurry('shouldComponentUpdate');
+
     bindAll( this, 'onOpen', 'onClose' );
   }
 
@@ -26,7 +39,7 @@ const DelayLoadModel = target => class extends target {
   }
 
   componentWillReceiveProps(props) {
-    this.hasComponentWillReceiveProps && super.componentWillReceiveProps(props);
+    this.DLM_componentWillReceiveProps(props);
     if( this.state.open ) {
       this.refreshModel(props.store).then( model => this.setState( { model } ) ); 
     } else {
@@ -36,8 +49,8 @@ const DelayLoadModel = target => class extends target {
 
   shouldComponentUpdate(nextProps,nextState) {
     return this.state.model !== nextState.model || 
-          this.state.open !== nextState.open || 
-          this.speakNow && this.speakNow(nextProps,nextState);
+           this.state.open !== nextState.open || 
+           this.DLM_shouldComponentUpdate(...arguments);
   }
 
 };

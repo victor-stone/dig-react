@@ -2,9 +2,10 @@ import React             from 'react';
 
 import PropertyState     from '../mixins/property-state';
 
-import Field             from '../../vanilla/form-field';
+import { Input,
+         FormField as Field,
+         InputExpando }  from '../../vanilla';
 
-import Input             from '../../vanilla/input';
 import { FormControl }   from '../../vanilla/form';
 
 import ToggleEditModeProperty from './toggle-edit-mode';
@@ -21,12 +22,15 @@ const InputPropertyMixin = baseclass => class extends baseclass {
       Babel. We curry the results here so we can
       just do a straight call.
     */
-    this.superShouldComponentUpdateIPM = (() => {
-            let mySuperCall = super.shouldComponentUpdate;
-            return mySuperCall 
-                      ? (p,s) => mySuperCall.apply(this,[p,s])
-                      : () => false;
-          })();
+    const superCurry = meth => {
+      let mySuperCall = super[meth];
+      return mySuperCall 
+                ? function() { mySuperCall.apply(this,arguments); }
+                : () => false;
+    };
+
+
+    this.superShouldComponentUpdateIPM = superCurry('shouldComponentUpdate');
 
   }
   
@@ -57,7 +61,6 @@ const InputPropertyMixin = baseclass => class extends baseclass {
       props:  {
         value: this.property.editable,
         onDone: this.onDone,
-        onChange: this.onChange,
         placeholder
       }
     };
@@ -76,6 +79,10 @@ class InputProperty extends InputPropertyMixin(PropertyState(React.Component))
     if( this.props.allKeys ) {
       this.updateValue('');
     }
+  }
+
+  isSwitchEditMode() {
+    return false;
   }
 
   render() {
@@ -101,6 +108,25 @@ class InputProperty extends InputPropertyMixin(PropertyState(React.Component))
   }
 }
 
+class InputPropertyExpando extends InputPropertyMixin(PropertyState(React.Component))
+{
+  constructor() {
+    super(...arguments);
+//    this.onCancel = this.onCancel.bind(this);
+    this.onDone  = this.onDone.bind(this);
+  }
+
+  isSwitchEditMode() {
+    return false;
+  }
+  
+  render() {
+    return (<span onChange={this.onChange.bind(this)}>
+              <InputExpando {...this.props} value={this.property.editable} onDone={this.onDone} />
+            </span>);
+  }
+}
+
 class InputToggleModeProperty extends InputPropertyMixin(ToggleEditModeProperty.Field)
 {
   constructor() {
@@ -118,6 +144,7 @@ class InputToggleModeProperty extends InputPropertyMixin(ToggleEditModeProperty.
 }
 
 InputProperty.Toggle = InputToggleModeProperty;
+InputProperty.Expando = InputPropertyExpando;
 
 module.exports = InputProperty;
 

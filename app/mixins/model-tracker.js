@@ -3,11 +3,14 @@ import StoreEvents from './store-events';
 import { safeSetState } from '../unicorns';
 
 /*
-  Implementors must implement 
+  
+  Derivations note notification:
 
     stateFromStore(store) {
       return { someStateDerivedFromStore: ... }
     }
+
+  This will come BEFORE your constructor 
 */
 
 const ModelTracker = target => class extends StoreEvents(target) {
