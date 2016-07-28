@@ -9,7 +9,7 @@ class BPMSlider extends React.Component
     super(...arguments);
 
     this.sliderProps = {
-      property:         Filter,
+      Property:       Filter,
       store:          this.props.store,
       min:            BPMSlider.BPM_ALL,
       max:            BPMSlider.MAX_BPM,
@@ -52,7 +52,9 @@ class BPMDisplay extends PropertyState(React.Component)
 
 }
 
-BPMDisplay.defaultProps = { property: Filter };
+BPMDisplay.defaultProps = { 
+  Property: Filter 
+};
 
 module.exports = {
   BPMDisplay,

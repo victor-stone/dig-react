@@ -44,7 +44,7 @@ class MatchAllButton extends Toggle
   }
 }
 
-MatchAllButton.defaultProps = { property:    Filter, 
+MatchAllButton.defaultProps = { Property:    Filter, 
                                 className: 'btn btn-primary btn-xs match-all', 
                                 text:      'match all' };
 

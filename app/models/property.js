@@ -65,6 +65,16 @@ class YeOldWatchableJavascriptProperty extends Eventer
   }
   
   /*
+    Called when a user cancels an edit or wants to clear
+    a filter.
+
+    The default reset is a no-op 
+  */
+  reset() {    
+  }
+
+  
+  /*
     The persistant version. 
 
     Instantiate ths value from store

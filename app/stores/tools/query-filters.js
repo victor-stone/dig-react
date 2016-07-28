@@ -66,6 +66,11 @@ const QueryFilters = target => class extends Properties(target) {
     return this.refreshModel(qp);
   }
 
+  setPropertyValue( PropertyClass, val ) {
+    this._ignoreFilterEvent = true;
+    this.getProperty(PropertyClass).value = val;
+    this._ignoreFilterEvent = false;
+  }
 };
 
 module.exports = QueryFilters;

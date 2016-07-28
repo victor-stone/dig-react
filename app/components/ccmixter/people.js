@@ -13,8 +13,7 @@ import {  ModelTracker} from '../../mixins';
 import {  InlineCss,
           CollapsingText,
           ExternalLink,
-          FormField as FormItem,
-          Form   }      from '../vanilla';
+          FormField as FormItem }  from '../vanilla';
 
 import {  HorizontalForm,
           FormControl }  from '../vanilla/form';

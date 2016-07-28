@@ -65,7 +65,7 @@ class PeopleFilter extends PropertyState(React.Component)
 }
 
 PeopleFilter.defaultProps = {
-  property: Filter
+  Property: Filter
 };
 
 module.exports = PeopleFilter;

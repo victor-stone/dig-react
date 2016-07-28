@@ -5,7 +5,10 @@ class UploadTypeFilter extends Select
 {
 }
 
-UploadTypeFilter.defaultProps = { property: Filter, options: Filter.options };
+UploadTypeFilter.defaultProps = { 
+  Property: Filter, 
+  options: Filter.options 
+};
 
 module.exports = UploadTypeFilter;
 

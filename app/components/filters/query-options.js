@@ -1,6 +1,7 @@
 import React     from 'react';
 
 import { CloseButton,
+         DeadLink,
          InlineCss,
          Glyph }          from '../vanilla';
 
@@ -19,27 +20,53 @@ class OptionsWrap extends React.Component
   }
 }
 
+class QueryFiltersButton extends React.Component
+{
+  render() {
+
+    const {
+      dirty,
+      onShowOptions
+    } = this.props;
+
+    const buttonColor = dirty ? { color: 'yellow' } : {};
+
+    return <DeadLink className="btn btn-primary" style={buttonColor} onClick={onShowOptions} icon="gear" text="filter" />;
+
+  }
+
+}
+
 class QueryOptionsBox extends React.Component
 {
   render() {
-    var cls  = selectors('query-options',(this.props.show ? 'open' : 'hidden'));
+
+    const {
+      handleShowOptions,
+      children,
+      store,
+      show
+    } = this.props;
+
+    const cls  = selectors( 'query-options', show ? 'open' : 'hidden' );
+
     return (
         <ul className={cls}>
-          <li className="btn-primary title" onClick={this.props.handleShowOptions} >
+          <li className="btn-primary title" onClick={handleShowOptions} >
             <Glyph icon="gear" />{" filters"}
-            {this.props.handleShowOptions && <CloseButton onClick={this.handleShowOptions} />}
+            {handleShowOptions && <CloseButton onClick={handleShowOptions} />}
           </li>
-          <li>{this.props.children}</li>
-          <li><ResetOptionsButton store={this.props.store} /></li>
+          <li>{children}</li>
+          <li><ResetOptionsButton store={store} /></li>
         </ul>
       );
   }
 }
 
 QueryOptionsBox.defaultProps = { 
-      handleShowOptions: () => false,
-       show: true 
-     };
+  handleShowOptions: () => false,
+  show: true 
+};
 
 function QueryOptionsPanel(props)
 {
@@ -60,8 +87,10 @@ class QueryOptions extends ModelTracker(React.Component)
   }
   
   onShowOptions(){
-    var showOptions = !this.state.showOptions;
-    this.setState( { showOptions } );
+    
+    const { showOptions } = this.state;
+
+    this.setState( { showOptions: !showOptions } );
   }
 
   stateFromStore(store) {
@@ -71,22 +100,23 @@ class QueryOptions extends ModelTracker(React.Component)
 
   render() {
 
-    const { floating, store } = this.props;
+    const { 
+      floating, 
+      store 
+    } = this.props;
 
     if( !store.supportsOptions ) {
       return null;
     }
     
-    const { showOptions = false, dirty } = this.state;
+    const { 
+      showOptions = false, 
+      dirty 
+    } = this.state;
 
-    const buttonColor = dirty ? { color: 'yellow' } : {};
-
-    const cls         = selectors('hidden-xs hidden-sm query-options-box',
-                                   showOptions ? 'open'     : '',
-                                   floating    ? 'floating' : '');
-
-    const cls3        = selectors('btn btn-primary', 
-                                   showOptions ? ' hidden' : '');
+    const cls = selectors('hidden-xs hidden-sm query-options-box',
+                           showOptions ? 'open'     : '',
+                           floating    ? 'floating' : '');
 
     return (
       <div className={cls}>
@@ -94,7 +124,7 @@ class QueryOptions extends ModelTracker(React.Component)
         <QueryOptionsBox show={showOptions} store={store} handleShowOptions={this.onShowOptions}>
           {this.props.children}
         </QueryOptionsBox>
-        <button className={cls3} style={buttonColor} onClick={this.onShowOptions} ><Glyph icon="gear" />{" filters"}</button>
+        {showOptions && <QueryFiltersButton dirty={dirty} onShowOptions={this.onShowOptions} />}
       </div>
     );
   }

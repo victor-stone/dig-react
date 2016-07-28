@@ -14,7 +14,11 @@ class ToggleFilter extends PropertyState(React.Component)
   }
 
   render() {
-    const { state:{value}, property:{displayName}, props:{className} } = this;
+    
+    const { 
+      state:   { value }, 
+      property:{ displayName }, 
+      props:   { className } } = this;
 
     return (
         <Toggle className={className} toggle={value} text={displayName} onToggle={this.onToggle} />

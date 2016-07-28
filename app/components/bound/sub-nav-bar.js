@@ -1,6 +1,6 @@
 import React        from 'react';
 import SubNavBar    from '../vanilla/sub-nav-bar';
-import Paging       from './paging';
+import Paging       from '../properties/paging';
 import SearchBox    from '../filters/search';
 
 

@@ -113,15 +113,10 @@ CategoryTagBox.css = CheckableTagsList.css + `
 }
 `;
 
-/*
-  Props: 
-    - store - required property: tags [TagString]
-*/
-
 class BoundStaticTagList extends PropertyState(React.Component)
 {
   get PropertyClass() {
-    return this.props.property || Filter;
+    return this.props.Property || Filter;
   }
   
   render() {
@@ -137,7 +132,7 @@ class BoundStaticTagList extends PropertyState(React.Component)
 class BoundSelectableTagList extends PropertyState(React.Component)
 {
   get PropertyClass() {
-    return this.props.property || Filter;
+    return this.props.Property || Filter;
   }
 
   render() {
@@ -147,8 +142,7 @@ class BoundSelectableTagList extends PropertyState(React.Component)
       model, 
       className:cls, 
       glyphs, 
-      floating 
-    } = this.props;
+      floating } = this.props;
 
     const className = selectors('tag-list-selectable-bound', cls );
     
@@ -177,7 +171,7 @@ class BoundSelectableTagList extends PropertyState(React.Component)
 class BoundCategoryTagBox extends PropertyState(React.Component)
 {
   get PropertyClass() {
-    return this.props.property || Filter;
+    return this.props.Property || Filter;
   }
 
   render() {

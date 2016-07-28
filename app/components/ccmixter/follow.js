@@ -25,7 +25,8 @@ class Followers extends ModelTracker(React.Component)
       this.state.model.length
         ? <FormItem title={this.props.title} className="followers">
             <FormControl>
-              <CollapsingPeopleList max={10} className="follow"  model={this.state.model} />
+              <CollapsingPeopleList max={10} className="follow" model={this.state.model} />
+              <p style={{margin:1}} />
             </FormControl>
           </FormItem>
         : null 

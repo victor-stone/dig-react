@@ -52,10 +52,14 @@ class Text extends Property
     this.onChange();
   }
 
-  reset() {
-    Object.assign( this._value, this._defaultValue );
-    return this;
-  }  
+  // I don't think we have to physically reset()
+  // because 'editable' is immutable (or idemponent
+  // for you kiddies)
+  
+  // reset() {
+  //   Object.assign( this._value, this._defaultValue );
+  //   return this;
+  // }  
 
   get html() {
     return this._value.html;

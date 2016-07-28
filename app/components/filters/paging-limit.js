@@ -12,7 +12,9 @@ class PagingLimitFilter extends PropertyState(React.Component)
 
 }
 
-PagingLimitFilter.defaultProps = { property: Filter };
+PagingLimitFilter.defaultProps = { 
+  Property: Filter 
+};
 
 module.exports = PagingLimitFilter;
 
