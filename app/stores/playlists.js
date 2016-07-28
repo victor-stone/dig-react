@@ -46,7 +46,6 @@ class Playlists extends Collection {
     !this._userSearch && (this._userSearch = new UserSearch());
     return this._userSearch;
   }
-
   getModel(queryParams) {
     Object.assign(this._prevQueryParams,queryParams);
 
@@ -79,17 +78,16 @@ class Playlists extends Collection {
     }
 
     var model = {
-      items:    this.fetch(q,'items'),
-      total:    this.count(q,'total'),
-      upload:   q.upload ? this.uploadStore.info(q.upload) : null,
-      curator:  q.user ? this.userSearch.findUser(q.user) : null,
+      items:  this.fetch(q,'items'),
+      total:  this.count(q,'total'),
+      upload: q.upload ? this.uploadStore.info(q.upload) : null,
+      curator: q.user ? this.userSearch.findUser(q.user) : null,
       curators: hasSearch ? this.userSearch.searchUsers( { limit: 40, searchp: q.search, minpl: 1 } ) : null
     };
 
     return this.flushDefers(model).then( model => {
       this.model = model;
       this.model.queryParams = oassign( {}, q );
-      this.notifyPaging();
       this.emit( events.MODEL_UPDATED, model );
       return model;
     });
@@ -117,8 +115,8 @@ class Playlists extends Collection {
     return this.queryOne(q,deferName);
   }
 
-  refresh(queryParams = this._prevQueryParams) {
-    return this.getModel(queryParams);
+  refresh() {
+    return this.getModel(this._prevQueryParams);
   }
   
   tracksForPlaylist(id,deferName) {

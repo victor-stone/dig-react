@@ -2,17 +2,9 @@ import React       from 'react';
 import Filter      from '../../models/filters/search';
 import Input       from '../properties/controls/input';
 
-class SearchFilter extends React.Component
+function SearchFilter(props)
 {
-
-  render() {
-    return (<Input.Expando 
-              icon="search" 
-              withDone 
-              {...this.props} 
-              Property={Filter} 
-            />);    
-  }
+  return <Input.Expando icon="search" withDone {...props} property={Filter} />;
 }
 
 module.exports = SearchFilter;

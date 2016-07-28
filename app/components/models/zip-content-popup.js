@@ -6,19 +6,13 @@ import ZIPFile    from './zip-file';
 class ZIPFilesPopup extends Modal.Popup
 {
   render() {
+    const { model, tags } = this.props;
+    let   { nicName, mediaTags: {name} } = model;
 
-    const { 
-      model, 
-      tags 
-    } = this.props;
-
-    let { 
-      nicName, 
-      mediaTags:{ name } 
-    } = model;
-
-    nicName && (nicName = ` [${nicName}]`);
-
+    if( nicName ) {
+      nicName = ` [${nicName}]`;
+    }
+    
     const title  = `${name} ${nicName}`;
 
     return (
@@ -38,9 +32,7 @@ class ZIPContentPopup extends React.Component
   }
   
   onInfo() {
-
     const { model, tags } = this.props;
-    
     ZIPFilesPopup.show( ZIPFilesPopup, {model,tags} );
   }
 

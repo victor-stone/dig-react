@@ -10,9 +10,7 @@ class SearchHeader extends PropertyState(React.Component)
   }  
 }
 
-SearchHeader.defaultProps = { 
-  Property: Filter 
-};
+SearchHeader.defaultProps = { property: Filter };
 
 module.exports = SearchHeader;
 

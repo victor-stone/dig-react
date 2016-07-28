@@ -5,10 +5,6 @@ class SortFilter extends Select
 {
 }
 
-SortFilter.defaultProps = { 
-  Property: Filter, 
-  options: Filter.options, 
-  id: 'sort' 
-};
+SortFilter.defaultProps = { property: Filter, options: Filter.options, id: 'sort' };
 
 module.exports = SortFilter;

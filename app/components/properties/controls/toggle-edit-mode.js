@@ -10,12 +10,10 @@ const ToggleEditModePropertyMixin = tem => class extends PropertyState(tem)
   }
 };
 
-class ToggleEditModeProperty extends ToggleEditModePropertyMixin(ToggleEditMode.Static) 
-{ 
-}
+class ToggleEditModeProperty extends ToggleEditModePropertyMixin(ToggleEditMode.Static) { }
 
-ToggleEditModeProperty.Field = class extends ToggleEditModePropertyMixin(ToggleEditMode.Field) 
-{
+ToggleEditModeProperty.Field = class extends ToggleEditModePropertyMixin(ToggleEditMode.Field) {
+
   get title() {
     const { noTitle = false } = this.props;
     return noTitle ? null : this.property.displayName;

@@ -65,7 +65,7 @@ class OrderedTrackListProperty extends ToggleEditModeProperty
 }
 
 OrderedTrackListProperty.defaultProps = { 
-    Property: OrderProperty,
+    property: OrderProperty,
     noTitle: true
 };
 

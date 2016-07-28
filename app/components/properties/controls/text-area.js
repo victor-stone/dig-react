@@ -9,27 +9,26 @@ import { TextEditor,
 class TextArea extends ToggleEditModeProperty 
 {
 
-  constructor() {
-    super(...arguments);
+    constructor() {
+      super(...arguments);
 
-    /*
-      Checking 'super' seem to be insanely costly in 
-      Babel. We curry the results here so we can
-      just do a straight call.
-    */
-    const superCurry = meth => {
-      let mySuperCall = super[meth];
-      return mySuperCall 
-                ? (a,b,c,d,e) => mySuperCall.apply(this,[a,b,c,d,e]) 
-                : () => false;
-    };
-
-    this.superShouldComponentUpdateTA = superCurry('shouldComponentUpdate');
+      /*
+        Checking 'super' seem to be insanely costly in 
+        Babel. We curry the results here so we can
+        just do a straight call.
+      */
+      this.superShouldComponentUpdateTA = (() => {
+              let mySuperCall = super.shouldComponentUpdate;
+              return mySuperCall 
+                        ? (p,s) => mySuperCall.apply(this,[p,s])
+                        : () => false;
+            })();
   }
   
   shouldComponentUpdate(nextProps,nextState) {
     return this.isSwitchEditMode(nextState) || this.superShouldComponentUpdateTA(nextProps,nextState);
   }
+
 
   get staticElement() {
 

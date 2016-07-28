@@ -37,7 +37,7 @@ class SelectedTagRow extends React.Component
   render() {
     const { store } = this.props;
 
-    const thru = { store, Property: Filter };
+    const thru = { store, property: Filter };
 
     return (
         <Row>

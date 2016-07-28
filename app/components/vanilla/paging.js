@@ -1,6 +1,6 @@
 import React       from 'react';
+import Glyph       from './glyph';
 import pagingStats from './paging-stats';
-import DeadLink    from './dead-link';
 
 // TODO: don't assume that ?offset= is the proper URL formation
 
@@ -8,47 +8,49 @@ class PagerLink extends React.Component
 {
   constructor() {
     super(...arguments);
-
-    this.state = this._stateFromProps( this.props );
-
+    var href = this.props.show ? '?offset=' + this.props.offset : '#';
+    this.state = {href};
     this.onClick = this.onClick.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState( this._stateFromProps(newProps) );
+    var href = newProps.show ? '?offset=' + newProps.offset : '#';
+    this.setState( { href } );
   }
 
-  _stateFromProps(props) {
-
-    const { show, offset } = props;
-
-    return { href: show ? '?offset=' + offset : '#' };
-  }
-
-  onClick() {
-
-    const { href }              = this.state;
-    const { newOffset, offset } = this.props;
+  onClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
     // it seems this link happens
     // on phones even when disabled
 
-    href !== '#' && newOffset(offset);
-
+    if( this.state.href !== '#') {
+      this.props.newOffset(this.props.offset);
+    }
   }
 
   render() {
+    var icon = this.props.icon;
+    var cls  = this.props.show ? '' : 'disabled';
+    var href = this.state.href;
 
-    const { href }       = this.state;
-    const { icon, show } = this.props;
-
-    var cls  = show ? '' : 'disabled';
-
-    return <li className={cls}><DeadLink x2 icon={icon} href={href} onClick={this.onClick} /></li>;
+    return (<li className={cls}>
+              <a href={href} onClick={this.onClick}><Glyph x2 icon={icon} /></a>
+            </li>);
   }
 
 }
 
+/*
+    stats - a property like this:
+      {
+        offset: model.queryParams.offset,
+        limit:  model.queryParams.limit,
+        length: model.items.length,
+        total:  model.total      
+      }
+*/
 function Paging(props)
 {
     const { total, shouldShow, showFirst, showPrev, showNext, showLast,
@@ -57,7 +59,6 @@ function Paging(props)
 
     const cls  = 'paging' + (total > 0 ? '' : ' hidden');
     const cls2 = 'pagination' + (shouldShow ? '' : ' hidden');
-
     return(
       <div className={cls}>
         <ul className={cls2}>  

@@ -9,7 +9,7 @@ function DescriptionPropertyEditor(props) {
             noTitle={noTitle}
             collapsible={collapsible} 
             store={store} 
-            Property={DescriptionProperty} 
+            property={DescriptionProperty} 
           />);
 }
 

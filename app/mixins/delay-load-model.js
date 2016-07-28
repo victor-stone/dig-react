@@ -16,7 +16,7 @@ const DelayLoadModel = target => class extends target {
     const superCurry = meth => {
       let mySuperCall = super[meth];
       return mySuperCall 
-                ? (a,b,c,d,e) => mySuperCall.apply(this,[a,b,c,d,e]) 
+                ? function() { mySuperCall.apply(this,arguments); }
                 : () => false;
     };
 

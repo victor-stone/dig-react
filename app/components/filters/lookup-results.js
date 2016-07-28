@@ -34,7 +34,7 @@ class LookupResults extends ModelTracker(PropertyState(React.Component))
 }
 
 LookupResults.defaultProps = {
-  Property: LookupFilter
+  property: LookupFilter
 };
 
 LookupResults.propTypes = {

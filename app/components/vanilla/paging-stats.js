@@ -1,4 +1,5 @@
-import { numericize } from '../../unicorns';
+'use strict';
+
 
 function commaize(value) {
   if( value === 0 || value === '0' ) {
@@ -16,39 +17,68 @@ function commaize(value) {
       return commaized;
   }
 }
-
 class PagingStats
 {
-  constructor({offset,limit,total,length})
+  constructor(props)
   {
-    this.stats = numericize({ offset, limit, total, length });
+    /*
+      props provide:
+        offset
+        limit
+        total
+        length
+    */
+    this.stats = {
+        showPrev: false,
+        showNext: true,
+        prevValue: 0,
+        nextValue: 0,
+        lastValue: 0,
+        lastPage: 0,
+        showFirst: false,
+        showLast: false,
+        shouldShow: true,
+        printableOffset: '',
+        printableLastValue: '',
+        printableTotal: ''
+      };
+
+    var keys = Object.keys(this.stats);
+
+    for( var p in props ) {
+      this.stats[p] = Number(props[p]);
+    }
+
+    keys.forEach( k => this.stats[k] = this[k]() );
+
+    ['Prev','Next','First','Last'].forEach( k => {
+      var y = 'show' + k;
+      this.stats[y] = this.stats[y] && this.stats.shouldShow;
+    });
   }
 
-  get total() {
-    return this.stats.total;
-  }
-
-  get _isValidOffset() {
+  _isValidOffset() {
     return (this.stats.offset > this.stats.total) === false;
   }
 
-  get _printableOffset() {
+  shouldShow() {
+    var show = this.stats.showPrev || this.stats.showNext;
+    return show && this._isValidOffset();
+  }
+
+  _printableOffset() {
     return Number(this.stats.offset) + 1;
   }
 
-  get shouldShow() {
-    return (this.showPrev || this.showNext) && this._isValidOffset;
-  }
-
-  get showPrev() {
+  showPrev() {
     return this.stats.offset > 0;    
   }
   
-  get showNext() {
+  showNext() {
     return  this.stats.offset + this.stats.limit < this.stats.total;
   }
 
-  get prevValue() {
+  prevValue() {
     var val = this.stats.offset - this.stats.limit;
     if(  val < 0 ) {
       val = 0;
@@ -56,47 +86,50 @@ class PagingStats
     return val;
   }
 
-  get nextValue() {
+  nextValue() {
     return this.stats.offset + this.stats.limit;
   }
 
-  get lastValue() {
-    const { offset, length, limit } = this.stats;
-    return offset + ( length < limit ? length : limit);
+  lastValue() {
+    var off   = this.stats.offset;
+    var count = this.stats.length;
+    var limit = this.stats.limit;
+    return off + ( count < limit ? count : limit);
   }
 
-  get lastPage() {
-    const { total, offset, limit } = this.stats;
-
-    if( total - limit > offset ) { 
+  lastPage() {
+    var total = this.stats.total;
+    var off   = this.stats.offset;
+    var limit = this.stats.limit;
+    if( total - limit > off ) { 
       return total - limit;
     }
     return false;
   }
 
-  get showFirst() {
+  showFirst() {
     return !!this.stats.offset;
   }
 
-  get showLast() {
-    return !!this.lastPage;
+  showLast() {
+    return !!this.lastPage();
   }
 
-  get printableOffset() {
-    return commaize(this._printableOffset);
+  printableOffset() {
+    return commaize(this._printableOffset());
   }
 
-  get printableLastValue() {
-    return commaize(this.lastValue);
+  printableLastValue() {
+    return commaize(this.stats.lastValue);
   }
 
-  get printableTotal() {
+  printableTotal() {
     return commaize(this.stats.total);
   }
 }
 
 module.exports = function(props) {
-  return new PagingStats(props);
+  return new PagingStats(props).stats;
 };
 
 

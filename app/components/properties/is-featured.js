@@ -5,9 +5,6 @@ class IsFeaturedToggle extends Toggle
 {
 }
 
-IsFeaturedToggle.defaultProps = { 
-  Property: Filter, 
-  className: 'btn' 
-};
+IsFeaturedToggle.defaultProps = { property: Filter, className: 'btn' };
 
 module.exports = IsFeaturedToggle;

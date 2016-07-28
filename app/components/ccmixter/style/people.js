@@ -24,8 +24,8 @@ div.subnav-option-bar.people-subnav {
 }
 
 .people-head {
-  padding:       10px;
-  color:         white;
+  padding: 10px;
+  color: white;
   border-radius: 8px;
   margin-bottom: 12px;
 }
@@ -101,38 +101,28 @@ div.subnav-option-bar.people-subnav {
 }
 
 .people-head button.follows {
-  position:         absolute;
-  top:              10px;
-  right:            30px;
+  position: absolute;
+  top: 10px;
+  right: 30px;
   background-color: #ecdcc5;
-  color:            #1d1d1b;
-  border:           1px solid #dff0d8;
-  letter-spacing:   1;
-  font-size:        14px;
+  color: #1d1d1b;
+  border: 1px solid #dff0d8;
+  letter-spacing: 1;
+  font-size: 14px;
 } 
 
 .people-head button.follows:hover {
-  box-shadow:       #DDD 1px 1px;
+  box-shadow: #DDD 1px 1px;
   background-color: white;
 }
 
 .people-head .followers .form-control li {
   display: inline-block;
-  float:   left;
-}
-
-.people-head .followers .form-control a.more-or-less-link {
-  display:    block;
-  clear:      both;
-  width:      60px;
-  text-align: center;
 }
 
 .people-head .followers .form-control li a {
   font-weight: 300;
 }
-
-
 `;
 
 module.exports = css;

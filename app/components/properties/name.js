@@ -3,7 +3,7 @@ import NameProperty  from '../../models/properties/name';
 import Header        from './controls/header';
 
 function NamePropertyEditor(props) {
-  return <Header store={props.store} Property={NameProperty} />;
+  return <Header store={props.store} property={NameProperty} />;
 }
 
 module.exports = NamePropertyEditor;

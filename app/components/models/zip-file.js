@@ -4,11 +4,7 @@ import React  from 'react';
 class ZIPFile extends React.Component
 {
   render() {
-
-    const { 
-      model:{ zipContents }, 
-      tags } = this.props;
-
+    const { model: {zipContents}, tags } = this.props;
     const files  = zipContents
                   .filter( f => f.match(/(__MACOSX|\.DS_Store)/) === null )
                   .map( f => f.replace(/\/.*\//g,'') );

@@ -8,10 +8,6 @@ class Search extends QueryFilter
     this._displayName = 'Search';
   }
 
-  reset() {
-    this.value = '';
-  }
-
   get isDirty() {
     return false; // never need to 'reset'
   }

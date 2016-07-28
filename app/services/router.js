@@ -5,11 +5,6 @@ import Eventer          from './eventer';
 import env              from './env';
 import events           from '../models/events';
 
-const NoopStore = new class {
-  on() {}
-  removeListener() {}
-};
-
 class Router extends Eventer
 {
   constructor() {
@@ -29,30 +24,15 @@ class Router extends Eventer
     this.routes   = routes;
     this.rewrites = rewrites;
 
-    const noopStore  = () => rsvp.resolve(NoopStore);
-
+    const noopStore  = () => rsvp.resolve({});
     const genericUrl = path => store => path + (store.queryString || '');
 
     // baby steps: nothing nested for now
 
     for( const handler in routes ) {
-
-      const route = routes[handler];
-
-      const { 
-        path = ['/' + handler], 
-        store = noopStore, 
-        urlFromStore 
-      } = route;
-    
+      const { path = ['/' + handler], store = noopStore, urlFromStore } = routes[handler];
       const paths = Array.isArray( path ) ? path : [ path ];
-      
-      Object.assign( route, { 
-        path, 
-        store, 
-        urlFromStore: urlFromStore || genericUrl(paths[0]) 
-      });
-      
+      Object.assign( routes[handler], { path, store, urlFromStore: urlFromStore || genericUrl(paths[0]) } );
       paths.forEach( path => this.recognizer.add( [ { path, handler } ] ) );
     }
   }
@@ -76,19 +56,12 @@ class Router extends Eventer
     convert a url into a component based handler
   */
   resolve(url) {
-
     this._ensureRoutes();
-
     url = this.runRewrites(url);
-
     const handlers = this.recognizer.recognize(url);
-
     if( handlers ) {
-
       // result is an array-like object with a 'queryParams' property
-
-      const { queryParams = {} } = handlers;
-      
+      var queryParams = handlers.queryParams || {};
       return handlers.slice().map( h => { 
                                     return { 
                                       component: this.routes[h.handler], 
@@ -97,13 +70,11 @@ class Router extends Eventer
                                     };
                                   });
     }
-
     return null;
   }
 
   /* in browser methods */
   navigateTo(url,stateObj) {
-    
     try {
       this.setBrowserAddressBar(url,stateObj);
       this.updateURL();
@@ -124,57 +95,41 @@ class Router extends Eventer
 
   // Called from .navigateTo() and when user hits 'back' or 'foward' button
   updateURL() {
-    
     var handlers = this.resolve(this._currentPath);
-
     if (!handlers ) {
-      // TODO: signal a 404
-      return window && window.alert('Not Found');
+      return window.alert('Not Found');
     }
-
     if( handlers.length > 1 ) {
-      
-      // TODO: signal a 500
       throw new Error('wups - don\'t do nested route handlers yet');
     }
-
     var handler = handlers[0];
 
-    const { 
-      params,
-      queryParams,
-      component,
-      component: { 
-        displayName:name, 
-        path,
-      }            
-    } = handler;
-
-    component.store(params, queryParams)
+    handler.component.store(handler.params, handler.queryParams)
       .then( store => {
   
           const meta = {
             store,              
-            name,
-            component,
-            path,
-            params,
-            queryParams,
-            hash:  (document && document.location.hash) || ''
+            name:        handler.component.displayName, 
+            component:   handler.component,
+            path:        handler.component.path,
+            params:      handler.params,
+            queryParams: handler.queryParams,
+            hash:        document.location.hash || ''
           };
           
           this.emit( events.PRE_NAVIGATE, meta, this.__currRoute );
 
           const prevStore = this.__currRoute.store;
-
-          prevStore && prevStore.removeListener( events.MODEL_UPDATED, this.modelChanged.bind(this,prevStore) );
+          if( prevStore && prevStore.removeListener ) {
+            prevStore.removeListener( events.MODEL_UPDATED, this.modelChanged.bind(this,prevStore) );
+          }
 
           this.__currRoute = {
-            component,
+            component: handler.component,
             store
           };
 
-          store.on( events.MODEL_UPDATED, this.modelChanged.bind(this,store) );
+          store.on && store.on( events.MODEL_UPDATED, this.modelChanged.bind(this,store) );
 
           this.emit( events.NAVIGATE_TO, meta);
           
@@ -184,11 +139,8 @@ class Router extends Eventer
   }
 
   modelChanged() {
-
     const { component, store } = this.__currRoute;
-    
     var url = component.urlFromStore( store );
-    
     if( url !== this._currentPath ) {
       this.setBrowserAddressBar( url );
       this.emit( events.NAVIGATE_TO_THIS );
@@ -196,7 +148,9 @@ class Router extends Eventer
   }
 
   _ensureRoutes() {
-    this.routes === null && env.routes && this.addRoutes( env.routes, env.rewriteRules );
+    if( this.routes === null && env.routes) {
+      this.addRoutes( env.routes, env.rewriteRules );
+    }
   }
 }
     

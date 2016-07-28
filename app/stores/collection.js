@@ -9,8 +9,6 @@ import { hashParams,
          cleanSearchString,
          TagString }   from '../unicorns';
 
-import PagingProperty   from '../models/properties/paging';
-
 
 /*
   Collection stores support, a minimum, a model that
@@ -33,25 +31,19 @@ class Collection extends QueryFilters(Query) {
 
   constructor(defaultParams) {
     super(...arguments);
-    this.model          = {};
+    this.model         = {};
     this._defaultParams = defaultParams || {};
-    this.gotCache       = false;
-    this._tags          = null;
-    this.tagFields      = ['tags', 'reqtags', 'oneof'];
-    this.totalsCache    = null;
-    this.autoFetchUser  = true;
-
-    this.addProperty(PagingProperty);
+    this.gotCache      = false;
+    this._tags         = null;
+    this.tagFields     = ['tags', 'reqtags', 'oneof'];
+    this.totalsCache   = null;
+    this.autoFetchUser = true;
   }
 
   get supportsOptions() {
     return true;
   }
 
-  /*
-    the definition of 'default' here are parameters that 
-    not included when generating a URL query string.
-  */
   get defaultParams() {
     return this._defaultParams;
   }
@@ -83,13 +75,23 @@ class Collection extends QueryFilters(Query) {
     this.on( events.MODEL_UPDATED, handler );
   }
 
+  paginate(offset) {
+    return this._refresh(this._qp({offset}));
+  }
+
+  // use this instead of the property if you
+  // need the return promise
+  applyTags(tags) {
+    var qp = { tags: tags.toString() };
+    return this.refreshModel(qp).then( model =>{
+      this.emit(events.TAGS_SELECTED);
+      return model;
+    });
+  }
+
   refresh(queryParams) {
-    return this.fetch(queryParams)
-                .then( items => {
-                  this.model.items = items;
-                  this.onModelSuccess(this.model,queryParams);
-                  return this.model;
-                }, e => this.onModelError(e,queryParams) );
+    queryParams.offset = 0;
+    return this._refresh(this._qp(queryParams));
   }
 
   refreshModel(queryParams) {
@@ -181,11 +183,9 @@ class Collection extends QueryFilters(Query) {
       if( text ) {
         const tagsFromText = text.split(/\s/).filter( t => t.length > MIN_GENRE_TAG_SIZE );
 
-        const userOpts = {  
-          limit: 40,
-          remixmin: 1,
-          searchp: text
-        };
+        const userOpts = {  limit: 40,
+                            remixmin: 1,
+                            searchp: text };
 
         hash.artists = this.userSearch.searchUsers(userOpts,'artists', this );
         hash.genres = this.tagStore.searchTags( tagsFromText, 'genres', this );
@@ -200,45 +200,25 @@ class Collection extends QueryFilters(Query) {
     
     this.error = null;
 
-    return this.flushDefers(hash)
-                 .then( m => this.onModelSuccess(m,queryParams),
-                        e => this.onModelError(e, queryParams) );
-  }
+    return this.flushDefers(hash).then( model => {
+      this.model = model;
+      model.queryParams = Object.assign( {}, queryParams );
+      this.emit( events.MODEL_UPDATED, model );
+      return model;
+    }).catch( e => {
+      if( e.message === events.ERROR_IN_JSON ) {
+        this.model.items = [];
+        this.model.total = 0;
+        this.model.error = this.error = e.message;
+        this.model.artist = {};
+        this.model.queryParams = Object.assign( {}, queryParams );
+        return this.model;
+      } else {
+        var str = /*decodeURIComponent*/(querystring.stringify(queryParams));
+        throw new Error( `${str} original: ${e.toString()}-${e.stack}`);
+      }
+    });
 
-  onModelSuccess(model,queryParams) {
-    this.model = model;
-    model.queryParams = Object.assign( {}, queryParams );
-    this.notifyPaging(model,queryParams);
-    this.emit( events.MODEL_UPDATED, model );
-    return model;    
-  }
-
-  notifyPaging() {
-
-    const { 
-      total, 
-      items: { length }, 
-      queryParams: { 
-        offset,
-        limit 
-      } 
-    } = this.model;
-
-    this.setPropertyValue( PagingProperty, { offset, limit, total, length } );
-  }
-
-  onModelError( e, queryParams ) {
-    if( e.message === events.ERROR_IN_JSON ) {
-      this.model.items = [];
-      this.model.total = 0;
-      this.model.error = this.error = e.message;
-      this.model.artist = {};
-      this.model.queryParams = Object.assign( {}, queryParams );
-      return this.model;
-    } else {
-      var str = /*decodeURIComponent*/(querystring.stringify(queryParams));
-      throw new Error( `${str} original: ${e.toString()}-${e.stack}`);
-    }    
   }
 
   /* protected */
@@ -250,8 +230,6 @@ class Collection extends QueryFilters(Query) {
   profileFor(user,deferName) {
     return this.userSearch.findUser(user,deferName,this);
   }
-
-
   // TODO: investigate generalizing cachedFetch
   
   cachedFetch(queryParams, deferName) {
@@ -289,7 +267,6 @@ class Collection extends QueryFilters(Query) {
       let value = queryParams[k];
 
       // TagStrings and Number will become strings here
-
       value = ( typeof value === 'undefined' || value === null ) ? '' : value + '';
 
       if( value.length ) {
@@ -304,6 +281,14 @@ class Collection extends QueryFilters(Query) {
     return qp;
   }
 
+  _refresh(queryParams,deferName) {
+    return this.fetch(queryParams,deferName).then( items => {
+      this.model.items = items;
+      this.emit( events.MODEL_UPDATED );
+      return this.model;
+    });
+  }
+
   _queryString(withDefault) {
     const qp   = this.model.queryParams;
     const defs = this._defaultParams;
@@ -314,12 +299,7 @@ class Collection extends QueryFilters(Query) {
       if( skip.includes(paramName) ) {
         continue;
       }
-      const value = qp[paramName].toString();
-
-      if( !value ) {
-        continue;
-      }
-      
+      const value = qp[paramName];
       if( paramName === 'offset' ) {
         if( qp.offset > 0 ) {
           copy.offset = value;

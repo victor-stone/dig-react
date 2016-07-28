@@ -70,7 +70,7 @@ const css = `
   border: 0px;
 }
 
-li.hi-hi {
+.stems-browser .stems-files > li.hi-hi {
   font-weight: bold;
 }
 
