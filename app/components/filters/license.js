@@ -24,7 +24,7 @@ class LicenseFilter extends React.Component
   render() {
     const { store, id } = this.props;
 
-    return <div><Select store={store} id={id} property={Filter} options={this.options} /><LicenseInfoPopup /></div>;
+    return <div><Select store={store} id={id} Property={Filter} options={this.options} /><LicenseInfoPopup /></div>;
   }
 }
 

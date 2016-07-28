@@ -20,8 +20,12 @@ class Input extends React.Component
     this.id = id;
   }
 
+  componentWillReceiveProps(nextProp) {
+    this.props.propOwned && this.setState({ value:nextProp.value });
+  }
+  
   onChange(event) {
-    this.setState({value: event.target.value});
+    !this.props.propOwned && this.setState({ value: event.target.value });
   }
 
   doDone() {

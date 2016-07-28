@@ -226,6 +226,28 @@ function decamlize(str) {
             .toLowerCase();
 }
 
+function numericize(obj) {
+  const result = {};
+  obj && Object.keys(obj).forEach( k => result[k] = Number(obj[k]) );
+  return result;
+}
+
+function shallowCompare(obj1,obj2) {
+
+  if( !obj2 || !obj2 ) {
+    return false;
+  }
+
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+  
+  if( keys1.length !== keys2.length ) {
+    return false;
+  }
+
+  return !keys1.find( k => !(k in obj2) || (obj1[k] !== obj2[k]) );
+}
+
 function dasherize(str) {
   return decamlize(str).replace(/_/g,'-');
 }
@@ -433,11 +455,13 @@ module.exports = {
   excludeProps,
   isUndefined,
   mergeParams,
+  numericize,
   hashParams,
   nextID,
   oassign,
   safeSetState,
   selectors,
+  shallowCompare,
   sliceStr,
   trim,
   w,

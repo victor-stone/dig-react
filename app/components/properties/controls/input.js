@@ -1,5 +1,7 @@
 import React             from 'react';
 
+import { bindAll }       from '../../../unicorns';
+
 import PropertyState     from '../mixins/property-state';
 
 import { Input,
@@ -17,32 +19,28 @@ const InputPropertyMixin = baseclass => class extends baseclass {
   constructor() {
     super(...arguments);
 
-    /*
-      Checking 'super' seem to be insanely costly in 
-      Babel. We curry the results here so we can
-      just do a straight call.
-    */
     const superCurry = meth => {
       let mySuperCall = super[meth];
       return mySuperCall 
-                ? function() { mySuperCall.apply(this,arguments); }
+                ? (a,b,c,d,e) => mySuperCall.apply(this,[a,b,c,d,e]) 
                 : () => false;
     };
-
 
     this.superShouldComponentUpdateIPM = superCurry('shouldComponentUpdate');
 
   }
   
   shouldComponentUpdate(nextProps,nextState) {
-    return this.isSwitchEditMode(nextState) || this.superShouldComponentUpdateIPM(nextProps,nextState);
+    return this.isSwitchEditMode(nextState) || 
+             this.state.scratch !== nextState.scratch || 
+             this.superShouldComponentUpdateIPM(nextProps,nextState);
   }
 
   onChange(event) {
     
     const { target:{value} } = event;
 
-    this.scratch = value;
+    this.setState({ scratch: value });
 
     if( this.props.allKeys ) {
       this.updateValue(value);
@@ -50,7 +48,17 @@ const InputPropertyMixin = baseclass => class extends baseclass {
   }
 
   onDone() {
-    this.updateValue(this.scratch);
+    this.updateValue(this.state.scratch);
+  }
+
+  onCancel() {
+    this.resetValue();
+  }
+
+  stateFromProperty(property) {
+    const state = super.stateFromProperty(property);
+    state.scratch = state.editable;
+    return state;
   }
 
   get control() {
@@ -59,8 +67,9 @@ const InputPropertyMixin = baseclass => class extends baseclass {
     return {
       Element: props => <span onChange={this.onChange.bind(this)}><Input {...props} /></span>,
       props:  {
-        value: this.property.editable,
+        value: this.state.scratch,
         onDone: this.onDone,
+        propOwned: true,
         placeholder
       }
     };
@@ -71,14 +80,11 @@ class InputProperty extends InputPropertyMixin(PropertyState(React.Component))
 {
   constructor() {
     super(...arguments);
-    this.onCancel = this.onCancel.bind(this);
-    this.onDone  = this.onDone.bind(this);
-  }
 
-  onCancel() {
-    if( this.props.allKeys ) {
-      this.updateValue('');
-    }
+    // these are autobound in ToggleProperty but NOT 
+    // anywhere else so we have to do it manually
+
+    bindAll( this, 'onCancel', 'onDone' );
   }
 
   isSwitchEditMode() {
@@ -112,8 +118,7 @@ class InputPropertyExpando extends InputPropertyMixin(PropertyState(React.Compon
 {
   constructor() {
     super(...arguments);
-//    this.onCancel = this.onCancel.bind(this);
-    this.onDone  = this.onDone.bind(this);
+    bindAll( this, 'onCancel', 'onDone' );
   }
 
   isSwitchEditMode() {
@@ -122,28 +127,35 @@ class InputPropertyExpando extends InputPropertyMixin(PropertyState(React.Compon
   
   render() {
     return (<span onChange={this.onChange.bind(this)}>
-              <InputExpando {...this.props} value={this.property.editable} onDone={this.onDone} />
+              <InputExpando 
+                {...this.props} 
+                propOwned
+                value={this.state.scratch} 
+                onCancel={this.onCancel} 
+                onDone={this.onDone} 
+              />
             </span>);
   }
 }
 
 class InputToggleModeProperty extends InputPropertyMixin(ToggleEditModeProperty.Field)
 {
-  constructor() {
-    super(...arguments);
-  }
-
   get editableElement() {
     return this.control;
   }
 
   get staticElement() {
-    return { Element: FormControl, props: {value: this.state.value} };
+    return { 
+      Element: FormControl, 
+      props: {
+        value: this.property.value
+      } 
+    };
   }
   
 }
 
-InputProperty.Toggle = InputToggleModeProperty;
+InputProperty.Toggle  = InputToggleModeProperty;
 InputProperty.Expando = InputPropertyExpando;
 
 module.exports = InputProperty;

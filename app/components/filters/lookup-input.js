@@ -4,7 +4,7 @@ import InputProperty  from '../properties/controls/input';
 
 function LookupInput(props)
 {
-  return <InputProperty withCancel allKeys {...props} property={Filter} />;
+  return <InputProperty withCancel allKeys {...props} Property={Filter} />;
 }
 
 module.exports = LookupInput;
