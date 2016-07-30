@@ -16,15 +16,21 @@ const tree = Object.assign(Tiles, {
     return (<SubNav paging store={props.store} className="tree-subnav" tab="remix" />);  
   },
 
-  store(params={},queryParams={}) {
-    const opts = Object.assign({},qc.remixes,qc.latest,'reqtags' in params ? {reqtags:params.reqtags} : {});
+  store( params={}, queryParams={} ) {
+
+    const opts = Object.assign( {},
+                                qc.remixes,
+                                qc.latest,
+                                'reqtags' in params ? {reqtags:params.reqtags} : {} );
+
     const qparams = mergeParams( {}, opts, queryParams );
+
     return Store.storeFromQuery(qparams, opts);
   },
 
   urlFromStore(store) {
     let   path = '/tree';
-    const reqtag = SubNav.isTab(store.model.queryParams.reqtags);
+    const reqtag = SubNav.isTab(store.queryParams.reqtags);
     reqtag && (path += '/' + reqtag);
     return path + store.queryString;
   }

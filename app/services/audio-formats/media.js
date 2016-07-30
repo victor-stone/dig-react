@@ -1,4 +1,3 @@
-import { oassign } from '../../unicorns';
 import Eventer     from '../eventer';
 
 const EMIT_DELAY = 50;
@@ -7,7 +6,7 @@ class Media extends Eventer
 {
   constructor(args) {
     super();
-    oassign(this,args,{
+    Object.assign(this,args,{
       isPlaying:  false,
       isPaused: false,
       positionProperties: {
@@ -22,7 +21,7 @@ class Media extends Eventer
   }
 
   setPositionProperties(bytesLoaded,bytesTotal,position,duration) {
-    oassign(this.positionProperties,{
+    Object.assign(this.positionProperties,{
           bytesLoaded,
           bytesTotal,
           position,

@@ -2,7 +2,7 @@
 import React       from 'react';
 import Field       from './form-field';
 import { bindAll,
-         nextID }  from '../../unicorns';
+         nextId }  from '../../unicorns';
 import Input       from './input';
 import InlineCss   from './inline-css';
 
@@ -38,7 +38,7 @@ class InputExpando extends React.Component
       open: false, 
     };
     
-    ({ id:this.id = nextID('_expando_') } = this.props);
+    ({ id:this.id = nextId('_expando_') } = this.props);
   }
 
   componentDidUpdate() {

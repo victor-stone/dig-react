@@ -10,7 +10,8 @@ import Alert    from '../services/alert';
 import Playlists from '../../stores/playlists';
 import Playlist  from '../../stores/playlist';
 
-import { bindAll }            from '../../unicorns';
+import { bindAll,
+         LibArray }            from '../../unicorns';
 
 import { CurrentUserTracker } from '../../mixins';
 
@@ -66,7 +67,7 @@ class AddToPlaylistPopup extends Modal.Popup {
     this.setState( { error: null } );
 
     if( showList ) {
-      var head = store.model.items.findBy('id',selectedValue);
+      var head = LibArray.from(store.model.items).findBy('id',selectedValue);
       Playlist.storeFromModel(head).addTrack(id).then( () => this._alertAndClose('Track added to playlist') );
     } else {
       Playlist.create(newPlaylistName,id).then( () => this._alertAndClose('New playlist created and track added') );

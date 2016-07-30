@@ -1,5 +1,4 @@
 /* eslint no-console:0 */
-import { oassign } from '../unicorns';
 import Eventer     from './eventer';
 import events      from '../models/events';
  
@@ -10,7 +9,7 @@ class Env extends Eventer {
   }
 
   set(opts) {
-    oassign(this,opts);
+    Object.assign(this,opts);
   }
 
   get(name) {

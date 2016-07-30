@@ -1,5 +1,6 @@
 import rsvp             from 'rsvp';
-import { TagString }    from '../../unicorns';
+import { TagString,
+         LibArray }     from '../../unicorns';
 
 const MAX_CACHE_KEYS = 50;
 
@@ -10,7 +11,7 @@ class TotalsCache {
     this._totals     = new Map();
 
     // TODO: investigate if this should include 't' and 'template'
-    this._skip = [ 'offset', 'limit', 'dataview', 'reqtags', '_', 'f' ];
+    this._skip = LibArray.from([ 'offset', 'limit', 'dataview', 'reqtags', '_', 'f' ]);
   }
 
   cacheableTagFromTags(tags) {

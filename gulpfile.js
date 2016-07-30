@@ -70,14 +70,14 @@ var target = argv.p ? temp_target : './dist';
 
 
 var config = {
-  debug: !argv.p,
-  apihost: apihost || 'ccmixter.org',
-  satellite_host: sathost,
-  buildDate: new Date() + '',
-  app: 'ccmixter',
-  apps: [ 'ccmixter', 'dig' ],
-  satellites: [ 'pells', 'stems', 'playlists' ],
-  target: target
+  debug:          !argv.p,
+  apihost:         apihost || 'ccmixter.org',
+  satellite_host:  sathost,
+  buildDate:       new Date() + '',
+  app:            'ccmixter',
+  apps:           [ 'ccmixter', 'dig' ],
+  satellites:     [ 'pells', 'stems', 'playlists' ],
+  target:         target
 };
 
 config.apps = config.apps.concat(config.satellites);
@@ -119,10 +119,14 @@ function task_make_indecies() {
       './app/components/filters',
       './app/components/playlists/pages',
       './app/components/vanilla',
-      './app/mixins'
+      './app/mixins',
+      './app/models/filters',
+      './app/unicorns/browser',
+      './app/unicorns/react',
+      './app/unicorns/vanilla',
     ];
   return gulp.src(dirs, { base: './' })
-          .pipe(indexJS())
+          .pipe(indexJS(/unicorns/))
           .pipe(gulp.dest(work_target));
 }
 

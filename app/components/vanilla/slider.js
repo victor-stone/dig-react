@@ -1,7 +1,7 @@
 /* globals $ */
 import React        from 'react';
 import { debounce,
-         nextID }   from '../../unicorns';
+         nextId }   from '../../unicorns';
 
 const ONE_HUNDRED = 100;
 
@@ -21,7 +21,7 @@ class Slider extends React.Component
     
     this.state = { value: this.props.value || this.props.min };
     
-    this.id = nextID('_slider_');
+    this.id = nextId('_slider_');
 
     const { debounceDelay = 0 } = this.props;
     

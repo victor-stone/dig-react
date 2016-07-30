@@ -1,6 +1,6 @@
 import React    from 'react';
 
-import { nextID,
+import { nextId,
          selectors,
          bindAll } from '../../unicorns';
 
@@ -13,7 +13,7 @@ class Input extends React.Component
     
     bindAll( this, 'onChange', 'onKeyDown', 'doDone' );
 
-    const { value = '', id = nextID('_input') } = this.props;
+    const { value = '', id = nextId('_input') } = this.props;
 
     this.state = { value };
     

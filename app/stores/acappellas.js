@@ -1,7 +1,7 @@
 import Collection       from './collection';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
-import TotalsCache      from './tools/totals-cache';
+import TotalsCache      from './lib/totals-cache';
 
 const PELL_FILTERS = [ 'featured', 'spoken_word', 'melody', 'rap' ];
 
@@ -16,7 +16,7 @@ class ACappellas extends Collection
 
   fetch(queryParams,deferName) {
     queryParams.dataview = 'default'; // links_by doesn't have bpm
-    return this.query(queryParams,deferName).then( serialize( ccmixter.ACappella ) );
+    return this.query(queryParams,deferName).then( serialize( ccmixter.Upload.ACappella ) );
   }
 
 }

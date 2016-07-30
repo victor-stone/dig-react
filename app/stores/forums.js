@@ -25,7 +25,7 @@ class Forums extends Topics {
 
     const hash = {
       head: this.queryOne(headArgs,'head').then( debugMe ),
-      items: this.query(args,'items').then( serialize( ccmixter.ThreadTopic ) )
+      items: this.query(args,'items').then( serialize( ccmixter.Topic.ThreadTopic ) )
     };
     return this.flushDefers(hash).then( model => this.model = model );
   }

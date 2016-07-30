@@ -1,8 +1,7 @@
 import { ModelTracker } from '../../mixins';
 import SubNavTabs       from '../vanilla/sub-nav-tabs';
 
-import { TagString,
-         oassign }      from '../../unicorns';
+import { TagString }      from '../../unicorns';
 
 /*
   Present nav tabs that will filter a store's query 'reqtags'
@@ -25,11 +24,11 @@ class ReqTagsNavTabs extends ModelTracker(SubNavTabs)
     //this.state = { badges: null, tab: this.props.tab };
   }
 
-  // TODO: replace all oassign with Object.assign
+  // TODO: replace all Object.assign with Object.assign
   get tabs() { 
     const { all, tabs } = this.props;
 
-    return oassign( all ? { all: 'all' } : {}, tabs ); 
+    return Object.assign( all ? { all: 'all' } : {}, tabs ); 
   }
 
   get tab() {

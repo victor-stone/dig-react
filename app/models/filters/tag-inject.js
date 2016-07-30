@@ -1,4 +1,4 @@
-import TagField   from './util/tag-field';
+import TagField   from './lib/tag-field';
 
 /*
   Add a tag
@@ -27,5 +27,7 @@ class TagInject extends TagField
   deserialize() {    
   }
 }
+
+TagInject.propertyName = 'tag-inject';
 
 module.exports = TagInject;

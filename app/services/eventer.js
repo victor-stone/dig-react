@@ -2,6 +2,7 @@
 
 import EventEmitter    from 'events';
 import events          from '../models/events';
+import { LibArray }    from '../unicorns';
 
 var _knownEvents = null;
 function isValidEvent(event) {
@@ -9,7 +10,7 @@ function isValidEvent(event) {
     return true;
   }
   if( !_knownEvents ) {
-    _knownEvents = Object.keys(events).map( e => events[e] );
+    _knownEvents = LibArray.from( Object.keys(events), e => events[e] );
   }
   return _knownEvents.includes(event);
 }

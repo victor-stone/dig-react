@@ -3,6 +3,7 @@ import ccmixter        from '../models/ccmixter';
 import serialize       from '../models/serialize';
 import rsvp            from 'rsvp';
 import { TagString,
+         LibArray,
          hashParams }  from '../unicorns';
 
 const REMIX_CATEGORY_NAMES = ['genre', 'instr', 'mood'];
@@ -18,7 +19,7 @@ class Tags extends Query {
 
   constructor() {
     super(...arguments);
-    this.typeValues = Object.keys(Tags.categories.types).map( t => Tags.categories.types[t] );
+    this.typeValues = LibArray.from( Tags.categories.types, t => Tags.categories.types[t] );
   }
 
   // return a TagString object
@@ -69,7 +70,7 @@ class Tags extends Query {
       return rsvp.resolve(cached.models);
     }
     return this.query(q,deferName)
-            .then( serialize( ccmixter.Tag ) )
+            .then( serialize( ccmixter.Tags.Tag ) )
             .then( models => {
               this._putCache(cached.key,models);
               return models;

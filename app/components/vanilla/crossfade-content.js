@@ -1,5 +1,5 @@
 import React    from 'react';
-import { nextID } from '../../unicorns';
+import { nextId } from '../../unicorns';
 
 
 const DEFAULT_FADE_DURATION = 250;
@@ -8,7 +8,7 @@ class CrossfadeContent extends React.Component {
   constructor() {
     super(...arguments);
     this.state = { elem: this.props.elem };
-    this.id = nextID('fade-group-');
+    this.id = nextId('fade-group-');
   }
 
   componentWillReceiveProps(nextProps) {

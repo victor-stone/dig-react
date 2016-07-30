@@ -1,3 +1,4 @@
+import Property from './property';
 
 /*
   A watchable, abstract-translatable property with state.
@@ -11,8 +12,14 @@
 const PropertyStateful = baseclass => class extends baseclass
 {
   constructor() {
-    super();
+    super(...arguments);
     this._setsDefaultFromNative = false;
+  }
+
+  static deserialize( initValue, Class ) {    
+    const instance = Property.deserialize( initValue, Class );
+    instance._setsDefaultFromNative && (instance._defaultValue = instance._value);
+    return instance;
   }
 
   get isDirty() {
@@ -20,16 +27,10 @@ const PropertyStateful = baseclass => class extends baseclass
   }
 
   reset() {
-    this.value = this._defaultValue;
+    this.isDirty && (this.value = this._defaultValue);
     return this;
   }
 
-  deserialize(val) {
-    super.deserialize(val);
-    if( this._setsDefaultFromNative ) {
-      this._defaultValue = this._value;
-    }
-  }
 };
 
 module.exports = PropertyStateful;

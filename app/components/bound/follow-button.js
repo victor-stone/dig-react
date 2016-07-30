@@ -1,4 +1,7 @@
 import React   from 'react';
+
+import { LibArray } from '../../unicorns';
+
 import {  ModelTracker,
           CurrentUserTracker } from '../../mixins';
 
@@ -29,7 +32,7 @@ class FollowButton extends CurrentUserTracker(ModelTracker(React.Component))
   _calcState(follower,followee) {
     if( follower && followee && followee.id !== follower.id ) {
       return { show: true, 
-               toggle: follower.social.following.findBy( 'id', followee.id ) !== null,
+               toggle: LibArray.from(follower.social.following).findBy( 'id', followee.id ) !== null,
                follower: follower,
                followerId: follower.id,
                followeeId: followee.id };

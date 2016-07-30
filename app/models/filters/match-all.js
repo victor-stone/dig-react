@@ -1,6 +1,7 @@
-import QueryFilter  from '../query-filter';
+import QueryFilter        from '../query-filter';
+import PropertyTranslator from '../property-translator';
 
-class MatchAll extends QueryFilter
+class MatchAll extends PropertyTranslator(QueryFilter)
 {
   constructor() {
     super(...arguments);
@@ -23,6 +24,8 @@ class MatchAll extends QueryFilter
   }
 }
 
-MatchAll.propertyName = 'matchAll';
+Object.assign( MatchAll, {
+  propertyName : 'type',
+});
 
 module.exports = MatchAll;

@@ -1,7 +1,5 @@
 import Property           from './property';
 import PropertyStateful   from './property-stateful';
-import PropertyTranslator from './property-translator';
-
 
 /*
   A QueryFilter is a Property that maps between an abstract filtering on a Collection store
@@ -21,7 +19,7 @@ import PropertyTranslator from './property-translator';
     value. 
 */
 
-class QueryFilter extends PropertyStateful(PropertyTranslator(Property))
+class QueryFilter extends PropertyStateful(Property)
 {
   constructor() {
     super(...arguments);
@@ -29,6 +27,14 @@ class QueryFilter extends PropertyStateful(PropertyTranslator(Property))
     this._defaultValue === null && (this._defaultValue = '');
   }
 
+  onlyHashIfDirty() {
+    return false;
+  }
+  
+  allowStringify() {
+    return true;
+  }
+  
   /*
     The store will use this flag to determine whether the 
     entire model needs to be flushed and refreshed or just

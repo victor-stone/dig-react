@@ -3,8 +3,6 @@ import serialize  from '../models/serialize';
 import ccmixter   from '../models/ccmixter';
 import rsvp       from 'rsvp';
 
-//import { oassign } from '../unicorns';
-
 class Ratings extends Collection {
 
   constructor() {
@@ -24,13 +22,13 @@ class Ratings extends Collection {
       match: id
     };
     return this.query(args)
-      .then( serialize( ccmixter.UserBasic ) )
+      .then( serialize( ccmixter.User.UserBasic ) )
       .then( model => this.model = model );
   }
 
   count(/*queryParams*/) {
     /*
-    var qp = oassign( {}, queryParams );
+    var qp = Object.assign( {}, queryParams );
     qp.dataview = 'count_topics';
     return this.queryOne(qp);
     */

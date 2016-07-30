@@ -7,8 +7,7 @@ import events       from '../models/events';
 import env          from '../services/env';
 import rsvp         from 'rsvp';
 
-import { oassign,
-         cleanSearchString }   from '../unicorns';
+import { cleanSearchString }   from '../unicorns';
 
 const DEFAULT_LIMIT           = 10;
 const DEFAULT_UPLOAD_MINITEMS = 1;
@@ -72,7 +71,7 @@ class Playlists extends Collection {
       }
     }
 
-    var q = oassign( defaults, queryParams || {});
+    var q = Object.assign( defaults, queryParams || {});
       
     if( hasSearch ) {
       q.search = cleanSearchString( q.search );
@@ -88,7 +87,7 @@ class Playlists extends Collection {
 
     return this.flushDefers(model).then( model => {
       this.model = model;
-      this.model.queryParams = oassign( {}, q );
+      this.model.queryParams = Object.assign( {}, q );
       this.notifyPaging();
       this.emit( events.MODEL_UPDATED, model );
       return model;
@@ -97,7 +96,7 @@ class Playlists extends Collection {
 
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName)
-              .then( serialize( ccmixter.Playlist ) )
+              .then( serialize( ccmixter.Playlist.Playlist ) )
               .then( models => this._filterGenreTags(models) );
   }
 
@@ -126,7 +125,7 @@ class Playlists extends Collection {
       playlist: id
     };
     return this.query(q,deferName)
-             .then( serialize( ccmixter.PlaylistTrack ) )
+             .then( serialize( ccmixter.Playlist.PlaylistTrack ) )
              .then( tracks => {
                 tracks.forEach( t => {
                   try {

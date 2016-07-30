@@ -1,4 +1,6 @@
-var changeCase = require('change-case');
+import changeCase    from 'change-case';
+import { quickLoop } from '../unicorns';
+
 /*
   Event name(s) must be returned in 'storeEvents' property
 
@@ -48,15 +50,11 @@ var StoreEvents = target => class extends target {
   }
 
   _subscribeToStoreEvents(store) {
-    for( const event of this.storeEvents ) {
-      store.on( event, this._safeGenericCallback.bind(this,event) );
-    }
+    quickLoop( this.storeEvents, event => store.on( event, this._safeGenericCallback.bind(this,event) ) );
   }
 
   _unsubscribeFromStoreEvents(store) {
-    for( const event of this.storeEvents ) {
-      store.removeListener( event, this._safeGenericCallback.bind(this,event) );
-    }
+    quickLoop( this.storeEvents, event => store.removeListener( event, this._safeGenericCallback.bind(this,event) ) );
   }
 
   _safeGenericCallback(event,...args) {

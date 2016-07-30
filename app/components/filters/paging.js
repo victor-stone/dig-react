@@ -1,8 +1,8 @@
 import React            from 'react';
-import PropertyState    from './mixins/property-state';
+import PropertyState    from '../properties/mixins/property-state';
 import Paging           from '../vanilla/paging';
-import PagingLimit      from '../filters/paging-limit';
-import PagingProperty   from '../../models/properties/paging';
+import PagingLimit      from './paging-limit';
+import PagingProperty   from '../../models/filters/paging';
 
 
 class BoundPaging extends PropertyState(React.Component)

@@ -15,4 +15,4 @@ import Filter from '../filters/tags';
 // underlying record and RPC to the
 // server to set the value
 
-module.export = Filter;
+module.exports = Filter;

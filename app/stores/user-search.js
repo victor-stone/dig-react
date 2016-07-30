@@ -1,6 +1,6 @@
 import rsvp             from 'rsvp';
 import Query            from './query';
-import QueryFilters     from './tools/query-filters';
+import QueryFilters     from './lib/query-filters';
 import { mergeParams }  from '../unicorns';
 import events           from '../models/events';
 import ccmixter         from '../models/ccmixter';
@@ -47,7 +47,7 @@ class UserSearch extends QueryFilters(Query) {
     params.dataview ='user_basic';
     
     return (deferThis || this).query(params,deferName)
-                  .then( serialize( ccmixter.UserBasic ) );
+                  .then( serialize( ccmixter.User.UserBasic ) );
   }
 
   findUser(id,deferName,deferThis) {
@@ -55,14 +55,14 @@ class UserSearch extends QueryFilters(Query) {
       user: id,
       dataview: 'user_basic',
     };
-    return (deferThis || this).queryOne(qparams,deferName).then( serialize( ccmixter.User ) );
+    return (deferThis || this).queryOne(qparams,deferName).then( serialize( ccmixter.User.User ) );
   }
 
   // ids is a comma separated string of id's
   findUsers(ids,deferName) {
     var qp = { ids, t: 'user_list' };
     return this.query(qp,deferName)
-                  .then( serialize( ccmixter.User ) );
+                  .then( serialize( ccmixter.User.User ) );
   }
 
 }

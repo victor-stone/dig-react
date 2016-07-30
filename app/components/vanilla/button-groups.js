@@ -1,6 +1,6 @@
 import React         from 'react';
 import { selectors,
-         nextID }    from '../../unicorns';
+         nextId }    from '../../unicorns';
 import DeadLink      from './dead-link';
 import Glyph         from './glyph';
 
@@ -34,7 +34,7 @@ class _BtnGroup extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.id = this.props.id || nextID('_ida_');
+    this.id = this.props.id || nextId('_ida_');
   }
   
   render() {

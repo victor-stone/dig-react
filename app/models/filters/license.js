@@ -4,14 +4,14 @@ class License extends QueryFilter
 {
   constructor() {
     super(...arguments);
-    this._propName    = 'lic';
+    this._propName    = 'lic',
     this._displayName = 'License';
     this._setsDefaultFromNative = true;
   }
 }
 
 Object.assign(License,{
-  propertyName: 'license',
+  propertyName: 'lic',
   
   options: {
       all: 'all licenses',

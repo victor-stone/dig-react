@@ -4,10 +4,6 @@
 
 const PropertyCollection = baseclass => class extends baseclass
 {
-  constructor() {
-    super();
-  }
-
   toggle(value,toggle) {}
 
   add(value) {}

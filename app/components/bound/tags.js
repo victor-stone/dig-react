@@ -1,7 +1,8 @@
 import React            from 'react';
 import { InlineCss }    from '../vanilla';
-import { TagString }    from '../../unicorns';
-import { bindAll,
+import { TagString,
+         LibArray,
+         bindAll,
          selectors }    from '../../unicorns';
 
 import TagStore         from '../../stores/tags';
@@ -25,7 +26,7 @@ import MatchAllButton from '../filters/match-all';
 */
 
 function tagOccurrances(cat,tags) {
-  var arr = cat.map( t => t.id );
+  var arr = LibArray.from(cat, t => t.id );
   var regx = new RegExp('\\b(' + tags.toString('|') +  ')\\b','g');
   return arr.match(regx).length;
 }

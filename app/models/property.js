@@ -3,19 +3,19 @@ import events  from './events';
 
 class YeOldWatchableJavascriptProperty extends Eventer 
 {
-  constructor() {
+  constructor({ propName = '_unnamed_', displayName = '_Un-Named_'} = {}) {
     super();
     this._value        = undefined;
-    this._propName     = '_unnamed_';
-    this._displayName  = '_Un-Named_';
+    this._propName     = propName;
+    this._displayName  = displayName;
   }
 
-  static deserialize( hash, Class ) {
-    const instance = new Class();
-    instance.deserialize(hash[instance.name]);
+  static deserialize( initValue, Class ) {
+    const instance = new Class;
+    instance.deserialize( initValue );
     return instance;
   }
-
+  
   get displayName() {
     return this._displayName;
   }

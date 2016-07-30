@@ -2,7 +2,7 @@
 import React         from 'react';
 import Link          from '../services/link-to-route';
 import { selectors,
-         nextID } from '../../unicorns';
+         nextId } from '../../unicorns';
 
 
 const linkPrefix = /^https?:\/\//;
@@ -11,7 +11,7 @@ class Topic extends React.Component
 {
   constructor() {
     super(...arguments);
-    this.id = nextID('_topic_body_');
+    this.id = nextId('_topic_body_');
   }
   
   componentDidMount() {

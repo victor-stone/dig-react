@@ -3,14 +3,14 @@
 
 import React          from 'react';
 import MoreOrLessLink from './more-or-less-link';
-import { nextID }     from '../../unicorns';
+import { nextId }     from '../../unicorns';
 
 const MAX_PREVIEW_LENGTH = 220;
 
 var CollapsingText = React.createClass({
 
   getDefaultProps() {
-    return { id: nextID('_collapsing_text_') };
+    return { id: nextId('_collapsing_text_') };
   },
 
   getInitialState() {

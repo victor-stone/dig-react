@@ -11,7 +11,7 @@ class Samples extends Collection {
 
   fetch(queryParams,deferName) {
     queryParams.dataview = 'default'; // links_by doesn't have bpm
-    return this.query(queryParams,deferName).then( serialize( ccmixter.Sample ) );
+    return this.query(queryParams,deferName).then( serialize( ccmixter.Upload.Sample ) );
   }
 }
 

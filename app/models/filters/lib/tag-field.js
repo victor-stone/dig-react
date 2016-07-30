@@ -1,5 +1,6 @@
-import QueryFilter   from '../../query-filter';
-import { TagString } from '../../../unicorns';
+import QueryFilter        from '../../query-filter';
+import PropertyTranslator from '../../property-translator';
+import { TagString }      from '../../../unicorns';
 
 /*
   Derivations are assumed to hold one tag (or a
@@ -15,7 +16,7 @@ import { TagString } from '../../../unicorns';
   @param tagField determins the name of the
                   query parameter as in ?tagField
 */
-class TagField extends QueryFilter
+class TagField extends PropertyTranslator(QueryFilter)
 {
   constructor(tagField,defaultValue = null) {
     super();

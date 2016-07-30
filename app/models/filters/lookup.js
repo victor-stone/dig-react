@@ -14,6 +14,8 @@ class Lookup extends QueryFilter
   }
 }
 
-Lookup.propertyName = 'lookup';
+Object.assign( Lookup, {
+  propertyName: 'lookup',
+});
 
 module.exports = Lookup;

@@ -15,26 +15,36 @@ const Properties = target => class extends target {
     this.onPropertyChange = this.onPropertyChange.bind(this);
   }
 
-  addProperty(PropertyClass) {
+  addProperty( PropertyClass, initialValue ) {
 
-    if( this._properties.has(PropertyClass) ) {
-      return this._properties.get(PropertyClass);
+    const { propertyName:name } = PropertyClass;
+
+    if( this._properties.has(name) ) {
+      return this._properties.get(name);
     }
     
-    const property = PropertyClass.deserialize( this.nativeProperties, PropertyClass );
-    
+    const property = PropertyClass.deserialize( initialValue, PropertyClass );
+
     property.onChange( this.onPropertyChange );
 
-    this._properties.set(PropertyClass, property);
+    this._properties.set(name, property);
     
     return property;
   }
 
-  getProperty(PropertyClass) {
-    return this._properties.get(PropertyClass);
+  getProperty(PropertyClassOrName) {
+
+    const { propertyName:name = PropertyClassOrName } = PropertyClassOrName;
+
+    return this._properties.get(name);
+  }
+
+  hasProperty(name) {
+    return this._properties.has(name);
   }
 
   onPropertyChange(property) {
+
     if( property._pleaseToIgnore ) {
       return;
     }
@@ -59,10 +69,6 @@ const Properties = target => class extends target {
         delete property._pleaseToIgnore;
       });
     }
-  }
-
-  get nativeProperties() {
-    return this;
   }
 
 };

@@ -83,13 +83,12 @@ const UPLOAD_FILTER = /(remix|editorial_pick|sample|acappella)/;
 class PeoplePage extends ModelTracker(React.Component)
 {
   render() {
-    const { store, store:{error,model} } = this.state;
+    const { store, store:{error,model,queryParams:qp} } = this.state;
 
     if( error ) {
       return (<div className="well"><h1>{"wups, can't find that artist"}</h1></div>);
     }
     
-    var qp = model.queryParams;
     var showHeader = !(('offset' in qp) && parseInt(qp.offset) > 0) &&
                      !TagString.filter(qp.reqtags, UPLOAD_FILTER).getLength();
 

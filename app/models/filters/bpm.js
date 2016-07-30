@@ -1,4 +1,4 @@
-import TagSwap from './util/tag-swap';
+import TagSwap from './lib/tag-swap';
 
 const TAG_FILTER     = /^bpm_([0-9]{3})_([0-9]{3})$/;
 const ONE_HUNDRED    = 100;
@@ -33,5 +33,6 @@ class BPM extends TagSwap
 }
 
 BPM.propertyName = 'bpm';
+
 
 module.exports = BPM;

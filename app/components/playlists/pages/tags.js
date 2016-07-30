@@ -9,7 +9,7 @@ function Tags(props) {
   const { store } = props;
   return (        
     <div className="container-fluid playlist-tags-page">
-      <PageHeader icon="tags" subTitle="tags" title={store.model.queryParams.tags} />
+      <PageHeader icon="tags" subTitle="tags" title={store.queryParams.tags} />
       <Browse store={store} />
     </div>
   );

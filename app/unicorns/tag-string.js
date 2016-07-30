@@ -1,3 +1,4 @@
+import LibArray from './lib-array';
 
 /**
     Manipulate tags with ccHost policies in mind
@@ -43,24 +44,8 @@
         tags3.remove('fee'); // fie
 */
 
-const NOT_FOUND = -1;
-
-function contains(arr,obj) {
-  return arr.indexOf(obj) !== NOT_FOUND;
-}
-
 function removeObject(arr,obj) {
   arr.splice( arr.indexOf(obj), 1 );
-}
-
-function find(arr,matcher)
-{
-  for( var i = 0; i < arr.length; i++ ) {
-    if( matcher(arr[i]) === true ) {
-      return true;
-    }
-  }
-  return false;
 }
 
 function compare(arr1,arr2,isDiff) {
@@ -109,7 +94,7 @@ class TagString
 
     Object.assign(this,{ignore,invalid,separator});
 
-    this._tagsArray = Array.isArray(src) ? src.slice() : TagString.toArray(src,this.opts);
+    this._tagsArray = LibArray.from( Array.isArray(src) ? src : TagString.toArray(src,this.opts) );
   }
 
   
@@ -138,7 +123,7 @@ class TagString
       if( !!tag && 
           tag.match(ignore) === null &&
           tag.match(invalid) === null && 
-          !contains(arr,tag) ) 
+          !arr.contains(tag) ) 
       {
         arr.push(tag);
       }
@@ -152,7 +137,7 @@ class TagString
     var arr = this._tagsArray;
 
     function safeRemove(tag) {
-        if( contains(arr,tag) ) {
+        if( arr.contains(tag) ) {
           removeObject(arr,tag);
         }
     }
@@ -170,7 +155,7 @@ class TagString
   }
           
   removeAll() {
-    this._tagsArray = [ ];
+    this._tagsArray = LibArray.from([ ]);
     return this;
   }
            
@@ -287,7 +272,9 @@ class TagString
     var tagArr = this._tagsArray;
     if( tagArr.length > 0 ) {
         var sep = withSeparator || this.separator;
-        return tagArr.join(sep);
+        // sorting here allows for === comparisons between
+        // two TagStrings
+        return tagArr.slice().sort().join(sep);
     }
     return '';
   }

@@ -1,13 +1,13 @@
 import React     from 'react';
 
-import { nextID } from '../../unicorns';
+import { nextId } from '../../unicorns';
 
 class CheckBox extends React.Component
 {
   constructor() {
     super(...arguments);
     this.state = { checked: this.props.checked };
-    this.id = this.props.id || nextID('_check_box_');
+    this.id = this.props.id || nextId('_check_box_');
   }
 
   componentWillReceiveProps(nextProps) {

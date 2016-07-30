@@ -38,12 +38,18 @@ class Paging  extends QueryFilter
     return this._value.offset;
   }
 
+  deserialize(value) {
+    if( typeof value === 'number' ) {
+      value = Object.assign({}, this._value || {}, {offset:value} );
+    }
+    super.deserialize(value);
+  }
   get isDirty() {
     // does not participate in 'reset'
     return false; 
   }
 }
 
-Paging.propertyName = 'total';
+Paging.propertyName = 'offset';
 
 module.exports = Paging;

@@ -15,8 +15,9 @@ class Search extends QueryFilter
   get isDirty() {
     return false; // never need to 'reset'
   }
+
 }
 
-Search.propertyName = 'search';
+Search.propertyName = 'searchp';
 
 module.exports = Search;

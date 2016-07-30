@@ -1,9 +1,9 @@
-import { oassign } from '../unicorns';
-import Eventer     from '../services/eventer';
-import MP3         from './audio-formats/mp3';
-import FLAC        from './audio-formats/flac';
-import Media       from './audio-formats/media';
-import events      from '../models/events';
+import { LibArray } from '../unicorns';
+import Eventer      from '../services/eventer';
+import MP3          from './audio-formats/mp3';
+import FLAC         from './audio-formats/flac';
+import Media        from './audio-formats/media';
+import events       from '../models/events';
 
 const NOT_FOUND  = -1;
 const FOWARD     = 1;
@@ -66,7 +66,7 @@ class AudioPlayer extends Eventer
   }
   
   set playlist(playlist) {
-    this._playlist = playlist;
+    this._playlist = LibArray.from(playlist);
     this.emit( events.PLAYLIST, playlist);
   }
 
@@ -107,17 +107,13 @@ class AudioPlayer extends Eventer
   _nowPlayingIndex() {
     var index = NOT_FOUND;
     var pl = this._playlist;
-    if( pl && this.nowPlaying ) {
-      index = pl.indexOf( pl.findBy('mediaURL',this.nowPlaying.url) );
-    }
+    pl && this.nowPlaying && (index = pl.indexOf( pl.findBy('mediaURL',this.nowPlaying.url) ));
     return index;
   }
   
   _onPlay(media) {
     var np = this.nowPlaying;
-    if( np && np !== media ) {
-      np.stop();
-    }
+    np && np !== media && np.stop();
     this.nowPlaying = media;
     this._updatePlaylist();
     media.once('finish',this._onFinish.bind(this));
@@ -149,19 +145,17 @@ class AudioPlayer extends Eventer
       return playable.media;
     }
 
-    var media = null;
-    var url   = playable.mediaURL;
-    var cache = this._mediaCache;
+    let media = null;
+
+    const { mediaURL:url, mediaTags, isFLAC } = playable;
+
+    const { _mediaCache:cache } = this;
 
     if (cache[url]) {
       media = cache[url];
     } else {  
-      var args = oassign( { url: url },  playable.mediaTags );
-      if( playable.isFLAC ) {
-        media = new FLAC(args);
-      } else {
-        media = new MP3(args);
-      }
+      var args = Object.assign( { url }, mediaTags );
+      media = isFLAC ? new FLAC(args) : new MP3(args);
       media.on('play',this._onPlay.bind(this));
       cache[url] = media;
     }

@@ -12,7 +12,7 @@ class Sort extends QueryFilter
 }
 
 Object.assign(Sort,{
-  propertyName: 'Sort',
+  propertyName: 'digrank',
   
   options: {
       [qc.magicSort.digrank]: 'magic sort',

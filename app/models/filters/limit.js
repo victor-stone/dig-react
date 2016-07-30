@@ -1,23 +1,10 @@
-import QueryFilter  from '../query-filter';
+import makeQueryFilter  from '../query-filter-make';
 
-class Limit extends QueryFilter
-{
-  constructor() {
-    super(...arguments);
-    
-    this._propName    = 'limit';
-    this._displayName = 'Limit';
+const Limit = module.exports = makeQueryFilter({
+  propName: 'limit',
+  displayName: 'display',
+});
 
-    this._setsDefaultFromNative = true;
-  }
-  
-  get isDirty() {
-    // does not participate in 'reset'
-    return false; 
-  }
-}
-
-Limit.propertyName = 'limit';
 Limit.MIN_LIMIT    = 10;
 
 module.exports = Limit;

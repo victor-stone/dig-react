@@ -11,10 +11,10 @@ class Playlists extends API
     let q = '';
     if( queryParamsString ) {
       q = queryParamsString + '&title=' + name;
-      return this.call('playlist/create/dynamic?' + q).then( serialize( ccmixter.Playlist ) );      
+      return this.call('playlist/create/dynamic?' + q).then( serialize( ccmixter.Playlist.Playlist ) );      
     }
     q = `name=${name}&cart_description=${description}`;
-    return this.call(`playlist/create/${track}?${q}`).then( serialize( ccmixter.Playlist ) );
+    return this.call(`playlist/create/${track}?${q}`).then( serialize( ccmixter.Playlist.Playlist ) );
   }
 
   deletePlaylist(id) {

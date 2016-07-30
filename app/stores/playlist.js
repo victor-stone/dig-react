@@ -2,7 +2,7 @@ import rsvp             from 'rsvp';
 import Query            from './query';
 import Collection       from './collection';
 
-import Properties       from './tools/properties';
+import Properties       from './lib/properties';
 
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
@@ -28,7 +28,7 @@ class PlaylistTracks extends Permissions(Collection) {
 
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName)
-              .then( serialize(ccmixter.PlaylistTrack) );
+              .then( serialize(ccmixter.Playlist.PlaylistTrack) );
   }
 }
 
@@ -252,7 +252,7 @@ class Playlist extends Permissions(Properties(Query)) {
       ids: id,
     };
     return this.queryOne(q)
-      .then( serialize( ccmixter.PlaylistHead ) )
+      .then( serialize( ccmixter.Playlist.PlaylistHead ) )
       .then( this.getPermissions.bind(this) );
   }
 

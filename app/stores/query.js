@@ -1,6 +1,7 @@
 import rsvp             from 'rsvp';
 import Eventer          from '../services/eventer';
 import queryAjaxAdapter from '../services/query-ajax-adapter';
+import { LibArray }     from '../unicorns';
 
 class Query extends Eventer
 {
@@ -56,7 +57,7 @@ class Query extends Eventer
 
   countParams(qparams) {
     const countParams = { f: 'count' };
-    const exclude = [ 'limit', 'digrank', 'sort', 'ord', 'f', 'format' ];
+    const exclude = LibArray.from([ 'limit', 'digrank', 'sort', 'ord', 'f', 'format' ]);
     for( var k in qparams ) {
       !exclude.contains(k) && qparams[k] && (countParams[k] = qparams[k]);
     }

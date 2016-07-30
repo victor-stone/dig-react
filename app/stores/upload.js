@@ -4,7 +4,7 @@ import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import events           from '../models/events';
 import api              from '../services/ccmixter';
-import Properties       from './tools/properties';
+import Properties       from './lib/properties';
 import Permissions      from '../mixins/permissions';
 
 
@@ -172,7 +172,7 @@ class Upload extends Permissions(Properties(Query)) {
       ord: 'desc',
       limit: Upload.MAX_TRACKBACK_FETCH
     };
-    return this.query(trackbacksQ,deferName).then( serialize( ccmixter.Trackback ) );
+    return this.query(trackbacksQ,deferName).then( serialize( ccmixter.Upload.Trackback ) );
   }
   
   remixes(forId,deferName) {
@@ -182,7 +182,7 @@ class Upload extends Permissions(Properties(Query)) {
       sort: 'date',
       ord: 'desc'
     };
-    return this.query(remixesQ,deferName).then( serialize( ccmixter.RemixOf ) );
+    return this.query(remixesQ,deferName).then( serialize( ccmixter.Upload.RemixOf ) );
   }
   
   sources(forId,deferName) {
@@ -191,7 +191,7 @@ class Upload extends Permissions(Properties(Query)) {
       dataview: 'links_u',
       datasource: 'uploads'
     };
-    return this.query(sourcesQ,deferName).then( serialize( ccmixter.Source ) );
+    return this.query(sourcesQ,deferName).then( serialize( ccmixter.Upload.Source ) );
   }
   
   info(id,deferName) {
@@ -199,7 +199,7 @@ class Upload extends Permissions(Properties(Query)) {
       ids: id,
       dataview: 'default'
     };    
-    return this.queryOne(uploadQ,deferName).then( serialize( ccmixter.Detail ) );
+    return this.queryOne(uploadQ,deferName).then( serialize( ccmixter.Upload.Detail ) );
   }
   
   refresh() {

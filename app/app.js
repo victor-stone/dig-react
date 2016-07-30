@@ -5,7 +5,8 @@ import router      from './services/router';
 import env         from './services/env';
 import events      from './models/events';
 
-import { browserScripts,
+import { scrollToHash,
+         scrollToTop,
          bindAll }        from './unicorns';
 import Banner             from './components/banner';
 import AudioPlayer        from './components/audio-player';
@@ -58,7 +59,7 @@ class App extends React.Component
   onNavigateToThis() {
     if( !this.state.hash ) {
       if( !env.disableAutoScroll ) {
-        browserScripts.scrollToTop();
+        scrollToTop();
       }
     }
   }
@@ -84,7 +85,7 @@ class App extends React.Component
   scrollToHash() {
     var hash = this.state.hash;
     if( hash ) {
-      browserScripts.scrollToHash(hash);
+      scrollToHash(hash);
     }
   }
 

@@ -1,6 +1,7 @@
-import QueryFilter  from '../query-filter';
+import QueryFilter        from '../query-filter';
+import PropertyTranslator from '../property-translator';
 
-class UnmixedOnly extends QueryFilter
+class UnmixedOnly extends PropertyTranslator(QueryFilter)
 {
   constructor() {
     super(...arguments);
@@ -21,6 +22,8 @@ class UnmixedOnly extends QueryFilter
   }
 }
 
-UnmixedOnly.propertyName = 'UnmixedOnly';
+Object.assign( UnmixedOnly, {
+  propertyName  : 'remixmax',
+});
 
 module.exports = UnmixedOnly;

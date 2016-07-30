@@ -1,7 +1,7 @@
 import Remixes     from './remixes';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
-import TotalsCache from './tools/totals-cache';
+import TotalsCache from './lib/totals-cache';
 import events      from '../models/events';
 
 const USER_FILTERS      = [ 'editorial_pick', 'remix', 'acappella', 'sample' ];
@@ -19,7 +19,7 @@ class User extends Remixes {
       dataview: 'user_info',
     };
     return this.queryOne(queryParams,deferName)
-      .then( serialize(ccmixter.UserProfile) );
+      .then( serialize(ccmixter.User.UserProfile) );
   }
 
   followers(id) {
@@ -28,7 +28,7 @@ class User extends Remixes {
       dataview: 'followers'
     };
     return this.queryOne(queryParams)
-      .then( serialize(ccmixter.Followers) )
+      .then( serialize(ccmixter.User.Followers) )
       .then( model => {
         if( this.model && this.model.artist ) {
           this.model.artist.social = model;

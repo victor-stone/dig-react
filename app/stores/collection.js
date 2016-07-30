@@ -1,16 +1,159 @@
 import querystring  from 'querystring';
 import Query        from './query';
-import QueryFilters from './tools/query-filters';
+import QueryFilters from './lib/query-filters';
 import events       from '../models/events';
-import Tags         from './tags';
+import TagStore     from './tags';
 import UserSearch   from './user-search';
 
 import { hashParams,
+         hashCode,
+         quickLoop,
          cleanSearchString,
          TagString }   from '../unicorns';
 
-import PagingProperty   from '../models/properties/paging';
+import makeQueryFilter from '../models/query-filter-make';
 
+/*
+*/
+class FilterFactory 
+{
+  constructor({ filters = [] }) {
+    
+    this._filters = new Map();
+
+    quickLoop( Object.keys(filters), key => {
+      const filter = filters[key];
+      const { propertyName } = filter;
+      this._filters.set( propertyName, filter ); 
+    });
+    
+  }
+
+  get filterClasses() {
+    return Array.from(this._filters.values());
+  }
+
+  makeFilter( propName ) {
+    
+    if( this._filters.has(propName) ) {
+      return this._filters.get(propName);
+    }
+
+    return makeQueryFilter({ propName });
+  }
+}
+
+const ccMixterFilterFactory = new FilterFactory( { filters: require('../models/filters') });
+
+/*
+    This class operates on the properties of a store. Specifically, the 
+    properties that are derivations of QueryFilter.
+
+*/
+class QueryParameters
+{
+  constructor({ 
+      store,
+      filterFactory
+    }) 
+  {
+    this._store     = store;
+    this._factory   = filterFactory;
+  }
+
+  /*
+    injest a hash of query parameters
+  */
+  deserialize( hash ) {
+
+    const store = this._store;
+
+    store.isFilterEventsDisabled = true;
+    quickLoop( Object.keys(hash), propName => this.setFilterValue( propName, hash[propName] ) );
+    store.isFilterEventsDisabled = false;
+
+    return this;
+  }
+
+  /*
+    emit a hash of query parameters 
+  */
+  serialize() {
+    return this._getHash();
+  }
+
+  /*
+    emit a hash of 'display' values
+  */
+  values() {
+
+    // The actual current values for the set of query params is a calcuated
+    // value. Therefore the values in the native filters can not be relied
+    // upon. e.g. the 'tags' native filter's does not necessarily reflect the
+    // the current value in the 'instrumentOnly' virtual filter.
+
+    // Step 1. get the current native hash
+    //
+    const hash = this._getHash();
+
+    // Step 2. apply the native hash to the native filters
+    //
+    this.deserialize(hash);
+
+    // Step 3. isolate the native filters (their propName is the same as their map index name)
+    //
+    const nativeFilters = this._store.queryFilters.filter( ([n,f]) => n === f.name );
+
+    // Step 4: fetch the display value for each
+    //
+    quickLoop( nativeFilters, ([n,f]) => hash[n] = f.value );
+
+    return hash;
+  }
+
+
+  /*
+      emit a query string ?foo=bar&etc=fee
+  */
+  toString() {
+
+    const qp = this._getHash();
+
+    return querystring.stringify(qp);
+
+  }
+
+  /*
+      set the native value of a query parameter
+  */
+  setFilterValue( propName, value ) {
+    const store = this._store;
+    store.hasProperty( propName ) 
+      ? store.getProperty( propName ).deserialize( value )
+      : store.addProperty( this._factory.makeFilter( propName ), value );
+  }
+
+  _getHash() {
+    const store = this._store;    
+
+    const qp = {};
+
+    const virutalFilters = [];
+
+    quickLoop( store.queryFilters, ([propName,filter]) => {
+      const { name } = filter;
+      if( propName === name ) {
+        qp[name] = filter.serialize();
+      } else {
+        virutalFilters.push(filter);
+      }
+    });
+
+    quickLoop( virutalFilters, f => qp[f.name] = f.serialize(qp[f.name]) );
+
+    return qp;
+  }
+}
 
 /*
   Collection stores support, a minimum, a model that
@@ -24,135 +167,85 @@ import PagingProperty   from '../models/properties/paging';
       artist   -  'user' a profile of an user
       artists  - 'searchp' search results in user database
       genres   - 'searchp' search results in genre tags
-      totals   - hash of totals for reqtags (see ./tools/totals-cache)
+      totals   - hash of totals for reqtags (see lib/totals-cache)
 
 */
 const MIN_GENRE_TAG_SIZE = 2;
 
 class Collection extends QueryFilters(Query) {
 
-  constructor(defaultParams) {
+  constructor(defaultParams)
+  {
     super(...arguments);
     this.model          = {};
-    this._defaultParams = defaultParams || {};
+
     this.gotCache       = false;
     this._tags          = null;
-    this.tagFields      = ['tags', 'reqtags', 'oneof'];
+
     this.totalsCache    = null;
     this.autoFetchUser  = true;
 
-    this.addProperty(PagingProperty);
+    this._queryParams = new QueryParameters({ store:this, filterFactory: ccMixterFilterFactory });
+
+    defaultParams && this._queryParams.deserialize( defaultParams );
   }
 
   get supportsOptions() {
     return true;
   }
 
-  /*
-    the definition of 'default' here are parameters that 
-    not included when generating a URL query string.
-  */
-  get defaultParams() {
-    return this._defaultParams;
-  }
-
   get queryString() {
-    const qs = this._queryString(false);
+    const qs = this._queryParams.toString();
     return qs ? '?' + qs : '';
   }
 
   get queryStringWithDefaults() {
-    return this._queryString(true);
+    return this._queryParams.toString(true);
   }
 
   get queryParams() {
-    return this._expandQP(this.model.queryParams);
+    return this._queryParams.values();
   }
   
-  get tagStore() {
-    !this._tags && (this._tags = new Tags());
-    return this._tags;
-  }
-
-  get userSearch() {
-    !this._userSearch && (this._userSearch = new UserSearch());
-    return this._userSearch;
-  }
-
   onModelUpdated(handler) {
     this.on( events.MODEL_UPDATED, handler );
   }
 
+  _applyAndGetAP(qp) {
+    return this._queryParams.deserialize(qp).serialize();
+  }
+
   refresh(queryParams) {
-    return this.fetch(queryParams)
+    var qp = this._applyAndGetAP(queryParams);
+    return this.fetch(qp)
                 .then( items => {
                   this.model.items = items;
-                  this.onModelSuccess(this.model,queryParams);
+                  this.onModelSuccess(this.model,qp);
                   return this.model;
-                }, e => this.onModelError(e,queryParams) );
+                }, e => this.onModelError(e,qp) );
   }
 
   refreshModel(queryParams) {
     queryParams.offset = 0;
-    return this.getModel(this._qp(queryParams));
+    var qp = this._applyAndGetAP(queryParams);
+    return this.getModel( qp );
   }
 
   getModel( queryParams ) {
-    const { totalsCache } = this;
-    if( totalsCache ) {
-      const { reqtags } = queryParams;
-      var tag = totalsCache.cacheableTagFromTags( reqtags );
-      if( tag ) {
-        /*
-          There's been a query for a reqtag that's part of the 
-          'totals' count. Tell the cache to create/fetch all
-          the totals. The result of this will be picked up
-          in _getModel.
-        */
-        return totalsCache.getTotals(queryParams,this).then( totals => {
-          /*
-              WARNING: BIG POLICY ASSUMPTION BURIED IN THE BOWELS AHEAD:
+    var qp = this._applyAndGetAP(queryParams);
 
-              The use case assumed here is that there are several nav tabs
-              that represent reqtags. 
-
-              There are several cases within that scenario where the 
-              requesting nav tab (i.e. reqtag) return no results (like
-              the default tab 'edpick' for a user that doesn't have 
-              any edpicks or if the url goes directly to 'spoken word'
-              for a bpm filtered acappella query that returns no 
-              results, etc. etc.)
-
-              In that case we assume the caller will want the 'all'
-              case returned and will notice when checking the 'totals'
-              part of the model that the requested reqtag doesn't
-              have any results.
-
-              TODO: don't assume this behavoir and have a policy flag 
-                    to determine how to handle these cases.
-
-          */
-          if( !totals[tag] ) {
-            queryParams.reqtags = new TagString(reqtags).remove(tag).toString();
-          }
-          /*
-            OK, the 'totals' cache has been set up, now it time to get the
-            actual query requested here.
-          */
-          return this._getModel(queryParams);
-        });
-      }
+    if( this.totalsCache ) {
+      return this.doTotalsCachePreFetch(qp);
     }
-    return this._getModel(queryParams);
+    return this._getModel(qp);
   }
 
   _getModel(queryParams) {
+
     if( !('dataview' in queryParams) && !('t' in queryParams) ) {
       queryParams.dataview = 'links_by';
     }
     
-    queryParams.offset = queryParams.offset || 0;
-
     var hasSearch = 'searchp' in queryParams;
 
     if( hasSearch ) {
@@ -219,12 +312,21 @@ class Collection extends QueryFilters(Query) {
       total, 
       items: { length }, 
       queryParams: { 
-        offset,
+        offset = 0,
         limit 
       } 
     } = this.model;
 
-    this.setPropertyValue( PagingProperty, { offset, limit, total, length } );
+    this.setQueryParamValue( 'offset', { offset, limit, total, length } );
+  }
+
+  /*
+    set a queryParam's native value
+  */
+  setQueryParamValue( name, nativeValue ) {
+    this.isFilterEventsDisabled = true;
+    this._queryParams.setFilterValue( name, nativeValue );
+    this.isFilterEventsDisabled = false;    
   }
 
   onModelError( e, queryParams ) {
@@ -247,18 +349,13 @@ class Collection extends QueryFilters(Query) {
     return hash;
   }
 
-  profileFor(user,deferName) {
-    return this.userSearch.findUser(user,deferName,this);
-  }
-
-
   // TODO: investigate generalizing cachedFetch
   
   cachedFetch(queryParams, deferName) {
     if( !this.gotCache ) {
       // tell ccHost to use a cache if it's there
       var qp = Object.assign( {}, queryParams);
-      qp['cache'] = '_' + hashParams(queryParams).hashCode();
+      qp['cache'] = '_' + hashCode(hashParams(queryParams));
       // we're only doing this once per instance of this class, here's why:
       // we don't want the cache at ccHost to grow needlessly. Roughly 99.999%
       // of users come to dig and ccMixter and see the same 5 pages. If all
@@ -271,87 +368,73 @@ class Collection extends QueryFilters(Query) {
     return this.fetch(queryParams,deferName);
   }
 
-  /* private */
-
-  _expandQP(queryParams) {
-    var qp   = Object.assign( {}, queryParams );
-    this.tagFields.forEach( f => qp[f] = new TagString(qp[f]) );
-    return qp;
-  }
-
-  _qp(queryParams) {
-
-    // paste over model's queryParams
-    const qp = this.model.queryParams;
-
-    for( var k in queryParams ) {
-
-      let value = queryParams[k];
-
-      // TagStrings and Number will become strings here
-
-      value = ( typeof value === 'undefined' || value === null ) ? '' : value + '';
-
-      if( value.length ) {
-        qp[k] = value;
-      } else if( k in qp ) {
-        // the parameter k used to have a value, now it doesn't
-        delete qp[k];
-      }
-
-    } 
-
-    return qp;
-  }
-
-  _queryString(withDefault) {
-    const qp   = this.model.queryParams;
-    const defs = this._defaultParams;
-    const copy = withDefault ? Object.assign( {}, defs) : {};
-    const skip = [ 'f', 'dataview', 'reqtags'];
-
-    for( const paramName in qp ) {
-      if( skip.includes(paramName) ) {
-        continue;
-      }
-      const value = qp[paramName].toString();
-
-      if( !value ) {
-        continue;
-      }
-      
-      if( paramName === 'offset' ) {
-        if( qp.offset > 0 ) {
-          copy.offset = value;
-        }
-      } else {
-        if( !withDefault && paramName in defs ) {
-          if( this.tagFields.includes(paramName) ) {
-            if( value && !(new TagString(defs[paramName])).isEqual(value) ) {
-              copy[paramName] = value;
-            }
-          } else {
-            if( value + '' !== defs[paramName] + '' ) {
-              copy[paramName] = value;
-            }
-          }
-        } else {
-          if( value ) {
-            copy[paramName] = value;
-          }
-        }
-      }
-    }
-    return querystring.stringify(copy);    
-  }
-
   // TODO: this and all mention of 'reqtags' need to be factored out of here
   
   get currentReqtag() {
     return this.totalsCache.filter(this.model.queryParams.reqtags).toString();
   }
 
+  get tagStore() {
+    !this._tags && (this._tags = new TagStore());
+    return this._tags;
+  }
 
+  get userSearch() {
+    !this._userSearch && (this._userSearch = new UserSearch());
+    return this._userSearch;
+  }
+
+  profileFor(user,deferName) {
+    return this.userSearch.findUser(user,deferName,this);
+  }
+
+  doTotalsCachePreFetch(queryParams) {
+    const { totalsCache } = this;
+    const { reqtags } = queryParams;
+    var tag = totalsCache.cacheableTagFromTags( reqtags );
+    if( tag ) {
+      /*
+        There's been a query for a reqtag that's part of the 
+        'totals' count. Tell the cache to create/fetch all
+        the totals. The result of this will be picked up
+        in _getModel.
+      */
+      return totalsCache.getTotals(queryParams,this).then( totals => {
+        /*
+            WARNING: BIG POLICY ASSUMPTION BURIED IN THE BOWELS AHEAD:
+
+            The use case assumed here is that there are several nav tabs
+            that represent reqtags. 
+
+            There are several cases within that scenario where the 
+            requesting nav tab (i.e. reqtag) return no results (like
+            the default tab 'edpick' for a user that doesn't have 
+            any edpicks or if the url goes directly to 'spoken word'
+            for a bpm filtered acappella query that returns no 
+            results, etc. etc.)
+
+            In that case we assume the caller will want the 'all'
+            case returned and will notice when checking the 'totals'
+            part of the model that the requested reqtag doesn't
+            have any results.
+
+            TODO: don't assume this behavoir and have a policy flag 
+                  to determine how to handle these cases.
+
+        */
+        if( !totals[tag] ) {
+          queryParams.reqtags = new TagString(reqtags).remove(tag).toString();
+        }
+        /*
+          OK, the 'totals' cache has been set up, now it time to get the
+          actual query requested here.
+        */
+        return this._getModel(queryParams);
+      });
+    }
+
+  }
+  
 }
 
 module.exports = Collection;

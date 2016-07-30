@@ -1,6 +1,5 @@
 import React    from 'react';
 import Topics   from '../stores/topics';
-import { trim } from '../unicorns';
 import env      from '../services/env';
 
 const Banner = React.createClass({
@@ -14,8 +13,7 @@ const Banner = React.createClass({
       var store = new Topics();
       store.find( env.bannerTopic )
         .then( topic => {
-          var hasText = topic.text && (trim(topic.text).length > 0);
-          if( hasText ) {
+          if( topic.text && topic.text.trim().length > 0 ) {
             this.setState( { topic } );
           }
         });

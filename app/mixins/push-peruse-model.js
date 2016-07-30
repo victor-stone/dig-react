@@ -1,5 +1,6 @@
 import lookup            from '../services';
 import events            from '../models/events';
+import { LibArray } from '../unicorns';
 
 const PushPeruseModel = target => class extends target {
 
@@ -22,9 +23,11 @@ const PushPeruseModel = target => class extends target {
   }
 
   onPreNavigate( navInfo ) {
-    if( navInfo.path.match( /^\/files\//) ) {
+    const { path } = navInfo;
+    const paths = LibArray.from( Array.isArray(path) ? path : [path] );
+    if( paths.match( /^\/files\//) ) {
       lookup('env').set({
-        perusingModel: this.props.store.model.items.map( t => {
+        perusingModel: LibArray.from( this.props.store.model.items, t => {
           return {
             id: t.id,
             name: t.name,

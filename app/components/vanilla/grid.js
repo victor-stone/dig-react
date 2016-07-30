@@ -1,5 +1,6 @@
 import React            from 'react';
 import { selectors,
+         quickLoop,
          excludeProps } from '../../unicorns';
 
 const reservedProps = [ 'className', 'xs', 'sm', 'md', 'lg', 'model', 
@@ -121,13 +122,16 @@ class Row extends BootstrapBase
 class Column extends BootstrapBase
 {
   get selectors() {
-    const model = this.model;
+
+    const model             = this.model;
     const { className = ''} = this.props;
-    const cls = [];
+    const cls               = [];
+    
     if( className.length ) {
       cls.push(className);
     }
-    for( const { sz = 'md', offset = 0, push = 0, pull = 0, hidden = false, cols } of model ) {
+
+    quickLoop( model, ({ sz = 'md', offset = 0, push = 0, pull = 0, hidden = false, cols }) => { 
       if( hidden ) {
         cls.push('hidden-' + sz);
       }
@@ -143,13 +147,15 @@ class Column extends BootstrapBase
       if( Number(push) ) {
         cls.push('col-' + sz + '-push-' + push);
       }
-    }
+    });
+
     return selectors(...cls);
-  }  
+  }
 
   get model() {
     let model = [];
-    [ 'xs', 'sm', 'md', 'lg' ].forEach( sz => {
+
+    quickLoop( [ 'xs', 'sm', 'md', 'lg' ], sz => {
       if( sz in this.props ) {        
         const val = this.props[sz];
         if( isNaN(val) ) {
@@ -160,9 +166,11 @@ class Column extends BootstrapBase
         }
       }
     });
+
     if( !model.length ) {
       ({model = [this.props]} = this.props);
     }
+    
     return model;
   }
 }

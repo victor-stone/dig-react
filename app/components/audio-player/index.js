@@ -1,8 +1,6 @@
 import React  from 'react';
 import events from '../../models/events';
 
-import { oassign } from '../../unicorns';
-
 import PlayControls     from './play-controls';
 import PlaylistButton   from './playlist-button';
 import PlaybackScrubber from './playback-scrubber';
@@ -31,7 +29,7 @@ const AudioPlayer = React.createClass({
         hasNext: false,
         hasPrev: false,
       },         
-      position: oassign( {}, nullPosition )
+      position: Object.assign( {}, nullPosition )
     };
   },
 
@@ -81,7 +79,7 @@ const AudioPlayer = React.createClass({
       };
     var state = { controls };
     if( !controls.isPaused && !controls.isPlaying ) {
-      state.position = oassign( {}, nullPosition );
+      state.position = Object.assign( {}, nullPosition );
     }
     this.setState( state );
   },

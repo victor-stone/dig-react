@@ -1,4 +1,4 @@
-import TagString from './tag-string';
+import TagString from '../tag-string';
 
 module.exports = function selectors(...args) {
   var filtered = args.filter(t=>!!t);

@@ -1,4 +1,4 @@
-import TagEnum from './util/tag-enum';
+import TagEnum from './lib/tag-enum';
 
 class UploadType extends TagEnum
 {
@@ -19,4 +19,5 @@ Object.assign(UploadType,{
   }
 
 });
+
 module.exports = UploadType;

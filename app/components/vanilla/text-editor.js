@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { bindAll,
-         nextID }    from '../../unicorns';
+         nextId }    from '../../unicorns';
 
 class TextEditor extends React.Component
 {
   constructor() {
     super(...arguments);
     bindAll(this, 'onChange' );
-    ({ focusId:this.focusId = nextID('element_') } = this.props);
+    ({ focusId:this.focusId = nextId('element_') } = this.props);
     this.state = { value: this.props.initialValue };
   }
 

@@ -3,8 +3,6 @@ import serialize from '../models/serialize';
 import ccmixter  from '../models/ccmixter';
 import rsvp      from 'rsvp';
 
-import { oassign } from '../unicorns';
-
 class Topics extends Query {
 
   constructor() {
@@ -24,7 +22,7 @@ class Topics extends Query {
       ids: id
     };
     return this.queryOne(args)
-      .then( serialize( ccmixter.Topic ) )
+      .then( serialize( ccmixter.Topic.Topic ) )
       .then( model => this.model = model );
   }
 
@@ -33,7 +31,7 @@ class Topics extends Query {
       t: 'reviews_upload',
       match: id
     };
-    return this.query(args).then( serialize( ccmixter.Review) );
+    return this.query(args).then( serialize( ccmixter.Topic.Review ) );
   }
 
   type(topicType) {
@@ -43,13 +41,13 @@ class Topics extends Query {
       limit: 10
     };
     const hash = {
-      items: this.query(args).then( serialize( ccmixter.Topic ) ),
+      items: this.query(args).then( serialize( ccmixter.Topic.Topic ) ),
       total: this.count(args)
     };
 
     return rsvp.hash(hash).then( model => {
       this.model = model;
-      this.model.queryParams = oassign( {}, args );
+      this.model.queryParams = Object.assign( {}, args );
     });
   }
 
@@ -64,7 +62,7 @@ class Topics extends Query {
                 .then( serialize( ccmixter.Topic ) )
                 .then( model => {
                   this.model = model;
-                  this.model.queryParams = oassign( {}, args );
+                  this.model.queryParams = Object.assign( {}, args );
                 }, error => {
                   this.model = {};
                   this.error = error;
@@ -72,7 +70,7 @@ class Topics extends Query {
   }
   
   count(queryParams) {
-    const qp = oassign( {}, queryParams );
+    const qp = Object.assign( {}, queryParams );
     qp.dataview = 'count_topics';
     return this.queryOne(qp);
   }
