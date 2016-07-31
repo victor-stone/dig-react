@@ -153,7 +153,7 @@ class Playlist extends Permissions(Properties(Query)) {
   // create a dynamic playlist based on the query in
   // tracks
   create(name) {
-    var qstring = this.model.tracks.queryStringWithDefaults;
+    var qstring = this.model.tracks.queryStringNative;
     return Playlist.create(name,'',qstring);
   }
 

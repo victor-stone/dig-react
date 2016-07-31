@@ -43,7 +43,7 @@ class TextArea extends ToggleEditModeProperty
                 } 
               }
             : { 
-                Element: () => <span dangerouslySetInnerHTML={{__html:this.state.value}} />,
+                Element: () => <span className="static-text-area" dangerouslySetInnerHTML={{__html:this.state.value}} />,
                 props: { }
               }; 
   }

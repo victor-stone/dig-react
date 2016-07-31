@@ -54,7 +54,7 @@ function makeTextProperty({
 
   let plain = self[key + '_plain'];
 
-  if( html && !plain && document ) {
+  if( html && !plain && typeof document !== 'undefined') {
     var div = document.createElement('DIV');
     div.innerHTML = html;
     plain = div.textContent || div.innerText;

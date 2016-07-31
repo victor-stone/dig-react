@@ -27,14 +27,6 @@ class QueryFilter extends PropertyStateful(Property)
     this._defaultValue === null && (this._defaultValue = '');
   }
 
-  onlyHashIfDirty() {
-    return false;
-  }
-  
-  allowStringify() {
-    return true;
-  }
-  
   /*
     The store will use this flag to determine whether the 
     entire model needs to be flushed and refreshed or just

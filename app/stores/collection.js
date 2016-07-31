@@ -7,153 +7,13 @@ import UserSearch   from './user-search';
 
 import { hashParams,
          hashCode,
-         quickLoop,
          cleanSearchString,
          TagString }   from '../unicorns';
 
-import makeQueryFilter from '../models/query-filter-make';
+import QueryParameters from './lib/query-parameters';
 
-/*
-*/
-class FilterFactory 
-{
-  constructor({ filters = [] }) {
-    
-    this._filters = new Map();
-
-    quickLoop( Object.keys(filters), key => {
-      const filter = filters[key];
-      const { propertyName } = filter;
-      this._filters.set( propertyName, filter ); 
-    });
-    
-  }
-
-  get filterClasses() {
-    return Array.from(this._filters.values());
-  }
-
-  makeFilter( propName ) {
-    
-    if( this._filters.has(propName) ) {
-      return this._filters.get(propName);
-    }
-
-    return makeQueryFilter({ propName });
-  }
-}
-
-const ccMixterFilterFactory = new FilterFactory( { filters: require('../models/filters') });
-
-/*
-    This class operates on the properties of a store. Specifically, the 
-    properties that are derivations of QueryFilter.
-
-*/
-class QueryParameters
-{
-  constructor({ 
-      store,
-      filterFactory
-    }) 
-  {
-    this._store     = store;
-    this._factory   = filterFactory;
-  }
-
-  /*
-    injest a hash of query parameters
-  */
-  deserialize( hash ) {
-
-    const store = this._store;
-
-    store.isFilterEventsDisabled = true;
-    quickLoop( Object.keys(hash), propName => this.setFilterValue( propName, hash[propName] ) );
-    store.isFilterEventsDisabled = false;
-
-    return this;
-  }
-
-  /*
-    emit a hash of query parameters 
-  */
-  serialize() {
-    return this._getHash();
-  }
-
-  /*
-    emit a hash of 'display' values
-  */
-  values() {
-
-    // The actual current values for the set of query params is a calcuated
-    // value. Therefore the values in the native filters can not be relied
-    // upon. e.g. the 'tags' native filter's does not necessarily reflect the
-    // the current value in the 'instrumentOnly' virtual filter.
-
-    // Step 1. get the current native hash
-    //
-    const hash = this._getHash();
-
-    // Step 2. apply the native hash to the native filters
-    //
-    this.deserialize(hash);
-
-    // Step 3. isolate the native filters (their propName is the same as their map index name)
-    //
-    const nativeFilters = this._store.queryFilters.filter( ([n,f]) => n === f.name );
-
-    // Step 4: fetch the display value for each
-    //
-    quickLoop( nativeFilters, ([n,f]) => hash[n] = f.value );
-
-    return hash;
-  }
-
-
-  /*
-      emit a query string ?foo=bar&etc=fee
-  */
-  toString() {
-
-    const qp = this._getHash();
-
-    return querystring.stringify(qp);
-
-  }
-
-  /*
-      set the native value of a query parameter
-  */
-  setFilterValue( propName, value ) {
-    const store = this._store;
-    store.hasProperty( propName ) 
-      ? store.getProperty( propName ).deserialize( value )
-      : store.addProperty( this._factory.makeFilter( propName ), value );
-  }
-
-  _getHash() {
-    const store = this._store;    
-
-    const qp = {};
-
-    const virutalFilters = [];
-
-    quickLoop( store.queryFilters, ([propName,filter]) => {
-      const { name } = filter;
-      if( propName === name ) {
-        qp[name] = filter.serialize();
-      } else {
-        virutalFilters.push(filter);
-      }
-    });
-
-    quickLoop( virutalFilters, f => qp[f.name] = f.serialize(qp[f.name]) );
-
-    return qp;
-  }
-}
+// for now
+import ccMixterFilterFactory from './ccmixter/filter-factory';
 
 /*
   Collection stores support, a minimum, a model that
@@ -199,24 +59,25 @@ class Collection extends QueryFilters(Query) {
     return qs ? '?' + qs : '';
   }
 
-  get queryStringWithDefaults() {
-    return this._queryParams.toString(true);
+  get queryStringNative() {
+    const hash = this.queryParamsNative();
+    return querystring.stringify(hash);
   }
 
   get queryParams() {
-    return this._queryParams.values();
+    return this._queryParams.hash();
   }
   
+  queryParamsNative(qp = {}) {
+    return this._queryParams.deserialize(qp).serialize();
+  }  
+
   onModelUpdated(handler) {
     this.on( events.MODEL_UPDATED, handler );
   }
 
-  _applyAndGetAP(qp) {
-    return this._queryParams.deserialize(qp).serialize();
-  }
-
   refresh(queryParams) {
-    var qp = this._applyAndGetAP(queryParams);
+    var qp = this.queryParamsNative(queryParams);
     return this.fetch(qp)
                 .then( items => {
                   this.model.items = items;
@@ -225,14 +86,13 @@ class Collection extends QueryFilters(Query) {
                 }, e => this.onModelError(e,qp) );
   }
 
-  refreshModel(queryParams) {
+  refreshModel( queryParams = {} ) {
     queryParams.offset = 0;
-    var qp = this._applyAndGetAP(queryParams);
-    return this.getModel( qp );
+    return this.getModel( queryParams );
   }
 
   getModel( queryParams ) {
-    var qp = this._applyAndGetAP(queryParams);
+    var qp = this.queryParamsNative(queryParams);
 
     if( this.totalsCache ) {
       return this.doTotalsCachePreFetch(qp);
@@ -323,9 +183,9 @@ class Collection extends QueryFilters(Query) {
   /*
     set a queryParam's native value
   */
-  setQueryParamValue( name, nativeValue ) {
+  setQueryParamValue( name, value ) {
     this.isFilterEventsDisabled = true;
-    this._queryParams.setFilterValue( name, nativeValue );
+    this._queryParams.setFilterValue( name, value );
     this.isFilterEventsDisabled = false;    
   }
 

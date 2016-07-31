@@ -1,6 +1,16 @@
 import Eventer from '../services/eventer';
 import events  from './events';
 
+/*
+  A property has 3 faces:
+
+    value - is value that is understood by views for display
+
+    editable - underlying format that is editable by views
+
+    serialized - underlying native format for persistance
+
+*/
 class YeOldWatchableJavascriptProperty extends Eventer 
 {
   constructor({ propName = '_unnamed_', displayName = '_Un-Named_'} = {}) {
@@ -89,7 +99,8 @@ class YeOldWatchableJavascriptProperty extends Eventer
 
     context is derivation specific - it may be
     some kind of container that caller expects
-    the value to be put in (like a TagString)
+    the value to be put in (like a TagString) and
+    then returned
     
   */
   serialize( /* context */ ) {

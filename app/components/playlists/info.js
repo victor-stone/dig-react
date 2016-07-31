@@ -76,7 +76,7 @@ class Info extends ModelTracker(React.Component)
 
     return (
         <div className="playlist-info hidden-xs hidden-sm">
-          <InfoPanel><Description noTitle store={store} /></InfoPanel>
+          <InfoPanel className="playlist-description" ><Description noTitle store={store} /></InfoPanel>
           <ActionButtonBar store={store} />
           <InfoPanel className="playlist-curator "><Curator store={store} /></InfoPanel>
           <InfoPanel><Tags store={store} delayCommit={!isDynamic} static noTitle canEdit={!isDynamic} /></InfoPanel>

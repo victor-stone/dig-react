@@ -3,7 +3,7 @@ import querystring    from 'querystring';
 import { TagString }  from '../../unicorns';
 import { Upload }     from './upload';
 
-import { makeTextProperty } from './tools';
+import { makeTextProperty } from './lib';
 
 class PlaylistCurator extends Model {
   constructor() {

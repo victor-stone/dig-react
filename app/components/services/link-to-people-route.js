@@ -62,7 +62,7 @@ const LinkToPeopleRoute = React.createClass({
     return( 
         <Link {...this.props} className={cls} style={ts} href={href}>
           {avatar
-            ? <span><img className="img-circle" src={avatarURL} />{name}</span>
+            ? <span><img className="img-circle" src={avatarURL} /><span className="people-name">{name}</span></span>
             : icon
               ? <span><Glyph icon={icon} />{' ' + name}</span>
               : this.props.children || name

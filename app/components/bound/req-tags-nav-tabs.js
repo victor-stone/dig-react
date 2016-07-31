@@ -1,7 +1,7 @@
 import { ModelTracker } from '../../mixins';
 import SubNavTabs       from '../vanilla/sub-nav-tabs';
 
-import { TagString }      from '../../unicorns';
+import TagString from 'unicorns/tag-string';
 
 /*
   Present nav tabs that will filter a store's query 'reqtags'

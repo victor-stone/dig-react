@@ -23,6 +23,8 @@ const Properties = target => class extends target {
       return this._properties.get(name);
     }
     
+    !initialValue && ( { [name]:initialValue } = this.nativeProperties || {} );
+
     const property = PropertyClass.deserialize( initialValue, PropertyClass );
 
     property.onChange( this.onPropertyChange );
@@ -36,7 +38,7 @@ const Properties = target => class extends target {
 
     const { propertyName:name = PropertyClassOrName } = PropertyClassOrName;
 
-    return this._properties.get(name);
+    return this._properties.get(name) || {};
   }
 
   hasProperty(name) {

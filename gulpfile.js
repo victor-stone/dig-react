@@ -266,6 +266,13 @@ function task_server_js() {
           .pipe(gulp.dest(`${target}/server`));
 }
 
+gulp.task( 'lib', function() {
+  return gulp.src( 'lib/unicorns/**/*.js', { base: './' })
+           .pipe(babel())
+           .pipe(gulp.dest('dist'));
+});
+
+
 function task_vendor_static() {
   gulp.src( 'node_modules/font-awesome/fonts/*.*' )
     .pipe(gulp.dest(`${target}/${config.app}/browser/fonts`));

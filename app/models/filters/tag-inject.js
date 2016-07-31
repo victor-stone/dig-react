@@ -3,12 +3,12 @@ import TagField   from './lib/tag-field';
 /*
   Add a tag
   
-  let tags = store.nativeProperties.tags; // hello,world
+  let tags = store.getProperty('tags').value; // hello, world
 
   filter = store.addProperty(TagInject);
   filter.value = 'my_tag';
 
-  tags = store.nativeProperties.tags;  // hello,world,my_tag
+  tags = store.getProperty('tags').value;  // hello, world, my_tag
 
 */
 class TagInject extends TagField

@@ -32,7 +32,7 @@ class MatchAllButton extends Toggle
   }
 
   _calcShowState(store) {
-    const { tags:{length} } = store.nativeProperties;
+    const { length } = store.getProperty('tags').value;
     return { show: length > 1 };
   }
 

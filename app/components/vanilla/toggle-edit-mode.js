@@ -100,8 +100,8 @@ class ToggleEditModeStatic extends ToggleEditMode
       meta = {
         props: {},
         Element: () => <div className="can-edit">
-                        <EditButton className="pull-right floating-edit" onEdit={this._addons.edit.onClick} />
                         <Static.Element {...Static.props} />
+                        <EditButton className="floating-edit" onEdit={this._addons.edit.onClick} />
                       </div>
         };
 

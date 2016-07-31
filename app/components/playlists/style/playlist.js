@@ -50,12 +50,12 @@ var css = `
   margin: 5px;
 }
 
-.playlist-detail-page .playlist-curator a span span {
+.playlist-detail-page .playlist-curator .people-name {
   display: inline-block;
-  width: 60%;
   color: white;
   text-shadow: 1px 1px black;
   font-size: 16px;
+  margin-left: 10px;
 }
 
 .playlist-detail-page .action-btn-toolbar {
@@ -80,24 +80,6 @@ var css = `
 .playlist-detail-page .playlist-tags {
 }
 
-.playlist-detail-page .playlist-tags .tag-edit-controls {
-  text-align: center;
-  background: #CCC;
-  padding: 4px;
-  display: inline-block;
-  margin-top: 7px;
-  margin-bottom: 3px;
-  border-radius: 4px;
-  background: white;
-  margin-left: 90%;
-}
-
-.playlist-detail-page .playlist-tags .tag-edit-controls.editing {
-  background: transparent;
-  width: 50%;
-  margin-left: 25%;
-}
-
 .playlist-detail-page > div:empty {
   display: none;
 }
@@ -108,14 +90,18 @@ var css = `
   text-decoration: underline;
 }
 
+.playlist-detail-page .playlist-description .floating-edit {
+  background: transparent;
+  border: 0px;
+  color: white;
+  font-weight: normal;  
+}
+
 .playlist-detail-page .playlist-description img {
   display: block;
   margin: 16px auto;
 }
 
-.playlist-detail-page .playlist-description .edit-controls {
-  margin: 10px;
-}
 
 .playlist-detail-page .playlist-description textarea {
   width: 100%;

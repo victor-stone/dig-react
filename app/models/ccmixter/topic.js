@@ -1,6 +1,6 @@
 import Model                from '../model';
 import { DetailUploadUser } from './user';
-import { cleanLinks }       from './tools';
+import { cleanLinks }       from './lib';
 
 const bbFormatMap = [ 'format', 'raw', 'text'];
 
