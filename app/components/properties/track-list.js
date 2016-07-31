@@ -1,5 +1,5 @@
 import React            from 'react';
-import { safeSetState } from '../../unicorns';
+import { safeSetState } from 'unicorns';
 import Tracklist        from '../models/track-list';
 import TrackListSorting from '../models/track-list-sorting';
 import { FormControl }  from '../vanilla/form';

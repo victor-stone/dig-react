@@ -1,6 +1,6 @@
 import React         from 'react';
 import { selectors,
-         nextId }    from '../../unicorns';
+         nextId }    from 'unicorns';
 import DeadLink      from './dead-link';
 import Glyph         from './glyph';
 

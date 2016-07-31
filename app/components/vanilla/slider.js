@@ -1,7 +1,7 @@
 /* globals $ */
 import React        from 'react';
 import { debounce,
-         nextId }   from '../../unicorns';
+         nextId }   from 'unicorns';
 
 const ONE_HUNDRED = 100;
 

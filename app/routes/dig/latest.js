@@ -1,7 +1,7 @@
 // depreciated
 import React            from 'react';
 import { FeaturedPage } from '../../components/dig';
-import { mergeParams }  from '../../unicorns';
+import { mergeParams }  from 'unicorns';
 import qc               from '../../models/query-configs';
 import Remixes         from '../../stores/remixes';
 

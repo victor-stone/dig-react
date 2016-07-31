@@ -1,6 +1,6 @@
 import React         from 'react';
 import DeadLink      from './dead-link';
-import { selectors } from '../../unicorns';
+import { selectors } from 'unicorns';
 
 class EditButton extends React.Component
 {

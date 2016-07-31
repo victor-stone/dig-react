@@ -1,6 +1,6 @@
 import React             from 'react';
 
-import { bindAll }       from '../../../unicorns';
+import { bindAll }       from 'unicorns';
 
 import PropertyState     from '../mixins/property-state';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Glyph from './glyph';
 
-import { selectors } from '../../unicorns';
+import { selectors } from 'unicorns';
 
 class Toggle extends React.Component
 {

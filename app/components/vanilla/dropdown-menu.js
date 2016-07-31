@@ -1,7 +1,7 @@
 import React         from 'react';
 import Glyph         from './glyph';
 import { selectors,
-         dataProps } from '../../unicorns';
+         dataProps } from 'unicorns';
 
 function LinkWrapper(props) {
   return <a href="#" className="dropdown-toggle" style={props.style} data-toggle="dropdown" >{props.children}</a>;

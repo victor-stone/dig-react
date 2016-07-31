@@ -3,7 +3,7 @@ import SubNavBar        from '../bound/sub-nav-bar';
 import ReqTagsNavTabs   from '../bound/req-tags-nav-tabs';
 import InlineCss        from '../vanilla/inline-css';
 import css              from './style/subnav';
-import { TagString }    from '../../unicorns';
+import { TagString }    from 'unicorns';
 
 function TilesSubNav(props) {
   return (

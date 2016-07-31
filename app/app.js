@@ -7,7 +7,7 @@ import events      from './models/events';
 
 import { scrollToHash,
          scrollToTop,
-         bindAll }        from './unicorns';
+         bindAll }        from 'unicorns';
 import Banner             from './components/banner';
 import AudioPlayer        from './components/audio-player';
 

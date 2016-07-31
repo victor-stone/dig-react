@@ -15,8 +15,6 @@ function lookup(serviceName) {
     return require('./env');
   } else if( serviceName === 'audioPlayer') {
     return require( './audio-player');
-  } else if( serviceName === 'dispatcher' ) {
-    return require('./dispatcher');
   }
 }
 

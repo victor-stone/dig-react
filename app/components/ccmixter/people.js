@@ -6,7 +6,7 @@ import css              from './style/people';
 import Followers        from './follow';
 import FollowButton     from '../bound/follow-button';
 
-import { TagString }    from '../../unicorns';
+import { TagString }    from 'unicorns';
 
 import {  ModelTracker} from '../../mixins';
 

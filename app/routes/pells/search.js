@@ -1,7 +1,7 @@
 import React              from 'react';
 import qc                 from '../../models/query-configs';
 import Acappellas         from '../../stores/acappellas';
-import { mergeParams }    from '../../unicorns';
+import { mergeParams }    from 'unicorns';
 import Browse             from '../../components/pells/browse';
 import { SearchHeader,
          DidYouMean }     from '../../components';

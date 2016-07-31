@@ -1,7 +1,7 @@
 import rsvp             from 'rsvp';
 import Eventer          from '../services/eventer';
 import queryAjaxAdapter from '../services/query-ajax-adapter';
-import { LibArray }     from '../unicorns';
+import { LibArray }     from 'unicorns';
 
 class Query extends Eventer
 {

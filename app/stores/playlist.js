@@ -11,7 +11,7 @@ import events           from '../models/events';
 import env              from '../services/env';
 import api              from '../services/ccmixter';
 
-import { TagString }    from '../unicorns';
+import { TagString }    from 'unicorns';
 
 import Permissions      from '../mixins/permissions';
 

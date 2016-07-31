@@ -4,7 +4,7 @@ import qc            from '../../models/query-configs';
 import Remixes      from '../../stores/remixes';
 import SubNav           from '../../components/dig/sub-nav';
 
-import { mergeParams } from '../../unicorns';
+import { mergeParams } from 'unicorns';
 
 function tagSearch(props) {
   return (<TagSearch {...props}/>);

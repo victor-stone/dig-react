@@ -7,7 +7,7 @@ import events       from '../models/events';
 import env          from '../services/env';
 import rsvp         from 'rsvp';
 
-import { cleanSearchString }   from '../unicorns';
+import { cleanSearchString }   from 'unicorns';
 
 const DEFAULT_LIMIT           = 10;
 const DEFAULT_UPLOAD_MINITEMS = 1;

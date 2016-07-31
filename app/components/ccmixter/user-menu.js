@@ -1,7 +1,7 @@
 import React                  from 'react';
 import api                    from '../../services/ccmixter';
 import { CurrentUserTracker } from '../../mixins';
-import { bindAll }            from '../../unicorns';
+import { bindAll }            from 'unicorns';
 
 import Link            from '../services/link-to-route';
 import LinkToPeople    from '../services/link-to-people-route';

@@ -1,7 +1,7 @@
 import React         from 'react';
 import subNavCSS     from './style/subnav';
 import InlineCss     from './inline-css';
-import { selectors } from '../../unicorns';
+import { selectors } from 'unicorns';
 
 /*
   Display a navbar of tabs. The actual tabs are children 

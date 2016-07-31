@@ -1,7 +1,7 @@
 import qc               from '../../models/query-configs';
 import Samples          from '../../stores/samples';
 
-import { mergeParams }    from '../../unicorns';
+import { mergeParams }    from 'unicorns';
 
 import Search               from '../../components/stems/search';
 

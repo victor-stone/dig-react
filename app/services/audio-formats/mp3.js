@@ -1,5 +1,5 @@
 /* global soundManager */
-import { debounce } from '../../unicorns';
+import { debounce } from 'unicorns';
 import Media        from './media';
 import env          from '../env';
 

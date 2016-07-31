@@ -1,7 +1,7 @@
 import QueryFilter        from '../../query-filter';
 import PropertyCollection from '../../property-collection';
 import PropertyTranslator from '../../property-translator';
-import { TagString }      from '../../../unicorns';
+import { TagString }      from 'unicorns';
 
 /*
   Represents an entire set of tags

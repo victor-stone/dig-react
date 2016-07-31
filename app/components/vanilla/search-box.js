@@ -2,7 +2,7 @@ import React    from 'react';
 
 import InputWithIcon     from './input-with-icon';
 
-import { cleanSearchString } from '../../unicorns';
+import { cleanSearchString } from 'unicorns';
 
 class SearchBox extends React.Component
 {

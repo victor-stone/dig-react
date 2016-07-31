@@ -1,6 +1,6 @@
 import QueryFilter        from '../../query-filter';
 import PropertyTranslator from '../../property-translator';
-import { TagString }      from '../../../unicorns';
+import { TagString }      from 'unicorns';
 
 /*
   Derivations are assumed to hold one tag (or a

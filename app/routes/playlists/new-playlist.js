@@ -1,5 +1,5 @@
 import qc               from '../../models/query-configs';
-import { mergeParams }  from '../../unicorns';
+import { mergeParams }  from 'unicorns';
 import Playlist         from '../../stores/playlist';
 import pages            from '../../components/playlists/pages';
 

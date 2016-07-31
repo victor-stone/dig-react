@@ -1,6 +1,6 @@
 import React               from 'react';
 import LinkToRemixTree     from '../services/link-to-remix-tree';
-import { TagString }       from '../../unicorns';
+import { TagString }       from 'unicorns';
 import css                 from './style/detail';
 
 import { BoundSelectableTagList } from '../bound/tags';

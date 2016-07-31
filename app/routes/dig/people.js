@@ -1,4 +1,4 @@
-import { mergeParams }  from '../../unicorns';
+import { mergeParams }  from 'unicorns';
 import qc               from '../../models/query-configs';
 import Rmx              from '../../stores/remixes';
 

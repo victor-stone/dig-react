@@ -1,6 +1,6 @@
 import events      from '../models/events';
 import StoreEvents from './store-events';
-import { safeSetState } from '../unicorns';
+import { safeSetState } from 'unicorns';
 
 /*
   

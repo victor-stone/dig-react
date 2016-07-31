@@ -1,6 +1,6 @@
 import React     from 'react';
 
-import { nextId } from '../../unicorns';
+import { nextId } from 'unicorns';
 
 class CheckBox extends React.Component
 {

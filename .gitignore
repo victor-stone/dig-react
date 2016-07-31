@@ -8,6 +8,11 @@
 /logs
 /bpm
 
+#auto-built indecies
+lib/unicorns/browser/index.js
+lib/unicorns/react/index.js
+lib/unicorns/vanilla/index.js
+
 # dependencies
 /node_modules
 /bower_components

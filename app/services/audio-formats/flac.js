@@ -1,4 +1,4 @@
-import { debounce } from '../../unicorns';
+import { debounce } from 'unicorns';
 import Media from './media';
 
 const PLAYBACK_DEBOUNCE = 50;

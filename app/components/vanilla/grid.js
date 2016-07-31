@@ -1,7 +1,7 @@
 import React            from 'react';
 import { selectors,
          quickLoop,
-         excludeProps } from '../../unicorns';
+         excludeProps } from 'unicorns';
 
 const reservedProps = [ 'className', 'xs', 'sm', 'md', 'lg', 'model', 
                          'sz', 'cols', 'offset', 'pull', 'push', 'hidden' ];

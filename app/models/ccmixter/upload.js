@@ -1,6 +1,6 @@
 import Model               from '../model';
 import LicenseUtils        from '../licenses';
-import { TagString }       from '../../unicorns';
+import { TagString }       from 'unicorns';
 import { UploadUserBasic } from './user' ;
 
 const NOT_FOUND = -1;

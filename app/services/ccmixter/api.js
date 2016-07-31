@@ -1,5 +1,5 @@
 import rsvp from 'rsvp';
-import { bindAllTo } from '../../unicorns';
+import { bindAllTo } from 'unicorns';
 
 class API
 {

@@ -2,7 +2,7 @@ import React    from 'react';
 
 import { nextId,
          selectors,
-         bindAll } from '../../unicorns';
+         bindAll } from 'unicorns';
 
 const RETURN_KEY = 13;
 

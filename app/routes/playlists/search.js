@@ -3,7 +3,7 @@
 import React              from 'react';
 import Playlists          from '../../stores/playlists';
 import { PlaylistWidget } from '../../components/playlists/browse';
-import { mergeParams }    from '../../unicorns';
+import { mergeParams }    from 'unicorns';
 
 import PageHeader             from '../../components/page-header';
 import Glyph                  from '../../components/glyph';

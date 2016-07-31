@@ -1,5 +1,5 @@
 import { numericize,
-         shallowCompare } from '../../unicorns';
+         shallowCompare } from 'unicorns';
 
 import QueryFilter  from '../query-filter';
 

@@ -4,7 +4,7 @@ import Modal        from '../services/modal';
 import TextEditor   from '../vanilla/text-editor';
 
 import { bindAll,
-         selectors } from '../../unicorns';
+         selectors } from 'unicorns';
 
 class ReviewPopup extends Modal.Popup {
 

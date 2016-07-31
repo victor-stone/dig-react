@@ -3,7 +3,7 @@ import { InlineCss }    from '../vanilla';
 import { TagString,
          LibArray,
          bindAll,
-         selectors }    from '../../unicorns';
+         selectors }    from 'unicorns';
 
 import TagStore         from '../../stores/tags';
 

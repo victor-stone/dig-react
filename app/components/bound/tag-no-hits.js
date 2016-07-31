@@ -1,6 +1,6 @@
 import React            from 'react';
 
-import { TagString }    from '../../unicorns';
+import { TagString }    from 'unicorns';
 
 import ResetButton      from '../filters/reset';
 

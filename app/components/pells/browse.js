@@ -8,7 +8,7 @@ import { PlayButton }     from '../audio-player';
 import { ModelTracker,
          NowPlayingTracker } from '../../mixins';
 
-import { bindAll }        from '../../unicorns';
+import { bindAll }        from 'unicorns';
 
 import InlineCss           from '../vanilla/inline-css';
 import browserCSS          from './style/browser';

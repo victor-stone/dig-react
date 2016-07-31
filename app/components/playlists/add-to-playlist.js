@@ -11,7 +11,7 @@ import Playlists from '../../stores/playlists';
 import Playlist  from '../../stores/playlist';
 
 import { bindAll,
-         LibArray }            from '../../unicorns';
+         LibArray }            from 'unicorns';
 
 import { CurrentUserTracker } from '../../mixins';
 

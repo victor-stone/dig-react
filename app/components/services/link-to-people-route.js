@@ -2,7 +2,7 @@ import React         from 'react';
 import Link          from './link-to-route';
 import Glyph         from '../vanilla/glyph';
 import thumbStyle    from './people-thumb-style';
-import { selectors } from '../../unicorns';
+import { selectors } from 'unicorns';
 
 /*
 

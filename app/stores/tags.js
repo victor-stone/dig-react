@@ -4,7 +4,7 @@ import serialize       from '../models/serialize';
 import rsvp            from 'rsvp';
 import { TagString,
          LibArray,
-         hashParams }  from '../unicorns';
+         hashParams }  from 'unicorns';
 
 const REMIX_CATEGORY_NAMES = ['genre', 'instr', 'mood'];
 

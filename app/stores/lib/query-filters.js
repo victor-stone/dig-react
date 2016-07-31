@@ -1,6 +1,6 @@
 import Properties from './properties';
 import QueryFilter from '../../models/query-filter';
-import { quickLoop } from '../../unicorns';
+import { quickLoop } from 'unicorns';
 /*
   The default onPropertyChange assumes:
 

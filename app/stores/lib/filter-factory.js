@@ -1,4 +1,4 @@
-import { quickLoop }   from '../../unicorns';
+import { quickLoop }   from 'unicorns';
 
 import makeQueryFilter from '../../models/query-filter-make';
 import FilterVisibility from './filter-visibility';

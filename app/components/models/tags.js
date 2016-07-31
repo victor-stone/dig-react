@@ -4,7 +4,7 @@ import ClearButton      from '../vanilla/clear-button';
 import InlineCss        from '../vanilla/inline-css';
 import { FormItem }     from '../vanilla/form';
 import { TagString,
-         selectors }    from '../../unicorns';
+         selectors }    from 'unicorns';
 
 /*
 

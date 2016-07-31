@@ -1,6 +1,6 @@
 import qc               from '../../models/query-configs';
 import Samples          from '../../stores/samples';
-import { mergeParams }  from '../../unicorns';
+import { mergeParams }  from 'unicorns';
 import Browse           from '../../components/stems/browse';
 import SubNav           from '../../components/stems/sub-nav';
 

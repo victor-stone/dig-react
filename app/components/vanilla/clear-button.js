@@ -2,7 +2,7 @@ import React    from 'react';
 import Glyph    from './glyph';
 import DeadLink from './dead-link';
 
-import { selectors } from '../../unicorns';
+import { selectors } from 'unicorns';
 
 function ClearButton(props)
 {

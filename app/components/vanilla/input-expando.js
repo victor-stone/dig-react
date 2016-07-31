@@ -2,7 +2,7 @@
 import React       from 'react';
 import Field       from './form-field';
 import { bindAll,
-         nextId }  from '../../unicorns';
+         nextId }  from 'unicorns';
 import Input       from './input';
 import InlineCss   from './inline-css';
 

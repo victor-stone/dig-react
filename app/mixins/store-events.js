@@ -1,5 +1,5 @@
 import changeCase    from 'change-case';
-import { quickLoop } from '../unicorns';
+import { quickLoop } from 'unicorns';
 
 /*
   Event name(s) must be returned in 'storeEvents' property

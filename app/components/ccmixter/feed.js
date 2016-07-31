@@ -8,7 +8,7 @@ import events             from '../../models/events';
 
 import { ModelTracker }   from '../../mixins';
 
-import { selectors }      from '../../unicorns';
+import { selectors }      from 'unicorns';
 
 import api                from '../../services/ccmixter';
 

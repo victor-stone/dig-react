@@ -1,7 +1,7 @@
 import React        from 'react';
 import Link         from './link-to-route';
 import { sliceStr,
-         selectors } from '../../unicorns';
+         selectors } from 'unicorns';
 
 function LinkToUploadRoute(props) {
 

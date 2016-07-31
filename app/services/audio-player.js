@@ -1,4 +1,4 @@
-import { LibArray } from '../unicorns';
+import { LibArray } from 'unicorns';
 import Eventer      from '../services/eventer';
 import MP3          from './audio-formats/mp3';
 import FLAC         from './audio-formats/flac';

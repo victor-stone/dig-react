@@ -4,7 +4,7 @@ import Remixes   from '../../stores/remixes';
 import { Search,
          SubNav } from '../../components/dig';
 
-import { mergeParams }  from '../../unicorns';
+import { mergeParams }  from 'unicorns';
 
 Object.assign(Search,{
 

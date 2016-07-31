@@ -3,7 +3,7 @@ import LinkToUpload       from '../services/link-to-upload-route';
 import LinkToPeople       from '../services/link-to-people-route';
 import { PlayButton }     from '../audio-player';
 import DeleteButton       from '../vanilla/delete-button';
-import { bindAll }        from '../../unicorns';
+import { bindAll }        from 'unicorns';
 
 
 /*

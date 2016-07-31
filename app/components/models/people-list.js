@@ -1,6 +1,6 @@
 import React         from 'react';
 import LinkToPeople  from '../services/link-to-people-route';
-import { selectors } from '../../unicorns';
+import { selectors } from 'unicorns';
 
 class PeopleList extends React.Component
 {

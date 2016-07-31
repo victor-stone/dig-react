@@ -1,6 +1,6 @@
 import api from '../../services/ccmixter';
 
-import { safeSetState } from '../../unicorns';
+import { safeSetState } from 'unicorns';
 
 const currentUserProfile = () => api.user.currentUserProfile();
 

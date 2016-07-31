@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { bindAll,
-         nextId }    from '../../unicorns';
+         nextId }    from 'unicorns';
 
 class TextEditor extends React.Component
 {

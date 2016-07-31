@@ -1,4 +1,4 @@
-import { numericize } from '../../unicorns';
+import { numericize } from 'unicorns';
 
 function commaize(value) {
   if( value === 0 || value === '0' ) {

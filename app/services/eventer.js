@@ -2,7 +2,7 @@
 
 import EventEmitter    from 'events';
 import events          from '../models/events';
-import { LibArray }    from '../unicorns';
+import { LibArray }    from 'unicorns';
 
 var _knownEvents = null;
 function isValidEvent(event) {

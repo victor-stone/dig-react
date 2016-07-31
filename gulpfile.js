@@ -121,9 +121,6 @@ function task_make_indecies() {
       './app/components/vanilla',
       './app/mixins',
       './app/models/filters',
-      './app/unicorns/browser',
-      './app/unicorns/react',
-      './app/unicorns/vanilla',
     ];
   return gulp.src(dirs, { base: './' })
           .pipe(indexJS(/unicorns/))
@@ -266,9 +263,22 @@ function task_server_js() {
           .pipe(gulp.dest(`${target}/server`));
 }
 
-gulp.task( 'lib', function() {
+gulp.task( 'lib_indecies', function() {
+
+  var dirs = [ 
+      './lib/unicorns/browser',
+      './lib/unicorns/react',
+      './lib/unicorns/vanilla',
+    ];
+  return gulp.src(dirs, { base: './' })
+          .pipe(indexJS(/unicorns/))
+          .pipe(gulp.dest('./'));
+});
+
+gulp.task( 'lib', ['lib_indecies'], function() {
   return gulp.src( 'lib/unicorns/**/*.js', { base: './' })
            .pipe(babel())
+           .pipe(uglify())
            .pipe(gulp.dest('dist'));
 });
 

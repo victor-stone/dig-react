@@ -1,5 +1,5 @@
 import React            from 'react';
-import { mergeParams }  from '../../unicorns';
+import { mergeParams }  from 'unicorns';
 import Playlists        from '../../stores/playlists';
 import pages            from '../../components/playlists/pages';
 import SubNav           from '../../components/playlists/sub-nav';

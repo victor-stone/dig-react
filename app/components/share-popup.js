@@ -2,7 +2,7 @@ import React        from 'react';
 import Glyph        from './vanilla/glyph';
 import Modal        from './services/modal';
 import env          from '../services/env';
-import { bindAll }  from '../unicorns';
+import { bindAll }  from 'unicorns';
 
 import LinkToUpload from './services/link-to-upload-route';
 

@@ -1,6 +1,6 @@
 import rsvp             from 'rsvp';
 import { TagString,
-         LibArray }     from '../../unicorns';
+         LibArray }     from 'unicorns';
 
 const MAX_CACHE_KEYS = 50;
 

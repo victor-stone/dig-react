@@ -1,6 +1,6 @@
 import React   from 'react';
 
-import { LibArray } from '../../unicorns';
+import { LibArray } from 'unicorns';
 
 import {  ModelTracker,
           CurrentUserTracker } from '../../mixins';

@@ -1,7 +1,7 @@
 import api      from '../services/ccmixter';
 import events   from '../models/events';
 
-import { safeSetState } from '../unicorns';
+import { safeSetState } from 'unicorns';
 
 const CurrentUserTracker = target => class extends target {
   constructor() {

@@ -1,6 +1,6 @@
 import Model          from '../model';
 import querystring    from 'querystring';
-import { TagString }  from '../../unicorns';
+import { TagString }  from 'unicorns';
 import { Upload }     from './upload';
 
 import { makeTextProperty } from './lib';

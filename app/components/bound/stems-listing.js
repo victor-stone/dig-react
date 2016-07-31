@@ -1,5 +1,5 @@
 import React            from 'react';
-import { TagString }    from '../../unicorns';
+import { TagString }    from 'unicorns';
 import { ModelTracker } from '../../mixins';
 import StemsListing     from '../models/stems-listing';
 

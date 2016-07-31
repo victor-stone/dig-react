@@ -1,5 +1,5 @@
 import { bindAll,
-         safeSetState } from '../unicorns';
+         safeSetState } from 'unicorns';
 
 const DelayLoadModel = target => class extends target {
 

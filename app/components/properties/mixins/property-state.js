@@ -1,5 +1,5 @@
 import { safeSetState,
-         bindAll        } from '../../../unicorns';
+         bindAll        } from 'unicorns';
 
 /*
   Here's the unfortunate part about this: This 

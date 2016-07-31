@@ -1,5 +1,5 @@
 import React from 'react';
-import { selectors } from '../../unicorns';
+import { selectors } from 'unicorns';
 /* eslint "react/no-danger":0 */
 function Ribbon(props) {
   const { color = 'orange', className, text } = props;

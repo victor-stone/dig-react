@@ -8,7 +8,7 @@ import UserSearch   from './user-search';
 import { hashParams,
          hashCode,
          cleanSearchString,
-         TagString }   from '../unicorns';
+         TagString }   from 'unicorns';
 
 import QueryParameters from './lib/query-parameters';
 

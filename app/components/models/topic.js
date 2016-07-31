@@ -2,7 +2,7 @@
 import React         from 'react';
 import Link          from '../services/link-to-route';
 import { selectors,
-         nextId } from '../../unicorns';
+         nextId } from 'unicorns';
 
 
 const linkPrefix = /^https?:\/\//;

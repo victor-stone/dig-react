@@ -2,7 +2,7 @@ import React          from 'react';
 import MoreOrLessLink from './more-or-less-link';
 import InlineCss      from './inline-css';
 import { bindAll,
-         nextId }    from '../../unicorns';
+         nextId }    from 'unicorns';
 
 const css = `
 .collapse-list-head {

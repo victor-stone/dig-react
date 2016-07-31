@@ -3,7 +3,7 @@
 
 import React          from 'react';
 import MoreOrLessLink from './more-or-less-link';
-import { nextId }     from '../../unicorns';
+import { nextId }     from 'unicorns';
 
 const MAX_PREVIEW_LENGTH = 220;
 

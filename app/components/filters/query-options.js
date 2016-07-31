@@ -7,7 +7,7 @@ import { CloseButton,
 
 import { ModelTracker }   from '../../mixins';
 
-import { selectors }      from '../../unicorns';
+import { selectors }      from 'unicorns';
 
 import css                from './style/query-options';
 

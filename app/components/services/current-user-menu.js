@@ -4,7 +4,7 @@ import DeadLink      from '../vanilla/dead-link';
 import DropdownMenu  from '../vanilla/dropdown-menu';
 import FeedBadge     from './feed-badge';
 import { ellipse,
-         dataProps } from '../../unicorns';
+         dataProps } from 'unicorns';
 import thumbStyle    from '../services/people-thumb-style';
 
 const MAX_NAME_LEN = 15;

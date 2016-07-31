@@ -1,5 +1,5 @@
 import React    from 'react';
-import { nextId } from '../../unicorns';
+import { nextId } from 'unicorns';
 
 
 const DEFAULT_FADE_DURATION = 250;

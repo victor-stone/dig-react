@@ -1,5 +1,5 @@
 import querystring            from 'querystring';
-import { quickLoop }          from '../../unicorns';
+import { quickLoop }          from 'unicorns';
 import { dontCareVisibility } from './filter-visibility';
 
 /*

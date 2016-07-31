@@ -2,7 +2,7 @@
 import React             from 'react';
 import Glyph             from '../vanilla/glyph';
 
-//import { nextId }        from '../../unicorns';
+//import { nextId }        from 'unicorns';
 
 // TODO: allow multiple of these on a page
 

@@ -1,5 +1,5 @@
 import React         from 'react';
-import { selectors } from '../../unicorns';
+import { selectors } from 'unicorns';
 
 import { InputGroupAddon,
          FieldAdornment } from './button-groups';

@@ -1,6 +1,6 @@
 import lookup            from '../services';
 import events            from '../models/events';
-import { LibArray } from '../unicorns';
+import { LibArray } from 'unicorns';
 
 const PushPeruseModel = target => class extends target {
 

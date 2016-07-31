@@ -2,7 +2,7 @@ import React      from 'react';
 import qc         from '../../models/query-configs';
 import Store      from '../../stores/remixes';
 
-import { mergeParams }    from '../../unicorns';
+import { mergeParams }    from 'unicorns';
 
 import Tiles   from '../../components/remix-tree/tiles';
 import SubNav  from '../../components/remix-tree/sub-nav';
