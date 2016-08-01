@@ -1,3 +1,4 @@
+import rsvp           from 'rsvp';
 import React          from 'react';
 import Topics         from '../stores/topics';
 import BoundTopicPage from '../components/bound/topic-page';
@@ -15,8 +16,15 @@ Object.assign(topicpage,BoundTopicPage,{
 
   title: 'Page',
 
-  store(params) {
-    return Topics.storeFromPage(params.pagename)
+  store({pagename}) {
+
+      console.log( 'REQUESTING PAGE: ', pagename);
+
+    if( !pagename ) {
+      return rsvp.resolve(new Topics());
+    }
+
+    return Topics.storeFromPage(pagename)
               .then( store => {
                 topicpage.title = store.model.name;
                 return store;

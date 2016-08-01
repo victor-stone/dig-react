@@ -23,7 +23,7 @@ ccplus.subnav = FeaturedPage.subnav;
 ccplus.store = function(params,queryParams) {
   var opts = mergeParams( {}, qc.remixes, { lic: 'ccplus', reqtags: '-ccplus_stem' } );
   var qparams = mergeParams( {}, opts, queryParams  );
-  return Remixes.storeFromQuery(qparams,opts);
+  return Remixes.fromQuery(qparams,opts);
 };
 
 module.exports = ccplus;

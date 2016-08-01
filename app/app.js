@@ -1,14 +1,14 @@
 /* global $ */
 import React       from 'react';
-import ajaxAdapter from './services/query-ajax-adapter';
 import router      from './services/router';
-import env         from './services/env';
-import events      from './models/events';
+import env         from 'services/env';
+import events      from 'models/events';
+import ajaxTrap    from 'services/trap-ajax-events';
 
 import { scrollToHash,
          scrollToTop,
          bindAll }        from 'unicorns';
-import Banner             from './components/banner';
+//import Banner             from './components/banner';
 import AudioPlayer        from './components/audio-player';
 
 import TitleSetter  from './components/vanilla/title-setter';
@@ -16,22 +16,24 @@ import ErrorDisplay from './components/services/error-display';
 import Modal        from './components/services/modal';
 import Alert        from './components/services/alert';
 
+ajaxTrap();
+
 class App extends React.Component 
 {
   constructor() {
     super(...arguments);
     bindAll( this, 'onLoading', 'onNavigateTo', 'onNavigateToThis', 'onAppAlert', 'onAlertClosed' );
-    this.state = { component: { path: null } };
+    this.state = { component: { path: null },  };
   }
 
   componentWillMount() {
     
     if( env.browser ) {
 
-      ajaxAdapter.on( events.LOADING,          this.onLoading );
-      router     .on( events.NAVIGATE_TO,      this.onNavigateTo );
-      router     .on( events.NAVIGATE_TO_THIS, this.onNavigateToThis );
-      env        .on( events.APP_ALERT,        this.onAppAlert );
+      env    .on( events.LOADING,          this.onLoading );
+      router .on( events.NAVIGATE_TO,      this.onNavigateTo );
+      router .on( events.NAVIGATE_TO_THIS, this.onNavigateToThis );
+      env    .on( events.APP_ALERT,        this.onAppAlert );
     } 
 
     this.setState(this.props);
@@ -46,10 +48,10 @@ class App extends React.Component
   }
 
   componentWillUnmount() {
-    ajaxAdapter.removeListener( events.LOADING,          this.onLoading );
-    router     .removeListener( events.NAVIGATE_TO,      this.onNavigateTo );
-    router     .removeListener( events.NAVIGATE_TO_THIS, this.onNavigateToThis );
-    env        .removeListener( events.APP_ALERT,        this.onAppAlert );
+    env    .removeListener( events.LOADING,          this.onLoading );
+    router .removeListener( events.NAVIGATE_TO,      this.onNavigateTo );
+    router .removeListener( events.NAVIGATE_TO_THIS, this.onNavigateToThis );
+    env    .removeListener( events.APP_ALERT,        this.onAppAlert );
   }
 
   onNavigateTo(specs) {
@@ -127,7 +129,6 @@ class App extends React.Component
         <Modal.Container />
         <div id="wrap" className={appName}>
           <TitleSetter title={title} />
-          <Banner />
           {header}
           {subnav}
           <ErrorDisplay />

@@ -1,7 +1,7 @@
 /* global soundManager */
 import { debounce } from 'unicorns';
 import Media        from './media';
-import env          from '../env';
+import env          from 'services/env';
 
 const PLAYBACK_DEBOUNCE = 50;
 

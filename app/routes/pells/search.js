@@ -40,7 +40,7 @@ search.store = function(params,queryParams) {
   var opts     = mergeParams( {}, qc.pells );
   var qparams  = mergeParams( {}, opts, queryParams );
 
-  return Acappellas.storeFromQuery(qparams, opts);
+  return Acappellas.fromQuery(qparams, opts);
 };
 
 module.exports = search;

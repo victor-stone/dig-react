@@ -1,4 +1,4 @@
-import env   from '../../services/env';
+import env   from 'services/env';
 
 const DisableScrollToTop = target => class extends target {
   componentWillMount() {

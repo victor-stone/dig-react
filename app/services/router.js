@@ -1,9 +1,9 @@
 import RouteRecognizer  from 'route-recognizer';
 import rsvp             from 'rsvp';
 
-import Eventer          from './eventer';
-import env              from './env';
-import events           from '../models/events';
+import Eventer          from 'services/eventer';
+import env              from 'services/env';
+import events           from 'models/events';
 
 const NoopStore = new class {
   on() {}
@@ -31,7 +31,7 @@ class Router extends Eventer
 
     const noopStore  = () => rsvp.resolve(NoopStore);
 
-    const genericUrl = path => store => path + (store.queryString || '');
+    const genericUrl = path => store => path + (store.queryString() || '');
 
     // baby steps: nothing nested for now
 

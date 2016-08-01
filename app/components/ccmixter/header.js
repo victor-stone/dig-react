@@ -1,6 +1,6 @@
 /* global $ */
 import React    from 'react';
-import events   from '../../models/events';
+import events   from 'models/events';
 import lookup   from '../../services';
 
 import AjaxLoadingGlyph    from '../services/ajax-loading-glyph';

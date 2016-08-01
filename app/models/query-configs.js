@@ -1,7 +1,57 @@
 
 var MAGIC_SORT_DIGRANK = '280';
 
+const stdAlwaysHide = [ 'f', 'format', 't', 'template', 'datasource', 'dataview' ]; 
+
+const stdHideIfDefault = [ 'lic', 'digrank', 'type', 'limit' ];
+
 module.exports = {
+
+  visibility: {
+    remixes: {
+      alwaysHide: stdAlwaysHide,
+      hideIfDefaults: [ 'reqtags', ...stdHideIfDefault ]
+    },
+    stems: {
+      alwaysHide: stdAlwaysHide,
+      hideIfDefaults: [ 'reqtags', ...stdHideIfDefault ]
+    },
+    people: {
+      alwaysHide: stdAlwaysHide,
+      hideIfDefaults: stdHideIfDefault
+    },
+    search: {
+      alwaysHide: stdAlwaysHide,
+      hideIfDefaults: [ 'search_type', ...stdHideIfDefault ]
+    },
+    tags: {
+      alwaysHide: stdAlwaysHide,
+      hideIfDefaults: stdHideIfDefault
+    },
+    pells: {
+      alwaysHide: stdAlwaysHide,
+      hideIfDefaults: [ 'reqtags', 'remixmax', ...stdHideIfDefault ]
+    },
+    browsePlaylists: {
+      alwaysHide: [  'minitems', 'dynamic', ...stdAlwaysHide ],
+      hideIfDefaults: [ 'limit']
+    },
+    curator: {
+      alwaysHide: [ 'user', 'minitems', 'dynamic', ...stdAlwaysHide ],
+      hideIfDefaults: [ 'limit' ]
+    },
+    featuredPlaylists: {
+      alwaysHide: [ 'type', 'minitems', ...stdAlwaysHide ],
+    },
+    featuredInPlaylists: {
+      alwaysHide: [ 'user', ...stdAlwaysHide ],
+      hideIfDefaults: stdHideIfDefault
+    },
+    userfeed: {
+      alwaysHide: [ 'user', 'following', ...stdAlwaysHide ],
+      hideIfDefaults: [ 'limit ']
+    }
+  },
 
   remixes: {  
     limit:   '40',

@@ -1,5 +1,5 @@
 import React  from 'react';
-import env    from './services/env';
+import env    from 'services/env';
 import routes from './routes/ccmixter';
 
 import header from './components/ccmixter/header';

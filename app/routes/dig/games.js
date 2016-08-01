@@ -21,7 +21,7 @@ games.subnav = FeaturedPage.subnav;
 games.store = function(params,queryParams) {
   var opts    = mergeParams( {}, qc.remixes, qc.instrumental );
   var qparams = mergeParams( {}, opts, qc.recent, qc.games, queryParams );
-  return Remixes.storeFromQuery(qparams,opts);
+  return Remixes.fromQuery(qparams,opts);
 };
 
 

@@ -6,9 +6,9 @@ import Properties       from './lib/properties';
 
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
-import events           from '../models/events';
+import events           from 'models/events';
 
-import env              from '../services/env';
+import env              from 'services/env';
 import api              from '../services/ccmixter';
 
 import { TagString }    from 'unicorns';
@@ -16,11 +16,6 @@ import { TagString }    from 'unicorns';
 import Permissions      from '../mixins/permissions';
 
 class PlaylistTracks extends Permissions(Collection) {
-
-  static storeFromQuery(params,defaults) {
-    var pl = new PlaylistTracks(defaults);
-    return pl.getModel(params).then( () => pl );  
-  }
 
   get nullPermissions() {
     return { canEdit: false };
@@ -30,6 +25,12 @@ class PlaylistTracks extends Permissions(Collection) {
     return this.query(queryParams,deferName)
               .then( serialize(ccmixter.Playlist.PlaylistTrack) );
   }
+
+  static fromQuery(params) {
+    var pl = new PlaylistTracks();
+    return pl.getModel(params).then( () => pl );  
+  }
+
 }
 
 class Playlist extends Permissions(Properties(Query)) {
@@ -46,21 +47,28 @@ class Playlist extends Permissions(Properties(Query)) {
     return api.playlists.create(name,'',track,qstring);
   }
 
-  static storeFromID(id) {
+  static fromId(id) {
     var pl = new Playlist();
     return pl.find(id).then( () => pl );
   }
 
-  static storeFromModel(model) {
+  static fromModel(model) {
     const pl = new Playlist();
     pl.model = {head:model};
     return pl;
   }
 
-  static storeFromUploadsQuery(qparams, opts) {
+  static fromQuery(qparams) {
+
     var pl = new Playlist();
-    return pl._tracksStore(opts).getModel(qparams).then( () => {
-      pl.model = { head: {}, tracks: pl.uploads };
+    
+    return pl._tracksStore().getModel(qparams).then( () => {
+
+      pl.model = { 
+        head: {}, 
+        tracks: pl.uploads 
+      };
+      
       return pl;
     });
   }
@@ -153,7 +161,7 @@ class Playlist extends Permissions(Properties(Query)) {
   // create a dynamic playlist based on the query in
   // tracks
   create(name) {
-    var qstring = this.model.tracks.queryStringNative;
+    var qstring = this.model.tracks.queryString();
     return Playlist.create(name,'',qstring);
   }
 

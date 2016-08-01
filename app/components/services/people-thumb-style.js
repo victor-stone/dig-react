@@ -1,4 +1,4 @@
-import env from '../../services/env';
+import env from 'services/env';
 
 module.exports = function(model,extra={marginRight:'8px'})
 { 

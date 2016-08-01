@@ -1,4 +1,4 @@
-import events          from './events';
+import events          from 'models/events';
 
 /*
   Some things to note:

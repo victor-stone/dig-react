@@ -1,5 +1,5 @@
-import events       from '../models/events';
-import env          from '../services/env';
+import events       from 'models/events';
+import env          from 'services/env';
 import AudioService from '../services/audio-player';
 
 module.exports = function() {

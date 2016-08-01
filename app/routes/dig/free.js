@@ -21,7 +21,7 @@ free.subnav = FeaturedPage.subnav;
 free.store = function(params,queryParams) {
   var opts    = mergeParams( {}, qc.remixes, { lic: 'open', reqtags: '-autoplay' }, qc.magicSort );
   var qparams = mergeParams( {}, opts, queryParams );    
-  return Remixes.storeFromQuery(qparams,opts);
+  return Remixes.fromQuery(qparams,opts);
 };
 
 module.exports = free;

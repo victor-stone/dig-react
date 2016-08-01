@@ -10,9 +10,13 @@ const newPlaylist = Object.assign(pages.NewDynamicPlaylist,{
   browserOnly: true,
   
   store() {
-    var opts = mergeParams( { type: 'any' }, qc.remixes, { limit: 10 } );
-    var qparams = mergeParams( {}, opts );
-    return Playlist.storeFromUploadsQuery(qparams, opts);
+    
+    var qparams = mergeParams( { type: 'any' }, 
+                               qc.remixes, 
+                               { limit: 10 } 
+                              );
+    
+    return Playlist.fromQuery(qparams);
   }
 
 });

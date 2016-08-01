@@ -7,7 +7,7 @@ import { License,
 import { QueryOptionsPanel,
          OptionsWrap }        from '../filters/query-options';
 
-// import env from '../../services/env';
+// import env from 'services/env';
 
 // env.assert(License          ,'License          ');
 // env.assert(BPM              ,'BPM              ');

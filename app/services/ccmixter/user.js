@@ -1,7 +1,7 @@
 import rsvp         from 'rsvp';
 import API          from './api';
 import UserStore    from '../../stores/user';
-import events       from '../../models/events';
+import events       from 'models/events';
 import { cookies }  from 'unicorns';
 
 import { bindAll }  from 'unicorns';

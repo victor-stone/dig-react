@@ -68,7 +68,7 @@ class AddToPlaylistPopup extends Modal.Popup {
 
     if( showList ) {
       var head = LibArray.from(store.model.items).findBy('id',selectedValue);
-      Playlist.storeFromModel(head).addTrack(id).then( () => this._alertAndClose('Track added to playlist') );
+      Playlist.fromModel(head).addTrack(id).then( () => this._alertAndClose('Track added to playlist') );
     } else {
       Playlist.create(newPlaylistName,id).then( () => this._alertAndClose('New playlist created and track added') );
     }

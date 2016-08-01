@@ -22,7 +22,7 @@ edpicks.subnav = FeaturedPage.subnav;
 edpicks.store = function(params,queryParams) {
   var opts    = mergeParams( { reqtags: 'editorial_pick' }, qc.remixes );
   var qparams = mergeParams( {}, opts, qc.recent, queryParams );
-  return Remixes.storeFromQuery(qparams,opts);
+  return Remixes.fromQuery(qparams,opts);
 };
 
 module.exports = edpicks;

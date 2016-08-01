@@ -11,13 +11,17 @@ const stems = Object.assign(Browse,{
   subnav: SubNav,
 
   store(params,queryParams) {
-    var opts    = mergeParams( {type: 'any' }, qc.samples, qc.latest );
-    var qparams = mergeParams( { }, opts, queryParams );
-    return Samples.storeFromQuery(qparams,opts);
+
+    var qparams = mergeParams( { type: 'any' }, 
+                               qc.samples, 
+                               qc.latest,
+                               queryParams );
+
+    return Samples.fromQuery(qparams);
   },
 
   urlFromStore(store) {
-    return '/stems' + store.queryString;
+    return '/stems' + store.queryString( qc.visibility.stems );
   }
 
 });

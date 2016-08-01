@@ -1,1 +1,4 @@
 ln -snf "$(pwd)/dist/lib/unicorns" node_modules/unicorns
+ln -snf "$(pwd)/dist/lib/services" node_modules/services
+ln -snf "$(pwd)/dist/lib/models"   node_modules/models
+

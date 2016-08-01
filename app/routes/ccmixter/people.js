@@ -17,9 +17,14 @@ const people = Object.assign(People,{
 
   store( params, queryParams ) {
     const { userid, reqtags = null } = params;
-    var defopts = mergeParams( {}, qc.people, { user: userid }, reqtags ? {reqtags} : {} );
-    var qparams = mergeParams( {}, defopts, queryParams );
-    return User.storeFromQuery(qparams, defopts )
+    
+    var qparams = mergeParams( {}, 
+                               qc.people, 
+                               { user: userid }, 
+                               reqtags ? {reqtags} : {},
+                               queryParams );
+
+    return User.fromQuery(qparams)
             .then( store => {
               people.title = !this.error && store.model.artist.name;
               return store;
@@ -30,7 +35,7 @@ const people = Object.assign(People,{
     let path = '/people/' + store.model.artist.id;
     const reqtag = SubNav.isTab(store.model.queryParams.reqtags);
     reqtag && (path += '/' + reqtag);
-    return path + store.queryString;
+    return path + store.queryString(qc.visibility.people);
   }
 });
 

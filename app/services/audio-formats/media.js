@@ -1,4 +1,4 @@
-import Eventer     from '../eventer';
+import Eventer     from 'services/eventer';
 
 const EMIT_DELAY = 50;
 

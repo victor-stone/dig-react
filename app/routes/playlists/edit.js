@@ -6,7 +6,7 @@ const Edit = Object.assign(pages.EditDynamicPlaylist,{
   path: '/playlist/browse/:id/edit',
   
   store(params) {
-   return Playlist.storeFromID(params.id).then( store => store.useUnderlyingQuery() );
+   return Playlist.fromId(params.id).then( store => store.useUnderlyingQuery() );
   },
 
   browserOnly: true,

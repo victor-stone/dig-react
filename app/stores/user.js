@@ -2,7 +2,7 @@ import Remixes     from './remixes';
 import ccmixter    from '../models/ccmixter';
 import serialize   from '../models/serialize';
 import TotalsCache from './lib/totals-cache';
-import events      from '../models/events';
+import events      from 'models/events';
 
 const USER_FILTERS      = [ 'editorial_pick', 'remix', 'acappella', 'sample' ];
 
@@ -17,6 +17,7 @@ class User extends Remixes {
     var queryParams = {
       user: id,
       dataview: 'user_info',
+      noarray: 1
     };
     return this.queryOne(queryParams,deferName)
       .then( serialize(ccmixter.User.UserProfile) );
@@ -37,11 +38,12 @@ class User extends Remixes {
         return model;
       });
   }
+
+  static fromQuery(params) {
+    var user = new User();
+    return user.getModel(params).then( () => user );      
+  }
 }
 
-User.storeFromQuery = function(params,defaults) {
-  var user = new User(defaults);
-  return user.getModel(params).then( () => user );  
-};
 
 module.exports = User;

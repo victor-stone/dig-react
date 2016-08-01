@@ -1,6 +1,6 @@
 import React    from 'react';
 import Topics   from '../stores/topics';
-import env      from '../services/env';
+import env      from 'services/env';
 
 const Banner = React.createClass({
 

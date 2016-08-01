@@ -1,5 +1,5 @@
-import Eventer from '../services/eventer';
-import events  from './events';
+import Eventer from 'services/eventer';
+import events  from 'models/events';
 
 /*
   A property has 3 faces:

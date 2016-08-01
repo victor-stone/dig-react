@@ -2,7 +2,7 @@ import React               from 'react';
 import Glyph               from '../vanilla/glyph';
 import AudioService        from '../../services/audio-player';
 import Playlists           from '../../stores/playlists';
-import events              from '../../models/events';
+import events              from 'models/events';
 import LinkToPlaylist      from './link-to-playlist-route';
 import {bindAll}           from 'unicorns';
 

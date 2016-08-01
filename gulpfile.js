@@ -72,6 +72,7 @@ var target = argv.p ? temp_target : './dist';
 var config = {
   debug:          !argv.p,
   apihost:         apihost || 'ccmixter.org',
+  rpcport:         80,
   satellite_host:  sathost,
   buildDate:       new Date() + '',
   app:            'ccmixter',
@@ -276,12 +277,18 @@ gulp.task( 'lib_indecies', function() {
 });
 
 gulp.task( 'lib', ['lib_indecies'], function() {
-  return gulp.src( 'lib/unicorns/**/*.js', { base: './' })
+
+  var libdirs = [
+    'lib/models/**/*.js',
+    'lib/unicorns/**/*.js',
+    'lib/services/**/*.js',
+  ];
+  
+  return gulp.src( libdirs, { base: './' })
            .pipe(babel())
-           .pipe(uglify())
+           .pipe(config.debug ? gutil.noop() : uglify())
            .pipe(gulp.dest('dist'));
 });
-
 
 function task_vendor_static() {
   gulp.src( 'node_modules/font-awesome/fonts/*.*' )
@@ -398,10 +405,10 @@ gulp.task('server-stub', task_server_stub);
 
 gulp.task('-server-prep-2',   ['server-clean'] );
 gulp.task('-server-prep-1',   ['-server-prep-2','make-indecies'] );
-gulp.task('server-js',        ['-server-prep-1'], task_server_js );
+gulp.task('server-js',        ['lib', '-server-prep-1'], task_server_js );
 
 gulp.task('browser-stub',   ['copy-to-work'], task_browser_stub );
-gulp.task('browser-js',     ['make-indecies','browser-stub'], task_browser_js );
+gulp.task('browser-js',     ['lib', 'make-indecies','browser-stub'], task_browser_js );
 gulp.task('watchify',       ['make-indecies','browser-stub'], task_watchify );
 gulp.task('browser-static', task_browser_static);
 gulp.task('browser-css',    task_browser_css );

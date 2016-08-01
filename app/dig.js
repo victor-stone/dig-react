@@ -1,5 +1,5 @@
 import React  from 'react';
-import env    from './services/env';
+import env    from 'services/env';
 import routes from './routes/dig';
 
 import header from './components/dig/header';

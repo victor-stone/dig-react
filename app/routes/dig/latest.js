@@ -22,7 +22,7 @@ latest.title = 'New';
 latest.store = function(params,queryParams) {
   var opts    = mergeParams( {}, qc.remixes );
   var qparams = mergeParams( {}, opts, qc.latest, queryParams );
-  return Remixes.storeFromQuery( qparams, opts );
+  return Remixes.fromQuery( qparams, opts );
 };
 
 module.exports = latest;

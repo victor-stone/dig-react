@@ -7,8 +7,8 @@ import DeadLink       from './vanilla/dead-link';
 import Glyph   from './vanilla/glyph';
 import Modal   from './services/modal';
 import Upload  from '../stores/upload';
-import env     from '../services/env';
-import events  from '../models/events';
+import env     from 'services/env';
+import events  from 'models/events';
 
 import { LicenseInfoLink, 
          LicenseInfo } from './license-info';

@@ -6,9 +6,10 @@ global.IS_SERVER_REQUEST = false;
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var events = require('./models/events');
+var events = require('models/events');
 var lookup = require('./services');
-var env = lookup('env');
+var env = require('services/env');
+var rpc = require('services/json-rpc-browser');
 
 require('./services/analytics')();
 
@@ -35,5 +36,5 @@ router.once( events.NAVIGATE_TO, function(props) {
   ReactDOM.render( React.createElement(app,props),  document.getElementById('content') );
 });
 
-router.updateURL();
+rpc.initRPC.then( () => router.updateURL() );
 

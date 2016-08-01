@@ -8,11 +8,14 @@ class Remixes extends Collection
   fetch(queryParams,deferName) {
     return this.query(queryParams,deferName).then( serialize(ccmixter.Upload.Upload) );
   }
-}
 
-Remixes.storeFromQuery = function(params,defaults) {
-  var pl = new Remixes(defaults);
-  return pl.getModel(params).then( () => pl );  
-};
+  static fromQuery( params ) {
+
+    var pl = new Remixes();
+    
+    return pl.getModel(params).then( () => pl );  
+
+  }
+}
 
 module.exports = Remixes;

@@ -4,7 +4,7 @@ import moment             from 'moment';
 
 import {UserFeedVerbs,
         UserFeedReasons}  from '../../models/user-feed-types';
-import events             from '../../models/events';
+import events             from 'models/events';
 
 import { ModelTracker }   from '../../mixins';
 

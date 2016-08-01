@@ -15,16 +15,20 @@ class ACappellas extends Collection
   }
 
   fetch(queryParams,deferName) {
+    
     queryParams.dataview = 'default'; // links_by doesn't have bpm
+    
     return this.query(queryParams,deferName).then( serialize( ccmixter.Upload.ACappella ) );
   }
 
-}
+  static fromQuery(params) {
 
-ACappellas.storeFromQuery = function(params,defaults) {
-  var pells = new ACappellas(defaults);
-  return pells.getModel(params).then( () => pells );  
-};
+    var pells = new ACappellas();
+    
+    return pells.getModel(params).then( () => pells );  
+
+  }
+}
 
 module.exports = ACappellas;
 

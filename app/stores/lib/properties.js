@@ -1,3 +1,14 @@
+import Property from '../../models/property';
+
+const Noop = new class NoopProperty extends Property 
+{
+  constructor() {
+    super({propName:'noop'});
+  }
+  get isNoop() {
+    return true;
+  }
+};
 
 /*
   The addProperty and default onPropertyChange assumes:
@@ -38,7 +49,7 @@ const Properties = target => class extends target {
 
     const { propertyName:name = PropertyClassOrName } = PropertyClassOrName;
 
-    return this._properties.get(name) || {};
+    return this._properties.get(name) || Noop;
   }
 
   hasProperty(name) {

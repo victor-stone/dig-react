@@ -8,15 +8,15 @@ const MAX_SITE_FEED_ITEMS = 200;
 
 class UserFeed extends Collection {
 
-  constructor(defaults = {}) {
-    super(Object.assign({},defaults,{dataview:'userfeed',datasource:'feed'}));
+  constructor() {
+    super(...arguments);
     this.autoFetchUser = false;
   }
 
   fetch(queryParams,deferName) {
-    if( 'site' in queryParams ) {
-      queryParams.cache = 'sitefeed' + queryParams.offset;
-    }
+    const { site, following = '' } = queryParams;
+    site && (queryParams.cache = 'sitefeed' + queryParams.offset);
+    queryParams.following = following;
     return this.query(queryParams,deferName).then( serialize(ccmixter.Feed.UserFeedItem) );
   }
 
@@ -33,7 +33,8 @@ class UserFeed extends Collection {
       dataview: 'userfeed',
       site: 1,
       offset: 0,
-      limit: 40
+      limit: 40,
+      following: ''
     };
     return this.getModel(params);
   }
@@ -43,7 +44,8 @@ class UserFeed extends Collection {
       dataview: 'userfeed',
       datasource: 'feed',
       sticky: 1,
-      limit: numItems || DEFAULT_STICKY_ITEMS
+      limit: numItems || DEFAULT_STICKY_ITEMS,
+      following: ''
     };
     return this.getModel(params);
   }

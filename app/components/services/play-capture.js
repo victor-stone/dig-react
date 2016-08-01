@@ -1,5 +1,5 @@
 import AudioService from '../../services/audio-player';
-import events       from '../../models/events';
+import events       from 'models/events';
 
 const PlayCaptureMixin = target => class extends target {
 

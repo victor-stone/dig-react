@@ -15,13 +15,16 @@ const browse = Object.assign(pages.Browse,{
   },
 
   store(params,queryParams) {
-      const opts = qc.browsePlaylists;
-      const qparams = mergeParams( {}, opts, queryParams );
-      return Playlists.storeFromQuery(qparams,opts);
+
+      const qparams = mergeParams( {}, 
+                                   qc.browsePlaylists, 
+                                   queryParams );
+
+      return Playlists.fromQuery(qparams);
   },
 
   urlFromStore(store) {
-    return browse.path + store.queryString;
+    return browse.path + store.queryString( qc.visibility.browsePlaylists );
   }
 });
 

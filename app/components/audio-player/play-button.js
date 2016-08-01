@@ -1,7 +1,7 @@
 import React    from 'react';
 import Glyph    from '../vanilla/glyph';
 import DeadLink from '../vanilla/dead-link';
-import events   from '../../models/events';
+import events   from 'models/events';
 
 import AudioService from '../../services/audio-player';
 

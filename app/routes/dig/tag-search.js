@@ -19,7 +19,7 @@ tagSearch.subnav = SubNav;
 tagSearch.store = function(params,queryParams) {
   var opts = mergeParams( { type: 'any', reqtags: '-autoplay' }, qc.remixes, qc.magicSort );
   var qparams = mergeParams( {}, opts, queryParams );
-  return Remixes.storeFromQuery(qparams, opts);
+  return Remixes.fromQuery(qparams, opts);
 };
 
 module.exports = tagSearch;

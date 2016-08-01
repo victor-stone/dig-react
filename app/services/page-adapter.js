@@ -1,5 +1,5 @@
 import ajax  from './ajax';
-import env   from './env';
+import env   from 'services/env';
 
 class PageAdapter 
 {

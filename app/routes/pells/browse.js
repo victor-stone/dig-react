@@ -13,19 +13,21 @@ const pells = Object.assign(Browse.PellsBrowser,{
   subnav: SubNav,
 
   store(params,queryParams) {
+
     const { reqtags = 'featured' } = params;
-    const opts = mergeParams( {reqtags}, qc.pells );
-    const qparams  = mergeParams( {}, opts, queryParams );
-    return Acappellas.storeFromQuery(qparams, opts);
+    
+    const qparams = mergeParams( {reqtags}, 
+                                 qc.pells,
+                                 queryParams );
+
+    return Acappellas.fromQuery(qparams);
   },
 
   urlFromStore(store) {
-    const reqtag = store.currentReqtag;
+    const reqtag = store.getProperty('reqtags').serialize();
     let path = '/pells';
-    if( reqtag !== 'featured' ) {
-      path += '/' + reqtag;
-    }
-    return path + store.queryString;
+    reqtag !== 'featured' && (path += '/' + reqtag);
+    return path + store.queryString( qc.visibility.pells );
   }
 
 });

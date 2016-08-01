@@ -1,5 +1,5 @@
-import ajaxAdapter from '../services/query-ajax-adapter';
-import events      from '../models/events';
+import env      from 'services/env';
+import events   from 'models/events';
 
 const AjaxTracker = target => class extends target {
 
@@ -11,13 +11,13 @@ const AjaxTracker = target => class extends target {
 
   componentWillMount() {
     if( !global.IS_SERVER_REQUEST ) {
-      ajaxAdapter.on( events.LOADING, this._onLoading );
+      env.on( events.LOADING, this._onLoading );
     }
   }
 
   componentWillUnmount() {
     if( !global.IS_SERVER_REQUEST ) {
-      ajaxAdapter.removeListener( events.LOADING, this._onLoading );
+      env.removeListener( events.LOADING, this._onLoading );
     }
   }
 

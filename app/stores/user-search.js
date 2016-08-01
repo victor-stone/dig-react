@@ -2,7 +2,7 @@ import rsvp             from 'rsvp';
 import Query            from './query';
 import QueryFilters     from './lib/query-filters';
 import { mergeParams }  from 'unicorns';
-import events           from '../models/events';
+import events           from 'models/events';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 
@@ -54,6 +54,7 @@ class UserSearch extends QueryFilters(Query) {
     var qparams = {
       user: id,
       dataview: 'user_basic',
+      noarray: 1
     };
     return (deferThis || this).queryOne(qparams,deferName).then( serialize( ccmixter.User.User ) );
   }

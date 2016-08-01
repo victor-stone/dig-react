@@ -1,10 +1,6 @@
 import FilterFactory from '../lib/filter-factory';
-import Filters       from '../../models/filters';
+import filters       from '../../models/filters';
 
-const ccMixterFilterFactory = new FilterFactory( { 
-                                    filters: Filters,
-                                    alwaysHide: [ 'reqtags', 'f', 't', 'template', 'dataview', 'datasource' ],
-                                    hideOnDefault: [ 'limit', 'lic', 'digrank', 'type' ]
-                                  });
+const ccMixterFilterFactory = new FilterFactory( { filters } );
 
 module.exports = ccMixterFilterFactory;

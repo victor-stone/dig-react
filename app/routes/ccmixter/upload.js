@@ -9,7 +9,7 @@ const Tree = Object.assign(RemixTree,{
 
   store(params) {
     const { id, user} = params;
-    return Upload.storeFromQuery(id,user,Upload.ALL).then( store =>
+    return Upload.fromId(id,user,Upload.ALL).then( store =>
               { 
                   Tree.title = !store.error && store.model.upload.name;
                   return store;

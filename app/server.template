@@ -7,8 +7,9 @@ var router      = require('../server/services/router');
 var AppModule   = require('../server/<%= app %>.js');
 var logPrefix   = '<%= app %>';
 var webDir      = __dirname + '/browser';
+var jsonrpc     = require('services/json-rpc-server');
 
-var env = require('../server/services/env');
+var env = require('services/env');
 
 env.set( { 
   debugMode: <%= debug %>,
@@ -16,11 +17,14 @@ env.set( {
   server: true,
   appName: '<%= app %>',
   rpcHost: 'http://<%= apihost %>/api/',
+  rpcPort: <%= rpcport %>,
   queryHost: 'http://<%= apihost %>/api/query?',
   queriesHost: 'http://<%= apihost %>/api/queries?',
   selfHost: 'http://<%= satellite_host %>/'
 });
 
 var server = new Server( router, webDir, AppModule, logPrefix );
+
+jsonrpc.initRPC.then( () => console.log('rpc initialized') )
 
 server.start();

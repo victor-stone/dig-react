@@ -1,7 +1,12 @@
 import querystring from 'querystring';
 import ajax        from './ajax';
-import env         from './env';
+import env         from 'services/env';
 
+/*
+
+    THE NEXT TIME YOU LOOK THIS MODULE WON'T BE HERE
+
+*/
 class RPCAdapter 
 {
   constructor() {

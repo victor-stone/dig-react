@@ -1,9 +1,9 @@
 import { LibArray } from 'unicorns';
-import Eventer      from '../services/eventer';
+import Eventer      from 'services/eventer';
 import MP3          from './audio-formats/mp3';
 import FLAC         from './audio-formats/flac';
 import Media        from './audio-formats/media';
-import events       from '../models/events';
+import events       from 'models/events';
 
 const NOT_FOUND  = -1;
 const FOWARD     = 1;

@@ -1,13 +1,13 @@
 import rsvp             from 'rsvp';
-import Eventer          from '../services/eventer';
-import queryAjaxAdapter from '../services/query-ajax-adapter';
+import Eventer          from 'services/eventer';
+//import queryAjaxAdapter from '../services/query-ajax-adapter';
 import { LibArray }     from 'unicorns';
+import rpc              from 'services/json-rpc';
 
 class Query extends Eventer
 {
   constructor() {
     super(...arguments);
-    this.adapter = queryAjaxAdapter;
     this.defers = new Map();
   }
 
@@ -17,13 +17,12 @@ class Query extends Eventer
       defer.params = this._clean(params);
       this.defers.set(deferName,defer);
       return defer.promise;
-
     }
-    return this.adapter.query(this._clean(params));
+    return rpc.query.q( { args: params } );
   }
   
   queryOne(params,deferName) {
-    return this.query(params,deferName).then( r => r[0] );
+    return this.query(params,deferName);
   }
   
   refresh() {
@@ -39,7 +38,7 @@ class Query extends Eventer
         h[k] = this.defers.get(k).params;
       }
     });
-    return this.adapter.hash(h).then( results => {      
+    return rpc.query.qs({args:h}).then( results => {      
       keys.forEach( k => {
         const promise = hash[k];
         if( promise && this.defers.has(k) ) {
@@ -47,7 +46,7 @@ class Query extends Eventer
           this.defers.delete(k);
         }
       });
-      return rsvp.hash(hash);
+      return results;
     });
   }
 
@@ -56,7 +55,7 @@ class Query extends Eventer
   }
 
   countParams(qparams) {
-    const countParams = { f: 'count' };
+    const countParams = { f: 'count', noarray: 1 };
     const exclude = LibArray.from([ 'limit', 'digrank', 'sort', 'ord', 'f', 'format' ]);
     for( var k in qparams ) {
       !exclude.contains(k) && qparams[k] && (countParams[k] = qparams[k]);

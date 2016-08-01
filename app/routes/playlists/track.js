@@ -12,17 +12,20 @@ var track = Object.assign(pages.Tracks,{
   title: 'Track',
   subnav: SubNav,
 
-  store(params) {
-    const id = { upload: params.id };
-    return Playlists.storeFromQuery(id).then( store => {
+  store({ id:upload }) {
+
+    return Playlists.fromQuery({ upload }).then( store => {
       track.title = store.model.upload.name;
       return store;
     });
   },
 
   urlFromStore(store) {
+
     const { upload:{id,artist} } = store.model; 
-    return `/tracks/${artist.id}/${id}`;
+
+    return '/tracks/' + artist.id + '/' + id;
+
   }
 
 });

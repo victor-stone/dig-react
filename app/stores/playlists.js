@@ -3,8 +3,8 @@ import Upload       from './upload';
 import UserSearch   from './user-search';
 import ccmixter     from '../models/ccmixter';
 import serialize    from '../models/serialize';
-import events       from '../models/events';
-import env          from '../services/env';
+import events       from 'models/events';
+import env          from 'services/env';
 import rsvp         from 'rsvp';
 
 import { cleanSearchString }   from 'unicorns';
@@ -147,12 +147,16 @@ class Playlists extends Collection {
     }
     return rsvp.resolve(models);
   }
+
+  static fromQuery(queryParams) {
+    
+    var playlists = new Playlists();
+
+    return playlists.getModel(queryParams).then( () => playlists );  
+
+  }
 }
 
-Playlists.storeFromQuery = function(queryParams,defaults) {
-  var playlists = new Playlists(defaults);
-  return playlists.getModel(queryParams).then( () => playlists );  
-};
 
 module.exports = Playlists;
 

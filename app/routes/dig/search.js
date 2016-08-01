@@ -13,18 +13,19 @@ Object.assign(Search,{
   subnav: SubNav,
 
   store( params, queryParams ) {
-    if( ! ('searchp' in queryParams) ) {
-      queryParams.searchp = '';
-    }
 
-    var opts    = mergeParams( { search_type: 'all' }, qc.remixes );
-    var qparams = mergeParams( {}, opts, queryParams );
+    const { searchp = '' } = queryParams;
 
-    return Remixes.storeFromQuery(qparams,opts);
+    var qparams = mergeParams( { search_type: 'all' }, 
+                              qc.remixes,
+                              queryParams,
+                              { searchp } );
+
+    return Remixes.fromQuery(qparams);
   },
 
   urlFromStore(store) {
-    return '/search' + store.queryString;
+    return '/search' + store.queryString( qc.visibility.search );
   }
 
 });

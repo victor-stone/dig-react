@@ -12,12 +12,16 @@ Object.assign(Search,{
   path: '/stems/search',
 
   store(params,queryParams) {
-    var qparams = mergeParams( {}, qc.samples, queryParams );
-    return Samples.storeFromQuery( qparams, qc.samples );
+    
+    var qparams = mergeParams( {}, 
+                               qc.samples, 
+                               queryParams );
+
+    return Samples.fromQuery( qparams );
   },
 
   urlFromStore(store) {
-    return Search.path + store.queryString();
+    return Search.path + store.queryString( qc.visibility.stems );
   }
 
 });

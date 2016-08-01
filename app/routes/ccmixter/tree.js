@@ -18,21 +18,22 @@ const tree = Object.assign(Tiles, {
 
   store( params={}, queryParams={} ) {
 
-    const opts = Object.assign( {},
-                                qc.remixes,
-                                qc.latest,
-                                'reqtags' in params ? {reqtags:params.reqtags} : {} );
+    const { reqtags } = params;
 
-    const qparams = mergeParams( {}, opts, queryParams );
+    const qparams = mergeParams(  {},
+                                  qc.remixes,
+                                  qc.latest,
+                                  reqtags ? {reqtags} : {},
+                                  queryParams );
 
-    return Store.storeFromQuery(qparams, opts);
+    return Store.fromQuery(qparams);
   },
 
   urlFromStore(store) {
     let   path = '/tree';
     const reqtag = SubNav.isTab(store.queryParams.reqtags);
     reqtag && (path += '/' + reqtag);
-    return path + store.queryString;
+    return path + store.queryString(qc.visibility.remixes);
   }
 });
 

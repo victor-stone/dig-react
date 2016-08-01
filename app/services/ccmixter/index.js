@@ -1,5 +1,5 @@
 import RPCAdapter   from '../rpc-adapter';
-import Eventer      from '../eventer';
+import Eventer      from 'services/eventer';
 
 import Feed      from './feed';
 import Playlists from './playlists';

@@ -12,7 +12,7 @@ function lookup(serviceName) {
   if( serviceName === 'router') {
     return require('./router');
   } else if( serviceName === 'env') {
-    return require('./env');
+    return require('services/env');
   } else if( serviceName === 'audioPlayer') {
     return require( './audio-player');
   }

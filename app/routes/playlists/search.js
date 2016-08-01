@@ -64,7 +64,7 @@ search.store = function(params,queryParams) {
     queryParams.search = '';
   }
   var qparams = mergeParams( { minitems: '0', dynamic: 1 }, queryParams );
-  return Playlists.storeFromQuery( qparams );
+  return Playlists.fromQuery( qparams );
 };
 
 module.exports = search;

@@ -1,5 +1,5 @@
 import api      from '../services/ccmixter';
-import events   from '../models/events';
+import events   from 'models/events';
 
 import { safeSetState } from 'unicorns';
 

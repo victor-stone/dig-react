@@ -1,7 +1,7 @@
 import querystring  from 'querystring';
 import Query        from './query';
 import QueryFilters from './lib/query-filters';
-import events       from '../models/events';
+import events       from 'models/events';
 import TagStore     from './tags';
 import UserSearch   from './user-search';
 
@@ -54,14 +54,9 @@ class Collection extends QueryFilters(Query) {
     return true;
   }
 
-  get queryString() {
-    const qs = this._queryParams.toString();
+  queryString(opts) {
+    const qs = this._queryParams.queryString(opts);
     return qs ? '?' + qs : '';
-  }
-
-  get queryStringNative() {
-    const hash = this.queryParamsNative();
-    return querystring.stringify(hash);
   }
 
   get queryParams() {

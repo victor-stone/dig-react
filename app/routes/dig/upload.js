@@ -19,7 +19,7 @@ Object.assign(upload,{
   path: '/files/:userid/:uploadid',
 
   store(params) {
-    return Uploads.storeFromQuery(params.uploadid,params.userid).then( store =>
+    return Uploads.fromQuery(params.uploadid,params.userid).then( store =>
               { 
                   upload.title = !store.error && store.model.upload.name;
                   return store;

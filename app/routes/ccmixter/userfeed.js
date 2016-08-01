@@ -17,7 +17,7 @@ Object.assign( FeedPage, {
   },
 
   store(params,queryParams) {  
-    var service = userFeed(params);
+    var service = userFeed();
     if( !params.user ) {
       return service.getSiteFeed().then( () => service );
     }
@@ -26,11 +26,15 @@ Object.assign( FeedPage, {
   },
 
   urlFromStore(store) {
-    const { model:{queryParams:{user,following}}, queryString } = store;
+    const user      = store.getProperty('user').serialize();
+    const following = store.getProperty('following').serialize();
+
     let url = '/feed';
-    user && (url += `/${user}`);
+    
+    user      && (url += '/' + user );
     following && (url += '/following');
-    return url + queryString;
+    
+    return url + store.queryString( qc.visibility.userfeed );
   }
 });
 

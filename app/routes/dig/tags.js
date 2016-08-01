@@ -22,13 +22,21 @@ Object.assign(tags,{
   subnav: FeaturedPage.subnav,
 
   store(params,queryParams) {
-    var opts    = mergeParams( {}, qc.remixes, { tags: params.tags } );
-    var qparams = mergeParams( {}, opts, queryParams );
-    return Remixes.storeFromQuery(qparams, opts);
+
+    const { tags } = params;
+
+    var qparams = mergeParams( {}, 
+                               qc.remixes, 
+                               { tags },
+                               queryParams );
+
+    return Remixes.fromQuery(qparams);
   },
 
   urlFromStore(store) {
-    return '/tags/' + store.queryParams.tags + store.queryString;
+    const tags = store.getParameter('tags').serialize();
+
+    return '/tags/' + tags + store.queryString( qc.visibility.tags );
   }
 
 });

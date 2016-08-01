@@ -1,6 +1,5 @@
 import querystring            from 'querystring';
 import { quickLoop }          from 'unicorns';
-import { dontCareVisibility } from './filter-visibility';
 
 /*
     This class operates on the properties of a store derived from QueryFilter.
@@ -71,13 +70,13 @@ class QueryParameters
   /*
       emit a query string "foo=bar&etc=fee"
   */
-  toString() {
+  queryString({ hideIfDefaults = [], alwaysHide = [] }) {
 
-    const { _store:store, _factory:factory } = this;
+    let { queryFilters:filters } = this._store;
 
-    const visibleFilters = store.queryFilters.filter( ([n]) => !factory.visibility(n).alwaysHide );
+    alwaysHide && (filters = filters.filter( ([n]) => !alwaysHide.contains(n) ));
 
-    const hash = this._serializeValues({ filters: visibleFilters, careAboutVisibility:true });
+    const hash = this._serializeValues({ filters, hideIfDefaults });
 
     return querystring.stringify(hash);
 
@@ -97,7 +96,7 @@ class QueryParameters
     return this._serializeValues({ filters: this._store.queryFilters });
   }
 
-  _serializeValues({ filters, careAboutVisibility = false }) {
+  _serializeValues({ filters, hideIfDefaults }) {
 
     const hash = {};
 
@@ -114,13 +113,11 @@ class QueryParameters
 
       if( propName === name ) {
 
-        // this is a native param owner
-
-        const value = filter.serialize();
+        const nativeValue = filter.serialize();
         
-        if( value ) {
-          const visibility = (!careAboutVisibility && dontCareVisibility) || this._factory.visibility( name );
-          (!visibility.hideOnDefault || filter.isDirty) && (hash[name] = value);
+        if( nativeValue ) {
+          const hideIfDefault = hideIfDefaults && hideIfDefaults.contains(name);
+          (!hideIfDefault || filter.isDirty) && (hash[name] = nativeValue);
         }
 
       } else {

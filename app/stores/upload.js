@@ -2,7 +2,7 @@ import Query            from './query';
 import UserSearch       from './user-search';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
-import events           from '../models/events';
+import events           from 'models/events';
 import api              from '../services/ccmixter';
 import Properties       from './lib/properties';
 import Permissions      from '../mixins/permissions';
@@ -210,18 +210,19 @@ class Upload extends Permissions(Properties(Query)) {
               return info;
             });
   }
+
+  static fromId( id, user, flags ) {
+    const uploadStore = new Upload();
+    return uploadStore.find(id,user,flags)
+                          .then( model => {
+                              uploadStore.model = model;
+                              return uploadStore;
+                          });    
+  }
 }
 
 Upload.MAX_TRACKBACK_FETCH = 25;
 
-Upload.storeFromQuery = function(id,user,flags) {
-  const uploadStore = new Upload();
-  return uploadStore.find(id,user,flags)
-                        .then( model => {
-                            uploadStore.model = model;
-                            return uploadStore;
-                        });
-};
 
 
 Upload.BARE       = 0x000;

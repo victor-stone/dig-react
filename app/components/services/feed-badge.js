@@ -1,7 +1,7 @@
 import React            from 'react';
 import { CurrentUserTracker,
           StoreEvents } from '../../mixins';
-import events           from '../../models/events';
+import events           from 'models/events';
 import UserFeed         from '../../services/userfeed';
 
 class FeedBadge extends CurrentUserTracker(StoreEvents(React.Component))
@@ -26,6 +26,10 @@ class FeedBadge extends CurrentUserTracker(StoreEvents(React.Component))
   }
 
   onLastSeenCount(feedcount) {
+    // there's some bug in ccHost I can't find right now
+    if( Array.isArray(feedcount) ) {
+      feedcount = feedcount[0];
+    }
     this.setState( {feedcount} );
   }
 

@@ -1,5 +1,5 @@
 import React                from 'react';
-import events               from '../../models/events';
+import events               from 'models/events';
 import {  ModelTracker  }   from '../../mixins';
 import FormItem             from '../vanilla/form-field';
 import CollapsingPeopleList from '../models/collapsing-people-list';

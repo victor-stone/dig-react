@@ -1,5 +1,5 @@
 import React  from 'react';
-import events from '../../models/events';
+import events from 'models/events';
 
 import PlayControls     from './play-controls';
 import PlaylistButton   from './playlist-button';
