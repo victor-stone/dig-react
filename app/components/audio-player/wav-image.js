@@ -1,6 +1,6 @@
 import React        from 'react';
-import ajax         from '../../services/ajax';
-import AudioService from '../../services/audio-player';
+import ajax         from 'services/ajax';
+import AudioService from 'services/audio-player';
 import env          from 'services/env';
 import events       from 'models/events';
 

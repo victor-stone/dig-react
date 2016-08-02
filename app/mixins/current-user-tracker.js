@@ -1,5 +1,5 @@
-import api      from '../services/ccmixter';
-import events   from 'models/events';
+import currentuser  from '../services/ccmixter/user';
+import events       from 'models/events';
 
 import { safeSetState } from 'unicorns';
 
@@ -14,13 +14,13 @@ const CurrentUserTracker = target => class extends target {
     if( global.IS_SERVER_REQUEST ) {
       return;
     }
-    api.on(events.USER_LOGIN,this.onUserLogin);
+    currentuser.on(events.USER_LOGIN,this.onUserLogin);
     this.checkForUser();
   }
 
   componentWillUnmount() {
     this.unMounted = true;
-    api.removeListener(events.USER_LOGIN,this.onUserLogin);
+    currentuser.removeListener(events.USER_LOGIN,this.onUserLogin);
   }
 
   onUserLogin() {
@@ -38,7 +38,7 @@ const CurrentUserTracker = target => class extends target {
 
     const onSuccess = function( id ) {
       if( !this.unMounted ) { // this can happen when the component goes away on user logout
-        api.user.currentUserProfile().then( profileHandler );
+        currentuser.currentUserProfile().then( profileHandler );
       }
       return id;
     }.bind(this);
@@ -47,7 +47,7 @@ const CurrentUserTracker = target => class extends target {
       profileHandler();
     }.bind(this);
 
-    return  api.user.currentUser().then( onSuccess, onReject );
+    return currentuser.currentUser().then( onSuccess, onReject );
   }
 };
 

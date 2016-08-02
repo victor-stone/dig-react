@@ -41,12 +41,13 @@ const DEFAULT_WEB_SHARE = 755;
 *************************/
 
 /*
-  --apihost=<api-query-host-domain> 
+  --rpchost=<api-query-host-domain> 
       Default: ccmixter.org
       Future: api.ccmixter.org
 */
-const QUERY_HOST = 'ccmixter.org'; 
+const RPC_HOST = 'ccmixter.org'; 
 
+const RPC_PATH = '/api';
 
 /*
   --sathost=<ccmixter-front-end-domain>
@@ -59,7 +60,7 @@ const SATELLITE_HOST = 'beta.ccmixter.org';
      CONFIG FOR THIS RUN
 *****************************/
 
-var apihost = argv.apihost || QUERY_HOST;
+var rpchost = argv.rpchost || RPC_HOST;
 var sathost = argv.sathost || SATELLITE_HOST;
 
 var work_target = './work';
@@ -71,8 +72,9 @@ var target = argv.p ? temp_target : './dist';
 
 var config = {
   debug:          !argv.p,
-  apihost:         apihost || 'ccmixter.org',
+  rpchost:         rpchost || 'ccmixter.org',
   rpcport:         80,
+  rpcpath:         RPC_PATH,
   satellite_host:  sathost,
   buildDate:       new Date() + '',
   app:            'ccmixter',

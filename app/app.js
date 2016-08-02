@@ -1,9 +1,10 @@
 /* global $ */
 import React       from 'react';
-import router      from './services/router';
+import router      from 'services/router';
 import env         from 'services/env';
-import events      from 'models/events';
 import ajaxTrap    from 'services/trap-ajax-events';
+
+import events      from 'models/events';
 
 import { scrollToHash,
          scrollToTop,

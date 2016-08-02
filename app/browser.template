@@ -11,18 +11,22 @@ var lookup = require('./services');
 var env = require('services/env');
 var rpc = require('services/json-rpc-browser');
 
-require('./services/analytics')();
+require('services/analytics')();
 
 var satHost = 'http://<%= satellite_host %>/';
 
 env.set( { 
   debugMode: <%= debug %>,
+  
   browser: true,
   server: false,
+  
   appName: '<%= app %>',
-  rpcHost: 'http://<%= apihost %>/api/',
-  queryHost: 'http://<%= apihost %>/api/query?',
-  queriesHost: 'http://<%= apihost %>/api/queries?',
+
+  rpcHost: '<%= rpchost %>',
+  rpcPort: <%= rpcport %>,
+  rpcPath: '<%= rpcpath %>',
+  
   selfHost: satHost && '/'
 });
 
@@ -36,5 +40,5 @@ router.once( events.NAVIGATE_TO, function(props) {
   ReactDOM.render( React.createElement(app,props),  document.getElementById('content') );
 });
 
-rpc.initRPC.then( () => router.updateURL() );
+rpc.initRPC().then( () => router.updateURL() );
 

@@ -9,7 +9,7 @@ import serialize        from '../models/serialize';
 import events           from 'models/events';
 
 import env              from 'services/env';
-import api              from '../services/ccmixter';
+import api              from 'services/json-rpc';
 
 import { TagString }    from 'unicorns';
 
@@ -21,8 +21,8 @@ class PlaylistTracks extends Permissions(Collection) {
     return { canEdit: false };
   }
 
-  fetch(queryParams,deferName) {
-    return this.query(queryParams,deferName)
+  fetch(queryParams,batchName) {
+    return this.query(queryParams,batchName)
               .then( serialize(ccmixter.Playlist.PlaylistTrack) );
   }
 
@@ -258,8 +258,9 @@ class Playlist extends Permissions(Properties(Query)) {
     var q = {
       dataview: 'playlist_head',
       ids: id,
+      noarray: 1
     };
-    return this.queryOne(q)
+    return this.query(q)
       .then( serialize( ccmixter.Playlist.PlaylistHead ) )
       .then( this.getPermissions.bind(this) );
   }

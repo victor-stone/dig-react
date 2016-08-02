@@ -1,5 +1,5 @@
 import React            from 'react';
-import api              from '../../services/ccmixter';
+import api              from 'services/json-rpc';
 import Modal            from '../services/modal';
 import Alert            from '../services/alert';
 import { bindAll }      from 'unicorns';

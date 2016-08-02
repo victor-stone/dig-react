@@ -28,9 +28,9 @@ class Ratings extends Collection {
 
   count(/*queryParams*/) {
     /*
-    var qp = Object.assign( {}, queryParams );
+    var qp = Object.assign( {noarray:1}, queryParams );
     qp.dataview = 'count_topics';
-    return this.queryOne(qp);
+    return this.query(qp);
     */
   }
 }

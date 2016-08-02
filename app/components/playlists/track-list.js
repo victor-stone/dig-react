@@ -2,7 +2,7 @@ import React              from 'react';
 import TrackListProperty  from '../properties/track-list';
 
 import { bindAll }        from 'unicorns';
-import AudioService       from '../../services/audio-player';
+import AudioService       from 'services/audio-player';
 import LinkToPlaylist     from '../services/link-to-playlist-route';
 
 /*

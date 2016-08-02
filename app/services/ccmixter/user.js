@@ -1,8 +1,10 @@
 import rsvp         from 'rsvp';
-import API          from './api';
-import UserStore    from '../../stores/user';
+import api          from 'services/json-rpc';
+import Eventer      from 'services/eventer';
 import events       from 'models/events';
 import { cookies }  from 'unicorns';
+
+import UserStore    from '../../stores/user';
 
 import { bindAll }  from 'unicorns';
 
@@ -10,35 +12,20 @@ const NOT_LOGGED_IN = null;
 
 // TODO: convert all the this._currentUser magic to a 'Set'
 
-class User extends API
+class User extends Eventer
 {
-
   constructor() {
     super(...arguments);
     bindAll(this, '_onLoginSuccess','_onLoginReject','_onCurrentUserSuccess','_onCurrentUserReject');
   }
 
-  _onLoginSuccess(username) {
-    cookies.create( 'username', username );
-    this._setCurrentUser(username);
-    return this.currentUserProfile().then( profile => {
-      this.emit( events.USER_LOGIN, username );
-      return profile;
-    });
-  }
-
-  _onLoginReject(status) {
-    this.emit( events.USER_LOGIN, null );
-    throw status;
-  }
-
   login( username,password ) {
-    return this.call('user/login?remember=1&username=' +  username + '&password=' + password )
+    return api.user.login(username,password,1)
       .then( this._onLoginSuccess, this._onLoginReject );
   }
 
   logout() {
-    return this.call('user/logout')
+    return api.user.logout()
               .then( result => { 
                   this._currentUser = NOT_LOGGED_IN;
                   this._currentProfile = undefined;
@@ -46,15 +33,6 @@ class User extends API
                   this.emit( events.USER_LOGIN, NOT_LOGGED_IN );
                   return result; 
                 });
-  }
-
-  _onCurrentUserSuccess(username) {
-    return this._setCurrentUser(username);
-  }
-
-  _onCurrentUserReject(status) {
-    this._setCurrentUser(NOT_LOGGED_IN);
-    throw status;
   }
 
   currentUser() {
@@ -78,7 +56,7 @@ class User extends API
       return this._currentUserPromise;
     }
 
-    this._currentUserPromise = this.call('user/current')
+    this._currentUserPromise = api.user.current()
                                       .then( this._onCurrentUserSuccess, this._onCurrentUserReject );
 
     return this._currentUserPromise;                                      
@@ -104,8 +82,32 @@ class User extends API
   }
 
   follow(type,follower,followee) {
-    return this.call(`user/follow/${type}/${follower}/${followee}`);
+    return api.user.follow(type,follower,followee);
   }
+
+  _onCurrentUserSuccess(username) {
+    return this._setCurrentUser(username);
+  }
+
+  _onCurrentUserReject(status) {
+    this._setCurrentUser(NOT_LOGGED_IN);
+    throw status;
+  }
+
+  _onLoginSuccess(username) {
+    cookies.create( 'username', username );
+    this._setCurrentUser(username);
+    return api.user.currentUserProfile().then( profile => {
+      this.emit( events.USER_LOGIN, username );
+      return profile;
+    });
+  }
+
+  _onLoginReject(status) {
+    this.emit( events.USER_LOGIN, null );
+    throw status;
+  }
+
 
   _setCurrentUser(username) {
     this._currentUser = username;
@@ -116,4 +118,4 @@ class User extends API
 
 User.NOT_LOGGED_IN = NOT_LOGGED_IN;
 
-module.exports = User;
+module.exports = new User();

@@ -1,5 +1,5 @@
 import React                  from 'react';
-import api                    from '../../services/ccmixter';
+import api                    from 'services/json-rpc';
 import { CurrentUserTracker } from '../../mixins';
 import { bindAll }            from 'unicorns';
 

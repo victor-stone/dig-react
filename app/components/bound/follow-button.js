@@ -7,7 +7,7 @@ import {  ModelTracker,
 
 import Glyph from '../vanilla/glyph';
 
-import api from '../../services/ccmixter';   
+import api from 'services/json-rpc';
 
 // I hate this code so fucking much
 

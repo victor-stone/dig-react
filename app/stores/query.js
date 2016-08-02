@@ -1,7 +1,8 @@
 import rsvp             from 'rsvp';
 import Eventer          from 'services/eventer';
 //import queryAjaxAdapter from '../services/query-ajax-adapter';
-import { LibArray }     from 'unicorns';
+import { LibArray,
+         quickLoop }     from 'unicorns';
 import rpc              from 'services/json-rpc';
 
 class Query extends Eventer
@@ -11,47 +12,52 @@ class Query extends Eventer
     this.defers = new Map();
   }
 
-  query(params, deferName) {
-    if( deferName ) {
+  query(params, batchName) {
+    if( batchName ) {
       const defer = rsvp.defer();
       defer.params = this._clean(params);
-      this.defers.set(deferName,defer);
+      this.defers.set(batchName,defer);
       return defer.promise;
     }
-    return rpc.query.q( { args: params } );
-  }
-  
-  queryOne(params,deferName) {
-    return this.query(params,deferName);
+    return rpc.query.q( params ).then( result => {
+      if( 'noarray' in params && Array.isArray(result) ) {
+        return result[0];
+      }
+      return result;
+    });
   }
   
   refresh() {
     // define in derivations
   }  
   
-  flushDefers(hash) {
-    const h = {};
-    const keys = Object.keys(hash);
-    keys.forEach( k => {
-      const promise = hash[k];
-      if( promise && this.defers.has(k) ) {
-        h[k] = this.defers.get(k).params;
-      }
-    });
-    return rpc.query.qs({args:h}).then( results => {      
-      keys.forEach( k => {
-        const promise = hash[k];
-        if( promise && this.defers.has(k) ) {
-          this.defers.get(k).resolve(results[k]);
-          this.defers.delete(k);
+  flushBatch(hash) {
+    const h      = {};
+    const defers = this.defers;      
+    const keys   = Object.keys(hash);
+
+    quickLoop( keys, k => ( hash[k] && defers.has(k) ) && (h[k] = defers.get(k).params) );
+
+    return rpc.query.qs(h).then( results => {      
+
+      quickLoop( keys, k => {
+        if( hash[k] && defers.has(k) ) {
+          var promise = defers.get(k);
+          var result  = results[k];
+          if( 'noarray' in promise.params && Array.isArray(result) ) {
+            result = result[0];
+          }
+          promise.resolve(result);
+          defers.delete(k);
         }
       });
-      return results;
+
+      return rsvp.hash(hash);
     });
   }
 
-  count(qparams,deferName) {
-    return this.queryOne(this.countParams(qparams),deferName);
+  count(qparams,batchName) {
+    return this.query(this.countParams(qparams),batchName);
   }
 
   countParams(qparams) {

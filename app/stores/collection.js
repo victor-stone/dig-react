@@ -148,7 +148,7 @@ class Collection extends QueryFilters(Query) {
     
     this.error = null;
 
-    return this.flushDefers(hash)
+    return this.flushBatch(hash)
                  .then( m => this.onModelSuccess(m,queryParams),
                         e => this.onModelError(e, queryParams) );
   }
@@ -206,7 +206,7 @@ class Collection extends QueryFilters(Query) {
 
   // TODO: investigate generalizing cachedFetch
   
-  cachedFetch(queryParams, deferName) {
+  cachedFetch(queryParams, batchName) {
     if( !this.gotCache ) {
       // tell ccHost to use a cache if it's there
       var qp = Object.assign( {}, queryParams);
@@ -220,7 +220,7 @@ class Collection extends QueryFilters(Query) {
       this.gotCache = true;
       queryParams = qp;
     }
-    return this.fetch(queryParams,deferName);
+    return this.fetch(queryParams,batchName);
   }
 
   // TODO: this and all mention of 'reqtags' need to be factored out of here
@@ -239,8 +239,8 @@ class Collection extends QueryFilters(Query) {
     return this._userSearch;
   }
 
-  profileFor(user,deferName) {
-    return this.userSearch.findUser(user,deferName,this);
+  profileFor(user,batchName) {
+    return this.userSearch.findUser(user,batchName,this);
   }
 
   doTotalsCachePreFetch(queryParams) {

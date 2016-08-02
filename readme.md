@@ -22,13 +22,15 @@ Options to gulp:
                        Default: ccmixter
   -p               - production build, minifies js/css
                        Default: off
-  --apihost=<host> - host domain for Query API. Only applies to apps. 
+  --rpchost=<host> - host domain for json-rpc(*) Only applies to apps. Could be 'localhost'
                        Current default: ccmixter.org
                        Future: api.ccmixter.org
   --sathost=<host> - host domain for links in static landing pages. Only applies to satellites.
   					   Current default: beta.ccmixter.org
   					   Future: ccmixter.org
 ```               
+
+* right now we assume a path of '/api' - you can change this in gulpfile.js
 
 #### Examples
 

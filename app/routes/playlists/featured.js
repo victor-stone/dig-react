@@ -17,7 +17,7 @@ var featured = Object.assign(pages.Featured,{
   store(params,queryParams) {
 
     var qparams = mergeParams({ 
-                    type: 'featured', 
+                    featured: 'featured',
                     minitems: '0' 
                   }, queryParams );
 

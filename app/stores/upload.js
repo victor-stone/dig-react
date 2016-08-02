@@ -3,7 +3,7 @@ import UserSearch       from './user-search';
 import ccmixter         from '../models/ccmixter';
 import serialize        from '../models/serialize';
 import events           from 'models/events';
-import api              from '../services/ccmixter';
+import api              from 'services/json-rpc';
 import Properties       from './lib/properties';
 import Permissions      from '../mixins/permissions';
 
@@ -83,7 +83,7 @@ class Upload extends Permissions(Properties(Query)) {
 
   applyProperties(props,callback = m => m ) {
     const { id } = this.model.upload;
-    return api.upload.update(id,props)
+    return api.upload.update(id,{props})
               .then( () => this.info(id) )
               .then( info => this.model.upload = info )
               .then( callback );
@@ -119,7 +119,7 @@ class Upload extends Permissions(Properties(Query)) {
 
     const _this = this;
 
-    return this.flushDefers(queries)
+    return this.flushBatch(queries)
 
       .then( record => {
         
@@ -164,7 +164,7 @@ class Upload extends Permissions(Properties(Query)) {
       });
   }
   
-  trackbacks(forId,deferName) {
+  trackbacks(forId,batchName) {
     const trackbacksQ = {
       trackbacksof: forId,
       dataview: 'trackbacks',
@@ -172,34 +172,35 @@ class Upload extends Permissions(Properties(Query)) {
       ord: 'desc',
       limit: Upload.MAX_TRACKBACK_FETCH
     };
-    return this.query(trackbacksQ,deferName).then( serialize( ccmixter.Upload.Trackback ) );
+    return this.query(trackbacksQ,batchName).then( serialize( ccmixter.Upload.Trackback ) );
   }
   
-  remixes(forId,deferName) {
+  remixes(forId,batchName) {
     const remixesQ = {
       remixes: forId,
       dataview: 'links_u',
       sort: 'date',
       ord: 'desc'
     };
-    return this.query(remixesQ,deferName).then( serialize( ccmixter.Upload.RemixOf ) );
+    return this.query(remixesQ,batchName).then( serialize( ccmixter.Upload.RemixOf ) );
   }
   
-  sources(forId,deferName) {
+  sources(forId,batchName) {
     const sourcesQ = {
       sources: forId,
       dataview: 'links_u',
       datasource: 'uploads'
     };
-    return this.query(sourcesQ,deferName).then( serialize( ccmixter.Upload.Source ) );
+    return this.query(sourcesQ,batchName).then( serialize( ccmixter.Upload.Source ) );
   }
   
-  info(id,deferName) {
+  info(id,batchName) {
     const uploadQ = {
       ids: id,
-      dataview: 'default'
+      dataview: 'default',
+      noarray: 1
     };    
-    return this.queryOne(uploadQ,deferName).then( serialize( ccmixter.Upload.Detail ) );
+    return this.query(uploadQ,batchName).then( serialize( ccmixter.Upload.Detail ) );
   }
   
   refresh() {

@@ -10,7 +10,7 @@ import { ModelTracker }   from '../../mixins';
 
 import { selectors }      from 'unicorns';
 
-import api                from '../../services/ccmixter';
+import api                from 'services/json-rpc';
 
 import LinkToRoute        from '../services/link-to-route';
 
@@ -160,7 +160,7 @@ class Feed extends ModelTracker(React.Component)
 
     var u = queryParams.user || queryParams.u;
     if( u ) {
-      api.feed.markAsSeen(u).then( () => store.emit(events.FEED_SEEN) );
+      api.feed.lastseen(u).then( () => store.emit(events.FEED_SEEN) );
     }
   }
 

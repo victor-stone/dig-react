@@ -1,6 +1,6 @@
-import AudioService from '../services/audio-player';
 import Upload       from '../stores/upload';
 import events       from 'models/events';
+import AudioService from 'services/audio-player';
 
 const NowPlayingTracker = target => class extends target {
 

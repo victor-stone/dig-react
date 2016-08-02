@@ -13,18 +13,18 @@ class UserFeed extends Collection {
     this.autoFetchUser = false;
   }
 
-  fetch(queryParams,deferName) {
+  fetch(queryParams,batchName) {
     const { site, following = '' } = queryParams;
     site && (queryParams.cache = 'sitefeed' + queryParams.offset);
     queryParams.following = following;
-    return this.query(queryParams,deferName).then( serialize(ccmixter.Feed.UserFeedItem) );
+    return this.query(queryParams,batchName).then( serialize(ccmixter.Feed.UserFeedItem) );
   }
 
-  count(queryArgs,deferName) {
+  count(queryArgs,batchName) {
     if( 'site' in queryArgs ) {
       return rsvp.resolve(MAX_SITE_FEED_ITEMS);
     }
-    return super.count(queryArgs,deferName);
+    return super.count(queryArgs,batchName);
   }
 
   getSiteFeed() {

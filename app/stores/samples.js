@@ -5,11 +5,11 @@ import serialize  from '../models/serialize';
 class Samples extends Collection 
 {
 
-  fetch(queryParams,deferName) {
+  fetch(queryParams,batchName) {
 
     queryParams.dataview = 'default'; // links_by doesn't have bpm
     
-    return this.query(queryParams,deferName).then( serialize( ccmixter.Upload.Sample ) );
+    return this.query(queryParams,batchName).then( serialize( ccmixter.Upload.Sample ) );
   }
 
   static fromQuery( params ) {

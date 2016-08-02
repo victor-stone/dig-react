@@ -20,14 +20,15 @@ class Forums extends Topics {
     };
     const headArgs = {
       dataview: 'thread_head',
-      ids: id
+      ids: id,
+      noarray: 1
     };
 
     const hash = {
-      head: this.queryOne(headArgs,'head').then( debugMe ),
+      head: this.query(headArgs,'head').then( debugMe ),
       items: this.query(args,'items').then( serialize( ccmixter.Topic.ThreadTopic ) )
     };
-    return this.flushDefers(hash).then( model => this.model = model );
+    return this.flushBatch(hash).then( model => this.model = model );
   }
   
 }

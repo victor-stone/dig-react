@@ -4,19 +4,16 @@ while getopts a:s: option
 do 
 case "${option}" 
 in 
-a) APIHOST="--apihost=${OPTARG}";;
+a) RPCHOST="--rpchost=${OPTARG}";;
 s) SATHOST="--sathost=${OPTARG}";;
 esac 
 done
 
-gulp clean       -p
-
-# server
-gulp server-js   -p ${APIHOST} ${SATHOST}
+gulp clean -p
 
 # apps
-gulp --ccmixter  -p ${APIHOST} ${SATHOST}
-gulp --dig       -p ${APIHOST} ${SATHOST}
+gulp server-js app -p ${RPCHOST} ${SATHOST}
+gulp  --dig        -p ${RPCHOST} ${SATHOST}
 
 # satellites
 gulp --stems     -p ${SATHOST}

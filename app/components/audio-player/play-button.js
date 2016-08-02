@@ -3,7 +3,7 @@ import Glyph    from '../vanilla/glyph';
 import DeadLink from '../vanilla/dead-link';
 import events   from 'models/events';
 
-import AudioService from '../../services/audio-player';
+import AudioService from 'services/audio-player';
 
 var PlayButton = React.createClass({
 

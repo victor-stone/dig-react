@@ -19,9 +19,10 @@ class Topics extends Query {
     
     const args = {
       dataview: 'topics_dig',
-      ids: id
+      ids: id,
+      noarray: 1
     };
-    return this.queryOne(args)
+    return this.query(args)
       .then( serialize( ccmixter.Topic.Topic ) )
       .then( model => this.model = model );
   }
@@ -55,11 +56,12 @@ class Topics extends Query {
     const args = {
       dataview: 'topics_dig',
       type: topicType,
-      limit: 1
+      limit: 1,
+      noarray: 1
     };
     
-    return this.queryOne(args)
-                .then( serialize( ccmixter.Topic ) )
+    return this.query(args)
+                .then( serialize( ccmixter.Topic.Topic ) )
                 .then( model => {
                   this.model = model;
                   this.model.queryParams = Object.assign( {}, args );
@@ -70,9 +72,9 @@ class Topics extends Query {
   }
   
   count(queryParams) {
-    const qp = Object.assign( {}, queryParams );
+    const qp = Object.assign( {noarray:1}, queryParams );
     qp.dataview = 'count_topics';
-    return this.queryOne(qp);
+    return this.query(qp);
   }
 }
 

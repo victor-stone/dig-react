@@ -14,11 +14,11 @@ class ACappellas extends Collection
     this.totalsCache = totals;
   }
 
-  fetch(queryParams,deferName) {
+  fetch(queryParams,batchName) {
     
     queryParams.dataview = 'default'; // links_by doesn't have bpm
     
-    return this.query(queryParams,deferName).then( serialize( ccmixter.Upload.ACappella ) );
+    return this.query(queryParams,batchName).then( serialize( ccmixter.Upload.ACappella ) );
   }
 
   static fromQuery(params) {

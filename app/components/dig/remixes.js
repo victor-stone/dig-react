@@ -1,6 +1,6 @@
 import React              from 'react';
 
-import AudioPlayerService from '../../services/audio-player';
+import AudioPlayerService from 'services/audio-player';
 
 import { ModelTracker }   from '../../mixins';
 

@@ -5,7 +5,7 @@ import PlayControls     from './play-controls';
 import PlaylistButton   from './playlist-button';
 import PlaybackScrubber from './playback-scrubber';
 import PlayButton       from './play-button';
-import AudioService     from '../../services/audio-player';
+import AudioService     from 'services/audio-player';
 
 import LinkToUpload       from '../services/link-to-upload-route';
 import LinkToPeople       from '../services/link-to-people-route';

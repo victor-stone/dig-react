@@ -13,22 +13,23 @@ class User extends Remixes {
     this.totalsCache = new TotalsCache(USER_FILTERS);
   }
 
-  profileFor(id,deferName) {
+  profileFor(id,batchName) {
     var queryParams = {
       user: id,
       dataview: 'user_info',
       noarray: 1
     };
-    return this.queryOne(queryParams,deferName)
+    return this.query(queryParams,batchName)
       .then( serialize(ccmixter.User.UserProfile) );
   }
 
   followers(id) {
     var queryParams = {
       user: id,
-      dataview: 'followers'
+      dataview: 'followers',
+      noarray: 1
     };
-    return this.queryOne(queryParams)
+    return this.query(queryParams)
       .then( serialize(ccmixter.User.Followers) )
       .then( model => {
         if( this.model && this.model.artist ) {

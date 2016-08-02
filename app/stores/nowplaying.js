@@ -1,5 +1,5 @@
 
-import AudioPlayerService from '../services/audio-player';
+import AudioPlayerService from 'services/audio-player';
 
 /*
   Pretends to be a store for NowPlaying page.

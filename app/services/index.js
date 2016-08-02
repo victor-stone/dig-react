@@ -10,11 +10,11 @@
 */
 function lookup(serviceName) {
   if( serviceName === 'router') {
-    return require('./router');
+    return require('services/router');
   } else if( serviceName === 'env') {
     return require('services/env');
   } else if( serviceName === 'audioPlayer') {
-    return require( './audio-player');
+    return require( 'services/audio-player');
   }
 }
 

@@ -3,7 +3,7 @@ import Glyph  from '../vanilla/glyph';
 import Link   from '../services/link-to-route';
 import events from 'models/events';
 
-import AudioService from '../../services/audio-player';
+import AudioService from 'services/audio-player';
 
 const PlaylistButton = React.createClass({
 

@@ -5,8 +5,8 @@ import serialize  from '../models/serialize';
 
 class Remixes extends Collection 
 {
-  fetch(queryParams,deferName) {
-    return this.query(queryParams,deferName).then( serialize(ccmixter.Upload.Upload) );
+  fetch(queryParams,batchName) {
+    return this.query(queryParams,batchName).then( serialize(ccmixter.Upload.Upload) );
   }
 
   static fromQuery( params ) {

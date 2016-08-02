@@ -53,14 +53,14 @@ class TotalsCache {
         all: store.count(countParams),
       };
 
-    // the reqtag doubles as a reqtag and deferName
+    // the reqtag doubles as a reqtag and batchName
     reqtagFilters.forEach( reqtag => { 
       countParams.reqtags = bareReqtags.add(reqtag).toString();
       counts[reqtag] = store.count(countParams,reqtag);
       bareReqtags.remove(reqtag);
     });
 
-    return store.flushDefers(counts)
+    return store.flushBatch(counts)
             .then( result => {
               if( totals.size > MAX_CACHE_KEYS ) {
                 totals.clear();
