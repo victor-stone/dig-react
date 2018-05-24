@@ -3,10 +3,6 @@ import { Glyph, InlineCSS } from '../../components/vanilla';
 import Link from '../../components/services/LinkToRoute';
 import { Row, Container, Column } from '../../components/vanilla/Grid';
 
-function fb_custom_fb_login() {}
-
-fb_custom_fb_login();
-
 var css1 = `
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:500,400,300,200);
 @import url(http://fonts.googleapis.com/css?family=Lato:400,700,900);
@@ -838,10 +834,6 @@ const homePage = (
               <Link className="signB" href="/register">
                 {'Register...'}
               </Link>
-              {/* <span className="or">{" "}<Glyph icon="ellipsis-h" />{" or "}<Glyph icon="ellipsis-h" />{" "}</span>
-          <div className="signF">  
-            <a href="#" onClick={fb_custom_fb_login()}><img id="faceLogo" src="/images/facebook-logo.png" />{" "}<img id="faceDiv" src="/images/facebook-div.png" />{" "}<span id="faceText">{"Sign in with Facebook"}</span>{" "}</a>
-          </div> */}
             </div>
           </Column>
 
