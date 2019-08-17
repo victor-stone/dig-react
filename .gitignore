@@ -19,6 +19,7 @@ npm-debug.log
 testem.log
 .DS_Store
 build.log
+package-lock.json
 
 # dev
 js.js
