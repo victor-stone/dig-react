@@ -823,7 +823,7 @@ const homePage = (
                 value="classname"
               />
             </form>
-            <a className="lost_password" href="http://ccm:80/lostpassword">
+            <a className="lost_password" href="http://ccmixter.org/lostpassword">
               <span>{'Lost Password?'}</span>
             </a>
           </Column>
@@ -831,9 +831,9 @@ const homePage = (
           <Column cols="4" className="ready-to-upload">
             <div className="ready-to-upload">
               <h3>{'Ready to upload?'}</h3>
-              <Link className="signB" href="/register">
+              <a className="signB" href="http://ccmixter.org/register">
                 {'Register...'}
-              </Link>
+              </a>
             </div>
           </Column>
 
