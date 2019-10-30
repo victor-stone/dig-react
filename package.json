@@ -55,7 +55,7 @@
     "browserify-shim": "^3.8.12",
     "change-case": "^3.0.0",
     "del": "^2.0.2",
-    "eslint": "^2.11.0",
+    "eslint": "^6.6.0",
     "eslint-plugin-react": "^5.1.1",
     "font-awesome": "^4.4.0",
     "glob": "^5.0.15",
